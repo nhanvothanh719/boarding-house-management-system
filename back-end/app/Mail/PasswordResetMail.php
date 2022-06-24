@@ -33,6 +33,6 @@ class PasswordResetMail extends Mailable
         $token = $this->token;
         return $this->from('boarding_house_admin@gmail.com')
         ->view('mail.resetPassword', compact('token'))
-        ->subject('Password reset link');
+        ->subject('Email to reset password');
     }
 }
