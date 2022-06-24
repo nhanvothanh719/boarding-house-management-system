@@ -8,4 +8,6 @@ use App\Http\Controllers\PasswordResetController;
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
-Route::post('/forget-password', [PasswordResetController::class, 'passwordReset']);
+Route::post('/forget-password', [PasswordResetController::class, 'sendEmailToResetPassword']);
+
+
