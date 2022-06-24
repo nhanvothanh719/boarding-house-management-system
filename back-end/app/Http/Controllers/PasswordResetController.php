@@ -14,7 +14,7 @@ use App\Mail\PasswordResetMail;
 
 class PasswordResetController extends Controller
 {
-    public function passwordReset(PasswordResetRequest $request) {
+    public function sendEmailToResetPassword(PasswordResetRequest $request) {
         $email = $request->email;
         if(User::where('email', $email)->doesntExist()) {
             return response([
