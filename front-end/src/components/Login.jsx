@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import axios from 'axios';
 import "../assets/css/Login.css";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
 
 class Login extends Component {
   state = {
@@ -18,12 +18,19 @@ class Login extends Component {
     };
     axios.post('/login', data)
     .then((response) => {
-      console.log(response);
+      localStorage.setItem('token', response.data.token);
+      this.setState({
+        isLogin: true,
+      })
     }).catch((error) => {
       console.log(error);
     })
   }
   render() {
+    //Redirect to Profile page if user logs in successfully
+    if (this.state.isLogin) {
+      return <Redirect to={'/user-profile'}/>
+    }
     return (
         <div id="logreg-forms">
           <form class="form-signin" onSubmit={this.formSubmit}>
