@@ -16,6 +16,7 @@ class Login extends Component {
       email: this.state.email,
       password: this.state.password, 
     };
+
     axios.post('/login', data)
     .then((response) => {
       localStorage.setItem('token', response.data.token);
@@ -24,7 +25,7 @@ class Login extends Component {
       })
     }).catch((error) => {
       console.log(error);
-    })
+    });
   }
   render() {
     //Redirect to Profile page if user logs in successfully
