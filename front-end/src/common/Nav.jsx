@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { BrowserRouter as Link } from "react-router-dom";
 
 class Nav extends Component {
   render() {
@@ -21,25 +22,25 @@ class Nav extends Component {
         <div class="collapse navbar-collapse" id="navbarText">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-              <a class="nav-link" href="#">
+              <Link class="nav-link" to="/">
                 Home <span class="sr-only">(current)</span>
-              </a>
+              </Link>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">
+              <Link class="nav-link" to="/user-profile">
                 Profile
-              </a>
+              </Link>
             </li>
           </ul>
           <span class="navbar-text">
             <ul class="navbar-nav mr-auto">
-              <a class="nav-link" href="#">
+              <Link class="nav-link" to="/login">
                 Login
-              </a>
+              </Link>
               <li class="nav-item">
-                <a class="nav-link" href="#">
+                <Link class="nav-link" to="/register">
                   Register
-                </a>
+                </Link>
               </li>
             </ul>
           </span>
