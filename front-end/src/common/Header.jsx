@@ -23,10 +23,10 @@ class header extends Component {
     })
   }
 
-  setUser = (getUser) => {
-    this.setState({user: getUser});
+  setUser = (user) => {
+    this.setState({user: user});
   }
-
+ 
   render() {
     return (
         <Router>
@@ -37,7 +37,7 @@ class header extends Component {
               <Route exact path="/login" component={ Login } />
               <Route exact path="/register" component={ Register } />
               <Route exact path="/forget-password" component={ ForgetPassword } />
-              <Route exact path="/user-profile" component={ UserProfile } />
+              <Route exact path="/user-profile" component={ () => <UserProfile user={this.state.user} /> } />
             </Switch>
           </div>
         </Router>
