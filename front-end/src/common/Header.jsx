@@ -15,7 +15,7 @@ class header extends Component {
 
   componentDidMount() {
     //Get user credentials
-    axios.post('/get-user-profile')
+    axios.get('/get-user-profile')
     .then((response) => {
       this.setUser(response.data)
     }).catch((error) => {
@@ -30,7 +30,7 @@ class header extends Component {
   render() {
     return (
         <Router>
-          <Nav />
+          <Nav user={this.state.user} setUser={this.setUser}/>
           <div>
             <Switch>
               <Route exact path="/" component={ Home } />

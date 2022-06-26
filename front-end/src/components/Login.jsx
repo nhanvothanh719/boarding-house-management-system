@@ -23,6 +23,7 @@ class Login extends Component {
       this.setState({
         isLogin: true,
       })
+      this.props.setUser(response.data.user)
     }).catch((error) => {
       console.log(error);
     });
