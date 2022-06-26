@@ -1,13 +1,18 @@
 import React, { Component } from "react";
-import { BrowserRouter as Link } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 
 class Nav extends Component {
   render() {
     return (
       <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="#">
+        <Link class="nav-link" to="/">
           MyApp
-        </a>
+        </Link>
         <button
           class="navbar-toggler"
           type="button"
