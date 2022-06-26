@@ -32,7 +32,7 @@ class AuthController extends Controller
             ], 400); //Bad request
         }
         return response([
-            'message' => 'Enter invalid email or password',
+            'message' => 'Incorrect email or password',
         ], 401); //Unauthorized
     }
 
