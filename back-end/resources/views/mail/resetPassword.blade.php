@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    Please click <a href="http://localhost:3000/reset/{{ $token }}"> the following link </a> to reset your password.
+    Please click <a href="http://localhost:3000/reset-password/{{ $token }}"> the following link </a> to reset your password.
     <br>
     Your pincode is: <h3>{{ $token }}</h3>
     <br>

@@ -6,6 +6,7 @@ import Home from "../components/Home";
 import Login from "../components/Login";
 import Register from "../components/Register";
 import ForgetPassword from "../components/ForgetPassword";
+import ResetPassword from "../components/ResetPassword";
 import UserProfile from "../components/UserProfile";
 
 class header extends Component {
@@ -15,12 +16,12 @@ class header extends Component {
 
   componentDidMount() {
     //Get user credentials
-    axios.get('/get-user-profile')
+    axios.get('/user-profile')
     .then((response) => {
       this.setUser(response.data)
     }).catch((error) => {
       console.log(error);
-    })
+    });
   }
 
   setUser = (user) => {
@@ -37,6 +38,7 @@ class header extends Component {
               <Route exact path="/login" component={ Login } />
               <Route exact path="/register" component={ Register } />
               <Route exact path="/forget-password" component={ ForgetPassword } />
+              <Route exact path="/reset-password/:token" component={ ResetPassword } />
               <Route exact path="/user-profile" component={ () => <UserProfile user={this.state.user} /> } />
             </Switch>
           </div>

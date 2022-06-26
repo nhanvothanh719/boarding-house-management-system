@@ -1,20 +1,45 @@
 import React, { Component } from "react";
+import axios from "axios";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 class ForgetPassword extends Component {
+  state = {
+    email: "",
+    message: "",
+  };
+  formSubmit = (e) => {
+    e.preventDefault();
+    const data = {
+      email: this.state.email,
+    };
+
+    axios
+      .post("/forget-password", data)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   render() {
     return (
       <div class="row">
         <div class="jumbotron col-lg-4 offset-lg-4">
           <h3 class="text-center">Forget Password</h3>
-          <form>
+          <form onSubmit={this.formSubmit}>
             <div class="form-group">
-              <label for="exampleInputEmail1">Email address</label>
+              <label for="inputEmail">Email address</label>
               <input
                 type="email"
+                name="email"
                 class="form-control"
-                id="exampleInputEmail1"
+                id="inputEmail"
                 aria-describedby="emailHelp"
+                onChange={(event) => {
+                  this.setState({ email: event.target.value });
+                }}
+                required
               />
               <small id="emailHelp" class="form-text text-muted">
                 We'll never share your email with anyone else.
