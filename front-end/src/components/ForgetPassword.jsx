@@ -16,18 +16,32 @@ class ForgetPassword extends Component {
     axios
       .post("/forget-password", data)
       .then((response) => {
-        console.log(response);
+        this.setState({message: response.data.message});
+        //Delete input after submit the form
+        document.getElementById("forgetPasswordForm").reset();
       })
       .catch((error) => {
-        console.log(error);
+        this.setState({message: error.response.data.message});
       });
   };
   render() {
+    //Display error message
+    let error="";
+    if (this.state.message) {
+      error = (
+        <div>
+          <div class="alert alert-danger" role="alert">
+            {this.state.message}
+          </div>
+        </div>
+      )
+    }
     return (
       <div class="row">
         <div class="jumbotron col-lg-4 offset-lg-4">
           <h3 class="text-center">Forget Password</h3>
-          <form onSubmit={this.formSubmit}>
+          <form id="forgetPasswordForm" onSubmit={this.formSubmit}>
+            { error }
             <div class="form-group">
               <label for="inputEmail">Email address</label>
               <input
