@@ -1,6 +1,6 @@
 /* sign in FORM */
 #logreg-forms{
-    width:412px;
+    width:430px;
     margin:10vh auto;
     background-color:#f3f3f3;
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
@@ -8,7 +8,7 @@
 }
 #logreg-forms form {
     width: 100%;
-    max-width: 410px;
+    max-width: 430px;
     padding: 15px;
     margin: auto;
 }
@@ -62,7 +62,7 @@
 
 #logreg-forms .form-reset, #logreg-forms .form-signup{ display: none; }
 
-#logreg-forms .form-signup .social-btn{ width:210px; }
+#logreg-forms .form-signup .social-btn{ width:200px; }
 
 #logreg-forms .form-signup input { margin-bottom: 2px;}
 
@@ -79,15 +79,15 @@
     }
     
     #logreg-forms  .social-login{
-        width:200px;
+        width:150px;
         margin:0 auto;
         margin-bottom: 10px;
     }
     #logreg-forms  .social-btn{
         font-size: 1.3rem;
-        font-weight: 100;
+        font-weight: 200;
         color:white;
-        width:200px;
+        width:150px;
         height: 56px;
         
     }
