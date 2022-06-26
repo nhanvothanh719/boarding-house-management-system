@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import "./Login.css";
+import "../assets/css/Login.css";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 class Login extends Component {
   render() {
     return (
-      <div>
         <div id="logreg-forms">
           <form class="form-signin">
             <h1 class="h3 mb-3 font-weight-normal" style={{ "text-align": "center" }}>
@@ -46,7 +46,7 @@ class Login extends Component {
             <button class="btn btn-success btn-block" type="submit">
               <i class="fas fa-sign-in-alt"></i> Sign in
             </button>
-            <a href="#" id="forgot_pswd">Forgot password?</a>
+            <Link to="/forget-password">Forgot password?</Link>
             <hr />
             <button
               class="btn btn-primary btn-block"
@@ -58,7 +58,6 @@ class Login extends Component {
           </form>
           <br />
         </div>
-      </div>
     );
   }
 }
