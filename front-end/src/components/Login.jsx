@@ -1,12 +1,32 @@
 import React, { Component } from "react";
+import axios from 'axios';
 import "../assets/css/Login.css";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 class Login extends Component {
+  state = {
+    email: '',
+    password: '',
+    message: '',
+  }
+
+  formSubmit = (e) => {
+    e.preventDefault();
+    const data = {
+      email: this.state.email,
+      password: this.state.password, 
+    };
+    axios.post('/login', data)
+    .then((response) => {
+      console.log(response);
+    }).catch((error) => {
+      console.log(error);
+    })
+  }
   render() {
     return (
         <div id="logreg-forms">
-          <form class="form-signin">
+          <form class="form-signin" onSubmit={this.formSubmit}>
             <h1 class="h3 mb-3 font-weight-normal" style={{ "text-align": "center" }}>
               Sign in
             </h1>
@@ -29,20 +49,20 @@ class Login extends Component {
             <p style={{ "text-align": "center" }}> OR </p>
             <input
               type="email"
-              id="inputEmail"
+              name="email"
               class="form-control"
               placeholder="Email address"
-              required=""
-              autofocus=""
+              onChange={(event) => {this.setState({email:event.target.value})}}
+              required
             />
             <input
               type="password"
-              id="inputPassword"
+              name="password"
               class="form-control"
               placeholder="Password"
-              required=""
+              onChange={(event) => {this.setState({password:event.target.value})}}
+              required
             />
-
             <button class="btn btn-success btn-block" type="submit">
               <i class="fas fa-sign-in-alt"></i> Sign in
             </button>
