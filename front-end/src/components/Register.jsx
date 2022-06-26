@@ -21,12 +21,10 @@ class Register extends Component {
     };
 
     axios.post('/register', data)
-    .then((response) => {
-      localStorage.setItem('token', response.data.token);
+    .then(() => {
       this.setState({
-        isLogin: true,
+        isRegisterSuccess: true,
       })
-      this.props.setUser(response.data.user)
     }).catch((error) => {
       console.log(error);
     });
@@ -34,7 +32,7 @@ class Register extends Component {
 
   render() {
     //Redirect to Login page if user registers successfully
-    if (this.state.isLogin) {
+    if (this.state.isRegisterSuccess) {
       return <Redirect to={'/login'}/>
     }
     return (
