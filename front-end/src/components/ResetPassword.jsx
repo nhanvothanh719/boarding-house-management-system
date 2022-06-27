@@ -26,13 +26,13 @@ class ResetPassword extends Component {
         document.getElementById("resetPasswordForm").reset();
       })
       .catch((error) => {
-        this.setState({message: error.response.data.message});
+        this.setState({ message: error.response.data.message });
       });
   };
 
   render() {
     //Display error message
-    let error="";
+    let error = "";
     if (this.state.message) {
       error = (
         <div>
@@ -40,14 +40,14 @@ class ResetPassword extends Component {
             {this.state.message}
           </div>
         </div>
-      )
+      );
     }
     return (
       <div class="row">
         <div class="jumbotron col-lg-4 offset-lg-4">
           <h3 class="text-center">Reset Password</h3>
           <form id="resetPasswordForm" onSubmit={this.formSubmit}>
-            { error }
+            {error}
             <div class="form-group">
               <label for="inputToken">Pin code</label>
               <input

@@ -12,37 +12,48 @@ import UserProfile from "../components/UserProfile";
 class header extends Component {
   state = {
     user: {},
-  }
+  };
 
   componentDidMount() {
     //Get user credentials
-    axios.get('/user-profile')
-    .then((response) => {
-      this.setUser(response.data)
-    }).catch((error) => {
-      console.log(error);
-    });
+    axios
+      .get("/get-user-profile")
+      .then((response) => {
+        console.log(response.data);
+        this.setUser(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   setUser = (user) => {
-    this.setState({user: user});
-  }
- 
+    this.setState({ user: user });
+  };
+
   render() {
     return (
-        <Router>
-          <Nav user={this.state.user} setUser={this.setUser}/>
-          <div>
-            <Switch>
-              <Route exact path="/" component={ Home } />
-              <Route exact path="/login" component={ Login } />
-              <Route exact path="/register" component={ Register } />
-              <Route exact path="/forget-password" component={ ForgetPassword } />
-              <Route exact path="/reset-password/:token" component={ ResetPassword } />
-              <Route exact path="/user-profile" component={ () => <UserProfile user={this.state.user} /> } />
-            </Switch>
-          </div>
-        </Router>
+      <Router>
+        <Nav user={this.state.user} setUser={this.setUser} />
+        <div>
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route exact path="/login" component={() => <Login user={this.state.user} setUser={this.setUser} />}/>
+            <Route exact path="/register" component={Register} />
+            <Route exact path="/forget-password" component={ForgetPassword} />
+            <Route
+              exact
+              path="/reset-password/:token"
+              component={ResetPassword}
+            />
+            <Route
+              exact
+              path="/user-profile"
+              component={() => <UserProfile user={this.state.user} />}
+            />
+          </Switch>
+        </div>
+      </Router>
     );
   }
 }

@@ -31,7 +31,7 @@ class Login extends Component {
   render() {
     //Redirect to Profile page if user logs in successfully
     if (this.state.isLogin) {
-      return <Redirect to={'/user-profile'}/>
+      return <Redirect to={'user-profile'}/>
     }
     //Protect URL
     if (localStorage.getItem('token')) {

@@ -21,7 +21,7 @@ class Register extends Component {
     };
 
     axios.post('/register', data)
-    .then(() => {
+    .then((response) => {
       this.setState({
         isRegisterSuccess: true,
       })
