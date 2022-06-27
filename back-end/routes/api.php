@@ -11,6 +11,6 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/forget-password', [PasswordResetController::class, 'sendEmailToResetPassword']);
 Route::post('/reset-password', [PasswordResetController::class, 'resetPassword']);                  
-Route::get('/user-profile', [UserController::class, 'getUser'])->middleware('auth:api'); //Get user data in case the user did login
+Route::get('/get-user-profile', [UserController::class, 'getUser'])->middleware('auth:api'); //Get user data in case the user did login
 
 
