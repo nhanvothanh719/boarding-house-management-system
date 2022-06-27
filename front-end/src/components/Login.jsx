@@ -33,6 +33,10 @@ class Login extends Component {
     if (this.state.isLogin) {
       return <Redirect to={'/user-profile'}/>
     }
+    //Protect URL
+    if (localStorage.getItem('token')) {
+      return <Redirect to={'user-profile'} />
+    }
     return (
         <div id="logreg-forms">
           <form class="form-signin" onSubmit={this.formSubmit}>

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
 
 class UserProfile extends Component {
   render() {
@@ -7,6 +8,10 @@ class UserProfile extends Component {
     if(this.props.user) {
       name = this.props.user.name;
       email = this.props.user.email;
+    }
+    //Protect URL
+    if (!localStorage.getItem('token')) {
+      return <Redirect to={'login'} />
     }
     return (
       <div class="row">
