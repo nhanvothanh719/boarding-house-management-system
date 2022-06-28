@@ -1,0 +1,84 @@
+.topBanner{
+    background-image: url('../images/banner2.jpeg');
+    min-height: 650px;
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.topBannerCover{
+    position: absolute;
+    min-height: 650px;
+    width: 100%;
+    background: rgb(0, 0, 0, 0.5);
+}
+
+.topBannerContent{
+    margin-top: 17em;
+}
+
+.topBannerTitle{
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.topBannerSubTitle{
+    font-family: 'Raleway', sans-serif;
+    font-weight: 400;
+    color:azure;
+    font-size: 20px;
+}
+
+.mainTitle{
+    font-family: 'Montserrat Subrayada', sans-serif;
+    font-size: 40x;
+    font-weight: 400;
+    color: #051b35;
+    margin-top: 2em;
+    margin-bottom: 1em;
+}
+
+.bottomLine{
+    background: #051b35 none repeat scroll 0 0;
+    height: 3px;
+    width: 180px;
+    margin: -1.5rem auto 0;
+    margin-bottom: 1em;
+}
+
+.cardImage{
+    height: 90px;
+    weight: 100px;
+}
+
+.featureCard{
+    margin: 5px 5px 5px 5px;
+    height: 22rem;
+    padding: 60px 30px 60px 30px;
+    box-shadow: 0 0 8px 0 rgba(4, 55, 105, 0.2);
+}
+
+.featureCard:hover{
+    margin: 5px;
+    height: 22rem;
+    padding: 60px 30px;
+    box-shadow: 2px 2px 16px 2px rgba(4, 55, 105, 0.2);
+}
+
+.featureName{
+    color: saddlebrown;
+    margin-top: 1em;
+    font-family: 'Raleway', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.featureDescription{
+    color: #051b35;
+    margin-top: 1em;
+    font-family: 'Montserrat Alternates', sans-serif;
+    font-size: 17x;
+    font-weight: 400;
+}

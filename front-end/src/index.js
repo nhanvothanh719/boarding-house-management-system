@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import Header from './common/Header';
+import Home from './components/Home';
 import reportWebVitals from './reportWebVitals';
 import axios from 'axios';
 
