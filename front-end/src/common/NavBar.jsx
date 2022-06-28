@@ -7,13 +7,16 @@ class navBar extends Component {
     super();
     this.state={
       navBarTitle: "branchName",
+      navBarColor: "navBar"
     }
   }
   onScroll = () => {
     if(window.scrollY > 100) {
       this.setState({navBarTitle:'brandNameScroll'});
+      this.setState({navBarColor:'navBarScroll'});
     } else if(window.scrollY < 100) {
       this.setState({navBarTitle:'brandName'});
+      this.setState({navBarColor:'navBar'});
     }
   }
   componentDidMount() {
@@ -96,8 +99,8 @@ class navBar extends Component {
           collapseOnSelect
           fixed="top"
           expand="lg"
-          bg="dark"
           variant="dark"
+          className={this.state.navBarColor}
         >
           <Navbar.Brand className={this.state.navBarTitle} href="#home">BeeHouse</Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />

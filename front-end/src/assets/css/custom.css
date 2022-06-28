@@ -96,3 +96,13 @@
     color: sandybrown !important;
     font-size: 30px;
 }
+
+.navBar{
+    transition: background-color 200ms linear; 
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+.navBarScroll{
+    transition: background-color 200ms linear; 
+    background-color: rgba(51, 51, 51);
+}
