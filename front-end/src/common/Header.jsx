@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import axios from "axios";
 import Nav from "./Nav";
-import Home from "../components/Home";
+import TopBanner from "../components/HomePage/TopBanner";
 import Login from "../components/Login";
 import Register from "../components/Register";
 import ForgetPassword from "../components/ForgetPassword";
@@ -37,7 +37,7 @@ class header extends Component {
         <Nav user={this.state.user} setUser={this.setUser} />
         <div>
           <Switch>
-            <Route exact path="/" component={Home} />
+            <Route exact path="/" component={TopBanner} />
             <Route exact path="/login" component={() => <Login user={this.state.user} setUser={this.setUser} />}/>
             <Route exact path="/register" component={Register} />
             <Route exact path="/forget-password" component={ForgetPassword} />

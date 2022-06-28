@@ -1,0 +1,32 @@
+.topBanner{
+    background-image: url('../images/banner2.jpeg');
+    min-height: 650px;
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.topBannerCover{
+    position: absolute;
+    min-height: 650px;
+    width: 100%;
+    background: rgb(0, 0, 0, 0.5);
+}
+
+.topBannerContent{
+    margin-top: 17em;
+}
+
+.topBannerTitle{
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.topBannerSubTitle{
+    font-family: 'Raleway', sans-serif;
+    font-weight: 400;
+    color:azure;
+    font-size: 20px;
+}
