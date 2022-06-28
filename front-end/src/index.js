@@ -2,8 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import Header from './common/Header';
-import Home from './components/Home';
 import reportWebVitals from './reportWebVitals';
 import axios from 'axios';
 
@@ -14,7 +12,6 @@ axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getIte
 
 ReactDOM.render(
   <React.StrictMode>
-    <Header/>
     <App />
   </React.StrictMode>,
   document.getElementById("root")
