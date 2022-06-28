@@ -7,16 +7,19 @@ class navBar extends Component {
     super();
     this.state={
       navBarTitle: "branchName",
-      navBarColor: "navBar"
+      navBarColor: "navBar",
+      navBarItem: "navItem"
     }
   }
   onScroll = () => {
-    if(window.scrollY > 100) {
+    if(window.scrollY > 400) {
       this.setState({navBarTitle:'brandNameScroll'});
       this.setState({navBarColor:'navBarScroll'});
-    } else if(window.scrollY < 100) {
+      this.setState({navBarItem:'navItemScroll'});
+    } else if(window.scrollY < 400) {
       this.setState({navBarTitle:'brandName'});
       this.setState({navBarColor:'navBar'});
+      this.setState({navBarItem:'navItem'});
     }
   }
   componentDidMount() {
@@ -106,9 +109,9 @@ class navBar extends Component {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="mr-auto">
-              <Nav.Link href="#features">Home</Nav.Link>
-              <Nav.Link href="#">Features</Nav.Link>
-              <Nav.Link href="#pricing">Contact us</Nav.Link>
+              <Nav.Link to="/" className={this.state.navBarItem}>HOME</Nav.Link>
+              <Nav.Link href="#" className={this.state.navBarItem}>FEATURES</Nav.Link>
+              <Nav.Link href="#pricing" className={this.state.navBarItem}>CONTACT US</Nav.Link>
               {/* <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
                 <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
                 <NavDropdown.Item href="#action/3.2">
@@ -124,7 +127,7 @@ class navBar extends Component {
               </NavDropdown> */}
             </Nav>
             <Nav>
-              <Nav.Link href="">LOGIN</Nav.Link>
+              <Nav.Link href="" className={this.state.navBarItem}>LOGIN</Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Navbar>
