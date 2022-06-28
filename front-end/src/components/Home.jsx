@@ -1,11 +1,16 @@
-import React, { Component } from 'react'
+import React, { Component } from "react";
+import Features from "./HomePage/Features";
+import TopBanner from "./HomePage/TopBanner";
 
-class Home extends Component {
+export class Home extends Component {
   render() {
     return (
-      <h3>Home page</h3>
-    )
+      <div>
+        <TopBanner />
+        <Features />
+      </div>
+    );
   }
 }
 
-export default Home
+export default Home;
