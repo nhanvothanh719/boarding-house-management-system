@@ -19,6 +19,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "5.0.1",
     "react-visibility-sensor": "^5.1.1",
+    "recharts": "^2.1.10",
     "sweetalert": "^2.1.2",
     "web-vitals": "^2.1.4"
   },

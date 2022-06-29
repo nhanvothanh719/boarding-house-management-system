@@ -186,6 +186,16 @@ font-family: 'Montserrat', sans-serif;
     margin-top: 15%;
 }
 
+.smallTitle{
+    color: #ffffff;
+    font-family: 'Montserrat Alternates', sans-serif;
+    font-size: 33px;
+    font-weight: 700;
+    margin-top: 10px;
+    margin-right: 10px;
+    margin-left: 30px;
+}
+
 .bigIcon{
     color:rgb(240, 158, 6);
     font-size: 50px;
