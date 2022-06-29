@@ -111,6 +111,7 @@ class navBar extends Component {
             <Nav className="mr-auto">
               <Nav.Link to="/" className={this.state.navBarItem}>HOME</Nav.Link>
               <Nav.Link href="#" className={this.state.navBarItem}>FEATURES</Nav.Link>
+              <Nav.Link href="#pricing" className={this.state.navBarItem}>WHY CHOOSE US?</Nav.Link>
               <Nav.Link href="#pricing" className={this.state.navBarItem}>CONTACT US</Nav.Link>
               {/* <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
                 <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>

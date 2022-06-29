@@ -23,6 +23,7 @@ class WhyChooseUs extends Component {
       <Fragment>
         <Container fluid={true} className="bottomBanner p-0 text-center">
           <div className="bottomBannerCover">
+          <h1 className="mainBottomTitle"> WHY CHOOSE US?</h1>
             <Row>
               <Col lg={8} md={12} sm={12}>
                 <Row className="bottomBannerItem">
@@ -56,8 +57,8 @@ class WhyChooseUs extends Component {
                   </Col>
                 </Row>
               </Col>
-              <Col lg={4} md={12} sm={12}>
-                <Row className="bottomBannerItem">
+               <Col lg={4} md={12} sm={12}>
+                 <Row className="bottomBannerItem">
                   <div style={{ width: "100%", height: 200, }}>
                     <ResponsiveContainer>
                       <AreaChart data={this.state.data} margin={{ top: 10, right: 30, left: 0, bottom: 0, }}>
