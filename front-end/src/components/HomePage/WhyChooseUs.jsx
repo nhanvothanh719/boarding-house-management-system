@@ -4,7 +4,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComputer, faSmile, faWifi } from "@fortawesome/free-solid-svg-icons";
 import CountUp from "react-countup";
 import VisibilitySensor from "react-visibility-sensor";
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import {
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 
 class WhyChooseUs extends Component {
   constructor() {
@@ -12,9 +20,8 @@ class WhyChooseUs extends Component {
     this.state = {
       data: [
         { month: "Sep", userAmount: 10 },
-        { month: "Oct", userAmount:  58},
-        { month: "Nov", userAmount:  102},
-
+        { month: "Oct", userAmount: 58 },
+        { month: "Nov", userAmount: 102 },
       ],
     };
   }
@@ -23,7 +30,9 @@ class WhyChooseUs extends Component {
       <Fragment>
         <Container fluid={true} className="bottomBanner p-0 text-center">
           <div className="bottomBannerCover">
-          <h1 className="mainBottomTitle"> WHY CHOOSE US?</h1>
+            <br/><br/>
+            <h1 className="mainBottomTitle"> WHY CHOOSE US?</h1>
+            <div className="bottomBottomLine text-center"></div>
             <Row>
               <Col lg={8} md={12} sm={12}>
                 <Row className="bottomBannerItem">
@@ -57,11 +66,14 @@ class WhyChooseUs extends Component {
                   </Col>
                 </Row>
               </Col>
-               <Col lg={4} md={12} sm={12}>
-                 <Row className="bottomBannerItem">
-                  <div style={{ width: "100%", height: 200, }}>
+              <Col lg={4} md={12} sm={12}>
+                <Row className="bottomBannerItem">
+                  <div style={{ width: "100%", height: 200 }}>
                     <ResponsiveContainer>
-                      <AreaChart data={this.state.data} margin={{ top: 10, right: 30, left: 0, bottom: 0, }}>
+                      <AreaChart
+                        data={this.state.data}
+                        margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+                      >
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="month" />
                         <YAxis />
