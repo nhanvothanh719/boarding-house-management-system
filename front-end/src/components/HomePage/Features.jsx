@@ -20,44 +20,63 @@ export class Features extends Component {
               <div className="featureCard">
                 <img src={tenantManagement} className="cardImage" alt="" />
                 <h3 className="featureName">Tenant management</h3>
-                <p className="featureDescription">Tenant information management function, including personal information, and contact information.</p>
+                <p className="featureDescription">
+                  Tenant information management function, including personal
+                  information, and contact information.
+                </p>
               </div>
             </Col>
             <Col lg={4} md={6} sm={12}>
               <div className="featureCard">
                 <img src={contractManagement} className="cardImage" alt="" />
                 <h3 className="featureName">Contract management</h3>
-                <p className="featureDescription">The function of managing information about the rental contract, including rooms, tenants, services, deposits, etc.</p>
+                <p className="featureDescription">
+                  The function of managing information about the rental
+                  contract, including rooms, tenants, services, deposits, etc.
+                </p>
               </div>
             </Col>
+            <Col lg={4} md={12} sm={12}>
+              <div className="featureCard">
+                <img src={waterManagement} className="cardImage" alt="" />
+                <h3 className="featureName">Electricity/ water management</h3>
+                <p className="featureDescription">
+                  The function of managing the electricity and water of each
+                  room monthly, calculating the amount
+                  to be paid automatically.
+                </p>
+              </div>
+            </Col>
+          </Row>
+          <Row style={{'margin-bottom': "40px"}}>
             <Col lg={4} md={6} sm={12}>
               <div className="featureCard">
                 <img src={roomManagement} className="cardImage" alt="" />
                 <h3 className="featureName">Room management</h3>
-                <p className="featureDescription">The function of managing room information by zone, room rate, and equipment in the room of the inn management software.</p>
-              </div>
-            </Col>
-          </Row>
-          <Row>
-            <Col lg={4} md={6} sm={12}>
-              <div className="featureCard">
-                <img src={waterManagement} className="cardImage" alt="" />
-                <h3 className="featureName">Electricity/ water management</h3>
-                <p className="featureDescription">The function of managing the electricity and water of each room on a monthly basis, automatically calculates the amount to be paid.</p>
+                <p className="featureDescription">
+                  The function of managing room information by zone, room rate,
+                  and equipment in the room of the application.
+                </p>
               </div>
             </Col>
             <Col lg={4} md={6} sm={12}>
               <div className="featureCard">
                 <img src={invoiceManagement} className="cardImage" alt="" />
                 <h3 className="featureName">Invoice management</h3>
-                <p className="featureDescription">The function of managing monthly bills, including expenses such as electricity, water, and other services.</p>
+                <p className="featureDescription">
+                  The function of managing monthly bills, including expenses
+                  such as electricity, water, and other services.
+                </p>
               </div>
             </Col>
-            <Col lg={4} md={6} sm={12}>
+            <Col lg={4} md={12} sm={12}>
               <div className="featureCard">
                 <img src={statisticMonitor} className="cardImage" alt="" />
                 <h3 className="featureName">Statistical report generating</h3>
-                <p className="featureDescription">The function of monitoring the business and operating situation of the boarding house in general.</p>
+                <p className="featureDescription">
+                  The function of monitoring the business and operating
+                  situation of the boarding house in general.
+                </p>
               </div>
             </Col>
           </Row>
