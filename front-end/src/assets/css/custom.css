@@ -149,7 +149,6 @@
 }
 
 .bottomBannerCover{
-    position: absolute;
     min-height: 400px;
     width: 100%;
     background: rgba(12, 11, 3, 0.428);
@@ -183,7 +182,7 @@ font-family: 'Montserrat', sans-serif;
 }
 
 .bottomBannerItem{
-    margin-top: 15%;
+    margin-top: 5%;
 }
 
 .smallTitle{
@@ -200,4 +199,61 @@ font-family: 'Montserrat', sans-serif;
     color:rgb(240, 158, 6);
     font-size: 50px;
     margin-bottom: 20px;
+}
+
+.mainBottomTitle{
+    font-family: 'Montserrat Subrayada', sans-serif;
+    font-size: 40x;
+    font-weight: 400;
+    color: #ffffff;
+}
+
+.footerSection{
+    box-shadow: 0 0 8 0;
+    background-color: black;
+}
+
+.footerText{
+    color: aliceblue;
+    margin-top: 1rem;
+    margin-left: 1rem;
+    font-family: 'Domine', sans-serif;
+    font-weight: 600;
+}
+
+.socialContent{
+    margin-top: 20px;
+}
+
+a.social{
+    margin: 0 1rem;
+    transition: transform 200ms;
+    display: inline-block;
+}
+
+a.social:hover{
+    transform: translateY(-3px);
+    color:rgb(240, 158, 6);
+}
+
+.socialIcon{
+    color: aliceblue;
+}
+
+.smallIcon{
+    margin-right: 10px;;
+}
+
+.footerLink{
+    color: aliceblue;
+    text-decoration: none;
+    margin-top: 1rem;
+    margin-left: 1rem;
+    font-family: 'Domine', sans-serif;
+    font-weight: 600;
+}
+
+.footerLink:hover{
+    text-decoration: none;
+    color: rgb(240, 158, 6);
 }
