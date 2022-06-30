@@ -11,6 +11,8 @@ import HomePage from "../pages/HomePage";
 import FeaturesPage from "../pages/FeaturesPage";
 import WhyChooseUsPage from "../pages/WhyChooseUsPage";
 import ContactUsPage from "../pages/ContactUsPage";
+import TermsAndConditionPage from "../pages/TermsAndConditionPage";
+import PrivacyPolicyPage from "../pages/PrivacyPolicyPage";
 
 class header extends Component {
     state = {
@@ -35,9 +37,8 @@ class header extends Component {
       };
   render() {
     return (
-      <Router>
-        <NavBar user={this.state.user} setUser={this.setUser}/>
         <div>
+            <NavBar user={this.state.user} setUser={this.setUser}/>
           <Switch>
             <Route exact path="/" component={HomePage} />
             <Route exact path="/features" component={FeaturesPage} />
@@ -47,11 +48,11 @@ class header extends Component {
             <Route exact path="/register" component={Register} />
             <Route exact path="/forget-password" component={ForgetPassword} />
             <Route exact path="/reset-password/:token" component={ResetPassword} />
-            <Route exact path="/user-profile" component={() => <UserProfile user={this.state.user} />}
-            />
+            <Route exact path="/user-profile" component={() => <UserProfile user={this.state.user} />} />
+            <Route exact path="/all-terms-and-condition" component={TermsAndConditionPage} />
+            <Route exact path="/privacy-policy" component={PrivacyPolicyPage} />
           </Switch>
         </div>
-      </Router>
     );
   }
 }
