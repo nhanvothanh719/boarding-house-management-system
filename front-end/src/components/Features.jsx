@@ -1,12 +1,12 @@
 import React, { Component, Fragment } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 // Import images
-import contractManagement from "../../assets/images/contract_management.png";
-import tenantManagement from "../../assets/images/tenant_management.png";
-import roomManagement from "../../assets/images/room_management.png";
-import waterManagement from "../../assets/images/water_management.png";
-import invoiceManagement from "../../assets/images/invoice_management.png";
-import statisticMonitor from "../../assets/images/statistics_monitor.png";
+import contractManagement from "../assets/images/contract_management.png";
+import tenantManagement from "../assets/images/tenant_management.png";
+import roomManagement from "../assets/images/room_management.png";
+import waterManagement from "../assets/images/water_management.png";
+import invoiceManagement from "../assets/images/invoice_management.png";
+import statisticMonitor from "../assets/images/statistics_monitor.png";
 
 export class Features extends Component {
   render() {

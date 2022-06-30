@@ -1,20 +1,16 @@
 import React from 'react';
-import Header from './common/Header';
-import Features from './components/HomePage/Features';
-import TopBanner from './components/HomePage/TopBanner';
-import WhyChooseUs from './components/HomePage/WhyChooseUs';
-import ContactUs from './components/HomePage/ContactUs';
-import Footer from './common/Footer';
+import HomePage from './pages/HomePage';
+import FeaturesPage from './pages/FeaturesPage';
+import ContactUsPage from './pages/ContactUsPage';
+import WhyChooseUsPage from './pages/WhyChooseUsPage';
 
 function App() {
   return (
     <div>
-      <Header/>
-      <TopBanner/>
-      <Features/>
-      <WhyChooseUs/>
-      <ContactUs/>
-      <Footer/>
+      {/* <HomePage/> */}
+      <FeaturesPage />
+      {/* <ContactUsPage/> */}
+      {/* <WhyChooseUsPage/> */}
     </div>
   );
 }

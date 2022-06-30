@@ -4,6 +4,8 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import axios from 'axios';
+import Header from './common/Header';
+import Footer from './common/Footer';
 
 //Set base URL
 axios.defaults.baseURL = 'http://127.0.0.1:8000/api';
@@ -12,7 +14,9 @@ axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getIte
 
 ReactDOM.render(
   <React.StrictMode>
+    <Header/>
     <App />
+    <Footer/>
   </React.StrictMode>,
   document.getElementById("root")
 );

@@ -8,7 +8,7 @@ export class Footer extends Component {
   render() {
     return (
       <Fragment>
-        <Container fluid="true" className='footerSection'>
+        <Container fluid={true} className='footerSection'>
             <Row>
                 <Col lg={3} md={6} sm={12} className='p-3 text-center'>
                     <h2 className="footerTextTitle">Follow us</h2>

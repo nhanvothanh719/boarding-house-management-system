@@ -6,20 +6,20 @@ class navBar extends Component {
   constructor() {
     super();
     this.state={
-      navBarTitle: "branchName",
+      navBarTitle: "brandName",
       navBarColor: "navBar",
       navBarItem: "navItem"
     }
   }
   onScroll = () => {
-    if(window.scrollY > 400) {
-      this.setState({navBarTitle:'brandNameScroll'});
-      this.setState({navBarColor:'navBarScroll'});
-      this.setState({navBarItem:'navItemScroll'});
-    } else if(window.scrollY < 400) {
+    if(window.scrollY < 400) {
       this.setState({navBarTitle:'brandName'});
       this.setState({navBarColor:'navBar'});
       this.setState({navBarItem:'navItem'});
+    } else if(window.scrollY > 400) {
+      this.setState({navBarTitle:'brandNameScroll'});
+      this.setState({navBarColor:'navBarScroll'});
+      this.setState({navBarItem:'navItemScroll'});
     }
   }
   componentDidMount() {

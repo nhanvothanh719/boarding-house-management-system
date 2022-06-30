@@ -1,5 +1,5 @@
 .topBanner{
-    background-image: url('../images/banner2.jpeg');
+    background-image: url('../images/banner.jpeg');
     min-height: 800px;
     background-size: cover;
     background-attachment: fixed;
@@ -297,4 +297,30 @@ a.social:hover{
     margin-top: 1rem;
     color:#051b35;
     background-color: rgb(240, 158, 6);
+}
+
+.pageTitle{
+    background-image: url('../images/background.jpeg');
+    min-height: 350px;
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.pageTitleCover{
+    position: absolute;
+    min-height: 350px;
+    width: 100%;
+    background: rgb(0, 0, 0, 0.5);
+}
+
+.pageTitleContent{
+    margin-top: 10em;
+}
+
+.pageTitleText{
+    font-family: 'Bungee', sans-serif;
+    font-weight: 700;
+    color: rgb(240, 158, 6);
 }
