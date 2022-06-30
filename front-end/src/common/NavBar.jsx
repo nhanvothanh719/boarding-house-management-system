@@ -1,29 +1,29 @@
 import React, { Component, Fragment } from "react";
-import { BrowserRouter as Router, Switch, Route, Link, NavLink } from "react-router-dom";
-import { Navbar, Nav, NavDropdown } from "react-bootstrap";
+import { NavLink, } from "react-router-dom";
+import { Navbar, Nav } from "react-bootstrap";
 
 class navBar extends Component {
   constructor() {
     super();
-    this.state={
+    this.state = {
       navBarTitle: "brandName",
       navBarColor: "navBar",
-      navBarItem: "navItem"
-    }
+      navBarItem: "navItem",
+    };
   }
   onScroll = () => {
-    if(window.scrollY < 400) {
-      this.setState({navBarTitle:'brandName'});
-      this.setState({navBarColor:'navBar'});
-      this.setState({navBarItem:'navItem'});
-    } else if(window.scrollY > 400) {
-      this.setState({navBarTitle:'brandNameScroll'});
-      this.setState({navBarColor:'navBarScroll'});
-      this.setState({navBarItem:'navItemScroll'});
+    if (window.scrollY < 400) {
+      this.setState({ navBarTitle: "brandName" });
+      this.setState({ navBarColor: "navBar" });
+      this.setState({ navBarItem: "navItem" });
+    } else if (window.scrollY > 400) {
+      this.setState({ navBarTitle: "brandNameScroll" });
+      this.setState({ navBarColor: "navBarScroll" });
+      this.setState({ navBarItem: "navItemScroll" });
     }
-  }
+  };
   componentDidMount() {
-    window.addEventListener('scroll', this.onScroll);
+    window.addEventListener("scroll", this.onScroll);
   }
   state = {
     isLogout: "",
@@ -35,69 +35,50 @@ class navBar extends Component {
     this.props.setUser(null);
   };
   render() {
-    let buttons;
+    let login;
     let profile;
     if (localStorage.getItem("token")) {
-      buttons = (
-        <div>
-          <Link class="nav-link" to="/" onClick={this.logout}>
+      login = (
+        <Nav.Link>
+          <NavLink
+            className={this.state.navBarItem}
+            to="/"
+            onClick={this.logout}
+            exact
+            activeStyle={{ color: "yellow" }}
+          >
             LOGOUT
-          </Link>
-        </div>
+          </NavLink>
+        </Nav.Link>
       );
       profile = (
-        <div>
-          <Link class="nav-link" to="/user-profile">
+        <Nav.Link>
+          <NavLink
+            to="/user-profile"
+            exact
+            activeStyle={{ color: "yellow" }}
+            className={this.state.navBarItem}
+          >
             PROFILE
-          </Link>
-        </div>
+          </NavLink>
+        </Nav.Link>
       );
     } else {
-      buttons = (
-        <div>
-          <ul class="navbar-nav mr-auto">
-            <Link class="nav-link" to="/login">
+      login = (
+        <Nav.Link>
+            <NavLink
+              to="/login"
+              exact
+              activeStyle={{ color: "yellow" }}
+              className={this.state.navBarItem}
+            >
               LOGIN
-            </Link>
-            <li class="nav-item">
-              <Link class="nav-link" to="/register">
-                REGISTER
-              </Link>
-            </li>
-          </ul>
-        </div>
+            </NavLink>
+        </Nav.Link>
       );
     }
     return (
       <Fragment>
-        {/* <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-          <Link class="nav-link" to="/">
-            MyApp
-          </Link>
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-toggle="collapse"
-            data-target="#navbarText"
-            aria-controls="navbarText"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarText">
-            <ul class="navbar-nav mr-auto">
-              <li class="nav-item active">
-                <Link class="nav-link" to="/">
-                  Home <span class="sr-only">(current)</span>
-                </Link>
-              </li>
-              <li class="nav-item">{profile}</li>
-            </ul>
-            <span class="navbar-text">{buttons}</span>
-          </div>
-        </nav> */}
-
         <Navbar
           collapseOnSelect
           fixed="top"
@@ -105,31 +86,55 @@ class navBar extends Component {
           variant="dark"
           className={this.state.navBarColor}
         >
-          <Navbar.Brand className={this.state.navBarTitle} href="#home">BeeHouse</Navbar.Brand>
+          <Navbar.Brand className={this.state.navBarTitle} href="#home">
+            BeeHouse
+          </Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="mr-auto">
-              <Nav.Link><NavLink to="/" exact activeStyle={{ "color": "yellow"}} className={this.state.navBarItem}>HOME</NavLink></Nav.Link>
-              <Nav.Link><NavLink to="/features" exact activeStyle={{ "color": "yellow"}} className={this.state.navBarItem}>FEATURES</NavLink></Nav.Link>
-              <Nav.Link><NavLink to="/why-choose-us" exact activeStyle={{ "color": "yellow"}} className={this.state.navBarItem}>WHY CHOOSE US?</NavLink></Nav.Link>
-              <Nav.Link><NavLink to="/contact-us" exact activeStyle={{ "color": "yellow"}} className={this.state.navBarItem}>CONTACT US</NavLink></Nav.Link>
-              {/* <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
-                <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">
-                  Another action
-                </NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.3">
-                  Something
-                </NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item href="#action/3.4">
-                  Separated link
-                </NavDropdown.Item>
-              </NavDropdown> */}
+              <Nav.Link>
+                <NavLink
+                  to="/"
+                  exact
+                  activeStyle={{ color: "yellow" }}
+                  className={this.state.navBarItem}
+                >
+                  HOME
+                </NavLink>
+              </Nav.Link>
+              <Nav.Link>
+                <NavLink
+                  to="/features"
+                  exact
+                  activeStyle={{ color: "yellow" }}
+                  className={this.state.navBarItem}
+                >
+                  FEATURES
+                </NavLink>
+              </Nav.Link>
+              <Nav.Link>
+                <NavLink
+                  to="/why-choose-us"
+                  exact
+                  activeStyle={{ color: "yellow" }}
+                  className={this.state.navBarItem}
+                >
+                  WHY CHOOSE US?
+                </NavLink>
+              </Nav.Link>
+              <Nav.Link>
+                <NavLink
+                  to="/contact-us"
+                  exact
+                  activeStyle={{ color: "yellow" }}
+                  className={this.state.navBarItem}
+                >
+                  CONTACT US
+                </NavLink>
+              </Nav.Link>
+              {profile}
             </Nav>
-            <Nav>
-            <Nav.Link><NavLink to="/login" exact activeStyle={{ "color": "yellow"}} className={this.state.navBarItem}>LOGIN</NavLink></Nav.Link>
-            </Nav>
+            <Nav>{login}</Nav>
           </Navbar.Collapse>
         </Navbar>
       </Fragment>

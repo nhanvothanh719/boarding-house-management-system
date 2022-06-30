@@ -69,7 +69,11 @@
 
 #logreg-forms .facebook-btn{  background-color:#3C589C; }
 
+#logreg-forms .facebook-btn:hover{  background-color:#324a87; }
+
 #logreg-forms .google-btn{ background-color: #DF4B3B; }
+
+#logreg-forms .google-btn:hover{ background-color: #ab3a2e; }
 
 #logreg-forms .form-reset, #logreg-forms .form-signup{ display: none; }
 
@@ -85,9 +89,6 @@
 /* Mobile */
 
 @media screen and (max-width:500px){
-    #logreg-forms{
-        width:300px;
-    }
     
     #logreg-forms  .social-login{
         width:150px;
@@ -138,4 +139,13 @@
     font-weight: 600;
     color:white;
     font-size: 0.9rem;
+}
+
+.formLabel{
+    font-size: 17px;
+}
+
+.formButton{
+    font-size: 17px;
+    font-weight: 700;
 }
