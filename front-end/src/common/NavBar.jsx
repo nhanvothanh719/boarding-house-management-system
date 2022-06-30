@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link, NavLink } from "react-router-dom";
 import { Navbar, Nav, NavDropdown } from "react-bootstrap";
 
 class navBar extends Component {
@@ -41,14 +41,14 @@ class navBar extends Component {
       buttons = (
         <div>
           <Link class="nav-link" to="/" onClick={this.logout}>
-            Logout
+            LOGOUT
           </Link>
         </div>
       );
       profile = (
         <div>
           <Link class="nav-link" to="/user-profile">
-            Profile
+            PROFILE
           </Link>
         </div>
       );
@@ -57,11 +57,11 @@ class navBar extends Component {
         <div>
           <ul class="navbar-nav mr-auto">
             <Link class="nav-link" to="/login">
-              Login
+              LOGIN
             </Link>
             <li class="nav-item">
               <Link class="nav-link" to="/register">
-                Register
+                REGISTER
               </Link>
             </li>
           </ul>
@@ -109,10 +109,10 @@ class navBar extends Component {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="mr-auto">
-              <Nav.Link to="/" className={this.state.navBarItem}>HOME</Nav.Link>
-              <Nav.Link href="#" className={this.state.navBarItem}>FEATURES</Nav.Link>
-              <Nav.Link href="#pricing" className={this.state.navBarItem}>WHY CHOOSE US?</Nav.Link>
-              <Nav.Link href="#pricing" className={this.state.navBarItem}>CONTACT US</Nav.Link>
+              <Nav.Link><NavLink to="/" className={this.state.navBarItem}>HOME</NavLink></Nav.Link>
+              <Nav.Link><NavLink to="/features" className={this.state.navBarItem}>FEATURES</NavLink></Nav.Link>
+              <Nav.Link><NavLink to="/why-choose-us" className={this.state.navBarItem}>WHY CHOOSE US?</NavLink></Nav.Link>
+              <Nav.Link><NavLink to="/contact-us" className={this.state.navBarItem}>CONTACT US</NavLink></Nav.Link>
               {/* <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
                 <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
                 <NavDropdown.Item href="#action/3.2">
@@ -128,7 +128,7 @@ class navBar extends Component {
               </NavDropdown> */}
             </Nav>
             <Nav>
-              <Nav.Link href="" className={this.state.navBarItem}>LOGIN</Nav.Link>
+            <Nav.Link><Link to="/login" className={this.state.navBarItem}>LOGIN</Link></Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Navbar>
