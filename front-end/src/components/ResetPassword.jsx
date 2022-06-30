@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import "../assets/css/login.css";
-import { Row, Container } from "react-bootstrap";
+import { Row, Container, Col } from "react-bootstrap";
 
 class ResetPassword extends Component {
   state = {
@@ -47,12 +47,16 @@ class ResetPassword extends Component {
     return (
       <Container fluid={true} className="loginBackground">
         <Row>
-        <div class="jumbotron col-lg-4 offset-lg-4">
-          <h3 class="text-center">Reset Password</h3>
+        <Col lg={4} md={2} sm={2}></Col>
+        <Col lg={4} md={8} sm={8}>
+          <div id="logreg-forms">
           <form id="resetPasswordForm" onSubmit={this.formSubmit}>
             {error}
+            <h1 class="mb-3 font-weight-normal"
+              style={{ "text-align": "center" }}
+              className="loginText">Reset Password</h1>
             <div class="form-group">
-              <label for="inputToken">Pin code</label>
+              <label for="inputToken">Pin code:</label>
               <input
                 type="text"
                 class="form-control"
@@ -65,7 +69,7 @@ class ResetPassword extends Component {
               />
             </div>
             <div class="form-group">
-              <label for="inputEmail">Email address</label>
+              <label for="inputEmail">Email address:</label>
               <input
                 type="email"
                 class="form-control"
@@ -79,7 +83,7 @@ class ResetPassword extends Component {
               />
             </div>
             <div class="form-group">
-              <label for="inputPassword">New password</label>
+              <label for="inputPassword">New password:</label>
               <input
                 type="password"
                 class="form-control"
@@ -92,7 +96,7 @@ class ResetPassword extends Component {
               />
             </div>
             <div class="form-group">
-              <label for="confirmedPassword">Confirmed password</label>
+              <label for="confirmedPassword">Confirmed password:</label>
               <input
                 type="password"
                 name="password_confirmation"
@@ -108,7 +112,9 @@ class ResetPassword extends Component {
               Submit
             </button>
           </form>
-        </div>
+          </div>
+        </Col>
+        <Col lg={4} md={2} sm={2}></Col>
       </Row>
       </Container>
     );
