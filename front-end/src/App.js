@@ -1,12 +1,16 @@
 import React from 'react';
 import HomePage from './pages/HomePage';
-import PageTitle from './pages/PageTitle';
+import FeaturesPage from './pages/FeaturesPage';
+import ContactUsPage from './pages/ContactUsPage';
+import WhyChooseUsPage from './pages/WhyChooseUsPage';
 
 function App() {
   return (
     <div>
-      <PageTitle title='Page title'/>
-      <HomePage/>
+      {/* <HomePage/> */}
+      <FeaturesPage />
+      {/* <ContactUsPage/> */}
+      {/* <WhyChooseUsPage/> */}
     </div>
   );
 }
