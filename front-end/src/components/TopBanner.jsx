@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
-import '../../assets/css/custom.css';
+import '../assets/css/custom.css';
 
 export class TopBanner extends Component {
   render() {
@@ -11,8 +11,8 @@ export class TopBanner extends Component {
             <Container className='topBannerContent'>
               <Row>
                 <Col className='text-center'>
-                <h1 className='topBannerTitle'>WELCOME TO OUR APPLICATION</h1>
-                <h2 className='topBannerSubTitle'>--- Let's manage your boarding house easily ---</h2>
+                <h1 className='topBannerTitle'>WELCOME TO BEE HOUSE</h1>
+                <h2 className='topBannerSubTitle'>--- We help you to manage the boarding house easily ---</h2>
                 <br></br>
                 <Button variant='primary'>Discover more</Button>
                 </Col>

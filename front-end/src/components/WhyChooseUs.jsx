@@ -28,7 +28,7 @@ class WhyChooseUs extends Component {
   render() {
     return (
       <Fragment>
-        <Container fluid={true} className="bottomBanner p-0 text-center">
+        <Container fluid={true} className="bottomBanner text-center">
           <div className="bottomBannerCover">
             <br/><br/>
             <h1 className="mainBottomTitle"> WHY CHOOSE US?</h1>
