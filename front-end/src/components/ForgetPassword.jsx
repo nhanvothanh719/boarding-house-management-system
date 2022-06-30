@@ -49,7 +49,7 @@ class ForgetPassword extends Component {
               className="loginText">Forget Password</h3>
             { error }
             <div class="form-group">
-              <label for="inputEmail">Email address:</label>
+              <label for="inputEmail" className="formLabel">Email address:</label>
               <input
                 type="email"
                 name="email"
@@ -63,7 +63,7 @@ class ForgetPassword extends Component {
                 required
               />
             </div>
-            <button type="submit" class="btn btn-primary btn-block">
+            <button type="submit" class="btn btn-primary btn-block formButton">
               Submit
             </button>
              <Link to="/login"> Have an account? </Link>

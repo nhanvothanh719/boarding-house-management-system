@@ -56,7 +56,7 @@ class ResetPassword extends Component {
               style={{ "text-align": "center" }}
               className="loginText">Reset Password</h1>
             <div class="form-group">
-              <label for="inputToken">Pin code:</label>
+              <label for="inputToken" className="formLabel">Pin code:</label>
               <input
                 type="text"
                 class="form-control"
@@ -69,7 +69,7 @@ class ResetPassword extends Component {
               />
             </div>
             <div class="form-group">
-              <label for="inputEmail">Email address:</label>
+              <label for="inputEmail" className="formLabel">Email address:</label>
               <input
                 type="email"
                 class="form-control"
@@ -83,7 +83,7 @@ class ResetPassword extends Component {
               />
             </div>
             <div class="form-group">
-              <label for="inputPassword">New password:</label>
+              <label for="inputPassword" className="formLabel">New password:</label>
               <input
                 type="password"
                 class="form-control"
@@ -96,7 +96,7 @@ class ResetPassword extends Component {
               />
             </div>
             <div class="form-group">
-              <label for="confirmedPassword">Confirmed password:</label>
+              <label for="confirmedPassword" className="formLabel">Confirmed password:</label>
               <input
                 type="password"
                 name="password_confirmation"
@@ -108,7 +108,7 @@ class ResetPassword extends Component {
                 required
               />
             </div>
-            <button type="submit" class="btn btn-primary btn-block">
+            <button type="submit" class="btn btn-primary btn-block formButton">
               Submit
             </button>
           </form>

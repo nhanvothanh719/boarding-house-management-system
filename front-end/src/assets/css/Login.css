@@ -136,3 +136,12 @@
     color:white;
     font-size: 0.9rem;
 }
+
+.formLabel{
+    font-size: 17px;
+}
+
+.formButton{
+    font-size: 17px;
+    font-weight: 700;
+}
