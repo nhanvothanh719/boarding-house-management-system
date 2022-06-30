@@ -124,33 +124,33 @@
 }
 
 .navItem{
-    text-decoration: dashed !important;
+    text-decoration: none !important;
     font-family: 'Montserrat Alternates', sans-serif;
-    color: #ffffff !important;
+    color: #ffffff;
     font-weight: 300;
     font-size: 16px;
 }
 
 .navItem:hover{
-    text-decoration: dashed !important;
+    text-decoration: none !important;
     font-family: 'Montserrat Alternates', sans-serif;
-    color: yellow !important;
+    color: yellow;
     font-weight: 300;
     font-size: 16px;
 }
 
 .navItemScroll{
-    text-decoration: dashed !important;
+    text-decoration: none !important;
     font-family: 'Montserrat Alternates', sans-serif;
-    color: darkgoldenrod !important;
+    color: darkgoldenrod;
     font-weight: 400;
     font-size: 16px;
 }
 
 .navItemScroll:hover{
-    text-decoration: dashed !important;
+    text-decoration: none !important;
     font-family: 'Montserrat Alternates', sans-serif;
-    color: yellow !important;
+    color: yellow;
     font-weight: 400;
     font-size: 16px;
 }

@@ -109,10 +109,10 @@ class navBar extends Component {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="mr-auto">
-              <Nav.Link><NavLink to="/" className={this.state.navBarItem}>HOME</NavLink></Nav.Link>
-              <Nav.Link><NavLink to="/features" className={this.state.navBarItem}>FEATURES</NavLink></Nav.Link>
-              <Nav.Link><NavLink to="/why-choose-us" className={this.state.navBarItem}>WHY CHOOSE US?</NavLink></Nav.Link>
-              <Nav.Link><NavLink to="/contact-us" className={this.state.navBarItem}>CONTACT US</NavLink></Nav.Link>
+              <Nav.Link><NavLink to="/" exact activeStyle={{ "color": "yellow"}} className={this.state.navBarItem}>HOME</NavLink></Nav.Link>
+              <Nav.Link><NavLink to="/features" exact activeStyle={{ "color": "yellow"}} className={this.state.navBarItem}>FEATURES</NavLink></Nav.Link>
+              <Nav.Link><NavLink to="/why-choose-us" exact activeStyle={{ "color": "yellow"}} className={this.state.navBarItem}>WHY CHOOSE US?</NavLink></Nav.Link>
+              <Nav.Link><NavLink to="/contact-us" exact activeStyle={{ "color": "yellow"}} className={this.state.navBarItem}>CONTACT US</NavLink></Nav.Link>
               {/* <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
                 <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
                 <NavDropdown.Item href="#action/3.2">
@@ -128,7 +128,7 @@ class navBar extends Component {
               </NavDropdown> */}
             </Nav>
             <Nav>
-            <Nav.Link><Link to="/login" className={this.state.navBarItem}>LOGIN</Link></Nav.Link>
+            <Nav.Link><NavLink to="/login" exact activeStyle={{ "color": "yellow"}} className={this.state.navBarItem}>LOGIN</NavLink></Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Navbar>
