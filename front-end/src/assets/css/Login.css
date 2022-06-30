@@ -1,15 +1,19 @@
 /* sign in FORM */
 #logreg-forms{
-    width:430px;
-    margin:10vh auto;
-    background-color:#f3f3f3;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    margin-top: 100px;
+    margin-bottom: 100px;
+    border-radius: 16px;
+    background-color: rgb(224, 134, 31);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.24);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
 }
 #logreg-forms form {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
     width: 100%;
     max-width: 430px;
-    padding: 15px;
+    padding: 20px;
     margin: auto;
 }
 #logreg-forms .form-control {
@@ -19,7 +23,11 @@
     padding: 10px;
     font-size: 16px;
 }
-#logreg-forms .form-control:focus { z-index: 2; }
+
+#logreg-forms .form-control:focus { 
+    z-index: 2; 
+}
+
 #logreg-forms .form-signin input[type="email"] {
     margin-bottom: -1px;
     border-bottom-right-radius: 0;
@@ -36,23 +44,26 @@
     margin-bottom: 14px;
 }
 #logreg-forms .social-btn{
-    font-weight: 100;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 600;
     color:white;
-    width:190px;
     font-size: 0.9rem;
+    display: block;
 }
 
 #logreg-forms a{
+    font-family: 'Raleway', sans-serif;
+    font-weight: 600;
     display: block;
     padding-top:10px;
-    color:lightseagreen;
+    color:black;
 }
 
-#logreg-form .lines{
-    width:200px;
-    border:1px solid red;
+#logreg-forms a:hover{
+    display: block;
+    padding-top:10px;
+    color:white;
 }
-
 
 #logreg-forms button[type="submit"]{ margin-top:10px; }
 
@@ -105,4 +116,26 @@
         content:'Google+';
     }
     
+}
+
+.loginBackground{
+    background-image: url('../images/login_background.jpeg');
+    max-height: 1000px;
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.loginText{
+    font-family: 'Bungee', sans-serif;
+    font-weight: 700;
+    color: #f3f3f3;
+}
+
+.btn{
+    font-family: 'Raleway', sans-serif;
+    font-weight: 600;
+    color:white;
+    font-size: 0.9rem;
 }

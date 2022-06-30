@@ -1,17 +1,15 @@
 import React from 'react';
-import HomePage from './pages/HomePage';
-import FeaturesPage from './pages/FeaturesPage';
-import ContactUsPage from './pages/ContactUsPage';
-import WhyChooseUsPage from './pages/WhyChooseUsPage';
+import { BrowserRouter as Router } from 'react-router-dom';
+import AppRouter from './router/AppRouter';
+import NavBar from './common/NavBar';
+import Footer from './common/Footer';
 
 function App() {
   return (
-    <div>
-      {/* <HomePage/> */}
-      <FeaturesPage />
-      {/* <ContactUsPage/> */}
-      {/* <WhyChooseUsPage/> */}
-    </div>
+    <Router>
+    <AppRouter/>
+    <Footer/>
+    </Router>
   );
 }
 

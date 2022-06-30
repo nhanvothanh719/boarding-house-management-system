@@ -66,7 +66,7 @@
 
 .cardImage{
     height: 90px;
-    weight: 100px;
+    width: 100px;
 }
 
 .featureCard{
@@ -95,7 +95,7 @@
     color: #051b35;
     margin-top: 1em;
     font-family: 'Montserrat Alternates', sans-serif;
-    font-size: 17x;
+    font-size: 17px;
     font-weight: 400;
 }
 
@@ -124,34 +124,34 @@
 }
 
 .navItem{
-    text-decoration: dashed !important;
+    text-decoration: none !important;
     font-family: 'Montserrat Alternates', sans-serif;
-    color: #ffffff !important;
-    font-weight: 300;
+    color: #ffffff;
+    font-weight: 600;
     font-size: 16px;
 }
 
 .navItem:hover{
-    text-decoration: dashed !important;
+    text-decoration: none !important;
     font-family: 'Montserrat Alternates', sans-serif;
-    color: yellow !important;
-    font-weight: 300;
+    color: yellow;
+    font-weight: 600;
     font-size: 16px;
 }
 
 .navItemScroll{
-    text-decoration: dashed !important;
+    text-decoration: none !important;
     font-family: 'Montserrat Alternates', sans-serif;
-    color: darkgoldenrod !important;
-    font-weight: 400;
+    color: darkgoldenrod;
+    font-weight: 600;
     font-size: 16px;
 }
 
 .navItemScroll:hover{
-    text-decoration: dashed !important;
+    text-decoration: none !important;
     font-family: 'Montserrat Alternates', sans-serif;
-    color: yellow !important;
-    font-weight: 400;
+    color: yellow;
+    font-weight: 600;
     font-size: 16px;
 }
 
@@ -324,3 +324,17 @@ a.social:hover{
     font-weight: 700;
     color: rgb(240, 158, 6);
 }
+
+.textTitle{
+    color: #523c05;
+    font-family: 'Montserrat Alternates', sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+}
+
+.textNormal{
+    font-family: 'Bai Jamjuree', sans-serif;
+    font-size: 17px;
+    font-weight: 400;
+}
+
