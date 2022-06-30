@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { Col, Container, Row } from "react-bootstrap";
 
 class ForgetPassword extends Component {
   state = {
@@ -37,36 +38,42 @@ class ForgetPassword extends Component {
       )
     }
     return (
-      <div class="row">
-        <div class="jumbotron col-lg-4 offset-lg-4">
-          <h3 class="text-center">Forget Password</h3>
+      <Container fluid={true} className="loginBackground">
+        <Row>
+        <Col lg={4} md={2} sm={2}></Col>
+        <Col lg={4} md={8} sm={8}>
+          <div id="logreg-forms">
           <form id="forgetPasswordForm" onSubmit={this.formSubmit}>
+          <h3 class="mb-3 font-weight-normal"
+              style={{ "text-align": "center" }}
+              className="loginText">Forget Password</h3>
             { error }
             <div class="form-group">
-              <label for="inputEmail">Email address</label>
+              <label for="inputEmail">Email address:</label>
               <input
                 type="email"
                 name="email"
                 class="form-control"
                 id="inputEmail"
                 aria-describedby="emailHelp"
+                placeholder="Email to reset password"
                 onChange={(event) => {
                   this.setState({ email: event.target.value });
                 }}
                 required
               />
-              <small id="emailHelp" class="form-text text-muted">
-                We'll never share your email with anyone else.
-              </small>
             </div>
             <button type="submit" class="btn btn-primary btn-block">
               Submit
             </button>
-            Have an account? <Link to="/login"> Click here </Link>
+             <Link to="/login"> Have an account? </Link>
             <br />
           </form>
-        </div>
-      </div>
+          </div>
+        </Col>
+        <Col lg={4} md={2} sm={2}></Col>
+      </Row>
+      </Container>
     );
   }
 }

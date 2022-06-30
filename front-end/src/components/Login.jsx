@@ -54,7 +54,7 @@ class Login extends Component {
           <div id="logreg-forms">
           <form class="form-signin" onSubmit={this.formSubmit}>
             <h1
-              class="h3 mb-3 font-weight-normal"
+              class="mb-3 font-weight-normal"
               style={{ "text-align": "center" }}
               className="loginText"
             >

@@ -85,9 +85,6 @@
 /* Mobile */
 
 @media screen and (max-width:500px){
-    #logreg-forms{
-        width:300px;
-    }
     
     #logreg-forms  .social-login{
         width:150px;

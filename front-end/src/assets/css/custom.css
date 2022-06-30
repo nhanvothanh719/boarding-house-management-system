@@ -263,7 +263,7 @@ a.social:hover{
 
 .footerLink{
     color: aliceblue;
-    text-decoration: none;
+    text-decoration: none !important;
     margin-top: 1rem;
     margin-left: 1rem;
     font-family: 'Domine', sans-serif;
@@ -271,7 +271,7 @@ a.social:hover{
 }
 
 .footerLink:hover{
-    text-decoration: none;
+    text-decoration: none !important;
     color: rgb(240, 158, 6);
 }
 

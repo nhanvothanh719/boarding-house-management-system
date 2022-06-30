@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
+import "../assets/css/login.css";
+import { Row, Container } from "react-bootstrap";
 
 class ResetPassword extends Component {
   state = {
@@ -43,7 +45,8 @@ class ResetPassword extends Component {
       );
     }
     return (
-      <div class="row">
+      <Container fluid={true} className="loginBackground">
+        <Row>
         <div class="jumbotron col-lg-4 offset-lg-4">
           <h3 class="text-center">Reset Password</h3>
           <form id="resetPasswordForm" onSubmit={this.formSubmit}>
@@ -106,7 +109,8 @@ class ResetPassword extends Component {
             </button>
           </form>
         </div>
-      </div>
+      </Row>
+      </Container>
     );
   }
 }
