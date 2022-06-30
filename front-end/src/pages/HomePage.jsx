@@ -6,7 +6,7 @@ import WhyChooseUs from "../components/WhyChooseUs";
 import ContactUs from "../components/ContactUs";
 import Footer from "../common/Footer";
 
-export class HomePage extends Component {
+class HomePage extends Component {
   render() {
     return (
       <Fragment>
