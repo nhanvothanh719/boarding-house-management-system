@@ -69,7 +69,11 @@
 
 #logreg-forms .facebook-btn{  background-color:#3C589C; }
 
+#logreg-forms .facebook-btn:hover{  background-color:#324a87; }
+
 #logreg-forms .google-btn{ background-color: #DF4B3B; }
+
+#logreg-forms .google-btn:hover{ background-color: #ab3a2e; }
 
 #logreg-forms .form-reset, #logreg-forms .form-signup{ display: none; }
 

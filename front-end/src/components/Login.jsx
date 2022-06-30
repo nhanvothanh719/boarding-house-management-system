@@ -97,13 +97,13 @@ class Login extends Component {
               }}
               required
             />
-            <button class="btn btn-success btn-block" type="submit">
+            <button class="btn btn-success btn-block formButton" type="submit">
               <i class="fas fa-sign-in-alt"></i> Sign in
             </button>
             <Link to="/forget-password" >Forgot password?</Link>
             <hr />
             <button
-              class="btn btn-primary btn-block"
+              class="btn btn-primary btn-block formButton"
               type="button"
               id="btn-signup"
             >
