@@ -3,6 +3,9 @@ import PageTitle from "../components/PageTitle";
 import AvailableRooms from "../components/AvailableRooms";
 
 class AvailableRoomsPage extends Component {
+  componentDidMount(){
+    window.scroll(0, 0)
+  }
   render() {
     return (
       <Fragment>

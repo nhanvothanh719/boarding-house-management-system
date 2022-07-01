@@ -383,7 +383,11 @@ a.social:hover{
     transform: translateY(-50%);
 }
 
-.customImage{ border-radius: 10px; }
+.customImage{ 
+    border-radius: 10px;
+    width: 700px;
+    height: 400px;
+ }
 
 .td-sidebar { margin-bottom: 34px; }
 
