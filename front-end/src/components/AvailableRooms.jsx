@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import welcomeImg from "../assets/images/welcome.png";
 
 class AvailableRooms extends Component {
@@ -19,7 +20,7 @@ class AvailableRooms extends Component {
                     Some quick example text to build on the card title and make
                     up the bulk of the card's content.
                   </Card.Text>
-                  <Button className="float-right customButton">View room details</Button>
+                  <Link to="/available-room-details"><Button className="float-right customButton">View room details</Button></Link>
                 </Card.Body>
               </Card>
             </Col>

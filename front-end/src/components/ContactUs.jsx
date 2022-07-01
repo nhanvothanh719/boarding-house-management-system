@@ -74,7 +74,7 @@ export class ContactUS extends Component {
                         </Form.Group>
                       </Col>
                       <Col md={12}>
-                        <Button type="submit" id="btnContactUs" className="button">
+                        <Button type="submit" id="btnContactUs" className="customButton">
                           Send Message
                         </Button>
                       </Col>

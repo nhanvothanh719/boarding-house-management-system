@@ -293,12 +293,6 @@ a.social:hover{
     font-weight: 600;
 }
 
-.button{
-    margin-top: 1rem;
-    color:#051b35;
-    background-color: rgb(240, 158, 6);
-}
-
 .pageTitle{
     background-image: url('../images/background.jpeg');
     min-height: 350px;
@@ -355,10 +349,82 @@ a.social:hover{
 
 .customButton{
     background-color: chocolate;
+    color:black;
     border: none;
 }
 
 .customButton:hover{
     background-color: rgb(149, 79, 29);
 }
+
+.about-thumb-wrap.after-shape {
+    margin-right: 30px;
+}
+
+.about-thumb-wrap {
+    height: 100%;
+    position: relative;
+    background-color: antiquewhite;
+    background-size: cover !important;
+    background-position: center center !important;
+    border-radius: 10px;
+}
+
+.about-thumb-wrap.after-shape:after {
+    content: "";
+    position: absolute;
+    right: -30px;
+    width: 160px;
+    height: 90%;
+    top: 50%;
+    border-radius: 10px;
+    background: rgb(240, 158, 6);
+    z-index: -1;
+    transform: translateY(-50%);
+}
+
+.customImage{ border-radius: 10px; }
+
+.td-sidebar { margin-bottom: 34px; }
+
+.widget_feature { border: 1px solid #e99a06; }
+
+.td-sidebar .widget-title {
+    font-family: 'Raleway', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 23px;
+    font-size: 22px;
+    position: relative;
+}
+
+.widget_feature .widget-title {
+    padding: 18px 25px;
+    border-bottom: 1px solid #e99a06;
+    margin-bottom: 18px !important;
+}
+
+.widget_feature .price-wrap {
+    font-size: 22px;
+    margin-bottom: 28px;
+}
+
+.widget_feature ul {
+    padding: 0 35px;
+}
+
+.widget_feature ul li {
+    color: #523c05;
+    font-size: 16px;
+    margin-bottom: 9px;
+    list-style: none;
+}
+
+.widget_feature ul li span {
+    font-family: 'Bai Jamjuree', sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+    margin-right: 10px;
+}
+
 

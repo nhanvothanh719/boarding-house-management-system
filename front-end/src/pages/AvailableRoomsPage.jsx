@@ -1,16 +1,16 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component, Fragment } from "react";
 import PageTitle from "../components/PageTitle";
-import AvailableRooms from '../components/AvailableRooms';
+import AvailableRooms from "../components/AvailableRooms";
 
 class AvailableRoomsPage extends Component {
   render() {
     return (
-        <Fragment>
-        <PageTitle title='Rooms for rent'/>
-        <AvailableRooms/>
+      <Fragment>
+        <PageTitle title="Rooms for rent" />
+        <AvailableRooms />
       </Fragment>
-    )
+    );
   }
 }
 
-export default AvailableRoomsPage
+export default AvailableRoomsPage;
