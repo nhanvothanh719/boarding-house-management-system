@@ -1,16 +1,19 @@
-import React, { Component, Fragment } from 'react';
-import PageTitle from '../components/PageTitle';
-import PrivacyPolicy from '../components/PrivacyPolicy';
+import React, { Component, Fragment } from "react";
+import PageTitle from "../components/PageTitle";
+import PrivacyPolicy from "../components/PrivacyPolicy";
 
 class PrivacyPolicyPage extends Component {
+  componentDidMount() {
+    window.scroll(0, 0);
+  }
   render() {
     return (
-        <Fragment>
-        <PageTitle title='Privacy Policy'/>
+      <Fragment>
+        <PageTitle title="Privacy Policy" />
         <PrivacyPolicy />
-  </Fragment>
-    )
+      </Fragment>
+    );
   }
 }
 
-export default PrivacyPolicyPage
+export default PrivacyPolicyPage;

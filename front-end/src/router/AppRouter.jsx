@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import axios from "axios";
 import NavBar from "../common/NavBar";
 import Login from "../components/Login";
@@ -13,6 +13,8 @@ import WhyChooseUsPage from "../pages/WhyChooseUsPage";
 import ContactUsPage from "../pages/ContactUsPage";
 import TermsAndConditionPage from "../pages/TermsAndConditionPage";
 import PrivacyPolicyPage from "../pages/PrivacyPolicyPage";
+import AvailableRoomsPage from "../pages/AvailableRoomsPage";
+import AvailableRoomDetailsPage from "../pages/AvailableRoomDetailsPage";
 
 class header extends Component {
     state = {
@@ -44,6 +46,9 @@ class header extends Component {
             <Route exact path="/features" component={FeaturesPage} />
             <Route exact path="/why-choose-us" component={WhyChooseUsPage} />
             <Route exact path="/contact-us" component={ContactUsPage} />
+            <Route exact path="/available-rooms" component={AvailableRoomsPage} />
+            {/* Available room details */}
+            <Route exact path="/available-room-details" component={AvailableRoomDetailsPage} />
             <Route exact path="/login" component={() => <Login user={this.state.user} setUser={this.setUser} />} />
             <Route exact path="/register" component={Register} />
             <Route exact path="/forget-password" component={ForgetPassword} />

@@ -12,11 +12,11 @@ class navBar extends Component {
     };
   }
   onScroll = () => {
-    if (window.scrollY < 400) {
+    if (window.scrollY < 300) {
       this.setState({ navBarTitle: "brandName" });
       this.setState({ navBarColor: "navBar" });
       this.setState({ navBarItem: "navItem" });
-    } else if (window.scrollY > 400) {
+    } else if (window.scrollY > 300) {
       this.setState({ navBarTitle: "brandNameScroll" });
       this.setState({ navBarColor: "navBarScroll" });
       this.setState({ navBarItem: "navItemScroll" });
@@ -120,6 +120,16 @@ class navBar extends Component {
                   className={this.state.navBarItem}
                 >
                   WHY CHOOSE US?
+                </NavLink>
+              </Nav.Link>
+              <Nav.Link>
+                <NavLink
+                  to="/available-rooms"
+                  exact
+                  activeStyle={{ color: "yellow" }}
+                  className={this.state.navBarItem}
+                >
+                  AVAILABLE ROOMS
                 </NavLink>
               </Nav.Link>
               <Nav.Link>

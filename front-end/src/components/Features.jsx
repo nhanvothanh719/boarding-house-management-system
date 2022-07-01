@@ -19,8 +19,8 @@ export class Features extends Component {
             <Col lg={4} md={6} sm={12}>
               <div className="featureCard">
                 <img src={tenantManagement} className="cardImage" alt="" />
-                <h3 className="featureName">Tenant management</h3>
-                <p className="featureDescription">
+                <h3 className="cardName">Tenant management</h3>
+                <p className="cardDescription">
                   Tenant information management function, including personal
                   information, and contact information.
                 </p>
@@ -29,8 +29,8 @@ export class Features extends Component {
             <Col lg={4} md={6} sm={12}>
               <div className="featureCard">
                 <img src={contractManagement} className="cardImage" alt="" />
-                <h3 className="featureName">Contract management</h3>
-                <p className="featureDescription">
+                <h3 className="cardName">Contract management</h3>
+                <p className="cardDescription">
                   The function of managing information about the rental
                   contract, including rooms, tenants, services, deposits, etc.
                 </p>
@@ -39,11 +39,11 @@ export class Features extends Component {
             <Col lg={4} md={12} sm={12}>
               <div className="featureCard">
                 <img src={waterManagement} className="cardImage" alt="" />
-                <h3 className="featureName">Electricity/ water management</h3>
-                <p className="featureDescription">
+                <h3 className="cardName">Electricity/ water management</h3>
+                <p className="cardDescription">
                   The function of managing the electricity and water of each
                   room monthly, calculating the amount
-                  to be paid automatically.
+                  to be paid.
                 </p>
               </div>
             </Col>
@@ -52,8 +52,8 @@ export class Features extends Component {
             <Col lg={4} md={6} sm={12}>
               <div className="featureCard">
                 <img src={roomManagement} className="cardImage" alt="" />
-                <h3 className="featureName">Room management</h3>
-                <p className="featureDescription">
+                <h3 className="cardName">Room management</h3>
+                <p className="cardDescription">
                   The function of managing room information by zone, room rate,
                   and equipment in the room of the application.
                 </p>
@@ -62,8 +62,8 @@ export class Features extends Component {
             <Col lg={4} md={6} sm={12}>
               <div className="featureCard">
                 <img src={invoiceManagement} className="cardImage" alt="" />
-                <h3 className="featureName">Invoice management</h3>
-                <p className="featureDescription">
+                <h3 className="cardName">Invoice management</h3>
+                <p className="cardDescription">
                   The function of managing monthly bills, including expenses
                   such as electricity, water, and other services.
                 </p>
@@ -72,8 +72,8 @@ export class Features extends Component {
             <Col lg={4} md={12} sm={12}>
               <div className="featureCard">
                 <img src={statisticMonitor} className="cardImage" alt="" />
-                <h3 className="featureName">Statistical report generating</h3>
-                <p className="featureDescription">
+                <h3 className="cardName">Statistical report generating</h3>
+                <p className="cardDescription">
                   The function of monitoring the business and operating
                   situation of the boarding house in general.
                 </p>
