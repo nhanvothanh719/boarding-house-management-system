@@ -11,7 +11,7 @@ export class TopBanner extends Component {
             <Container className='topBannerContent'>
               <Row>
                 <Col className='text-center'>
-                <h1 className='topBannerTitle'>WELCOME TO BEE HOUSE</h1>
+                <h1 className='topBannerTitle'>WELCOME TO BEEHOUSE</h1>
                 <h2 className='topBannerSubTitle'>--- We help you to manage the boarding house easily ---</h2>
                 <br></br>
                 <Button variant='primary'>Discover more</Button>
