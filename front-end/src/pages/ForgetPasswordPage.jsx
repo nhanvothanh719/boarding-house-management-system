@@ -1,9 +1,10 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import axios from "axios";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Col, Container, Row } from "react-bootstrap";
+import WebPageTitle from "../components/WebPageTitle";
 
-class ForgetPassword extends Component {
+class ForgetPasswordPage extends Component {
   state = {
     email: "",
     message: "",
@@ -38,6 +39,8 @@ class ForgetPassword extends Component {
       )
     }
     return (
+      <Fragment>
+        <WebPageTitle pageTitle="Forget password" />
       <Container fluid={true} className="loginBackground">
         <Row>
         <Col lg={4} md={2} sm={2}></Col>
@@ -74,8 +77,9 @@ class ForgetPassword extends Component {
         <Col lg={4} md={2} sm={2}></Col>
       </Row>
       </Container>
+      </Fragment>
     );
   }
 }
 
-export default ForgetPassword;
+export default ForgetPasswordPage;

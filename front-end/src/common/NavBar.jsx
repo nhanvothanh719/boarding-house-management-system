@@ -86,10 +86,10 @@ class navBar extends Component {
           variant="dark"
           className={this.state.navBarColor}
         >
-          <Navbar.Brand className={this.state.navBarTitle} href="#home">
+          <Navbar.Brand className={this.state.navBarTitle} >
             BeeHouse
           </Navbar.Brand>
-          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+          <Navbar.Toggle aria-controls="responsive-navbar-nav"/>
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="mr-auto">
               <Nav.Link>

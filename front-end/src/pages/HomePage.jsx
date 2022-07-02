@@ -3,6 +3,7 @@ import Features from "../components/Features";
 import TopBanner from "../components/TopBanner";
 import WhyChooseUs from "../components/WhyChooseUs";
 import ContactUs from "../components/ContactUs";
+import WebPageTitle from "../components/WebPageTitle";
 
 class HomePage extends Component {
   componentDidMount(){
@@ -11,6 +12,7 @@ class HomePage extends Component {
   render() {
     return (
       <Fragment>
+        <WebPageTitle pageTitle="Home" />
         <TopBanner />
         <Features />
         <WhyChooseUs />
