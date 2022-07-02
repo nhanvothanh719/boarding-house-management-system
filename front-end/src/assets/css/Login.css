@@ -43,6 +43,7 @@
     margin:0 auto;
     margin-bottom: 14px;
 }
+
 #logreg-forms .social-btn{
     font-family: 'Raleway', sans-serif;
     font-weight: 600;
@@ -53,15 +54,11 @@
 
 #logreg-forms a{
     font-family: 'Raleway', sans-serif;
-    font-weight: 600;
     display: block;
-    padding-top:10px;
-    color:black;
 }
 
 #logreg-forms a:hover{
     display: block;
-    padding-top:10px;
     color:white;
 }
 
@@ -148,4 +145,12 @@
 .formButton{
     font-size: 17px;
     font-weight: 700;
+}
+
+.customLink{
+    color:rgb(50, 118, 234);
+}
+
+.customLink:hover{
+    text-decoration: none;
 }

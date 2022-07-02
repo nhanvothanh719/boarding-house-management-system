@@ -66,7 +66,7 @@ class ForgetPassword extends Component {
             <button type="submit" class="btn btn-primary btn-block formButton">
               Submit
             </button>
-             <Link to="/login"> Have an account? </Link>
+             <Link to="/login" className="customLink"> Have an account? </Link>
             <br />
           </form>
           </div>

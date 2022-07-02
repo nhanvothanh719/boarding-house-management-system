@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from "react";
 import axios from "axios";
 import "../assets/css/login.css";
-import { Link, Redirect } from "react-router-dom";
-import { Col, Container, Row } from "react-bootstrap";
+import { Link, Redirect, NavLink } from "react-router-dom";
+import { Col, Container, Nav, Row } from "react-bootstrap";
 
 class Login extends Component {
   state = {
@@ -43,7 +43,7 @@ class Login extends Component {
     return (
       <Container fluid={true} className="loginBackground">
         <Row>
-          <Col lg={4} md={2} sm={2}></Col>
+        <Col lg={4} md={2} sm={2}></Col>
           <Col lg={4} md={8} sm={8}>
             <div id="logreg-forms">
               <form class="form-signin" onSubmit={this.formSubmit}>
@@ -54,6 +54,7 @@ class Login extends Component {
                 >
                   - Sign in -
                 </h1>
+                
                 <Row>
                   <Col>
                     <button class="btn facebook-btn social-btn" type="button">
@@ -103,14 +104,19 @@ class Login extends Component {
                 >
                   <i class="fas fa-sign-in-alt"></i> Sign in
                 </button>
-                <Link to="/forget-password">Forgot password?</Link>
+                <Link to="/forget-password" className="customLink">Forgot password?</Link>
                 <hr />
                 <button
                   class="btn btn-primary btn-block formButton"
                   type="button"
                   id="btn-signup"
                 >
-                  <i class="fas fa-user-plus"></i> Sign up
+                  <Link
+                    to="/register"
+                    style={{ textDecoration: "none", color: "white",  }}
+                  >
+                    <i class="fas fa-user-plus"></i> Sign up
+                    </Link>
                 </button>
               </form>
               <br />
