@@ -106,11 +106,21 @@
     font-size: 30px;
 }
 
+.brandName:hover{
+    text-decoration: none;
+    color: yellow;
+}
+
 .brandNameScroll{
     font-family: 'The Nautigal', sans-serif;
     font-weight: 600;
     color: sandybrown !important;
     font-size: 30px;
+}
+
+.brandNameScroll:hover{
+    text-decoration: none;
+    color: yellow;
 }
 
 .navBar{
