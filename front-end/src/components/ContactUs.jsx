@@ -5,19 +5,39 @@ import {
   Col,
   Container,
   Form,
-  FormControl,
   FormGroup,
   Row,
 } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faEnvelopeOpen,
-  faHome,
-  faPhone,
-  faSave,
-} from "@fortawesome/free-solid-svg-icons";
+import { faEnvelopeOpen, faHome, faPhone, } from "@fortawesome/free-solid-svg-icons";
+import RestClient from "../RestAPI/RestClient";
+import AppUrl from "../RestAPI/AppUrl";
 
 export class ContactUS extends Component {
+  constructor() {
+    super();
+    this.state = {
+    
+    }
+  }
+
+  componentDidMount(){
+    //This part for get all data from Get request
+  }
+
+  sendContactUs() {
+    let name = document.getElementById("inputName").value;
+    let email = document.getElementById("inputEmail").value;
+    let message = document.getElementById("inputMessage").value;
+    // alert(name + "/" + email + "/" + message);
+    let jsonDataObject = {name: name, email: email, message: message};
+    RestClient.PostRequest(AppUrl.ContactUs, JSON.stringify(jsonDataObject)
+    ).then(result => {
+      alert(result);
+    }).catch(error => {
+      alert(error);
+    })
+  }
   render() {
     return (
       <Fragment>
@@ -36,12 +56,12 @@ export class ContactUS extends Component {
                     <Row>
                       <Col lg={6} md={6} sm={6}>
                         <FormGroup>
-                          <Form.Label for="name">Name:</Form.Label>
+                          <Form.Label for="inputName">Name:</Form.Label>
                           <Form.Control
                             type="text"
-                            id="name"
+                            id="inputName"
                             placeholder="Enter your name"
-                            required="required"
+                            required
                           />
                         </FormGroup>
                         <Form.Group style={{ "margin-top": "1rem"}}>
@@ -52,9 +72,9 @@ export class ContactUS extends Component {
                             </span>
                             <Form.Control
                               type="email"
-                              id="email"
+                              id="inputEmail"
                               placeholder="Enter your email"
-                              required="required"
+                              required
                             />
                           </div>
                         </Form.Group>
@@ -64,8 +84,7 @@ export class ContactUS extends Component {
                           <Form.Label for="name">Message:</Form.Label>
                           <Form.Control
                             as="textarea"
-                            name="message"
-                            id="message"
+                            id="inputMessage"
                             rows={6}
                             cols={25}
                             required
@@ -74,7 +93,7 @@ export class ContactUS extends Component {
                         </Form.Group>
                       </Col>
                       <Col md={12}>
-                        <Button type="submit" id="btnContactUs" className="customButton">
+                        <Button onClick={this.sendContactUs} className="customButton">
                           Send Message
                         </Button>
                       </Col>
