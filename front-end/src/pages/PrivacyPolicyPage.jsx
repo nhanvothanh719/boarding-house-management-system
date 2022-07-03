@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import PageTitle from "../components/PageTitle";
 import PrivacyPolicy from "../components/PrivacyPolicy";
+import WebPageTitle from "../components/WebPageTitle";
 
 class PrivacyPolicyPage extends Component {
   componentDidMount() {
@@ -9,6 +10,7 @@ class PrivacyPolicyPage extends Component {
   render() {
     return (
       <Fragment>
+        <WebPageTitle pageTitle="Privacy policy" />
         <PageTitle title="Privacy Policy" />
         <PrivacyPolicy />
       </Fragment>

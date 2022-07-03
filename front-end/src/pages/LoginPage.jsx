@@ -1,10 +1,11 @@
 import React, { Component, Fragment } from "react";
 import axios from "axios";
 import "../assets/css/login.css";
-import { Link, Redirect, NavLink } from "react-router-dom";
-import { Col, Container, Nav, Row } from "react-bootstrap";
+import { Link, Redirect } from "react-router-dom";
+import { Col, Container, Row } from "react-bootstrap";
+import WebPageTitle from "../components/WebPageTitle";
 
-class Login extends Component {
+class LoginPage extends Component {
   state = {
     email: "",
     password: "",
@@ -41,6 +42,8 @@ class Login extends Component {
       return <Redirect to={"user-profile"} />;
     }
     return (
+      <Fragment>
+        <WebPageTitle pageTitle="Login" />
       <Container fluid={true} className="loginBackground">
         <Row>
         <Col lg={4} md={2} sm={2}></Col>
@@ -125,8 +128,9 @@ class Login extends Component {
           <Col lg={4} md={2} sm={2}></Col>
         </Row>
       </Container>
+      </Fragment>
     );
   }
 }
 
-export default Login;
+export default LoginPage;

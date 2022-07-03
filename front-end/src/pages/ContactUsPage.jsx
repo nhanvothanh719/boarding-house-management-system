@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import PageTitle from "../components/PageTitle";
 import ContactUs from "../components/ContactUs";
+import WebPageTitle from "../components/WebPageTitle";
 
 class ContactUsPage extends Component {
   componentDidMount(){
@@ -9,7 +10,8 @@ class ContactUsPage extends Component {
   render() {
     return (
       <Fragment>
-        <PageTitle title="Contact us page" />
+        <WebPageTitle pageTitle=" Contact us" />
+        <PageTitle title="Contact us" />
         <ContactUs />
       </Fragment>
     );

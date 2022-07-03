@@ -1,9 +1,10 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import axios from "axios";
 import "../assets/css/login.css";
 import { Row, Container, Col } from "react-bootstrap";
+import WebPageTitle from "../components/WebPageTitle";
 
-class ResetPassword extends Component {
+class ResetPasswordPage extends Component {
   state = {
     token: "",
     email: "",
@@ -45,6 +46,8 @@ class ResetPassword extends Component {
       );
     }
     return (
+      <Fragment>
+        <WebPageTitle pageTitle="Reset password" />
       <Container fluid={true} className="loginBackground">
         <Row>
         <Col lg={4} md={2} sm={2}></Col>
@@ -117,8 +120,9 @@ class ResetPassword extends Component {
         <Col lg={4} md={2} sm={2}></Col>
       </Row>
       </Container>
+      </Fragment>
     );
   }
 }
 
-export default ResetPassword;
+export default ResetPasswordPage;

@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { NavLink, } from "react-router-dom";
+import { Link, NavLink, } from "react-router-dom";
 import { Navbar, Nav } from "react-bootstrap";
 
 class navBar extends Component {
@@ -86,10 +86,12 @@ class navBar extends Component {
           variant="dark"
           className={this.state.navBarColor}
         >
-          <Navbar.Brand className={this.state.navBarTitle} href="#home">
+          <Navbar.Brand >
+            <NavLink exact to="/" className={this.state.navBarTitle}>
             BeeHouse
+            </NavLink>
           </Navbar.Brand>
-          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+          <Navbar.Toggle aria-controls="responsive-navbar-nav"/>
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="mr-auto">
               <Nav.Link>

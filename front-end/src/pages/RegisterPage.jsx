@@ -1,8 +1,9 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import axios from "axios";
-import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
+import WebPageTitle from "../components/WebPageTitle";
 
-class Register extends Component {
+class RegisterPage extends Component {
   state = {
     name: "",
     email: "",
@@ -36,6 +37,8 @@ class Register extends Component {
       return <Redirect to={'/login'}/>
     }
     return (
+      <Fragment>
+        <WebPageTitle pageTitle="Register" />
       <div class="row">
         <div class="jumbotron col-lg-4 offset-lg-4">
           <h3 class="text-center">Register</h3>
@@ -102,8 +105,9 @@ class Register extends Component {
           </form>
         </div>
       </div>
+      </Fragment>
     );
   }
 }
 
-export default Register;
+export default RegisterPage;

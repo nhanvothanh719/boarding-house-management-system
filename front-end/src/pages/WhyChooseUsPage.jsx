@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import PageTitle from "../components/PageTitle";
 import WhyChooseUs from "../components/WhyChooseUs";
+import WebPageTitle from "../components/WebPageTitle";
 
 class WhyChooseUsPage extends Component {
   componentDidMount() {
@@ -9,7 +10,8 @@ class WhyChooseUsPage extends Component {
   render() {
     return (
       <Fragment>
-        <PageTitle title="Why Choose Us page" />
+        <WebPageTitle pageTitle="Why choose us" />
+        <PageTitle title="Why Choose Us" />
         <WhyChooseUs />
       </Fragment>
     );

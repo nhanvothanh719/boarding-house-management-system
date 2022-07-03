@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faGithubSquare, faGooglePlus, faInstagram } from '@fortawesome/free-brands-svg-icons';
 import { faEnvelopeOpen, faHome, faPhone, faSave } from "@fortawesome/free-solid-svg-icons";
 import { NavLink } from 'react-router-dom';
-import { Navbar, Nav, NavDropdown } from "react-bootstrap";
+import { Nav } from "react-bootstrap";
 
 export class Footer extends Component {
   render() {
@@ -26,7 +26,6 @@ export class Footer extends Component {
                     <h2 className="footerTextTitle text-center">Contact address</h2>
                     <hr className="bg-white" />
                     <h6 className="footerText"><FontAwesomeIcon icon={faPhone} className='smallIcon' />Phone number: 0967-XXX-YYY</h6>
-                    <h6 className="footerText text-center">--- OR ---</h6>
                     <h6 className="footerText"><FontAwesomeIcon icon={faEnvelopeOpen} className='smallIcon' />Email 1: nhanvothanh719@gmail.com</h6>
                     <h6 className="footerText"><FontAwesomeIcon icon={faEnvelopeOpen} className='smallIcon' />Email 2: nhanvtgcd191366@fpt.edu.vn</h6>
                 </Col>
@@ -42,7 +41,7 @@ export class Footer extends Component {
                     <h2 className="footerTextTitle text-center">Policy</h2>
                     <hr className="bg-white" />
                     <h6><Nav.Link><NavLink exact activeStyle={{ "color": "yellow"}} to="/privacy-policy" className='footerLink'><FontAwesomeIcon icon={faSave} className='smallIcon' />Privacy policy</NavLink></Nav.Link></h6>
-                    <h6><Nav.Link><NavLink exact activeStyle={{ "color": "yellow"}} to="/all-terms-and-condition" className='footerLink'><FontAwesomeIcon icon={faSave} className='smallIcon' />Terms and condition</NavLink></Nav.Link></h6>
+                    <h6><Nav.Link><NavLink exact activeStyle={{ "color": "yellow"}} to="/all-terms-and-condition" className='footerLink'><FontAwesomeIcon icon={faSave} className='smallIcon' />Terms and conditions</NavLink></Nav.Link></h6>
                 </Col>
             </Row>
         </Container>
