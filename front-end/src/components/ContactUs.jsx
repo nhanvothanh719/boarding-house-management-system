@@ -33,9 +33,10 @@ export class ContactUS extends Component {
     let jsonDataObject = {name: name, email: email, message: message};
     RestClient.PostRequest(AppUrl.ContactUs, JSON.stringify(jsonDataObject)
     ).then(result => {
-      alert(result);
+      // alert('From then ' + result);
+      alert("Send email to Contact us");
     }).catch(error => {
-      alert(error);
+      alert('From catch ' + error);
     })
   }
   render() {
