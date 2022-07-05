@@ -5,6 +5,13 @@ import Image2 from '../assets/images/login_background.jpeg';
 import Image3 from '../assets/images/bottom_banner.png';
 
 export class AvailableRoomDetails extends Component {
+  constructor(props) {
+    super();
+    this.state = {
+      RoomID: props.roomId,
+    }
+  }
+
   render() {
     return (
       <Fragment>
@@ -33,6 +40,7 @@ export class AvailableRoomDetails extends Component {
                         <div class="widget_feature">
                             <h4 class="widget-title text-center">Room features</h4>                                 
                             <ul>
+                                <li><span>Room ID :</span> {this.state.RoomID} </li>
                                 <li><span>Room number :</span> 101 </li>
                                 <li><span>Renter :</span> 0 </li>
                                 <li><span>Status :</span> Available </li>

@@ -21,7 +21,7 @@ class AvailableRooms extends Component {
 
   render() {
     const AvailableRooms = this.state.data;
-    const AvailableRoomsDisplay = AvailableRooms.map((AvailableRooms) => {
+    const AvailableRoomsDisplay = AvailableRooms.map(AvailableRooms => {
       return (
         <Col lg={4} md={6} sm={12}>
           <Card className="roomCard">
@@ -33,7 +33,7 @@ class AvailableRooms extends Component {
               <Card.Text className="cardDescription">
               {AvailableRooms.description}
               </Card.Text>
-              <Link to="/available-room-details">
+              <Link to={"/available-room-details/" + AvailableRooms.id}>
                 <Button className="float-right customButton">
                   View room details
                 </Button>
