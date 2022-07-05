@@ -15,10 +15,8 @@ import AppUrl from "../RestAPI/AppUrl";
 
 export class ContactUS extends Component {
   constructor() {
+
     super();
-    this.state = {
-    
-    }
   }
 
   componentDidMount(){
@@ -29,14 +27,17 @@ export class ContactUS extends Component {
     let name = document.getElementById("inputName").value;
     let email = document.getElementById("inputEmail").value;
     let message = document.getElementById("inputMessage").value;
-    // alert(name + "/" + email + "/" + message);
     let jsonDataObject = {name: name, email: email, message: message};
     RestClient.PostRequest(AppUrl.ContactUs, JSON.stringify(jsonDataObject)
     ).then(result => {
-      // alert('From then ' + result);
-      alert("Send email to Contact us");
+      //Delete input after submit the form
+      document.getElementById("inputName").value = '';
+      document.getElementById("inputEmail").value = '';
+      document.getElementById("inputMessage").value = '';
+      alert("Your message is sent successfully. Thank you for contacting us.");
+      //Delete input after submit the form
     }).catch(error => {
-      alert('From catch ' + error);
+      alert(error);
     })
   }
   render() {
@@ -53,7 +54,7 @@ export class ContactUS extends Component {
                   <h4 className="text-center">Contact form</h4>
                 </Card.Header>
                 <Card.Body className="cardBody">
-                  <Form>
+                  <Form id="contactUsForm">
                     <Row>
                       <Col lg={6} md={6} sm={6}>
                         <FormGroup>
