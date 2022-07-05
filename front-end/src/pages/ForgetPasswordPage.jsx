@@ -41,7 +41,7 @@ class ForgetPasswordPage extends Component {
     return (
       <Fragment>
         <WebPageTitle pageTitle="Forget password" />
-      <Container fluid={true} className="loginBackground">
+      <Container fluid={true} className="loginBackground" style={{ minHeight: "622px"}}>
         <Row>
         <Col lg={4} md={2} sm={2}></Col>
         <Col lg={4} md={8} sm={8}>
