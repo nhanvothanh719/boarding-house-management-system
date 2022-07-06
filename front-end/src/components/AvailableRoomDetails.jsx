@@ -5,6 +5,7 @@ import Image2 from '../assets/images/login_background.jpeg';
 import Image3 from '../assets/images/bottom_banner.png';
 import RestClient from "../RestAPI/RestClient";
 import AppUrl from "../RestAPI/AppUrl";
+import Loading from "./Loading";
 
 export class AvailableRoomDetails extends Component {
   constructor(props) {
@@ -18,6 +19,7 @@ export class AvailableRoomDetails extends Component {
       hasConditioner: "",
       hasFridge: "",
       hasWardrobe: "",
+      loading: true,
     }
   }
 
@@ -32,11 +34,15 @@ export class AvailableRoomDetails extends Component {
         hasConditioner : result[0]['hasConditioner'],
         hasFridge : result[0]['hasFridge'],
         hasWardrobe : result[0]['hasWardrobe'],
+        loading: false
       })
     });
   }
 
   render() {
+    if (this.state.loading) {
+      return <Loading />
+    }
     return (
       <Fragment>
         <Container className="mb-5">
@@ -47,13 +53,13 @@ export class AvailableRoomDetails extends Component {
               <div className="about-thumb-wrap after-shape">
                 <Carousel interval={5000}>
                   <Carousel.Item>
-                  <img src={Image1} alt="" className="img-fluid customImage d-block"/>
+                  <img src={Image1} alt="" className="img-fluid customImage d-block" style={{ height: '100%' }}/>
                   </Carousel.Item>
                   <Carousel.Item>
-                  <img src={Image2} alt="" className="img-fluid customImage d-block"/>
+                  <img src={Image2} alt="" className="img-fluid customImage d-block" style={{ height: '100%' }}/>
                   </Carousel.Item>
                   <Carousel.Item>
-                  <img src={Image3} alt="" className="img-fluid customImage d-block"/>
+                  <img src={Image3} alt="" className="img-fluid customImage d-block" style={{ height: '100%' }}/>
                   </Carousel.Item>
                 </Carousel>
                 

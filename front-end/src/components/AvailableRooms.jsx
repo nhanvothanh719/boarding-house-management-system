@@ -4,22 +4,27 @@ import { Link } from "react-router-dom";
 import welcomeImg from "../assets/images/welcome.png";
 import RestClient from "../RestAPI/RestClient";
 import AppUrl from "../RestAPI/AppUrl";
+import Loading from "./Loading";
 
 class AvailableRooms extends Component {
   constructor() {
     super();
     this.state = {
       data: [],
+      loading: true,
     };
   }
 
   componentDidMount() {
     RestClient.GetRequest(AppUrl.AvailableRooms).then((result) => {
-      this.setState({ data: result });
+      this.setState({ data: result, loading: false });
     });
   }
 
   render() {
+    if (this.state.loading) {
+      return <Loading />
+    }
     const AvailableRooms = this.state.data;
     const AvailableRoomsDisplay = AvailableRooms.map(AvailableRooms => {
       return (
