@@ -51,7 +51,7 @@ class AppRouter extends Component {
           {/* Available room details */}
           <Route
             exact
-            path="/available-room-details"
+            path="/available-room-details/:roomID/:roomNumber"
             component={AvailableRoomDetailsPage}
           />
           <Route

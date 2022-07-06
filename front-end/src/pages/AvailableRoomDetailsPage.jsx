@@ -4,6 +4,14 @@ import AvailableRoomDetails from "../components/AvailableRoomDetails";
 import WebPageTitle from "../components/WebPageTitle";
 
 export class AvailableRoomDetailsPage extends Component {
+  constructor({match}) {
+    super();
+    this.state = {
+      RoomPassedID : match.params.roomID, //Get from URL 
+      RoomPassedNumber : match.params.roomNumber, //Get from URL 
+    }
+  }
+
   componentDidMount(){
     window.scroll(0, 0)
   }
@@ -11,8 +19,8 @@ export class AvailableRoomDetailsPage extends Component {
     return (
       <Fragment>
         <WebPageTitle pageTitle="Room details" />
-        <PageTitle title="Room details" />
-        <AvailableRoomDetails />
+        <PageTitle title={"Room " + this.state.RoomPassedNumber + " details"} />
+        <AvailableRoomDetails roomId={this.state.RoomPassedID}/>
       </Fragment>
     );
   }
