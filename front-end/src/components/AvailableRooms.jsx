@@ -33,7 +33,7 @@ class AvailableRooms extends Component {
               <Card.Text className="cardDescription">
               {AvailableRooms.description}
               </Card.Text>
-              <Link to={"/available-room-details/" + AvailableRooms.id}>
+              <Link to={"/available-room-details/" + AvailableRooms.id + "/" + AvailableRooms.number}>
                 <Button className="float-right customButton">
                   View room details
                 </Button>

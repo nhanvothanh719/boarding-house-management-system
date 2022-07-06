@@ -40,10 +40,10 @@ export class AvailableRoomDetails extends Component {
     return (
       <Fragment>
         <Container className="mb-5">
-          <h1 className="mainTitle text-center text-uppercase"> Details of room number 101 </h1>
+          <h1 className="mainTitle text-center text-uppercase"> Details of room number {this.state.number} </h1>
           <div className="bottomLine"></div>
           <Row className="mb-3">
-            <Col lg={8} md={4} sm={12} className="mb-3">
+            <Col lg={8} md={12} sm={12} className="mb-3">
               <div className="about-thumb-wrap after-shape">
                 <Carousel interval={5000}>
                   <Carousel.Item>
@@ -59,7 +59,7 @@ export class AvailableRoomDetails extends Component {
                 
               </div>
             </Col>
-            <Col lg={4} md={4} sm={12}>
+            <Col lg={4} md={12} sm={12}>
             <div class="td-sidebar">
                         <div class="widget_feature">
                             <h4 class="widget-title text-center">Room features</h4>                                 
