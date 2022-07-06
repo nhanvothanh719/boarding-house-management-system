@@ -16,5 +16,5 @@ Route::post('/reset-password', [PasswordResetController::class, 'resetPassword']
 Route::get('/get-user-profile', [UserController::class, 'getUser'])->middleware('auth:api'); //Get user data in case the user did login
 
 Route::get('/all-available-rooms', [RoomController::class, 'displayAllAvailableRooms']);
-Route::post('/room-details', [RoomController::class, 'getRoomDetails']);
+Route::get('/room-details/{id}', [RoomController::class, 'getRoomDetails']);
 
