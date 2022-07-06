@@ -373,7 +373,6 @@ a.social:hover{
 }
 
 .about-thumb-wrap {
-    height: 100%;
     position: relative;
     background-color: antiquewhite;
     background-size: cover !important;
@@ -440,5 +439,10 @@ a.social:hover{
     font-size: 17px;
     font-weight: 600;
     margin-right: 10px;
+}
+
+.loadingAnimation {
+    width: 150px;
+    height: 150px;
 }
 
