@@ -3,6 +3,7 @@ import axios from "axios";
 import "../assets/css/login.css";
 import { Row, Container, Col } from "react-bootstrap";
 import WebPageTitle from "../components/WebPageTitle";
+import Footer from "../common/Footer";
 
 class ResetPasswordPage extends Component {
   state = {
@@ -120,6 +121,7 @@ class ResetPasswordPage extends Component {
         <Col lg={4} md={2} sm={2}></Col>
       </Row>
       </Container>
+      <Footer/>
       </Fragment>
     );
   }

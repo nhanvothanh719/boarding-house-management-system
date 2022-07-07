@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react";
 import PageTitle from "../components/PageTitle";
 import AvailableRoomDetails from "../components/AvailableRoomDetails";
 import WebPageTitle from "../components/WebPageTitle";
+import Footer from "../common/Footer";
 
 export class AvailableRoomDetailsPage extends Component {
   constructor({match}) {
@@ -21,6 +22,7 @@ export class AvailableRoomDetailsPage extends Component {
         <WebPageTitle pageTitle="Room details" />
         <PageTitle title={"Room " + this.state.RoomPassedNumber + " details"} />
         <AvailableRoomDetails roomId={this.state.RoomPassedID}/>
+        <Footer/>
       </Fragment>
     );
   }

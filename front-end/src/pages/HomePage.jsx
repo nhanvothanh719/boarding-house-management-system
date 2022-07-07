@@ -4,6 +4,7 @@ import TopBanner from "../components/TopBanner";
 import WhyChooseUs from "../components/WhyChooseUs";
 import ContactUs from "../components/ContactUs";
 import WebPageTitle from "../components/WebPageTitle";
+import Footer from "../common/Footer";
 
 class HomePage extends Component {
   componentDidMount(){
@@ -17,6 +18,7 @@ class HomePage extends Component {
         <Features />
         <WhyChooseUs />
         <ContactUs />
+        <Footer/>
       </Fragment>
     );
   }

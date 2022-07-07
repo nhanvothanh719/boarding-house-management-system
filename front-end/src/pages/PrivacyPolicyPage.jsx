@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from "react";
+import Footer from "../common/Footer";
 import PageTitle from "../components/PageTitle";
 import PrivacyPolicy from "../components/PrivacyPolicy";
 import WebPageTitle from "../components/WebPageTitle";
@@ -13,6 +14,7 @@ class PrivacyPolicyPage extends Component {
         <WebPageTitle pageTitle="Privacy policy" />
         <PageTitle title="Privacy Policy" />
         <PrivacyPolicy />
+        <Footer/>
       </Fragment>
     );
   }

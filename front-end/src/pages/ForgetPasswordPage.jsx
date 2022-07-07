@@ -3,6 +3,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { Col, Container, Row } from "react-bootstrap";
 import WebPageTitle from "../components/WebPageTitle";
+import Footer from "../common/Footer";
 
 class ForgetPasswordPage extends Component {
   state = {
@@ -77,6 +78,7 @@ class ForgetPasswordPage extends Component {
         <Col lg={4} md={2} sm={2}></Col>
       </Row>
       </Container>
+      <Footer/>
       </Fragment>
     );
   }

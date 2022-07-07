@@ -15,6 +15,7 @@ import TermsAndConditionPage from "../pages/TermsAndConditionPage";
 import PrivacyPolicyPage from "../pages/PrivacyPolicyPage";
 import AvailableRoomsPage from "../pages/AvailableRoomsPage";
 import AvailableRoomDetailsPage from "../pages/AvailableRoomDetailsPage";
+import Dashboard from "../pages/Dashboard/Dashboard";
 
 class AppRouter extends Component {
 
@@ -41,7 +42,7 @@ class AppRouter extends Component {
   render() {
     return (
       <div>
-        <NavBar user={this.state.user} setUser={this.setUser} />
+        {/* <NavBar user={this.state.user} setUser={this.setUser} /> */}
         <Switch>
           <Route exact path="/" component={HomePage} />
           <Route exact path="/features" component={FeaturesPage} />
@@ -79,6 +80,7 @@ class AppRouter extends Component {
             component={TermsAndConditionPage}
           />
           <Route exact path="/privacy-policy" component={PrivacyPolicyPage} />
+          <Route exact path="/dashboard" component={Dashboard} />
         </Switch>
       </div>
     );
