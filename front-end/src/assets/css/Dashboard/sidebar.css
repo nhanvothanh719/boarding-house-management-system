@@ -2,7 +2,7 @@
     flex: 1;
     border-right: 0.5px solid rgb(192, 185, 185);
     min-height: 100vh;
-    background-color: rgb(222, 235, 243);
+    background-color: whitesmoke;
 }
 
 .top {
@@ -15,6 +15,7 @@
 .customHr {
     height: 0;
     border: 0.5px solid rgb(192, 185, 185);
+    margin-top: 0;
 }
 
 .center {

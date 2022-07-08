@@ -11,7 +11,8 @@ export class Dashboard extends Component {
         <div className="home">
         <SideBar/>
         <div className='homeContainer'>
-          Container
+          <TopBar/>
+          Home container
         </div>
         </div>
       </Fragment>

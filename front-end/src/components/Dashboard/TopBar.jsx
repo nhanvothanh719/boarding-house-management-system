@@ -4,6 +4,7 @@ import "../../assets/css/Dashboard/topbar.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-solid-svg-icons";
 import Avatar from "../../assets/images/avatar.jpeg";
+import LanguageIcon from '@mui/icons-material/Language';
 
 export class TopBar extends Component {
   render() {
@@ -11,13 +12,14 @@ export class TopBar extends Component {
       <Fragment>
         <div className="topBar">
             <div className="topBarWrapper">
-                <NavLink exact to="/" className="brandNameScroll">
-            BeeHouse
-            </NavLink>
+              <div>
+              <LanguageIcon />
+              Language: English
+              </div>
                 <div className='topRight'>
                     <div className='topBarIconContainer'>
                     <FontAwesomeIcon icon={faBell} />
-                        <span className='topIconBadge'>3</span>
+                        <span className='topCounter'>3</span>
                     </div>
                     <img src={Avatar} className="topAvatar" />
                 </div>
