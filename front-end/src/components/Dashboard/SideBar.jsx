@@ -86,7 +86,7 @@ class SideBar extends Component {
               </li>
               <li className="customLi">
                 <ShowChartIcon className="sideBarIcon" />
-                <span className="itemName"> Profit </span>
+                <span className="itemName"> Balance </span>
               </li>
               <p className="itemGroup text-uppercase">User</p>
               <li className="customLi">
