@@ -16,6 +16,7 @@ import PrivacyPolicyPage from "../pages/PrivacyPolicyPage";
 import AvailableRoomsPage from "../pages/AvailableRoomsPage";
 import AvailableRoomDetailsPage from "../pages/AvailableRoomDetailsPage";
 import Dashboard from "../pages/Dashboard/Dashboard";
+import RentersList from "../pages/Dashboard/RentersList";
 
 class AppRouter extends Component {
 
@@ -81,6 +82,7 @@ class AppRouter extends Component {
           />
           <Route exact path="/privacy-policy" component={PrivacyPolicyPage} />
           <Route exact path="/dashboard" component={Dashboard} />
+          <Route exact path="/all-renters" component={RentersList} />
         </Switch>
       </div>
     );
