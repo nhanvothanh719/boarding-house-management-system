@@ -44,6 +44,7 @@ class AppRouter extends Component {
         <NavBar user={this.state.user} setUser={this.setUser} />
         <Switch>
           <Route exact path="/" component={HomePage} />
+          
           <Route exact path="/features" component={FeaturesPage} />
           <Route exact path="/why-choose-us" component={WhyChooseUsPage} />
           <Route exact path="/contact-us" component={ContactUsPage} />
