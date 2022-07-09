@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import axios from "axios";
 import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
@@ -43,10 +43,16 @@ class AppRouter extends Component {
     return (
       <div>
         <Switch>
+          {/* Home page */}
           <Route exact path="/" component={HomePage} />
+          <Redirect from="/home" to="/" />
+          {/* Features page */}
           <Route exact path="/features" component={FeaturesPage} />
+          {/* Why choose us page */}
           <Route exact path="/why-choose-us" component={WhyChooseUsPage} />
+          {/* Contact us page */}
           <Route exact path="/contact-us" component={ContactUsPage} />
+          {/* Available rooms */}
           <Route exact path="/available-rooms" component={AvailableRoomsPage} />
           {/* Available room details */}
           <Route
@@ -54,6 +60,10 @@ class AppRouter extends Component {
             path="/available-room-details/:roomID/:roomNumber"
             component={AvailableRoomDetailsPage}
           />
+          {/* Other pages */}
+          <Route exact path="/all-terms-and-condition" component={TermsAndConditionPage} />
+          <Route exact path="/privacy-policy" component={PrivacyPolicyPage} />
+          {/* Login */}
           <Route
             exact
             path="/login"
@@ -61,28 +71,27 @@ class AppRouter extends Component {
               <LoginPage user={this.state.user} setUser={this.setUser} />
             )}
           />
+          {/* Register */}
           <Route exact path="/register" component={RegisterPage} />
+          {/* Forget and Reset password */}
           <Route exact path="/forget-password" component={ForgetPassword} />
           <Route
             exact
             path="/reset-password/:token"
             component={ResetPasswordPage}
           />
+          {/* Current user profile */}
           <Route
             exact
             path="/user-profile"
             component={() => <UserProfile user={this.state.user} />}
           />
-          <Route
-            exact
-            path="/all-terms-and-condition"
-            component={TermsAndConditionPage}
-          />
           {/* Dashboard */}
-          <Route exact path="/privacy-policy" component={PrivacyPolicyPage} />
-          <Route exact path="/dashboard" component={Dashboard} />
-          <Route exact path="/renters" component={RentersList} />
-          <Route exact path="/renters/:renterID" component={RenterDetails} />
+          <Route exact path="/admin/dashboard" component={Dashboard} />
+          <Redirect from="/admin" to="/admin/dashboard" />
+          
+          <Route exact path="/admin/renters" component={RentersList} />
+          <Route exact path="/admin/renters/:renterID" component={RenterDetails} />
         </Switch>
       </div>
     );

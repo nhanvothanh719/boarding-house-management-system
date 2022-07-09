@@ -6,8 +6,10 @@ import { Col, Container, Row } from "react-bootstrap";
 import WebPageTitle from "../components/WebPageTitle";
 import Footer from "../components/Footer";
 import NavBar from "../components/NavBar";
+import alert from "sweetalert";
 
 class LoginPage extends Component {
+
   constructor() {
     super();
     this.state = {
@@ -17,6 +19,7 @@ class LoginPage extends Component {
       message: "",
     };
   }
+  
   componentDidMount() {
     window.scroll(0, 0);
     //Get user credentials
@@ -50,6 +53,7 @@ class LoginPage extends Component {
           isLogin: true,
         });
         this.props.setUser(response.data.user);
+        alert("Success", response.data.message, "success");
       })
       .catch((error) => {
         console.log(error);
@@ -103,7 +107,8 @@ class LoginPage extends Component {
                     className="loginText"
                   >
                     {" "}
-                    --- OR ---{" "}
+                    --- OR ---
+                    {" "}
                   </p>
                   <input
                     type="email"
