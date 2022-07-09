@@ -2,6 +2,8 @@ import React, { Component, Fragment } from 'react';
 import "../../../assets/css/Dashboard/datatable.css";
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import { userColumns, userRows } from "../Datatable/DataSource";
+import { Link } from "react-router-dom";
+
 
 export class Datatable extends Component {
   render() {
@@ -20,6 +22,11 @@ export class Datatable extends Component {
     return (
       <Fragment>
         <div className="customDatatable">
+          <div className="datatableHeader">
+            <Link to="/renters/1" className="createBtn">
+            Add new
+            </Link>
+          </div>
       <DataGrid
         rows={userRows}
         // columns={userColumns}

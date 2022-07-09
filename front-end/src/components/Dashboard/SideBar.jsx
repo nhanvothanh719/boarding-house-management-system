@@ -34,69 +34,99 @@ class SideBar extends Component {
           <div className="center">
             <ul className="customUl" style={{ listStyle: "none" }}>
               <p className="itemGroup text-uppercase">Main</p>
+              <NavLink exact to="/dashboard" style={{ textDecoration: "none" }}>
               <li className="customLi">
                 <DashboardIcon className="sideBarIcon" />
                 <span className="itemName"> Dashboard </span>
               </li>
+              </NavLink>
               <p className="itemGroup text-uppercase">Lists</p>
+              <NavLink exact to="/renters" style={{ textDecoration: "none" }}>
               <li className="customLi">
                 <GroupIcon className="sideBarIcon" />
                 <span className="itemName"> Renters </span>
               </li>
+              </NavLink>
+              <NavLink exact to="/" style={{ textDecoration: "none" }}>
               <li className="customLi">
                 <MeetingRoomIcon className="sideBarIcon" />
                 <span className="itemName"> Rooms </span>
               </li>
+              </NavLink>
+              <NavLink exact to="/" style={{ textDecoration: "none" }}>
               <li className="customLi">
                 <CommentIcon className="sideBarIcon" />
                 <span className="itemName"> Suggestions </span>
               </li>
+              </NavLink>
+              <NavLink exact to="/" style={{ textDecoration: "none" }}>
               <li className="customLi">
                 <CategoryIcon className="sideBarIcon" />
                 <span className="itemName"> Categories </span>
               </li>
+              </NavLink>
+              <NavLink exact to="/" style={{ textDecoration: "none" }}>
               <li className="customLi">
                 <TwoWheelerIcon className="sideBarIcon" />
                 <span className="itemName"> Motorbikes </span>
               </li>
+              </NavLink>
+              <NavLink exact to="/" style={{ textDecoration: "none" }}>
               <li className="customLi">
                 <MiscellaneousServicesIcon className="sideBarIcon" />
                 <span className="itemName"> Services </span>
               </li>
+              </NavLink>
+              <NavLink exact to="/" style={{ textDecoration: "none" }}>
               <li className="customLi">
                 <HandshakeIcon className="sideBarIcon" />
                 <span className="itemName"> Contracts </span>
               </li>
+              </NavLink>
+              <NavLink exact to="/" style={{ textDecoration: "none" }}>
               <li className="customLi">
                 <ReportIcon className="sideBarIcon" />
                 <span className="itemName"> Breaches </span>
               </li>
+              </NavLink>
               <p className="itemGroup text-uppercase">Generating</p>
+              <NavLink exact to="/" style={{ textDecoration: "none" }}>
               <li className="customLi">
                 <NotificationsActiveIcon className="sideBarIcon" />
                 <span className="itemName"> Notifications </span>
               </li>
+              </NavLink>
+              <NavLink exact to="/" style={{ textDecoration: "none" }}>
               <li className="customLi">
                 <ReceiptIcon className="sideBarIcon" />
                 <span className="itemName"> Invoices </span>
               </li>
+              </NavLink>
+              <NavLink exact to="/" style={{ textDecoration: "none" }}>
               <li className="customLi">
                 <FlagIcon className="sideBarIcon" />
                 <span className="itemName"> Breaches </span>
               </li>
+              </NavLink>
+              <NavLink exact to="/" style={{ textDecoration: "none" }}>
               <li className="customLi">
                 <ShowChartIcon className="sideBarIcon" />
                 <span className="itemName"> Balance </span>
               </li>
+              </NavLink>
               <p className="itemGroup text-uppercase">User</p>
+              <NavLink exact to="/" style={{ textDecoration: "none" }}>
               <li className="customLi">
                 <BadgeIcon className="sideBarIcon" />
                 <span className="itemName"> Profile </span>
               </li>
+              </NavLink>
+              <NavLink exact to="/" style={{ textDecoration: "none" }}>
               <li className="customLi">
                 <LogoutIcon className="sideBarIcon" />
                 <span className="itemName"> Sign out </span>
               </li>
+              </NavLink>
             </ul>
           </div>
         </div>
