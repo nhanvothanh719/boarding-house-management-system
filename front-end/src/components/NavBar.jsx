@@ -2,13 +2,14 @@ import React, { Component, Fragment } from "react";
 import { NavLink } from "react-router-dom";
 import { Navbar, Nav } from "react-bootstrap";
 
-class navBar extends Component {
+export class NavBar extends Component {
   constructor() {
     super();
     this.state = {
       navBarTitle: "brandName",
       navBarColor: "navBar",
       navBarItem: "navItem",
+      isLogout: "",
     };
   }
   onScroll = () => {
@@ -25,9 +26,6 @@ class navBar extends Component {
   componentDidMount() {
     window.addEventListener("scroll", this.onScroll);
   }
-  state = {
-    isLogout: "",
-  };
   logout = () => {
     //Remove the token
     localStorage.clear();
@@ -145,6 +143,16 @@ class navBar extends Component {
                 </NavLink>
               </Nav.Link>
               {profile}
+              <Nav.Link>
+                <NavLink
+                  to="/dashboard"
+                  exact
+                  activeStyle={{ color: "yellow" }}
+                  className={this.state.navBarItem}
+                >
+                  DASHBOARD
+                </NavLink>
+              </Nav.Link>
             </Nav>
             <Nav>{login}</Nav>
           </Navbar.Collapse>
@@ -154,4 +162,4 @@ class navBar extends Component {
   }
 }
 
-export default navBar;
+export default NavBar;
