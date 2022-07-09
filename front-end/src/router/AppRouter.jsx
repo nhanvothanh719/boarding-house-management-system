@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import axios from "axios";
 import NavBar from "../common/NavBar";
 import LoginPage from "../pages/LoginPage";
@@ -44,7 +44,7 @@ class AppRouter extends Component {
         <NavBar user={this.state.user} setUser={this.setUser} />
         <Switch>
           <Route exact path="/" component={HomePage} />
-          
+          <Redirect from="/home" to="/" />
           <Route exact path="/features" component={FeaturesPage} />
           <Route exact path="/why-choose-us" component={WhyChooseUsPage} />
           <Route exact path="/contact-us" component={ContactUsPage} />
