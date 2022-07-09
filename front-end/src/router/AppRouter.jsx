@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Switch, Route } from "react-router-dom";
 import axios from "axios";
-import NavBar from "../common/NavBar";
 import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
 import ForgetPassword from "../pages/ForgetPasswordPage";
@@ -15,9 +14,11 @@ import TermsAndConditionPage from "../pages/TermsAndConditionPage";
 import PrivacyPolicyPage from "../pages/PrivacyPolicyPage";
 import AvailableRoomsPage from "../pages/AvailableRoomsPage";
 import AvailableRoomDetailsPage from "../pages/AvailableRoomDetailsPage";
+import Dashboard from "../pages/Dashboard/Dashboard";
+import RentersList from "../pages/Dashboard/RentersList";
+import RenterDetails from "../pages/Dashboard/Form";
 
 class AppRouter extends Component {
-
   state = {
     user: {},
   };
@@ -41,7 +42,6 @@ class AppRouter extends Component {
   render() {
     return (
       <div>
-        <NavBar user={this.state.user} setUser={this.setUser} />
         <Switch>
           <Route exact path="/" component={HomePage} />
           <Route exact path="/features" component={FeaturesPage} />
@@ -78,7 +78,11 @@ class AppRouter extends Component {
             path="/all-terms-and-condition"
             component={TermsAndConditionPage}
           />
+          {/* Dashboard */}
           <Route exact path="/privacy-policy" component={PrivacyPolicyPage} />
+          <Route exact path="/dashboard" component={Dashboard} />
+          <Route exact path="/renters" component={RentersList} />
+          <Route exact path="/renters/:renterID" component={RenterDetails} />
         </Switch>
       </div>
     );
