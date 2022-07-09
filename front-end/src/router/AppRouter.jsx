@@ -17,6 +17,7 @@ import AvailableRoomsPage from "../pages/AvailableRoomsPage";
 import AvailableRoomDetailsPage from "../pages/AvailableRoomDetailsPage";
 import Dashboard from "../pages/Dashboard/Dashboard";
 import RentersList from "../pages/Dashboard/RentersList";
+import RenterDetails from "../pages/Dashboard/Form";
 
 class AppRouter extends Component {
 
@@ -80,9 +81,11 @@ class AppRouter extends Component {
             path="/all-terms-and-condition"
             component={TermsAndConditionPage}
           />
+          {/* Dashboard */}
           <Route exact path="/privacy-policy" component={PrivacyPolicyPage} />
           <Route exact path="/dashboard" component={Dashboard} />
-          <Route exact path="/all-renters" component={RentersList} />
+          <Route exact path="/renters" component={RentersList} />
+          <Route exact path="/renters/:renterID" component={RenterDetails} />
         </Switch>
       </div>
     );
