@@ -1,0 +1,61 @@
+.topContainer, .bottomContainer {
+    -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
+    box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+    padding: 10px;
+    margin: 20px;
+    display: flex;
+}
+
+.bottomLeftContainer {
+    flex: 1;
+    text-align: center;
+}
+
+.bottomRightContainer {
+    flex: 2;
+}
+
+.userImg {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.flexForm {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: space-around;
+}
+
+.formInput {
+    width: 40%;
+}
+
+.inputItem {
+    width: 100%;
+    padding: 5px;
+    border: none;
+    border-bottom: 1px solid grey;
+}
+
+.inputItemLabel {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.uploadFileIcon {
+    cursor: pointer;
+}
+
+.formButton {
+    width: 150px;
+    padding: 10px;
+    border: none;
+    background-color: bisque;
+    cursor: pointer;
+    margin-top: 10px;
+    border-radius: 8px;
+}

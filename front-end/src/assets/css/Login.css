@@ -96,7 +96,7 @@
         font-size: 1.3rem;
         font-weight: 200;
         color:white;
-        width:150px;
+        width:130px;
         height: 56px;
         
     }
@@ -118,6 +118,7 @@
 
 .loginBackground{
     background-image: url('../images/login_background.jpeg');
+    min-height: 622px;
     max-height: 1000px;
     background-size: cover;
     background-attachment: fixed;
@@ -142,7 +143,7 @@
     font-size: 17px;
 }
 
-.formButton{
+.loginFormButton{
     font-size: 17px;
     font-weight: 700;
 }
