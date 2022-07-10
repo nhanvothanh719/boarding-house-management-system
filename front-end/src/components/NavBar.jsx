@@ -152,7 +152,7 @@ export class NavBar extends Component {
               {profile}
               <Nav.Link>
                 <NavLink
-                  to="/dashboard"
+                  to="/admin/dashboard"
                   exact
                   activeStyle={{ color: "yellow" }}
                   className={this.state.navBarItem}

@@ -34,14 +34,14 @@ class SideBar extends Component {
           <div className="center">
             <ul className="customUl" style={{ listStyle: "none" }}>
               <p className="itemGroup text-uppercase">Main</p>
-              <NavLink exact to="/dashboard" style={{ textDecoration: "none" }}>
+              <NavLink exact to="/admin/dashboard" style={{ textDecoration: "none" }}>
               <li className="customLi">
                 <DashboardIcon className="sideBarIcon" />
                 <span className="itemName"> Dashboard </span>
               </li>
               </NavLink>
               <p className="itemGroup text-uppercase">Lists</p>
-              <NavLink exact to="/renters" style={{ textDecoration: "none" }}>
+              <NavLink exact to="/admin/renters" style={{ textDecoration: "none" }}>
               <li className="customLi">
                 <GroupIcon className="sideBarIcon" />
                 <span className="itemName"> Renters </span>
@@ -115,7 +115,7 @@ class SideBar extends Component {
               </li>
               </NavLink>
               <p className="itemGroup text-uppercase">User</p>
-              <NavLink exact to="/" style={{ textDecoration: "none" }}>
+              <NavLink exact to="/admin/renters/1" style={{ textDecoration: "none" }}>
               <li className="customLi">
                 <BadgeIcon className="sideBarIcon" />
                 <span className="itemName"> Profile </span>

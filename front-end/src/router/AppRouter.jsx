@@ -14,9 +14,8 @@ import TermsAndConditionPage from "../pages/TermsAndConditionPage";
 import PrivacyPolicyPage from "../pages/PrivacyPolicyPage";
 import AvailableRoomsPage from "../pages/AvailableRoomsPage";
 import AvailableRoomDetailsPage from "../pages/AvailableRoomDetailsPage";
-import Dashboard from "../pages/Dashboard/Dashboard";
-import RentersList from "../pages/Dashboard/RentersList";
-import RenterDetails from "../pages/Dashboard/Form";
+import MasterLayout from "../pages/Dashboard/MasterLayout";
+import AdminPrivateRoute from "./AdminPrivateRoute";
 
 class AppRouter extends Component {
   state = {
@@ -87,11 +86,7 @@ class AppRouter extends Component {
             component={() => <UserProfile user={this.state.user} />}
           />
           {/* Dashboard */}
-          <Route exact path="/admin/dashboard" component={Dashboard} />
-          <Redirect from="/admin" to="/admin/dashboard" />
-          
-          <Route exact path="/admin/renters" component={RentersList} />
-          <Route exact path="/admin/renters/:renterID" component={RenterDetails} />
+          <Route path="/admin" name="Admin" component={(props) => (<MasterLayout {...props} />)} />
         </Switch>
       </div>
     );
