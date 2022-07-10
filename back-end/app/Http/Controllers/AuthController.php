@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
@@ -23,6 +24,7 @@ class AuthController extends Controller
                     'message' => 'Login successfully',
                     'token' => $token,
                     'user' => $user, //User data
+                    'token_type' => 'Bearer',
                 ], 200); //OK
             }
         }
@@ -43,10 +45,8 @@ class AuthController extends Controller
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
             ]);
-            $token = $user->createToken('auth_token')->accessToken;
             return response([
                 'message' => 'Register successfully',
-                'token' => $token,
                 'user' => $user,
             ], 200);
         }
