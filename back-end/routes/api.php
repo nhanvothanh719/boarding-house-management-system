@@ -9,6 +9,7 @@ use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\RoomController;
 
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:api');
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/contact-us', [ContactUsController::class, 'sendContactUsMessage']);
 Route::post('/forget-password', [PasswordResetController::class, 'sendEmailToResetPassword']);

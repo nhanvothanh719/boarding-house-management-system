@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from "react";
 import { NavLink } from "react-router-dom";
 import { Navbar, Nav } from "react-bootstrap";
+import axios from "axios";
+import alert from "sweetalert";
 
 export class NavBar extends Component {
   constructor() {
@@ -26,11 +28,16 @@ export class NavBar extends Component {
   componentDidMount() {
     window.addEventListener("scroll", this.onScroll);
   }
-  logout = () => {
-    //Remove the token
+  logout = (e) => {
+    e.preventDefault();
+    axios.post('/logout').then(response => {
+      //Remove the token
     localStorage.clear();
     //Remove all user data
     this.props.setUser(null);
+    alert("Success", response.data.message, "success");
+    }
+    )
   };
   render() {
     let login;
