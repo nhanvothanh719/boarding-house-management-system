@@ -44,6 +44,12 @@ class AuthController extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
+                'gender' => $request->gender,
+                'date_of_birth' => $request->date_of_birth,
+                'id_card_number' => $request->id_card_number,
+                'phone_number' => $request->phone_number,
+                'occupation' => $request->occupation,
+                'permanent_address' => $request->permanent_address,
             ]);
             return response([
                 'message' => 'Register successfully',

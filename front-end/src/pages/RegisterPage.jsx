@@ -13,6 +13,12 @@ class RegisterPage extends Component {
       email: "",
       password: "",
       password_confirmation: "",
+      gender: "",
+      date_of_birth: "",
+      id_card_number: "",
+      phone_number: "",
+      occupation: "",
+      permanent_address: "",
       message: "",
     };
   }
@@ -40,6 +46,12 @@ class RegisterPage extends Component {
       email: this.state.email,
       password: this.state.password,
       password_confirmation: this.state.password_confirmation,
+      gender: this.state.gender,
+      date_of_birth: this.state.date_of_birth,
+      id_card_number: this.state.id_card_number,
+      phone_number: this.state.phone_number,
+      occupation: this.state.occupation,
+      permanent_address: this.state.permanent_address,
     };
 
     axios
@@ -117,6 +129,84 @@ class RegisterPage extends Component {
                   id="confirmedPassword"
                   onChange={(e) => {
                     this.setState({ password_confirmation: e.target.value });
+                  }}
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="gender">Gender</label>
+                <input
+                  type="text"
+                  name="gender"
+                  class="form-control"
+                  id="gender"
+                  onChange={(e) => {
+                    this.setState({ gender: e.target.value });
+                  }}
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="date_of_birth">Date of birth</label>
+                <input
+                  type="date"
+                  name="date_of_birth"
+                  class="form-control"
+                  id="date_of_birth"
+                  onChange={(e) => {
+                    this.setState({ date_of_birth: e.target.value });
+                  }}
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="id_card_number">ID card number</label>
+                <input
+                  type="text"
+                  name="id_card_number"
+                  class="form-control"
+                  id="id_card_number"
+                  onChange={(e) => {
+                    this.setState({ id_card_number: e.target.value });
+                  }}
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="phone_number">Phone number</label>
+                <input
+                  type="text"
+                  name="phone_number"
+                  class="form_control"
+                  id="phone_number"
+                  onChange={(e) => {
+                    this.setState({ phone_number: e.target.value });
+                  }}
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="gender">Occupation</label>
+                <input
+                  type="text"
+                  name="occupation"
+                  class="form-control"
+                  id="occupation"
+                  onChange={(e) => {
+                    this.setState({ occupation: e.target.value });
+                  }}
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="permanent_address">Address</label>
+                <input
+                  type="text"
+                  name="permanent_address"
+                  class="form-control"
+                  id="permanent_address"
+                  onChange={(e) => {
+                    this.setState({ permanent_address: e.target.value });
                   }}
                   required
                 />
