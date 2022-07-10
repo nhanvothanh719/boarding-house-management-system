@@ -29,5 +29,9 @@ class AuthServiceProvider extends ServiceProvider
         if (! $this->app->routesAreCached()) {
             Passport::routes();
         }
+        // Access tokens that expire after one day
+        Passport::tokensExpireIn(now()->addHours(24));
+        Passport::personalAccessTokensExpireIn(now()->addHours(24));
+        Passport::refreshTokensExpireIn(now()->addDays(30));
     }
 }

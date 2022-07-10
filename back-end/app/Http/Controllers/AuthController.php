@@ -18,7 +18,7 @@ class AuthController extends Controller
         try {
             if(Auth::attempt($request->only('email', 'password'))) {
                 $user = Auth::user();
-                $token = $user->createToken('app')->accessToken; //Generate token
+                $token = $user->createToken('auth_token')->accessToken; //Generate token
                 return response([
                     'message' => 'Login successfully',
                     'token' => $token,
@@ -43,7 +43,7 @@ class AuthController extends Controller
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
             ]);
-            $token = $user->createToken('app')->accessToken;
+            $token = $user->createToken('auth_token')->accessToken;
             return response([
                 'message' => 'Register successfully',
                 'token' => $token,
@@ -58,10 +58,17 @@ class AuthController extends Controller
     }
 
     public function logout() {
+        try {
         auth()->user()->tokens()->delete();
         return response([
             'message' => 'Log out successfully',
         ], 200); //OK
+        }
+        catch(Exception $exception) {
+            return response([
+                'message' => $exception->getMessage(),
+            ], 400);
+        }
     }
 
     
