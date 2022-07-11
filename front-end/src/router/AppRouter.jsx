@@ -86,7 +86,9 @@ class AppRouter extends Component {
             component={() => <UserProfile user={this.state.user} />}
           />
           {/* Dashboard */}
-          <Route path="/admin" name="Admin" component={(props) => (<MasterLayout {...props} />)} />
+          {/* <Route path="/admin" name="Admin" component={(props) => (<MasterLayout {...props} />)} /> */}
+          {/* Private routes for admin */}
+          <AdminPrivateRoute path="/admin" name="Admin" />
         </Switch>
       </div>
     );
