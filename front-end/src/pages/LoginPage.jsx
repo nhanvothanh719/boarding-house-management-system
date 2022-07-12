@@ -1,13 +1,17 @@
 import React, { Component, Fragment } from "react";
 import axios from "axios";
-import "../assets/css/login.css";
+import "../assets/css/Login.css";
 import { Link, Redirect } from "react-router-dom";
 import { Col, Container, Row } from "react-bootstrap";
 import WebPageTitle from "../components/WebPageTitle";
 import Footer from "../components/Footer";
 import NavBar from "../components/NavBar";
+import alert from "sweetalert";
+import RestClient from "../RestAPI/RestClient";
+import AppUrl from "../RestAPI/AppUrl";
 
 class LoginPage extends Component {
+
   constructor() {
     super();
     this.state = {
@@ -17,18 +21,22 @@ class LoginPage extends Component {
       message: "",
     };
   }
+  
   componentDidMount() {
     window.scroll(0, 0);
     //Get user credentials
-    axios
-      .get("/get-user-profile")
-      .then((response) => {
-        console.log(response.data);
-        this.setUser(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    // if(RestClient.GetRequest(AppUrl.CheckAuthenticated).then((response) => (!response.is_admin)))
+    // {
+    //   axios
+    //   .get("/get-user-profile")
+    //   .then((response) => {
+    //     console.log(response.data);
+    //     this.setUser(response.data);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
+    // }
   }
 
   setUser = (user) => {
@@ -48,8 +56,10 @@ class LoginPage extends Component {
         localStorage.setItem("token", response.data.token);
         this.setState({
           isLogin: true,
+          isAmin: response.data.isAdmin,
         });
         this.props.setUser(response.data.user);
+        alert("Success", response.data.message, "success");
       })
       .catch((error) => {
         console.log(error);
@@ -58,12 +68,15 @@ class LoginPage extends Component {
   render() {
     //Redirect to Profile page if user logs in successfully
     if (this.state.isLogin) {
-      return <Redirect to={"user-profile"} />;
+      if(this.state.isAdmin === false) {
+        return <Redirect to={"/admin/dashboard"} />;
+      }
+      return <Redirect to={"/user-profile"} />;
     }
     //Protect URL
-    if (localStorage.getItem("token")) {
-      return <Redirect to={"user-profile"} />;
-    }
+    // if (localStorage.getItem("token")) {
+    //   return <Redirect to={"user-profile"} />;
+    // }
     return (
       <Fragment>
         <NavBar user={this.state.user} setUser={this.setUser} />
@@ -103,7 +116,8 @@ class LoginPage extends Component {
                     className="loginText"
                   >
                     {" "}
-                    --- OR ---{" "}
+                    --- OR ---
+                    {" "}
                   </p>
                   <input
                     type="email"

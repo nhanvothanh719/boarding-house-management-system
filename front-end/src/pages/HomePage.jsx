@@ -19,15 +19,14 @@ class HomePage extends Component {
   componentDidMount() {
     window.scroll(0, 0);
     //Get user credentials
-    axios
-      .get("/get-user-profile")
-      .then((response) => {
-        console.log(response.data);
-        this.setUser(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    // axios
+    //   .get("/get-user-profile")
+    //   .then((response) => {
+    //     this.setUser(response.data);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
   }
 
   setUser = (user) => {

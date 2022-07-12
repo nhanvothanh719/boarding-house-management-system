@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from "react";
 import axios from "axios";
-import "../assets/css/login.css";
 import { Row, Container, Col } from "react-bootstrap";
 import WebPageTitle from "../components/WebPageTitle";
 import Footer from "../components/Footer";
@@ -23,7 +22,6 @@ class ResetPasswordPage extends Component {
     axios
       .get("/get-user-profile")
       .then((response) => {
-        console.log(response.data);
         this.setUser(response.data);
       })
       .catch((error) => {

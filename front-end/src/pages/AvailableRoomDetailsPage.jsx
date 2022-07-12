@@ -22,7 +22,6 @@ export class AvailableRoomDetailsPage extends Component {
     axios
       .get("/get-user-profile")
       .then((response) => {
-        console.log(response.data);
         this.setUser(response.data);
       })
       .catch((error) => {
