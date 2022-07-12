@@ -17,10 +17,13 @@ Route::get('/all-available-rooms', [RoomController::class, 'displayAllAvailableR
 Route::get('/room-details/{id}', [RoomController::class, 'getRoomDetails']);
 
 Route::middleware('auth:api')->group(function(){
-    Route::get('/check-authenticated', function() {
-        return response()->json(['message' => 'You are in', 'status' => 200], 200);
-    });
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/get-user-profile', [UserController::class, 'getUser']);
+});
+
+Route::middleware('auth:api', 'isAdmin')->group(function(){
+    Route::get('/check-authenticated', function() {
+        return response(['message' => 'You are in', 'status' => 200], 200);
+    });    
 });
 

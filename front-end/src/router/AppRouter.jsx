@@ -16,6 +16,8 @@ import AvailableRoomsPage from "../pages/AvailableRoomsPage";
 import AvailableRoomDetailsPage from "../pages/AvailableRoomDetailsPage";
 import MasterLayout from "../pages/Dashboard/MasterLayout";
 import AdminPrivateRoute from "./AdminPrivateRoute";
+import Error_403 from "../pages/Error_403";
+import Error_404 from "../pages/Error_404";
 
 class AppRouter extends Component {
   state = {
@@ -89,6 +91,15 @@ class AppRouter extends Component {
           {/* <Route path="/admin" name="Admin" component={(props) => (<MasterLayout {...props} />)} /> */}
           {/* Private routes for admin */}
           <AdminPrivateRoute path="/admin" name="Admin" />
+          {/* Errors */}
+          <Route
+            exact
+            path="/error-403"
+            component={Error_403} />
+            <Route
+            exact
+            path="/error-404"
+            component={Error_404} />
         </Switch>
       </div>
     );

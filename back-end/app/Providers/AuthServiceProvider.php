@@ -33,5 +33,10 @@ class AuthServiceProvider extends ServiceProvider
         Passport::tokensExpireIn(now()->addHours(24));
         Passport::personalAccessTokensExpireIn(now()->addHours(24));
         Passport::refreshTokensExpireIn(now()->addDays(30));
+
+        //Define scope
+        Passport::tokensCan([
+            'admin' => 'Admin abilities',
+        ]);
     }
 }

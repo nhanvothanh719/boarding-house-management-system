@@ -7,6 +7,8 @@ import WebPageTitle from "../components/WebPageTitle";
 import Footer from "../components/Footer";
 import NavBar from "../components/NavBar";
 import alert from "sweetalert";
+import RestClient from "../RestAPI/RestClient";
+import AppUrl from "../RestAPI/AppUrl";
 
 class LoginPage extends Component {
 
@@ -23,15 +25,18 @@ class LoginPage extends Component {
   componentDidMount() {
     window.scroll(0, 0);
     //Get user credentials
-    axios
-      .get("/get-user-profile")
-      .then((response) => {
-        console.log(response.data);
-        this.setUser(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    // if(RestClient.GetRequest(AppUrl.CheckAuthenticated).then((response) => (!response.is_admin)))
+    // {
+    //   axios
+    //   .get("/get-user-profile")
+    //   .then((response) => {
+    //     console.log(response.data);
+    //     this.setUser(response.data);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
+    // }
   }
 
   setUser = (user) => {
@@ -62,7 +67,7 @@ class LoginPage extends Component {
   render() {
     //Redirect to Profile page if user logs in successfully
     if (this.state.isLogin) {
-      return <Redirect to={"/admin/dashboard"} />;
+      //return <Redirect to={"/user-profile"} />;
     }
     //Protect URL
     if (localStorage.getItem("token")) {

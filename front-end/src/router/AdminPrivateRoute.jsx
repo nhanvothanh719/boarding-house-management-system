@@ -33,6 +33,18 @@ function AdminPrivateRoute({ ...rest }) {
     return Promise.reject(error);
   });
 
+  axios.interceptors.response.use(undefined, function axiosRetryInterceptors(error) {
+    if(error.response.status === 403) { //Access denied
+      swal("Forbidden", error.response.data.message, "warning");
+      history.push("/error-403");
+    }
+    else if(error.response.status === 404) { //Page not found
+      swal("404 Error", "URL/Page does not exist", "warning");
+      history.push("/error-404");
+    }
+    return Promise.reject(error);
+  });
+
   if(isLoading) {
     return <Loading />
   }

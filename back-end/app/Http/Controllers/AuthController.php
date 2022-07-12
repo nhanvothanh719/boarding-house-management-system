@@ -19,12 +19,25 @@ class AuthController extends Controller
         try {
             if(Auth::attempt($request->only('email', 'password'))) {
                 $user = Auth::user();
-                $token = $user->createToken('auth_token')->accessToken; //Generate token
+                //Generate access token
+                //If user logins with Admin role
+                if($user->role_id == 0) 
+                {
+                    //Generate access token with scope
+                    $token = $user->createToken('admin_auth_token',['admin'])->accessToken;
+                    $is_admin = true;
+                }
+                else {
+                    $token = $user->createToken('auth_token')->accessToken;
+                    $is_admin = false;
+                }
+                
                 return response([
                     'message' => 'Login successfully',
                     'token' => $token,
                     'user' => $user, //User data
                     'token_type' => 'Bearer',
+                    'is_admin' => $is_admin,
                 ], 200); //OK
             }
         }
