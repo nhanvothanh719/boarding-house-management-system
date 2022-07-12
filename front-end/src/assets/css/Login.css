@@ -155,3 +155,8 @@
 .customLink:hover{
     text-decoration: none;
 }
+
+.customLink:active {
+    text-decoration: none;
+    color: blue;
+  }

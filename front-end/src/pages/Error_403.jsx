@@ -3,7 +3,7 @@ import Error from "../components/Error";
 
 class Error_403 extends Component {
   state = {
-    errorMessageTitle: "You are not authorized.",
+    errorMessageTitle: "You are not authorized",
     errorMessageText:
       "You tried to access a page you did not have prior authorization for.",
     errorCode: "403",
