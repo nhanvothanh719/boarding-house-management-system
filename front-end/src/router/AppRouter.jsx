@@ -14,7 +14,6 @@ import TermsAndConditionPage from "../pages/TermsAndConditionPage";
 import PrivacyPolicyPage from "../pages/PrivacyPolicyPage";
 import AvailableRoomsPage from "../pages/AvailableRoomsPage";
 import AvailableRoomDetailsPage from "../pages/AvailableRoomDetailsPage";
-import MasterLayout from "../pages/Dashboard/MasterLayout";
 import AdminPrivateRoute from "./AdminPrivateRoute";
 import Error_403 from "../pages/Error_403";
 import Error_404 from "../pages/Error_404";

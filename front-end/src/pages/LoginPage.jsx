@@ -56,6 +56,7 @@ class LoginPage extends Component {
         localStorage.setItem("token", response.data.token);
         this.setState({
           isLogin: true,
+          isAmin: response.data.isAdmin,
         });
         this.props.setUser(response.data.user);
         alert("Success", response.data.message, "success");
@@ -67,12 +68,15 @@ class LoginPage extends Component {
   render() {
     //Redirect to Profile page if user logs in successfully
     if (this.state.isLogin) {
-      //return <Redirect to={"/user-profile"} />;
+      if(this.state.isAdmin === false) {
+        return <Redirect to={"/admin/dashboard"} />;
+      }
+      return <Redirect to={"/user-profile"} />;
     }
     //Protect URL
-    if (localStorage.getItem("token")) {
-      return <Redirect to={"user-profile"} />;
-    }
+    // if (localStorage.getItem("token")) {
+    //   return <Redirect to={"user-profile"} />;
+    // }
     return (
       <Fragment>
         <NavBar user={this.state.user} setUser={this.setUser} />

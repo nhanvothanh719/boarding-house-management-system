@@ -36,8 +36,8 @@ class AuthController extends Controller
                     'message' => 'Login successfully',
                     'token' => $token,
                     'user' => $user, //User data
-                    'token_type' => 'Bearer',
-                    'is_admin' => $is_admin,
+                    'tokenType' => 'Bearer',
+                    'isAdmin' => $is_admin,
                 ], 200); //OK
             }
         }
