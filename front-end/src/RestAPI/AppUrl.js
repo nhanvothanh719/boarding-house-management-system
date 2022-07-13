@@ -8,6 +8,8 @@ class AppUrl {
   static AvailableRoomDetails = this.BaseURL + '/room-details/';
 
   static CheckAuthenticated = this.BaseURL + '/check-authenticated';
+
+  static StoreCategory = this.BaseURL + '/store-category';
 }
 
 export default AppUrl;
