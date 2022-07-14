@@ -59,7 +59,7 @@ class SideBar extends Component {
                 <span className="itemName"> Suggestions </span>
               </li>
               </NavLink>
-              <NavLink exact to="/admin/categories" style={{ textDecoration: "none" }}>
+              <NavLink exact to="/admin/view-all-categories" style={{ textDecoration: "none" }}>
               <li className="customLi">
                 <CategoryIcon className="sideBarIcon" />
                 <span className="itemName"> Categories </span>

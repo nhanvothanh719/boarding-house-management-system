@@ -28,6 +28,7 @@ Route::middleware('auth:api')->group(function(){
             return response(['message' => 'You are in', 'status' => 200], 200);
         });    
         //Category
+        Route::get('/all-categories', [CategoryController::class, 'index']);
         Route::post('/store-category', [CategoryController::class, 'storeCategory']);
     });
 });

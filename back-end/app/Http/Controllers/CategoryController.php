@@ -6,11 +6,20 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 use App\Models\Category;
+use App\Models\Room;
 
 use App\Http\Requests\CategoryStoreRequest;
 
 class CategoryController extends Controller
 {
+    public function index() {
+        $allCategories = Category::all();
+        return response([
+            'status' => 200,
+            'allCategories' => $allCategories,
+        ]);
+    }
+
     public function storeCategory(Request $request) {
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:categories',
@@ -42,4 +51,5 @@ class CategoryController extends Controller
             ], 400);
         }
     }
+
 }

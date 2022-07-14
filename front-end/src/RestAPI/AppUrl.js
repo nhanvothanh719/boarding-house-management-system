@@ -10,6 +10,7 @@ class AppUrl {
   static CheckAuthenticated = this.BaseURL + '/check-authenticated';
 
   static StoreCategory = this.BaseURL + '/store-category';
+  static ShowCategories = this.BaseURL + '/all-categories';
 }
 
 export default AppUrl;
