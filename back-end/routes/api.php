@@ -23,14 +23,16 @@ Route::middleware('auth:api')->group(function(){
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/get-user-profile', [UserController::class, 'getUser']);
     //Dashboard
-    Route::middleware('isAdmin')->group(function(){
+    //Route::middleware('isAdmin')->group(function(){
         Route::get('/check-authenticated', function() {
             return response(['message' => 'You are in', 'status' => 200], 200);
         });    
         //Category
         Route::get('/all-categories', [CategoryController::class, 'index']);
         Route::post('/store-category', [CategoryController::class, 'storeCategory']);
-    });
+        Route::get('/edit-category/{id}', [CategoryController::class, 'editCategory']);
+        Route::put('/update-category/{id}', [CategoryController::class, 'updateCategory']);
+    //});
 });
 
 

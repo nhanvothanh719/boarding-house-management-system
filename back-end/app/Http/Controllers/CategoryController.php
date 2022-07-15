@@ -52,4 +52,49 @@ class CategoryController extends Controller
         }
     }
 
+    public function editCategory($id) {
+        $category = Category::find($id);
+        if($category) {
+            return response([
+                'status' => 200,
+                'category' => $category,
+            ]);
+        }
+        else {
+            return response([
+                'status' => 404,
+                'message' => 'No category ID found',
+            ]);
+        }
+    }
+
+    public function updateCategory(Request $request, $id) {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'price' => 'required',
+        ]);
+        if($validator->fails())
+        {
+            return response([
+                'errors' => $validator->messages(),
+                'status' => 422, //Unprocessable entity
+            ]);
+        }
+        $category = Category::find($id);
+        if($category) {
+            $category->name = $request->name;
+            $category->price = $request->price;
+            $category->description = $request->description;
+            $category->save();
+            return response([
+                'message' => 'Successfully update category',
+                'status' => 200,
+            ], 200);
+        } else {
+            return response([
+                'message' => 'No category ID found',
+                'status' => 404,
+            ], 200);
+        }
+    }
 }

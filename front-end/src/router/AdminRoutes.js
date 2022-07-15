@@ -12,7 +12,7 @@ const routes = [
     { path: '/admin/renters/:renterID', exact: true, name: 'RenterDetails', component: RenterDetails },
     { path: '/admin/create-category', exact: true, name: 'CreateCategory', component: CreateCategory },
     { path: '/admin/view-all-categories', exact: true, name: 'ViewAllCategories', component: CategoriesList },
-    { path: '/admin/edit-category', exact: true, name: 'EditCategory', component: EditCategory },
+    { path: '/admin/edit-category/:categoryID', exact: true, name: 'EditCategory', component: EditCategory },
 ]
 
 export default routes;

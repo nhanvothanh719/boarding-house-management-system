@@ -21,15 +21,15 @@ function LoginPage(props) {
   useEffect(() => {
     window.scroll(0, 0);
     //Get user credentials
-    axios
-      .get("/get-user-profile")
-      .then((response) => {
-        setUser(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  });
+    // axios
+    //   .get("/get-user-profile")
+    //   .then((response) => {
+    //     setUser(response.data);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
+  }, []);
 
   const setUser = (user) => {
     setCurrentUser(user);
@@ -43,7 +43,7 @@ function LoginPage(props) {
     };
 
     axios
-      .post("/login", data)
+      .post(AppUrl.Login, data)
       .then((response) => {
         localStorage.setItem("token", response.data.token);
         setIsLogin(true);
@@ -60,12 +60,8 @@ function LoginPage(props) {
     if (isAdmin === false) {
       return <Redirect to={"/admin/dashboard"} />;
     }
-    return <Redirect to={"/user-profile"} />;
+    return <Redirect to={"/home"} />;
   }
-  //Protect URL
-  // if (localStorage.getItem("token")) {
-  //   return <Redirect to={"user-profile"} />;
-  // }
   return (
     <Fragment>
       <NavBar user={user} setUser={setUser} />

@@ -1,11 +1,13 @@
 import axios from "axios";
 import React, { Fragment, useState, useEffect } from "react";
+import { Link, useHistory } from "react-router-dom";
 import Loading from "../../components/Loading";
 import AppUrl from "../../RestAPI/AppUrl";
-import { Link, Redirect } from "react-router-dom";
 import MaterialTable from "material-table";
 
 function CategoriesList() {
+  const history = useHistory();
+
   const [loading, setLoading] = useState(true);
   const [categoriesList, setCategoryList] = useState([]);
 
@@ -58,9 +60,8 @@ function CategoriesList() {
             actions={[
               {
                 icon: () => <button className="btn btn-warning">Edit</button>,
-                onClick: (event, data) => (
-                  <Redirect to={`/admin/edit-category/${data.id}`}></Redirect>
-                ),
+                onClick: (event, data) => 
+                  history.push(`/admin/edit-category/${data.id}`)
               },
               {
                 icon: () => <button className="btn btn-danger">Delete</button>,
