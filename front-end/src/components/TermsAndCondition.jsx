@@ -1,8 +1,7 @@
-import React, { Component, Fragment } from "react";
+import React, { Fragment } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 
-export class TermsAndCondition extends Component {
-  render() {
+function TermsAndCondition() {
     return (
       <Fragment>
         <Container>
@@ -75,6 +74,5 @@ export class TermsAndCondition extends Component {
       </Fragment>
     );
   }
-}
 
 export default TermsAndCondition;
