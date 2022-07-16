@@ -1,10 +1,12 @@
 import React, { Fragment, useState } from "react";
 import "../../assets/css/Dashboard/form.css";
 import AppUrl from "../../RestAPI/AppUrl";
+import { useHistory } from "react-router-dom";
 import swal from "sweetalert";
 import axios from "axios";
 
 function CreateCategory() {
+  const history = useHistory();
   const [input, setInput] = useState({
     name: "",
     price: "",
@@ -33,6 +35,8 @@ function CreateCategory() {
           document.getElementById("inputPrice").value = "";
           document.getElementById("inputDescription").value = "";
           swal("Success", response.data.message, "success");
+          history.push("/admin/view-all-categories");
+
         } else if (response.data.status === 400) {
           setInput({ ...input, errors_list: response.data.errors });
         }

@@ -19,8 +19,8 @@ function EditCategory({ match }) {
         setLoading(false);
       } else if (response.data.status === 404) {
         swal("Error", response.data.message, "error");
-        history.push("/admin/view-all-categories");
       }
+      history.push("/admin/view-all-categories");
     });
   }, [categoryId]);
 

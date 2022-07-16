@@ -4,6 +4,7 @@ import { Link, useHistory } from "react-router-dom";
 import Loading from "../../components/Loading";
 import AppUrl from "../../RestAPI/AppUrl";
 import MaterialTable from "material-table";
+import swal from "sweetalert";
 
 function CategoriesList() {
   const history = useHistory();
@@ -19,6 +20,22 @@ function CategoriesList() {
       setLoading(false);
     });
   }, []);
+
+  const deleteCategory = (e, id) => {
+    e.preventDefault();
+    const selectedCategory = e.currentTarget;
+    selectedCategory.innerText = "Deleting";
+    axios.delete(`/delete-category/${id}`).then((response) => {
+      if (response.data.status === 200) {
+        swal("Success", response.data.message, "success");
+        //Delete table row
+        selectedCategory.closest("tr").remove();
+      } else if (response.data.status === 404) {
+        swal("Success", response.data.message, "success");
+        selectedCategory.innerText = "Delete";
+      }
+    });
+  };
 
   var columns = [];
   if (loading) {
@@ -60,12 +77,13 @@ function CategoriesList() {
             actions={[
               {
                 icon: () => <button className="btn btn-warning">Edit</button>,
-                onClick: (event, data) => 
-                  history.push(`/admin/edit-category/${data.id}`)
+                onClick: (event, category) =>
+                  history.push(`/admin/edit-category/${category.id}`),
               },
               {
                 icon: () => <button className="btn btn-danger">Delete</button>,
-                onClick: (event, data) => console.log(data),
+                onClick: (event, category) =>
+                  deleteCategory(event, category.id),
               },
             ]}
           />

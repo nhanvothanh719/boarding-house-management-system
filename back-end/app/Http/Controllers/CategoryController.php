@@ -89,12 +89,28 @@ class CategoryController extends Controller
             return response([
                 'message' => 'Successfully update category',
                 'status' => 200,
-            ], 200);
+            ]);
         } else {
             return response([
                 'message' => 'No category ID found',
                 'status' => 404,
-            ], 200);
+            ]);
+        }
+    }
+
+    public function deleteCategory($id) {
+        $category = Category::find($id);
+        if($category) {
+            $category->delete();
+            return response([
+                'status' => 200,
+                'message' => 'Successfully update category',
+            ]);
+        } else {
+            return response([
+                'message' => 'No category ID found',
+                'status' => 404,
+            ]);
         }
     }
 }
