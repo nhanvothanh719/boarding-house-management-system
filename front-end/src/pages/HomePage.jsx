@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import Features from "../components/Features";
 import TopBanner from "../components/TopBanner";
 import WhyChooseUs from "../components/WhyChooseUs";
@@ -8,44 +8,37 @@ import Footer from "../components/Footer";
 import NavBar from "../components/NavBar";
 import axios from "axios";
 
-class HomePage extends Component {
-  constructor() {
-    super();
-    this.state = {
-      user: {},
-    };
-  }
+function HomePage() {
+  const [user, setCurrentUser] = useState({});
 
-  componentDidMount() {
+  useEffect(() => {
     window.scroll(0, 0);
     //Get user credentials
-    axios
-      .get("/get-user-profile")
-      .then((response) => {
-        this.setUser(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
+    // axios
+    //   .get("/get-user-profile")
+    //   .then((response) => {
+    //     setUser(response.data);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
+  });
 
-  setUser = (user) => {
-    this.setState({ user: user });
+  const setUser = (user) => {
+    setCurrentUser(user);
   };
 
-  render() {
-    return (
-      <Fragment>
-        <NavBar user={this.state.user} setUser={this.setUser} />
-        <WebPageTitle pageTitle="Home" />
-        <TopBanner />
-        <Features />
-        <WhyChooseUs />
-        <ContactUs />
-        <Footer />
-      </Fragment>
-    );
-  }
+  return (
+    <Fragment>
+      <NavBar user={user} setUser={setUser} />
+      <WebPageTitle pageTitle="Home" />
+      <TopBanner />
+      <Features />
+      <WhyChooseUs />
+      <ContactUs />
+      <Footer />
+    </Fragment>
+  );
 }
 
 export default HomePage;

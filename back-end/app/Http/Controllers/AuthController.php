@@ -64,9 +64,11 @@ class AuthController extends Controller
                 'occupation' => $request->occupation,
                 'permanent_address' => $request->permanent_address,
             ]);
+            $token = $user->createToken('auth_token_check')->accessToken;
             return response([
                 'message' => 'Register successfully',
                 'user' => $user,
+                'status' => 200,
             ], 200);
         }
         catch(Exception $exception) {
@@ -81,6 +83,7 @@ class AuthController extends Controller
         auth()->user()->tokens()->delete();
         return response([
             'message' => 'Log out successfully',
+            'status' => 200,
         ], 200); //OK
         }
         catch(Exception $exception) {

@@ -1,172 +1,164 @@
-import React, { Component, Fragment } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { Navbar, Nav } from "react-bootstrap";
 import axios from "axios";
 import alert from "sweetalert";
 
-export class NavBar extends Component {
-  constructor() {
-    super();
-    this.state = {
-      navBarTitle: "brandName",
-      navBarColor: "navBar",
-      navBarItem: "navItem",
-      isLogout: "",
-    };
-  }
-  onScroll = () => {
-    if (window.scrollY < 300) {
-      this.setState({ navBarTitle: "brandName" });
-      this.setState({ navBarColor: "navBar" });
-      this.setState({ navBarItem: "navItem" });
-    } else if (window.scrollY > 300) {
-      this.setState({ navBarTitle: "brandNameScroll" });
-      this.setState({ navBarColor: "navBarScroll" });
-      this.setState({ navBarItem: "navItemScroll" });
-    }
-  };
-  componentDidMount() {
-    window.addEventListener("scroll", this.onScroll);
-  }
-  logout = (e) => {
+function NavBar(props) {
+  const [navBarTitle, setNavBarTitle] = useState("brandName");
+  const [navBarColor, setNavBarColor] = useState("navBar");
+  const [navBarItem, setNavBarItem] = useState("navItem");
+
+  useEffect(() => {
+    window.addEventListener("scroll", () => {
+      if (window.scrollY < 300) {
+        setNavBarTitle("brandName");
+        setNavBarColor("navBar");
+        setNavBarItem("navItem");
+      } else if (window.scrollY > 300) {
+        setNavBarTitle("brandNameScroll");
+        setNavBarColor("navBarScroll");
+        setNavBarItem("navItemScroll");
+      }});
+  }, []);
+
+  const logout = (e) => {
     e.preventDefault();
-    axios.post('/logout').then(response => {
+    axios.post("/logout").then((response) => {
       //Remove the token
-    localStorage.clear();
-    //Remove all user data
-    this.props.setUser(null);
-    alert("Success", response.data.message, "success");
-    }
-    )
+      localStorage.clear();
+      //Remove all user data
+      props.setUser(null);
+      alert("Success", response.data.message, "success");
+    });
   };
-  render() {
-    let login;
-    let profile;
-    if (localStorage.getItem("token")) {
-      login = (
-        <Nav.Link>
-          <NavLink
-            className={this.state.navBarItem}
-            to="/"
-            onClick={this.logout}
-            exact
-            activeStyle={{ color: "yellow" }}
-          >
-            LOGOUT
-          </NavLink>
-        </Nav.Link>
-      );
-      profile = (
-        <Nav.Link>
-          <NavLink
-            to="/user-profile"
-            exact
-            activeStyle={{ color: "yellow" }}
-            className={this.state.navBarItem}
-          >
-            PROFILE
-          </NavLink>
-        </Nav.Link>
-      );
-    } else {
-      login = (
-        <Nav.Link>
-            <NavLink
-              to="/login"
-              exact
-              activeStyle={{ color: "yellow" }}
-              className={this.state.navBarItem}
-            >
-              LOGIN
-            </NavLink>
-        </Nav.Link>
-      );
-    }
-    return (
-      <Fragment>
-        <Navbar
-          collapseOnSelect
-          fixed="top"
-          expand="lg"
-          variant="dark"
-          className={this.state.navBarColor}
+  let login;
+  let profile;
+  if (localStorage.getItem("token")) {
+    login = (
+      <Nav.Link>
+        <NavLink
+          className={navBarItem}
+          to="/"
+          onClick={logout}
+          exact
+          activeStyle={{ color: "yellow" }}
         >
-          <Navbar.Brand >
-            <NavLink exact to="/" className={this.state.navBarTitle}>
-            BeeHouse
-            </NavLink>
-          </Navbar.Brand>
-          <Navbar.Toggle aria-controls="responsive-navbar-nav"/>
-          <Navbar.Collapse id="responsive-navbar-nav">
-            <Nav className="mr-auto">
-              <Nav.Link>
-                <NavLink
-                  to="/"
-                  exact
-                  activeStyle={{ color: "yellow" }}
-                  className={this.state.navBarItem}
-                >
-                  HOME
-                </NavLink>
-              </Nav.Link>
-              <Nav.Link>
-                <NavLink
-                  to="/features"
-                  exact
-                  activeStyle={{ color: "yellow" }}
-                  className={this.state.navBarItem}
-                >
-                  FEATURES
-                </NavLink>
-              </Nav.Link>
-              <Nav.Link>
-                <NavLink
-                  to="/why-choose-us"
-                  exact
-                  activeStyle={{ color: "yellow" }}
-                  className={this.state.navBarItem}
-                >
-                  WHY CHOOSE US?
-                </NavLink>
-              </Nav.Link>
-              <Nav.Link>
-                <NavLink
-                  to="/available-rooms"
-                  exact
-                  activeStyle={{ color: "yellow" }}
-                  className={this.state.navBarItem}
-                >
-                  AVAILABLE ROOMS
-                </NavLink>
-              </Nav.Link>
-              <Nav.Link>
-                <NavLink
-                  to="/contact-us"
-                  exact
-                  activeStyle={{ color: "yellow" }}
-                  className={this.state.navBarItem}
-                >
-                  CONTACT US
-                </NavLink>
-              </Nav.Link>
-              {profile}
-              <Nav.Link>
-                <NavLink
-                  to="/admin/dashboard"
-                  exact
-                  activeStyle={{ color: "yellow" }}
-                  className={this.state.navBarItem}
-                >
-                  DASHBOARD
-                </NavLink>
-              </Nav.Link>
-            </Nav>
-            <Nav>{login}</Nav>
-          </Navbar.Collapse>
-        </Navbar>
-      </Fragment>
+          LOGOUT
+        </NavLink>
+      </Nav.Link>
+    );
+    profile = (
+      <Nav.Link>
+        <NavLink
+          to="/user-profile"
+          exact
+          activeStyle={{ color: "yellow" }}
+          className={navBarItem}
+        >
+          PROFILE
+        </NavLink>
+      </Nav.Link>
+    );
+  } else {
+    login = (
+      <Nav.Link>
+        <NavLink
+          to="/login"
+          exact
+          activeStyle={{ color: "yellow" }}
+          className={navBarItem}
+        >
+          LOGIN
+        </NavLink>
+      </Nav.Link>
     );
   }
+
+  return (
+    <Fragment>
+      <Navbar
+        collapseOnSelect
+        fixed="top"
+        expand="lg"
+        variant="dark"
+        className={navBarColor}
+      >
+        <Navbar.Brand>
+          <NavLink exact to="/" className={navBarTitle}>
+            BeeHouse
+          </NavLink>
+        </Navbar.Brand>
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav className="mr-auto">
+            <Nav.Link>
+              <NavLink
+                to="/"
+                exact
+                activeStyle={{ color: "yellow" }}
+                className={navBarItem}
+              >
+                HOME
+              </NavLink>
+            </Nav.Link>
+            <Nav.Link>
+              <NavLink
+                to="/features"
+                exact
+                activeStyle={{ color: "yellow" }}
+                className={navBarItem}
+              >
+                FEATURES
+              </NavLink>
+            </Nav.Link>
+            <Nav.Link>
+              <NavLink
+                to="/why-choose-us"
+                exact
+                activeStyle={{ color: "yellow" }}
+                className={navBarItem}
+              >
+                WHY CHOOSE US?
+              </NavLink>
+            </Nav.Link>
+            <Nav.Link>
+              <NavLink
+                to="/available-rooms"
+                exact
+                activeStyle={{ color: "yellow" }}
+                className={navBarItem}
+              >
+                AVAILABLE ROOMS
+              </NavLink>
+            </Nav.Link>
+            <Nav.Link>
+              <NavLink
+                to="/contact-us"
+                exact
+                activeStyle={{ color: "yellow" }}
+                className={navBarItem}
+              >
+                CONTACT US
+              </NavLink>
+            </Nav.Link>
+            {profile}
+            <Nav.Link>
+              <NavLink
+                to="/admin/dashboard"
+                exact
+                activeStyle={{ color: "yellow" }}
+                className={navBarItem}
+              >
+                DASHBOARD
+              </NavLink>
+            </Nav.Link>
+          </Nav>
+          <Nav>{login}</Nav>
+        </Navbar.Collapse>
+      </Navbar>
+    </Fragment>
+  );
 }
 
 export default NavBar;

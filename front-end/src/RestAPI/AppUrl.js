@@ -1,6 +1,9 @@
 class AppUrl {
   //Set base URL
   static BaseURL = "http://127.0.0.1:8000/api";
+
+  static Login = this.BaseURL + '/login';
+  static GetUserProfile = this.BaseURL  + '/get-user-profile';
   
   static ContactUs = this.BaseURL + '/contact-us';
 
@@ -8,6 +11,9 @@ class AppUrl {
   static AvailableRoomDetails = this.BaseURL + '/room-details/';
 
   static CheckAuthenticated = this.BaseURL + '/check-authenticated';
+
+  static StoreCategory = this.BaseURL + '/store-category';
+  static ShowCategories = this.BaseURL + '/all-categories';
 }
 
 export default AppUrl;

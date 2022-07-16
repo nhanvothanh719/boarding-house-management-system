@@ -1,15 +1,8 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 
-export class WebPageTitle extends Component {
-  constructor(props) {
-    super();
-    this.state = {
-      webPageTitle: props.pageTitle,
-    };
-  }
-  render() {
-    return <title>{ this.state.webPageTitle }</title>;
-  }
+function WebPageTitle(props) {
+  const [webPageTitle] = useState(props.pageTitle);
+  return <title>{webPageTitle}</title>;
 }
 
 export default WebPageTitle;

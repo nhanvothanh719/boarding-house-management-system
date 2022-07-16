@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import PageTitle from "../components/PageTitle";
 import Features from "../components/Features";
 import WebPageTitle from "../components/WebPageTitle";
@@ -6,42 +6,35 @@ import Footer from "../components/Footer";
 import NavBar from "../components/NavBar";
 import axios from "axios";
 
-class FeaturesPage extends Component {
-  constructor() {
-    super();
-    this.state = {
-      user: {},
-    };
-  }
+function FeaturesPage(props) {
+  const [user, setCurrentUser] = useState({});
 
-  componentDidMount() {
+  useEffect(() => {
     window.scroll(0, 0);
     //Get user credentials
     axios
       .get("/get-user-profile")
       .then((response) => {
-        this.setUser(response.data);
+        setUser(response.data);
       })
       .catch((error) => {
         console.log(error);
       });
-  }
+  }, [props.user]);
 
-  setUser = (user) => {
-    this.setState({ user: user });
+  const setUser = (user) => {
+    setCurrentUser(user);
   };
 
-  render() {
-    return (
-      <Fragment>
-        <NavBar user={this.state.user} setUser={this.setUser} />
-        <WebPageTitle pageTitle="Features" />
-        <PageTitle title="Features page" />
-        <Features />
-        <Footer />
-      </Fragment>
-    );
-  }
+  return (
+    <Fragment>
+      <NavBar user={user} setUser={setUser} />
+      <WebPageTitle pageTitle="Features" />
+      <PageTitle title="Features page" />
+      <Features />
+      <Footer />
+    </Fragment>
+  );
 }
 
 export default FeaturesPage;

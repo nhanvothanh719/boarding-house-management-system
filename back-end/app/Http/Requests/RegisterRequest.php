@@ -23,10 +23,17 @@ class RegisterRequest extends FormRequest
      */
     public function rules()
     {
+        $appropriate_time = date('Y-m-d', strtotime(' -18 year'));
         return [
             'name' => 'required|max:50',
             'email' => 'required|unique:users|max:50',
-            'password' => 'required|min:6|confirmed'
+            'password' => 'required|min:6|confirmed',
+            'gender' => 'required',
+            'date_of_birth' => 'required|date|before_or_equal:'.$appropriate_time,
+            'id_card_number' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|size:10',
+            'phone_number' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|size:10',
+            'occupation' => 'required|max:100',
+            'permanent_address' => 'required'
         ];
     }
 }

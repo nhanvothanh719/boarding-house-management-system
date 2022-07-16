@@ -17,13 +17,14 @@ function AdminPrivateRoute({ ...rest }) {
     RestClient.GetRequest(AppUrl.CheckAuthenticated).then((response) => {
       if (response.status === 200) {
         setAuthenticated(true);
-        setLoading(false);
       }
+      setLoading(false);
     });
     return () => {
       setAuthenticated(false);
     };
   }, []);
+
 
   axios.interceptors.response.use(undefined, function axiosRetryInterceptors(error) {
     if(error.response.status === 401) {
