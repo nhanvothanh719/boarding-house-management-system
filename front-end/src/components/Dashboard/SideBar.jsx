@@ -54,7 +54,7 @@ function SideBar() {
                 <span className="itemName"> Renters </span>
               </li>
             </NavLink>
-            <NavLink exact to="/" style={{ textDecoration: "none" }}>
+            <NavLink exact to="/admin/view-all-rooms" style={{ textDecoration: "none" }}>
               <li className="customLi">
                 <MeetingRoomIcon className="sideBarIcon" />
                 <span className="itemName"> Rooms </span>

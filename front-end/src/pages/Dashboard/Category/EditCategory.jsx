@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { Fragment, useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import swal from "sweetalert";
-import Loading from "../../components/Loading";
+import Loading from "../../../components/Loading";
 
 function EditCategory({ match }) {
   const history = useHistory();

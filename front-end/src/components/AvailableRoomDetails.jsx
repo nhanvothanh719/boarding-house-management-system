@@ -27,9 +27,9 @@ function AvailableRoomDetails(props) {
         setStatus(response[0]["status"]);
         setDescription(response[0]["description"]);
         setArea(response[0]["area"]);
-        setHasConditioner(response[0]["hasConditioner"]);
-        setHasFridge(response[0]["hasFridge"]);
-        setHasWardrobe(response[0]["hasWardrobe"]);
+        setHasConditioner(response[0]["has_conditioner"]);
+        setHasFridge(response[0]["has_fridge"]);
+        setHasWardrobe(response[0]["has_wardrobe"]);
         setLoading(false);
       }
     );

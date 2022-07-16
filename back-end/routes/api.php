@@ -33,6 +33,9 @@ Route::middleware('auth:api')->group(function(){
         Route::get('/edit-category/{id}', [CategoryController::class, 'editCategory']);
         Route::put('/update-category/{id}', [CategoryController::class, 'updateCategory']);
         Route::delete('/delete-category/{id}', [CategoryController::class, 'deleteCategory']);
+
+        //Room
+        Route::get('/all-rooms', [RoomController::class, 'index']);
     //});
 });
 

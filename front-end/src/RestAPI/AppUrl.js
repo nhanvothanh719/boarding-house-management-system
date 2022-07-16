@@ -14,6 +14,9 @@ class AppUrl {
 
   static StoreCategory = this.BaseURL + '/store-category';
   static ShowCategories = this.BaseURL + '/all-categories';
+
+  static StoreRoom = this.BaseURL + '/store-room';
+  static ShowRooms = this.BaseURL + '/all-rooms';
 }
 
 export default AppUrl;
