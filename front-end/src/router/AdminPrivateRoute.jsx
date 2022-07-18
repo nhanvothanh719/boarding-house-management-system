@@ -26,13 +26,13 @@ function AdminPrivateRoute({ ...rest }) {
   }, []);
 
 
-  axios.interceptors.response.use(undefined, function axiosRetryInterceptors(error) {
-    if(error.response.status === 401) {
-      swal("Unauthenticated", error.response.data.message, "warning");
-      history.push("/home");
-    }
-    return Promise.reject(error);
-  });
+  // axios.interceptors.response.use(undefined, function axiosRetryInterceptors(error) {
+  //   if(error.response.status === 401) {
+  //     swal("Unauthenticated", error.response.data.message, "warning");
+  //     history.push("/home");
+  //   }
+  //   return Promise.reject(error);
+  // });
 
   axios.interceptors.response.use(undefined, function axiosRetryInterceptors(error) {
     if(error.response.status === 403) { //Access denied

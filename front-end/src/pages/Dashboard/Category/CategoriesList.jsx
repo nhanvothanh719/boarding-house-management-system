@@ -14,7 +14,7 @@ function CategoriesList() {
 
   useEffect(() => {
     axios.get(AppUrl.ShowCategories).then((response) => {
-      if (response.status === 200) {
+      if (response.data.status === 200) {
         setCategoryList(response.data.allCategories);
       }
       setLoading(false);

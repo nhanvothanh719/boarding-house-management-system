@@ -26,7 +26,6 @@ export default function RoomsList() {
     return <Loading />;
   } else {
     columns = [
-      { field: "id", title: "ID", align: "center" },
       { field: "number", title: "Number", align: "center" },
       { field: "category_id", title: "Category ID" },
       { field: "status", title: "Status", lookup: {0:"Full", 1:"Occupied", 2:"Empty"} },

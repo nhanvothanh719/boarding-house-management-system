@@ -23,7 +23,7 @@ Route::middleware('auth:api')->group(function(){
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/get-user-profile', [UserController::class, 'getUser']);
     //Dashboard
-    //Route::middleware('isAdmin')->group(function(){
+    Route::middleware('isAdmin')->group(function(){
         Route::get('/check-authenticated', function() {
             return response(['message' => 'You are in', 'status' => 200], 200);
         });    
@@ -36,7 +36,8 @@ Route::middleware('auth:api')->group(function(){
 
         //Room
         Route::get('/all-rooms', [RoomController::class, 'index']);
-    //});
+        Route::post('/store-room', [RoomController::class, 'storeRoom']);
+    });
 });
 
 
