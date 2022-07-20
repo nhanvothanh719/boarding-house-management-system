@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 use App\Models\Room;
+use App\Models\RoomImages;
 
 class RoomController extends Controller
 {
@@ -34,6 +35,7 @@ class RoomController extends Controller
             'category_id' => 'required',
             'area' => 'required|digits_between:2,4',
             'description' => 'required',
+            'image' => 'image',
 
         ]);
         if($validator->fails())
@@ -53,16 +55,22 @@ class RoomController extends Controller
             $room->has_conditioner = $request->input('has_conditioner') == true ? '1' : '0';
             $room->has_fridge = $request->input('has_fridge') == true ? '1' : '0';
             $room->has_wardrobe = $request->input('has_wardrobe') == true ? '1' : '0';
-            // if($request->hasFile('image')) {
-            //     $file = $request->file('image');
-            //     $extension = $file->getClientOriginalExtension();
-            //     $fileName = $time().'.'.$extension;
-            //     //Save img in public folder
-            //     $file->move('uploaded/rooms/', $fileName);
-            //     //Save img in database
-            //     $room->image = 'uploaded/rooms/'.$fileName;
-            // }
             $room->save();
+            if($request->hasFile('image')) {
+                $file = $request->file('image');
+                //Create a unique file name
+                $generated_name = hexdec(uniqid());
+                $extension = $file->getClientOriginalExtension();
+                $file_name = $generated_name.'.'.$extension;
+                $upload_folder = 'uploaded/rooms/';
+                //Save img in public folder
+                $file->move($upload_folder, $file_name);
+                //Save img in database
+                $room_image = new RoomImages;
+                $room_image->room_number = $room->number;
+                $room_image->image_name = $upload_folder.$file_name;
+                $room_image->save();
+            }
             return response([
                 'message' => 'Successfully create new room',
                 'status' => 200,

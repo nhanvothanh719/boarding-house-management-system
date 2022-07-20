@@ -13,7 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('rooms', function (Blueprint $table) {
+        Schema::create('room_images', function (Blueprint $table) {
+            $table->id();
+            $table->integer('room_number');
+            $table->foreign('room_number')->references('number')->on('rooms');
+            $table->string('image_name')->unique();
             $table->timestamps();
         });
     }
@@ -25,8 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('rooms', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('room_images');
     }
 };
