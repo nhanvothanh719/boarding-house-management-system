@@ -42,13 +42,13 @@ export default function CreateRoom() {
   // };
 
   const handleImage = (e) => {
-    setPicture({ image: e.target.file[0] });
+    setPicture({ image: e.target.files[0] });
   }
 
   const createRoom = (e) => {
     e.preventDefault();
     const newRoom = new FormData();
-    // newRoom.append('image', picture.image);
+    newRoom.append('image', picture.image);
     newRoom.append('category_id', input.category_id);
     newRoom.append('status', input.status);
     newRoom.append('number', input.number);
@@ -58,12 +58,6 @@ export default function CreateRoom() {
     newRoom.append('has_fridge', input.has_fridge);
     newRoom.append('has_wardrobe', input.has_wardrobe);
 
-    // {
-    //   category_id: input.category_id,
-    //   number: input.number,
-    //   description: input.description,
-    //   area: input.area,
-    // };
     axios
       .post(AppUrl.StoreRoom, newRoom)
       .then((response) => {
@@ -203,7 +197,7 @@ export default function CreateRoom() {
                 onChange={handleImage}
               />
             </div>
-
+            <small className="text-danger">{errors.image}</small>
             <button type="submit" className="formButton">
               Create
             </button>

@@ -15,13 +15,16 @@ return new class extends Migration
     {
         Schema::create('rooms', function (Blueprint $table) {
             $table->id();
-            $table->char('number', 3);
+            $table->integer('number')->unique();
             $table->tinyInteger('status')->unsigned();
+            $table->bigInteger('category_id')->unsigned();
+            $table->foreign('category_id')->references('id')->on('categories');
             $table->text('description');
             $table->float('area');
-            $table->tinyInteger('hasConditioner')->unsigned()->default(0);
-            $table->tinyInteger('hasFridge')->unsigned()->default(0);
-            $table->tinyInteger('hasWardrobe')->unsigned()->default(0);
+            $table->tinyInteger('has_conditioner')->unsigned()->default(0);
+            $table->tinyInteger('has_fridge')->unsigned()->default(0);
+            $table->tinyInteger('has_wardrobe')->unsigned()->default(0);
+            $table->timestamps();
         });
     }
 
