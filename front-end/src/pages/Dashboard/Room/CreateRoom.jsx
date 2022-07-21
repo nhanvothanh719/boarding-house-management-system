@@ -20,7 +20,7 @@ export default function CreateRoom() {
     }
   );
   //const [checkboxes, setCheckboxes] = useState(false);
-  const [picture, setPicture] = useState([]);
+  const [picture, setPicture] = useState('');
   const [errors, setErrors] = useState([]);
 
   useEffect(() => {
@@ -41,14 +41,47 @@ export default function CreateRoom() {
   //   setCheckboxes({ ...checkboxes, [e.target.name]: e.target.checked });
   // };
 
+  //let imgs = [];
+
   const handleImage = (e) => {
-    setPicture({ image: e.target.files[0] });
+    // setPicture([]);
+    // if(e.target.files) {
+    //   const filesArray = Array.from(e.target.files).map((file) => URL.createObjectURL(file));
+    //   setPicture((prevImages) => prevImages.concat(filesArray));
+    //   Array.from(e.target.files).map(
+    //     (file) => URL.revokeObjectURL(file)
+    //   );
+    //   //etPicture(e.target[0].files);
+    // }
+    //setPicture({ image: e.target.files[0] });
+    
+    // for (let i = 0; i < e.target.files.length; i++) {
+    //    imgs.push(e.target.files[i]);
+    // }
+    // setPicture({ image: imgs });
+    setPicture(e.target.files);
   }
+
+  // const renderImages = (source) => {
+  //   return source.map((photo) => {
+  //     return <img className="p-2" alt="" src={photo} key={photo} style={{ width: "20%", height: "180px" }}></img>
+  //   });
+  // }
+
+  // const handleImage = (e) => {
+  //   setPicture( e.target.files[0] );
+  // }
 
   const createRoom = (e) => {
     e.preventDefault();
     const newRoom = new FormData();
-    newRoom.append('image', picture.image);
+    for(let i = 0; i < picture.length; i++) {
+
+      //Appends a new value onto an existing key inside a FormData object 
+      //or adds the key if it does not already exist.
+      newRoom.append(`image[${i}]`, picture[i]);
+      console.log(picture[i]);
+    }
     newRoom.append('category_id', input.category_id);
     newRoom.append('status', input.status);
     newRoom.append('number', input.number);
@@ -62,8 +95,6 @@ export default function CreateRoom() {
       .post(AppUrl.StoreRoom, newRoom)
       .then((response) => {
         if (response.data.status === 200) {
-          //Delete input after submit the form
-          //document.getElementById("").value = "";
           swal("Success", response.data.message, "success");
           setErrors([]);
           history.push("/admin/view-all-rooms");
@@ -77,7 +108,7 @@ export default function CreateRoom() {
       .catch((error) => {
         console.log(error);
       });
-  };
+  }
 
   return (
     <Fragment>
@@ -90,7 +121,7 @@ export default function CreateRoom() {
           <form
             encType="multipart/form-data"
             className="flexForm"
-            onSubmit={createRoom}
+            onSubmit={(e) => createRoom(e)}
             id="createCategoryForm"
           >
             <div className="formInput">
@@ -191,12 +222,15 @@ export default function CreateRoom() {
               <label>Image:</label>
               <input
                 type="file"
-                className="inputItem"
-                name="image"
+                className="form-control"
+                //name="image[]"
+                name="image[]"
                 id="inputImage"
                 onChange={handleImage}
+                multiple
               />
             </div>
+            {/* <div>{renderImages(picture)}</div> */}
             <small className="text-danger">{errors.image}</small>
             <button type="submit" className="formButton">
               Create
