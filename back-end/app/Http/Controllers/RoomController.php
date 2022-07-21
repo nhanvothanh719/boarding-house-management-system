@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Input;
 
 use App\Models\Room;
 use App\Models\RoomImages;
+use App\Models\Category;
 
 class RoomController extends Controller
 {
@@ -27,7 +28,18 @@ class RoomController extends Controller
 
     public function getRoomDetails($id) {
         $room_details = Room::where('id', $id)->get();
-        return $room_details;
+        $room_number = Room::where('id', $id)->value('number');
+        $room_category_id = Room::where('id', $id)->value('category_id');
+        $category = Category::where('id', $room_category_id)->get('name');
+        $room_images = RoomImages::where('room_number', $room_number)->get();
+        return response([
+            'details' => $room_details,
+            'images' => $room_images,
+            'category' => $category,
+            'room_category_id' => $room_category_id,
+            'room_number' => $room_number,
+            'status' => 200,
+        ]);
     }
 
     public function storeRoom6(Request $request) {
