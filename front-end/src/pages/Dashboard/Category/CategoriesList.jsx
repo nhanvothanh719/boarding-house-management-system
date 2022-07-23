@@ -25,13 +25,14 @@ function CategoriesList() {
     e.preventDefault();
     const selectedCategory = e.currentTarget;
     selectedCategory.innerText = "Deleting";
-    axios.delete(`/delete-category/${id}`).then((response) => {
+    axios.delete(AppUrl.DeleteCategory + id).then((response) => {
       if (response.data.status === 200) {
         swal("Success", response.data.message, "success");
         //Delete table row
         selectedCategory.closest("tr").remove();
+        history.push('/admin/view-all-categories');
       } else if (response.data.status === 404) {
-        swal("Success", response.data.message, "success");
+        swal("Fail", response.data.message, "error");
         selectedCategory.innerText = "Delete";
       }
     });

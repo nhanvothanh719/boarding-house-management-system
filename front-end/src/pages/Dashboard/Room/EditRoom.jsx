@@ -139,29 +139,6 @@ export default function EditRoom({ match }) {
             </div>
             <small className="text-danger">{errors.number}</small>
             <div className="formInput">
-              <label>Status:</label>
-              <select
-                class="form-control"
-                name="status"
-                onChange={handleInput}
-                value={input.status}
-              >
-                <option value="0" key="0">
-                  {" "}
-                  Full{" "}
-                </option>
-                <option value="1" key="1">
-                  {" "}
-                  Hectic{" "}
-                </option>
-                <option value="2" key="2" selected>
-                  {" "}
-                  Empty{" "}
-                </option>
-              </select>
-            </div>
-            <small className="text-danger">{errors.status}</small>
-            <div className="formInput">
               <label>Category:</label>
               <select
                 className="form-control"

@@ -4,6 +4,7 @@ import Loading from "../../../components/Loading";
 import AppUrl from "../../../RestAPI/AppUrl";
 import MaterialTable from "material-table";
 import axios from "axios";
+import swal from "sweetalert";
 
 
 export default function RoomsList() {
@@ -28,7 +29,7 @@ export default function RoomsList() {
     columns = [
       { field: "number", title: "Number", align: "center" },
       { field: "category_id", title: "Category ID" },
-      { field: "status", title: "Status", lookup: {0:"Full", 1:"Occupied", 2:"Empty"} },
+      { field: "status", title: "Status", lookup: {0:"Empty", 1:"Occupied", 2:"Full"} },
       {
         field: "description",
         title: "Description",
@@ -39,6 +40,23 @@ export default function RoomsList() {
       { field: "has_fridge", title: "Fridge", lookup: {0:"No", 1:"Yes"} },
       { field: "has_wardrobe", title: "Wardrobe", lookup: {0:"No", 1:"Yes"} },
     ];
+
+    const deleteRoom = (e, id) => {
+      e.preventDefault();
+      const selectedRoom = e.currentTarget;
+      selectedRoom.innerText = "Deleting";
+      axios.delete(AppUrl.DeleteRoom + id).then((response) => {
+        if (response.data.status === 200) {
+          swal("Success", response.data.message, "success");
+          //Delete table row
+          selectedRoom.closest("tr").remove();
+          history.push('/admin/view-all-rooms');
+        } else if (response.data.status === 404) {
+          swal("Fail", response.data.message, "error");
+          selectedRoom.innerText = "Delete";
+        }
+      });
+    };
 
     return (
       <Fragment>
@@ -70,7 +88,8 @@ export default function RoomsList() {
               },
               {
                 icon: () => <button className="btn btn-danger">Delete</button>,
-                onClick: (event, room) => console.log(room.id),
+                onClick: (event, room) => 
+                deleteRoom(event, room.id),
               },
             ]}
           />

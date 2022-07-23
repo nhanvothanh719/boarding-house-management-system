@@ -14,11 +14,15 @@ class AppUrl {
 
   static StoreCategory = this.BaseURL + "/store-category";
   static ShowCategories = this.BaseURL + "/all-categories";
+  static EditCategory = this.BaseURL + "/edit-category/";
+  static UpdateCategory = this.BaseURL + "/update-category/";
+  static DeleteCategory = this.BaseURL + "/delete-category/";
 
   static StoreRoom = this.BaseURL + "/store-room";
   static ShowRooms = this.BaseURL + "/all-rooms";
   static EditRoom = this.BaseURL + "/edit-room/";
   static UpdateRoom = this.BaseURL + "/update-room/";
+  static DeleteRoom = this.BaseURL + "/delete-room/";
 }
 
 export default AppUrl;

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 use Image;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Storage;
@@ -151,15 +152,17 @@ class RoomController extends Controller
             if($request->hasFile('image')) {
                 $upload_folder = 'uploaded/rooms/'.$room->number.'/';
                 //Delete existed images:
-                    //In folder
-                    if (File::exists($upload_folder)) {
-                        $old_images = Storage::allFiles('public/'.$upload_folder);
-                        foreach ($old_images as $old_image) {
-                            unlink($old_image);
-                        }
+                //In folder
+                if(File::exists($upload_folder)) {
+                    $images = DB::table('room_images')
+                    ->where('room_id', $id)
+                    ->pluck('image_name');
+                    foreach ($images as $image) {
+                        unlink($image);
                     }
-                    //In database
-                    RoomImages::where('room_id', $id)->delete();
+                }
+                //In database
+                RoomImages::where('room_id', $id)->delete();
                 //Store new images
                 $files = $request->file('image');
                 if(!file_exists($upload_folder)) {
@@ -189,6 +192,34 @@ class RoomController extends Controller
             ]);
         }
     }
-    
 
+    public function deleteRoom($id) {
+        $room = Room::find($id);
+        if($room) {
+            $room_status = Room::where('id', $id)->value('status');
+            $room_number = Room::where('id', $id)->value('number');
+            if($room_status > 0) {
+                return response([
+                    'message' => 'Cannot delete room' .$room_number. ' since it is used: ',
+                    'status' => 404,
+                ]);
+            }
+            //Delete existed images:
+            $upload_folder = 'uploaded/rooms/'.$room_number.'/';
+            //In folder
+            File::deleteDirectory(public_path($upload_folder));
+            //In database
+            RoomImages::where('room_id', $id)->delete();
+            $room->delete();
+            return response([
+                'status' => 200,
+                'message' => 'Successfully delete room',
+            ]);
+        } else {
+            return response([
+                'message' => 'No room with the ID found',
+                'status' => 404,
+            ]);
+        }
+    }
 }

@@ -112,7 +112,7 @@ export default function CreateRoom() {
                 <option selected>--- Select category ---</option>
                 <option value="0" key="0">
                   {" "}
-                  Full{" "}
+                  Empty{" "}
                 </option>
                 <option value="1" key="1">
                   {" "}
@@ -120,7 +120,7 @@ export default function CreateRoom() {
                 </option>
                 <option value="2" key="2">
                   {" "}
-                  Empty{" "}
+                  Full{" "}
                 </option>
               </select>
             </div>

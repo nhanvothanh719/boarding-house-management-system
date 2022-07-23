@@ -39,6 +39,7 @@ Route::middleware('auth:api')->group(function(){
         Route::post('/store-room', [RoomController::class, 'storeRoom']);
         Route::get('/edit-room/{id}', [RoomController::class, 'editRoom']);
         Route::post('/update-room/{id}', [RoomController::class, 'updateRoom']);
+        Route::delete('/delete-room/{id}', [RoomController::class, 'deleteRoom']);
     });
 });
 
