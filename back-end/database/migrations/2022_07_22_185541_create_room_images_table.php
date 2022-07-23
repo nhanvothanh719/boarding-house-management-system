@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('room_images', function (Blueprint $table) {
             $table->id();
-            $table->integer('room_number');
-            $table->foreign('room_number')->references('number')->on('rooms');
+            $table->bigInteger('room_id')->unsigned();
+            $table->foreign('room_id')->references('id')->on('rooms');
             $table->string('image_name')->unique();
             $table->timestamps();
         });

@@ -1,16 +1,25 @@
 import React, { Fragment } from "react";
 import { Carousel, Col, Container, Row } from "react-bootstrap";
-import RestClient from "../RestAPI/RestClient";
 import AppUrl from "../RestAPI/AppUrl";
 import Loading from "./Loading";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
+import RoomPreferencesIcon from '@mui/icons-material/RoomPreferences';
+import PeopleIcon from '@mui/icons-material/People';
+import BeenhereIcon from '@mui/icons-material/Beenhere';
+import SquareFootIcon from '@mui/icons-material/SquareFoot';
+import Label from "@mui/icons-material/Label";
+import HeatPumpIcon from '@mui/icons-material/HeatPump';
+import KitchenIcon from '@mui/icons-material/Kitchen';
+import CheckroomIcon from '@mui/icons-material/Checkroom';
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 
 function AvailableRoomDetails(props) {
   const [roomID] = useState(props.roomId);
   const [room, setRoom] = useState([]);
   const [category, setCategory] = useState('');
+  const [price, setPrice] = useState([]);
   const [images, setImages] = useState([]);
 
   const [loading, setLoading] = useState(true);
@@ -19,11 +28,11 @@ function AvailableRoomDetails(props) {
     axios.get(AppUrl.AvailableRoomDetails + roomID).then(
       (response) => {
         if(response.data.status === 200) {
-          console.log(response.data.images);
+          console.log(response.data);
           setRoom(response.data.details[0]);
           setCategory(response.data.category[0]);
+          setPrice(response.data.price);
           setImages(response.data.images);
-          console.log(images);
           setLoading(false);
         }
       }
@@ -47,6 +56,7 @@ function AvailableRoomDetails(props) {
       )
     })
   }
+  
   return (
     <Fragment>
       <Container className="mb-5">
@@ -69,31 +79,40 @@ function AvailableRoomDetails(props) {
                 <h4 className="widget-title text-center">Room features</h4>
                 <ul>
                   <li>
+                    <RoomPreferencesIcon/>
                     <span>Room number :</span> {room.number}{" "}
                   </li>
                   <li>
+                    <PeopleIcon/>
                     <span>Renter :</span>{" "}
                   </li>
                   <li>
+                    <BeenhereIcon/>
                     <span>Status :</span> {room.status}{" "}
                   </li>
                   <li>
+                    <SquareFootIcon/>
                     <span>Area :</span> {room.area}{" "}
                   </li>
                   <li>
+                    <Label/>
                     <span>Categories :</span> {category.name}{" "}
                   </li>
                   <li>
+                    <HeatPumpIcon/>
                     <span>Conditioner: </span> {room.has_conditioner}{" "}
                   </li>
                   <li>
+                    <KitchenIcon/>
                     <span>Fridge: </span> {room.has_fridge}{" "}
                   </li>
                   <li>
+                    <CheckroomIcon/>
                     <span>Wardrobe: </span> {room.has_wardrobe}{" "}
                   </li>
                   <li>
-                    <span>Price:</span>{" "}
+                    <MonetizationOnIcon/>
+                    <span>Price:</span> ${price}{" "}
                   </li>
                 </ul>
                 <div className="price-wrap text-center">

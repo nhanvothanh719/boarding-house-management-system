@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Image;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File; 
 
 use App\Models\Room;
 use App\Models\RoomImages;
@@ -28,81 +30,17 @@ class RoomController extends Controller
 
     public function getRoomDetails($id) {
         $room_details = Room::where('id', $id)->get();
-        $room_number = Room::where('id', $id)->value('number');
         $room_category_id = Room::where('id', $id)->value('category_id');
+        $room_price= Category::where('id', $room_category_id)->value('price');
         $category = Category::where('id', $room_category_id)->get('name');
-        $room_images = RoomImages::where('room_number', $room_number)->get();
+        $room_images = RoomImages::where('room_id', $id)->get();
         return response([
             'details' => $room_details,
             'images' => $room_images,
             'category' => $category,
-            'room_category_id' => $room_category_id,
-            'room_number' => $room_number,
+            'price' => $room_price,
             'status' => 200,
         ]);
-    }
-
-    public function storeRoom6(Request $request) {
-        $validator = Validator::make($request->all(), [
-            'number' => 'required|unique:rooms',
-            'status' => 'required',
-            'category_id' => 'required',
-            'area' => 'required|digits_between:2,4',
-            'description' => 'required',
-            'image' => 'image',
-
-        ]);
-        if($validator->fails())
-        {
-            return response([
-                'errors' => $validator->messages(),
-                'status' => 422,
-            ]);
-        }
-        try {
-            $room = new Room;
-            $room->number = $request->input('number');
-            $room->status = $request->input('status');
-            $room->category_id = $request->input('category_id');
-            $room->description = $request->input('description');
-            $room->area = $request->input('area');
-            $room->has_conditioner = $request->input('has_conditioner') == true ? '1' : '0';
-            $room->has_fridge = $request->input('has_fridge') == true ? '1' : '0';
-            $room->has_wardrobe = $request->input('has_wardrobe') == true ? '1' : '0';
-            $room->save();
-            if($request->hasFile('image')) {
-                $file = $request->file('image');
-                // return response([
-                //     'file' => $file,
-                // ]);
-                $upload_folder = 'uploaded/rooms/'.$room->number.'/';
-                if (!file_exists($upload_folder)) {
-                    mkdir($upload_folder);
-                }
-                $generated_name = hexdec(uniqid()).'.'.$file->getClientOriginalExtension();
-                $image = $upload_folder.$generated_name;
-                //Save img in public folder
-                Image::make($file)->resize(300, 200)->save($image);
-                //Save img in database
-                $room_image = new RoomImages;
-                $room_image->room_number = $room->number;
-                $room_image->image_name = $image;
-                $room_image->save();
-                return response([
-                    'file' => $request->file('image'),
-                ]);
-            }
-            return response([
-                'message' => 'Successfully create new room',
-                'status' => 200,
-            ], 200);
-        }
-        catch(Exception $exception) {
-            return response([
-                'message' => $exception->getMessage(),
-                'status' => 400,
-            ], 400);
-        }
     }
 
     public function storeRoom(Request $request) {
@@ -134,7 +72,6 @@ class RoomController extends Controller
             
             if($request->hasFile('image')) {
                 $files = $request->file('image');
-                $imageName="";
                 $upload_folder = 'uploaded/rooms/'.$room->number.'/';
                 if(!file_exists($upload_folder)) {
                     mkdir($upload_folder);
@@ -146,7 +83,8 @@ class RoomController extends Controller
                     Image::make($file)->resize(300, 200)->save($image);
                     //Save img in database
                     $room_image = new RoomImages;
-                    $room_image->room_number = $room->number;
+                    $room_id = Room::where('number', $room->number)->value('id');
+                    $room_image->room_id = $room_id;
                     $room_image->image_name = $image;
                     $room_image->save();
                 }
@@ -163,5 +101,94 @@ class RoomController extends Controller
             ], 400);
         }
     }
+
+    public function editRoom($id) {
+        $room = Room::find($id);
+        if($room) {
+            $room_images = RoomImages::where('room_id', $id)->get();
+            return response([
+                'status' => 200,
+                'room' => $room,
+                'images' => $room_images,
+            ]);
+        }
+        else {
+            return response([
+                'status' => 404,
+                'message' => 'No room ID found',
+            ]);
+        }
+    }
+
+    public function updateRoom(Request $request, $id) {
+        $validator = Validator::make($request->all(), [
+            'number' => 'required',
+            'status' => 'required',
+            'category_id' => 'required',
+            'area' => 'required|digits_between:2,4',
+            'description' => 'required',
+        ]);
+        if($validator->fails())
+        {
+            return response([
+                'errors' => $validator->messages(),
+                'status' => 422, //Unprocessable entity
+            ]);
+        }
+        $room = Room::find($id);
+        if($room) {
+            $old_number = Room::where('id', $id)->value('number');
+            $room->number = $request->input('number');
+            $room->status = $request->input('status');
+            $room->category_id = $request->input('category_id');
+            $room->description = $request->input('description');
+            $room->area = $request->input('area');
+            $room->has_conditioner = $request->input('has_conditioner');
+            $room->has_fridge = $request->input('has_fridge');
+            $room->has_wardrobe = $request->input('has_wardrobe');
+            $room->save();
+
+            if($request->hasFile('image')) {
+                $upload_folder = 'uploaded/rooms/'.$room->number.'/';
+                //Delete existed images:
+                    //In folder
+                    if (File::exists($upload_folder)) {
+                        $old_images = Storage::allFiles('public/'.$upload_folder);
+                        foreach ($old_images as $old_image) {
+                            unlink($old_image);
+                        }
+                    }
+                    //In database
+                    RoomImages::where('room_id', $id)->delete();
+                //Store new images
+                $files = $request->file('image');
+                if(!file_exists($upload_folder)) {
+                    mkdir($upload_folder);
+                }
+                foreach ($files as $file) {
+                    $generated_name = hexdec(uniqid()).'.'.$file->getClientOriginalExtension();
+                    $image = $upload_folder.$generated_name;
+                    //Save img in public folder
+                    Image::make($file)->resize(300, 200)->save($image);
+                    //Save img in database
+                    $room_image = new RoomImages;
+                    $room_id = Room::where('number', $room->number)->value('id');
+                    $room_image->room_id = $room_id;
+                    $room_image->image_name = $image;
+                    $room_image->save();
+                }
+            }
+            return response([
+                'message' => 'Successfully update room',
+                'status' => 200,
+            ]);
+        } else {
+            return response([
+                'message' => 'No room ID found',
+                'status' => 404,
+            ]);
+        }
+    }
+    
 
 }

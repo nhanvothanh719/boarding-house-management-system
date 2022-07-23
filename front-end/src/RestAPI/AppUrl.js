@@ -2,21 +2,23 @@ class AppUrl {
   //Set base URL
   static BaseURL = "http://127.0.0.1:8000/api";
 
-  static Login = this.BaseURL + '/login';
-  static GetUserProfile = this.BaseURL  + '/get-user-profile';
-  
-  static ContactUs = this.BaseURL + '/contact-us';
+  static Login = this.BaseURL + "/login";
+  static GetUserProfile = this.BaseURL + "/get-user-profile";
 
-  static AvailableRooms = this.BaseURL + '/all-available-rooms';
-  static AvailableRoomDetails = this.BaseURL + '/room-details/';
+  static ContactUs = this.BaseURL + "/contact-us";
 
-  static CheckAuthenticated = this.BaseURL + '/check-authenticated';
+  static AvailableRooms = this.BaseURL + "/all-available-rooms";
+  static AvailableRoomDetails = this.BaseURL + "/room-details/";
 
-  static StoreCategory = this.BaseURL + '/store-category';
-  static ShowCategories = this.BaseURL + '/all-categories';
+  static CheckAuthenticated = this.BaseURL + "/check-authenticated";
 
-  static StoreRoom = this.BaseURL + '/store-room';
-  static ShowRooms = this.BaseURL + '/all-rooms';
+  static StoreCategory = this.BaseURL + "/store-category";
+  static ShowCategories = this.BaseURL + "/all-categories";
+
+  static StoreRoom = this.BaseURL + "/store-room";
+  static ShowRooms = this.BaseURL + "/all-rooms";
+  static EditRoom = this.BaseURL + "/edit-room/";
+  static UpdateRoom = this.BaseURL + "/update-room/";
 }
 
 export default AppUrl;
