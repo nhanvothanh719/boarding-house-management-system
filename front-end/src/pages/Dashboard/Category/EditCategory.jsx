@@ -2,7 +2,8 @@ import axios from "axios";
 import React, { Fragment, useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import swal from "sweetalert";
-import Loading from "../../components/Loading";
+import Loading from "../../../components/Loading";
+import AppUrl from "../../../RestAPI/AppUrl";
 
 function EditCategory({ match }) {
   const history = useHistory();
@@ -13,16 +14,16 @@ function EditCategory({ match }) {
   const [errors, setErrors] = useState([]);
 
   useEffect(() => {
-    axios.get(`/edit-category/${categoryId}`).then((response) => {
+    axios.get(AppUrl.EditCategory + categoryId).then((response) => {
       if (response.data.status === 200) {
         setCategory(response.data.category);
-        setLoading(false);
       } else if (response.data.status === 404) {
         swal("Error", response.data.message, "error");
+        history.push('/admin/view-all-categories');
       }
-      history.push("/admin/view-all-categories");
+      setLoading(false);
     });
-  }, [categoryId]);
+  }, [categoryId, history]);
 
   const handleInput = (e) => {
     e.persist();
@@ -32,12 +33,12 @@ function EditCategory({ match }) {
   const updateCategory = (e) => {
     e.preventDefault();
     const data = categoryInput;
-    axios.put(`/update-category/${categoryId}`, data).then((response) => {
+    axios.put(AppUrl.UpdateCategory + categoryId, data).then((response) => {
       if (response.data.status === 200) {
         swal("Success", response.data.message, "success");
         setErrors([]);
       } else if (response.data.status === 422) {
-        swal("Inapproprate values", "", "error");
+        swal("Inappropriate values", "", "error");
         setErrors(response.data.errors);
       } else if (response.data.status === 404) {
         swal("Error", response.data.message, "error");

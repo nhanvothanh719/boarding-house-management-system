@@ -23,7 +23,7 @@ Route::middleware('auth:api')->group(function(){
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/get-user-profile', [UserController::class, 'getUser']);
     //Dashboard
-    //Route::middleware('isAdmin')->group(function(){
+    Route::middleware('isAdmin')->group(function(){
         Route::get('/check-authenticated', function() {
             return response(['message' => 'You are in', 'status' => 200], 200);
         });    
@@ -33,7 +33,14 @@ Route::middleware('auth:api')->group(function(){
         Route::get('/edit-category/{id}', [CategoryController::class, 'editCategory']);
         Route::put('/update-category/{id}', [CategoryController::class, 'updateCategory']);
         Route::delete('/delete-category/{id}', [CategoryController::class, 'deleteCategory']);
-    //});
+
+        //Room
+        Route::get('/all-rooms', [RoomController::class, 'index']);
+        Route::post('/store-room', [RoomController::class, 'storeRoom']);
+        Route::get('/edit-room/{id}', [RoomController::class, 'editRoom']);
+        Route::post('/update-room/{id}', [RoomController::class, 'updateRoom']);
+        Route::delete('/delete-room/{id}', [RoomController::class, 'deleteRoom']);
+    });
 });
 
 

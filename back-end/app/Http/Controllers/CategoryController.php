@@ -101,11 +101,20 @@ class CategoryController extends Controller
     public function deleteCategory($id) {
         $category = Category::find($id);
         if($category) {
-            $category->delete();
-            return response([
-                'status' => 200,
-                'message' => 'Successfully update category',
-            ]);
+            $rooms_in_category = Room::where('category_id', $id)->count();
+            if($rooms_in_category > 0) {
+                return response([
+                    'message' => 'Cannot delete this category since it is used',
+                    'status' => 404,
+                ]);
+            }
+            else {
+                $category->delete();
+                return response([
+                    'status' => 200,
+                    'message' => 'Successfully delete category',
+                ]);
+            }
         } else {
             return response([
                 'message' => 'No category ID found',

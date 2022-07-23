@@ -1,6 +1,5 @@
 import React, { Fragment, useState } from "react";
-import "../../assets/css/Dashboard/form.css";
-import AppUrl from "../../RestAPI/AppUrl";
+import AppUrl from "../../../RestAPI/AppUrl";
 import { useHistory } from "react-router-dom";
 import swal from "sweetalert";
 import axios from "axios";
