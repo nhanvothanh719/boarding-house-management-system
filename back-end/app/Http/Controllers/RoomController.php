@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Image;
 use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File; 
 
 use App\Models\Room;

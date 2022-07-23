@@ -23,6 +23,8 @@ class AppUrl {
   static EditRoom = this.BaseURL + "/edit-room/";
   static UpdateRoom = this.BaseURL + "/update-room/";
   static DeleteRoom = this.BaseURL + "/delete-room/";
+
+  static ShowRenters = this.BaseURL + "/all-renters";
 }
 
 export default AppUrl;
