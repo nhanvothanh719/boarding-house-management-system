@@ -2,15 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
-use Image;
 use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\File; 
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail; 
+use Illuminate\Support\Str;
 
 use App\Models\User;
 use App\Models\Motorbike;
+
+use App\Mail\FirstPasswordChangeMail;
 
 class RenterController extends Controller
 {
@@ -50,7 +55,9 @@ class RenterController extends Controller
             $renter->name = $request->input('name');
             $renter->email = $request->input('email');
             //Todo: Create initial password --> Random
-            $renter->password = 'password';
+            $generated_password = Str::random(10);
+            $renter->password = Hash::make($generated_password);
+            //
             $renter->gender = $request->input('gender');
             $renter->date_of_birth = $request->input('date_of_birth');
             $renter->id_card_number = $request->input('id_card_number');
@@ -77,7 +84,13 @@ class RenterController extends Controller
                 $motorbike->motorbike_image = RenterController::handleMotorbikeImage($image);
                 $motorbike->save();
             }
-            //Todo: Send email to notify 
+            //Todo: Send email to new user
+            $token = rand(10, 1000);
+            DB::table('password_resets')->insert([
+                'email' => $request->input('email'),
+                'token' => $token,
+            ]);
+            Mail::to($renter->email)->send(new FirstPasswordChangeMail($generated_password, $token));
             return response([
                 'message' => 'Create new renter successfully',
                 'status' => 200,
