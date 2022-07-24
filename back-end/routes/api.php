@@ -46,6 +46,8 @@ Route::middleware('auth:api')->group(function(){
         //Renter
         Route::get('/all-renters', [RenterController::class, 'index']);
         Route::post('/store-renter', [RenterController::class, 'storeRenter']);
+        Route::get('/edit-renter/{id}', [RenterController::class, 'editRenter']);
+        Route::post('/update-renter/{id}', [RenterController::class, 'updateRenter']);
 
         //Role
         Route::get('/all-roles', [RoleController::class, 'index']);

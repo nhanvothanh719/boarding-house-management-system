@@ -9,6 +9,7 @@ import RoomsList from "../pages/Dashboard/Room/RoomsList";
 import EditRoom from "../pages/Dashboard/Room/EditRoom";
 import RentersList from "../pages/Dashboard/Renter/RentersList";
 import CreateRenter from "../pages/Dashboard/Renter/CreateRenter";
+import EditRenter from "../pages/Dashboard/Renter/EditRenter";
 
 const routes = [
     { path: '/admin', exact: true, name: 'Admin' },
@@ -26,6 +27,7 @@ const routes = [
     //Renter
     { path: '/admin/create-renter', exact: true, name: 'CreateRenter', component: CreateRenter },
     { path: '/admin/view-all-renters', exact: true, name: 'AllRenters', component: RentersList },
+    { path: '/admin/edit-renter/:renterID', exact: true, name: 'EditRenter', component: EditRenter },
 ]
 
 export default routes;

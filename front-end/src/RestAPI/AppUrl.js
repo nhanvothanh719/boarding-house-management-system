@@ -26,6 +26,8 @@ class AppUrl {
 
   static ShowRenters = this.BaseURL + "/all-renters";
   static StoreRenter = this.BaseURL + "/store-renter";
+  static EditRenter = this.BaseURL + "/edit-renter/";
+  static UpdateRenter = this.BaseURL + "/update-renter/";
 
   static ShowRoles = this.BaseURL + "/all-roles";
 }

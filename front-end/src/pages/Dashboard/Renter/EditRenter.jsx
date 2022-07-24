@@ -1,13 +1,17 @@
 import React, { Fragment, useState, useEffect } from "react";
 import AppUrl from "../../../RestAPI/AppUrl";
 import { useHistory } from "react-router-dom";
+import Loading from "../../../components/Loading";
 import swal from "sweetalert";
 import axios from "axios";
 
-export default function CreateRenter() {
+export default function EditRenter({ match }) {
   const history = useHistory();
+  const renterId = match.params.renterID; 
+
   const [roles, setRoles] = useState([]);
   const [avatar, setAvatar] = useState([]);
+  // const [motorbike, setMotorbike] = useState([]);
   // const [motorbikeImage, setMotorbikeImage] = useState([]);
   const [errors, setErrors] = useState([]);
   const [input, setInput] = useState({
@@ -20,16 +24,29 @@ export default function CreateRenter() {
     occupation: "",
     permanent_address: "",
     role_id: "",
+    profile_picture: "",
     // license_plate: "",
   });
-  
+  const [loading, setLoading] = useState([]);
+
   useEffect(() => {
     axios.get(AppUrl.ShowRoles).then((response) => {
       if (response.data.status === 200) {
         setRoles(response.data.allRoles);
       }
     });
-  }, []);
+
+    axios.get(AppUrl.EditRenter + renterId).then((response) => {
+        if (response.data.status === 200) {
+          setInput(response.data.renter);
+          // setMotorbike(response.data.motorbike[0]);
+        } else if (response.data.status === 404) {
+          swal("Error", response.data.message, "error");
+          history.push("/admin/view-all-renters");
+        }
+        setLoading(false);
+      });
+  }, [renterId, history]);
 
   const handleInput = (e) => {
     e.persist();
@@ -38,13 +55,13 @@ export default function CreateRenter() {
 
   const handleRenterAvatar = (e) => {
     setAvatar({ avatar: e.target.files[0] });
-  }
+  };
 
   // const handleMotorbikeImage = (e) => {
   //   setMotorbikeImage({ motorbike_image: e.target.files[0] });
-  // }
+  // };
 
-  const createRenter = (e) => {
+  const updateRenter = (e) => {
     e.preventDefault();
     const renter = new FormData();
     renter.append("name", input.name);
@@ -57,15 +74,15 @@ export default function CreateRenter() {
     renter.append("permanent_address", input.permanent_address);
     renter.append("role_id", input.role_id);
     // renter.append("license_plate", input.motorbike_license_plate);
-    if(avatar.avatar) {
-      renter.append('profile_picture', avatar.avatar);
+    if (avatar.avatar) {
+      renter.append("profile_picture", avatar.avatar);
     }
-    // if(motorbikeImage.motorbike_image) {
-    //   renter.append('motorbike_image', motorbikeImage.motorbike_image);
+    // if (motorbikeImage.motorbike_image) {
+    //   renter.append("motorbike_image", motorbikeImage.motorbike_image);
     // }
 
     axios
-      .post(AppUrl.StoreRenter, renter)
+      .post(AppUrl.UpdateRenter + renterId, renter)
       .then((response) => {
         if (response.data.status === 200) {
           swal("Success", response.data.message, "success");
@@ -83,6 +100,10 @@ export default function CreateRenter() {
       });
   };
 
+  if(loading) {
+    return <Loading />;
+  }
+
   return (
     <Fragment>
       <div className="topContainer">
@@ -93,7 +114,7 @@ export default function CreateRenter() {
           <form
             encType="multipart/form-data"
             className="flexForm"
-            onSubmit={createRenter}
+            onSubmit={updateRenter}
             id="createRenterForm"
           >
             <div className="formInput">
@@ -182,6 +203,7 @@ export default function CreateRenter() {
                 onChange={handleRenterAvatar}
               />
             </div>
+            <img src={`http://127.0.0.1:8000/${input.profile_picture}`} alt= "" style={{width: "60px", height: "60px", borderRadius: "50%"}}/>
             <small className="text-danger">{errors.profile_picture}</small>
             <div className="formInput">
               <label>Role:</label>
@@ -230,7 +252,7 @@ export default function CreateRenter() {
                 className="inputItem"
                 name="license_plate"
                 onChange={handleInput}
-                value={input.license_plate}
+                value={motorbike.license_plate}
               />
             </div>
             <small className="text-danger">{errors.license_plate}</small>
@@ -243,9 +265,10 @@ export default function CreateRenter() {
                 onChange={handleMotorbikeImage}
               />
             </div>
+            <img src={`http://127.0.0.1:8000/${motorbike.motorbike_image}`} alt= "" style={{width: "60px", height: "60px", borderRadius: "50%"}}/>
             <small className="text-danger">{errors.motorbike_image}</small> */}
             <button type="submit" className="formButton">
-              Create
+              Update
             </button>
           </form>
         </div>
