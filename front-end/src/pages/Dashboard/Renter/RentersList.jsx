@@ -46,7 +46,7 @@ export default function RentersList() {
       { field: "id", title: "ID", align: "center", width: "3%" },
       { field: "profile_picture", title: "Avatar", export: false, width: "7%", render: rowData => <img src={rowData.profile_picture} alt="avatar" style={{width: 40, borderRadius: '50%'}}/> },
       { field: "name", title: "Name", width: "15%" },
-      { field: "date_of_birth", title: "Date of birth", width: "15%" },
+      { field: "date_of_birth", title: "Date of birth", type: "date", dateSetting: { locale: "en-GB" }, width: "15%" },
       { field: "id_card_number", title: "ID Card", width: "10%" },
       { field: "occupation", title: "Occupation", width: "10%" },
       { field: "permanent_address", title: "Permanent address" },

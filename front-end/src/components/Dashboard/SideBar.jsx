@@ -46,7 +46,7 @@ function SideBar() {
             <p className="itemGroup text-uppercase">Lists</p>
             <NavLink
               exact
-              to="/admin/renters"
+              to="/admin/view-all-renters"
               style={{ textDecoration: "none" }}
             >
               <li className="customLi">

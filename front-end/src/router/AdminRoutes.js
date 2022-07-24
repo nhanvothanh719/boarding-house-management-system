@@ -8,11 +8,12 @@ import CreateRoom from "../pages/Dashboard/Room/CreateRoom";
 import RoomsList from "../pages/Dashboard/Room/RoomsList";
 import EditRoom from "../pages/Dashboard/Room/EditRoom";
 import RentersList from "../pages/Dashboard/Renter/RentersList";
+import CreateRenter from "../pages/Dashboard/Renter/CreateRenter";
 
 const routes = [
     { path: '/admin', exact: true, name: 'Admin' },
     { path: '/admin/dashboard', exact: true, name: 'Dashboard', component: MainDashboard },
-    { path: '/admin/renters', exact: true, name: 'AllRenters', component: RentersList },
+    //{ path: '/admin/renters', exact: true, name: 'AllRenters', component: RentersList },
     { path: '/admin/renters/:renterID', exact: true, name: 'RenterDetails', component: RenterDetails },
     //Category
     { path: '/admin/create-category', exact: true, name: 'CreateCategory', component: CreateCategory },
@@ -22,6 +23,9 @@ const routes = [
     { path: '/admin/create-room', exact: true, name: 'CreateRoom', component: CreateRoom },
     { path: '/admin/view-all-rooms', exact: true, name: 'RoomsList', component: RoomsList },
     { path: '/admin/edit-room/:roomID', exact: true, name: 'EditRoom', component: EditRoom },
+    //Renter
+    { path: '/admin/create-renter', exact: true, name: 'CreateRenter', component: CreateRenter },
+    { path: '/admin/view-all-renters', exact: true, name: 'AllRenters', component: RentersList },
 ]
 
 export default routes;

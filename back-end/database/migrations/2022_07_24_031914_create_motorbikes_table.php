@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('motorbikes', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('renter_id')->unsigned();
-            $table->foreign('renter_id')->references('id')->on('users');
+            $table->bigInteger('user_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('users');
             $table->string('license_plate')->unique();
             $table->string('motorbike_image')->nullable();
             $table->timestamps();

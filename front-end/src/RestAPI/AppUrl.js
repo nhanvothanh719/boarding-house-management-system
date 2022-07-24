@@ -25,6 +25,9 @@ class AppUrl {
   static DeleteRoom = this.BaseURL + "/delete-room/";
 
   static ShowRenters = this.BaseURL + "/all-renters";
+  static StoreRenter = this.BaseURL + "/store-renter";
+
+  static ShowRoles = this.BaseURL + "/all-roles";
 }
 
 export default AppUrl;

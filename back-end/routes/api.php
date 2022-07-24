@@ -9,6 +9,7 @@ use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\RenterController;
+use App\Http\Controllers\RoleController;
 
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/register', [AuthController::class, 'register']);
@@ -44,6 +45,10 @@ Route::middleware('auth:api')->group(function(){
 
         //Renter
         Route::get('/all-renters', [RenterController::class, 'index']);
+        Route::post('/store-renter', [RenterController::class, 'storeRenter']);
+
+        //Role
+        Route::get('/all-roles', [RoleController::class, 'index']);
     });
 });
 
