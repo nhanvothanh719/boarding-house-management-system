@@ -113,6 +113,13 @@ class MotorbikeController extends Controller
     }
 
     public function updateMotorbike(Request $request, $id) {
+        $user = User::find($request->input('user_id'));
+        if(!$user) {
+            return response([
+                'message' => 'No person with provided ID found',
+                'status' => 404, //Unprocessable entity
+            ]);
+        }
         $validator = Validator::make($request->all(), [
             'user_id' => 'required',
             'license_plate' => 'required|min:6|max:10',

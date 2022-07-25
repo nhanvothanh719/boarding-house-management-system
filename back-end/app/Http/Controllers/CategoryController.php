@@ -23,7 +23,7 @@ class CategoryController extends Controller
     public function storeCategory(Request $request) {
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:categories',
-            'price' => 'required',
+            'price' => 'required|numeric',
         ]);
         if($validator->fails())
         {
@@ -71,7 +71,7 @@ class CategoryController extends Controller
     public function updateCategory(Request $request, $id) {
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'price' => 'required',
+            'price' => 'required|numeric',
         ]);
         if($validator->fails())
         {

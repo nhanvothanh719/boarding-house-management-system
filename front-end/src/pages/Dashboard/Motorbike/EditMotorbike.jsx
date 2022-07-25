@@ -59,6 +59,9 @@ export default function EditMotorbike({ match }) {
           swal("All fields are mandatory", "", "error");
           setErrors(response.data.errors);
         } else if (response.data.status === 404) {
+          if(response.data.message) {
+            swal("No user found", response.data.message, "error");
+          }
           setInput({ ...input, errors_list: response.data.errors });
         }
       })
