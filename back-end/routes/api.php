@@ -48,6 +48,7 @@ Route::middleware('auth:api')->group(function(){
         Route::post('/store-renter', [RenterController::class, 'storeRenter']);
         Route::get('/edit-renter/{id}', [RenterController::class, 'editRenter']);
         Route::post('/update-renter/{id}', [RenterController::class, 'updateRenter']);
+        Route::delete('/delete-renter/{id}', [RenterController::class, 'deleteRenter']);
 
         //Role
         Route::get('/all-roles', [RoleController::class, 'index']);

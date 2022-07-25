@@ -22,6 +22,23 @@ export default function RentersList() {
     });
   }, []);
 
+  const deleteRenter = (e, id) => {
+    e.preventDefault();
+    const selectedRenter = e.currentTarget;
+    selectedRenter.innerText = "Deleting";
+    axios.delete(AppUrl.DeleteRenter + id).then((response) => {
+      if (response.data.status === 200) {
+        swal("Success", response.data.message, "success");
+        //Delete table row
+        selectedRenter.closest("tr").remove();
+        history.push('/admin/view-all-renters');
+      } else if (response.data.status === 404) {
+        swal("Fail", response.data.message, "error");
+        selectedRenter.innerText = "Delete";
+      }
+    });
+  };
+
   var main_profile_columns = [];
   var sub_profile_columns = [];
   if (loading) {
@@ -81,7 +98,7 @@ export default function RentersList() {
               },
               {
                 icon: () => <button className="btn btn-danger">Delete</button>,
-                onClick: (event, renter) => console.log(),
+                onClick: (event, renter) => deleteRenter(event, renter.id),
               },
               {
                 icon: () => <button className="btn btn-primary">Lock</button>,

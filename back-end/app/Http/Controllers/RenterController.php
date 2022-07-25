@@ -19,6 +19,9 @@ use App\Mail\FirstPasswordChangeMail;
 
 class RenterController extends Controller
 {
+    public const avatar_public_folder = 'uploaded/avatar/';
+    public const motorbike_image_public_folder = 'uploaded/motorbikes/';
+
     public function index() {
         $allRenters = User::where('role_id', 1)->get();
         return response([
@@ -67,7 +70,7 @@ class RenterController extends Controller
             $renter->role_id = $request->input('role_id');
             if($request->hasFile('profile_picture')) {
                 $image = $request->file('profile_picture');
-                $upload_folder = 'uploaded/avatar/';
+                $upload_folder = RenterController::avatar_public_folder;
                 $renter->profile_picture = RenterController::addImage($image, $upload_folder);
             }
             $renter->save();
@@ -170,10 +173,10 @@ class RenterController extends Controller
             $renter->permanent_address = $request->input('permanent_address');
             $renter->role_id = $request->input('role_id');
             if($request->hasFile('profile_picture')) {
-                $image = $request->file('profile_picture');
-                $upload_folder = 'uploaded/avatar/';
+                $new_avatar = $request->file('profile_picture');
                 $old_avatar = $renter->profile_picture;
-                $renter->profile_picture = RenterController::updateImage($old_avatar, $upload_folder, $image);
+                $upload_folder = RenterController::avatar_public_folder;
+                $renter->profile_picture = RenterController::updateImage($old_avatar, $new_avatar, $upload_folder);
             }
             $renter->save();
             //Change license plate first
@@ -207,17 +210,41 @@ class RenterController extends Controller
         }
     }
 
-    public function updateImage($old_image, $upload_folder, $new_image) {
+    public function updateImage($old_image, $new_image, $upload_folder) {
         if(!file_exists($upload_folder)) {
             mkdir($upload_folder);
         }
         //Delete existed image
-        File::delete($upload_folder.$old_image);
+        File::delete($old_image);
         //Add new image
         $generated_name = hexdec(uniqid());
         $extension = $new_image->getClientOriginalExtension();
         $image_name = $generated_name.'.'.$extension;
         $new_image->move($upload_folder, $image_name);
         return $upload_folder.$image_name;
+    }
+
+    public function deleteRenter($id) {
+        $renter = User::find($id);
+        if($renter) {
+            //Delete motorbike
+            $motorbike_id = Motorbike::where('user_id', $id)->value('id');
+            $motorbike = Motorbike::find($motorbike_id);
+            if($motorbike) {
+                File::delete($motorbike->motorbike_image);
+                $motorbike->delete();
+            }
+            File::delete($renter->profile_picture);
+            $renter->delete();
+            return response([
+                'status' => 200,
+                'message' => 'Successfully delete renter',
+            ]);
+        } else {
+            return response([
+                'message' => 'No renter found',
+                'status' => 404,
+            ]);
+        }
     }
 }
