@@ -11,6 +11,7 @@ import RentersList from "../pages/Dashboard/Renter/RentersList";
 import CreateRenter from "../pages/Dashboard/Renter/CreateRenter";
 import EditRenter from "../pages/Dashboard/Renter/EditRenter";
 import MotorbikesList from "../pages/Dashboard/Motorbike/MotorbikesList";
+import CreateMotorbike from "../pages/Dashboard/Motorbike/CreateMotorbike";
 
 const routes = [
     { path: '/admin', exact: true, name: 'Admin' },
@@ -32,6 +33,7 @@ const routes = [
     //Motorbike
     
     { path: '/admin/view-all-motorbikes', exact: true, name: 'AllMotorbikes', component: MotorbikesList },
+    { path: '/admin/create-motorbike', exact: true, name: 'CreateMotorbike', component: CreateMotorbike },
 ]
 
 export default routes;

@@ -57,7 +57,10 @@ Route::middleware('auth:api')->group(function(){
         //Motorbike
         Route::get('/all-motorbikes', [MotorbikeController::class, 'index']);
         Route::get('/all-motorbike_owners', [MotorbikeController::class, 'getMotorbikeOwners']);
+        Route::post('/store-motorbike', [MotorbikeController::class, 'storeMotorbike']);
         Route::delete('/delete-motorbike/{id}', [MotorbikeController::class, 'deleteMotorbike']);
+
+        Route::get('/get-name/{id}', [UserController::class, 'getName']);
     });
 });
 

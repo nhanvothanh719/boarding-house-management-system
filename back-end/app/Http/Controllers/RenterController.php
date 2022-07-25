@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\CustomHelper;
+
 use Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -41,9 +43,7 @@ class RenterController extends Controller
             'phone_number' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|size:10|unique:users',
             'occupation' => 'required|max:100',
             'permanent_address' => 'required',
-            // 'license_plate' => 'min:6|max:10|unique:motorbikes',
             'profile_picture' => 'image',
-            // 'motorbike_image' => 'image',
         ]);
         if($validator->fails()) 
         {
@@ -70,25 +70,9 @@ class RenterController extends Controller
             if($request->hasFile('profile_picture')) {
                 $image = $request->file('profile_picture');
                 $upload_folder = RenterController::avatar_public_folder;
-                $renter->profile_picture = RenterController::addImage($image, $upload_folder);
+                $renter->profile_picture = CustomHelper::addImage($image, $upload_folder);
             }
             $renter->save();
-            // if($request->hasFile('motorbike_image')) {
-            //     if(!$request->input('license_plate')) {
-            //         return response([
-            //             'message' => 'Cannot add due to the null license plate field',
-            //             'status' => 404,
-            //         ]);
-            //     }
-            //     $motorbike = new Motorbike;
-            //     $motorbike->user_id = User::where('id_card_number', $request->input('id_card_number'))->value('id');
-            //     $motorbike->license_plate = $request->input('license_plate');
-            //     $image = $request->file('motorbike_image');
-            //     $upload_folder = 'uploaded/motorbikes/';
-            //     $motorbike->motorbike_image = RenterController::addImage($image, $upload_folder);
-            //     $motorbike->save();
-            // }
-            //Todo: Send email to new user
             $token = rand(10, 1000);
             DB::table('password_resets')->insert([
                 'email' => $request->input('email'),
@@ -108,25 +92,12 @@ class RenterController extends Controller
         }
     }
 
-    public function addImage($image, $upload_folder) {
-        $generated_name = hexdec(uniqid());
-        $extension = $image->getClientOriginalExtension();
-        $image_name = $generated_name.'.'.$extension;
-        if(!file_exists($upload_folder)) {
-            mkdir($upload_folder);
-        }
-        $image->move($upload_folder, $image_name);
-        return $upload_folder.$image_name;
-    }
-
     public function editRenter($id) {
         $renter = User::find($id);
         if($renter) {
-            // $motorbike = Motorbike::where('user_id', $id)->get();
             return response([
                 'status' => 200,
                 'renter' => $renter,
-                // 'motorbike' => $motorbike,
             ]);
         }
         else {
@@ -149,9 +120,7 @@ class RenterController extends Controller
             'phone_number' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|size:10',
             'occupation' => 'required|max:100',
             'permanent_address' => 'required',
-            // 'license_plate' => 'min:6|max:10|unique:motorbikes',
             'profile_picture' => 'image',
-            // 'motorbike_image' => 'image',
         ]);
         if($validator->fails())
         {
@@ -175,28 +144,9 @@ class RenterController extends Controller
                 $new_avatar = $request->file('profile_picture');
                 $old_avatar = $renter->profile_picture;
                 $upload_folder = RenterController::avatar_public_folder;
-                $renter->profile_picture = RenterController::updateImage($old_avatar, $new_avatar, $upload_folder);
+                $renter->profile_picture = CustomHelper::updateImage($old_avatar, $new_avatar, $upload_folder);
             }
             $renter->save();
-            //Change license plate first
-            // $motorbike_id = Motorbike::where('license_plate', $request->input('license_plate'))->value('id');
-            // $motorbike = Motorbike::find($motorbike_id);
-            // $motorbike->license_plate = $request->input('license_plate');
-            // $motorbike->save();
-            // if($request->hasFile('motorbike_image')) {
-            //     if(!$request->input('license_plate')) {
-            //         return response([
-            //             'message' => 'Cannot add due to the null license plate field',
-            //             'status' => 404,
-            //         ]);
-            //     }
-            //     //Change motorbike image
-            //     $image = $request->file('motorbike_image');
-            //     $upload_folder = 'uploaded/motorbikes/';
-            //     $old_image = $motorbike->motorbike_image;
-            //     $motorbike->motorbike_image = RenterController::updateImage($old_image, $upload_folder, $image);
-            //     $motorbike->save();
-            // }
             return response([
                 'message' => 'Successfully update room',
                 'status' => 200,
@@ -207,20 +157,6 @@ class RenterController extends Controller
                 'status' => 404,
             ]);
         }
-    }
-
-    public function updateImage($old_image, $new_image, $upload_folder) {
-        if(!file_exists($upload_folder)) {
-            mkdir($upload_folder);
-        }
-        //Delete existed image
-        File::delete($old_image);
-        //Add new image
-        $generated_name = hexdec(uniqid());
-        $extension = $new_image->getClientOriginalExtension();
-        $image_name = $generated_name.'.'.$extension;
-        $new_image->move($upload_folder, $image_name);
-        return $upload_folder.$image_name;
     }
 
     public function deleteRenter($id) {

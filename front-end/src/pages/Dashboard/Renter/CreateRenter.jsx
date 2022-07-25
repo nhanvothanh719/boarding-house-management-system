@@ -8,7 +8,6 @@ export default function CreateRenter() {
   const history = useHistory();
   const [roles, setRoles] = useState([]);
   const [avatar, setAvatar] = useState([]);
-  // const [motorbikeImage, setMotorbikeImage] = useState([]);
   const [errors, setErrors] = useState([]);
   const [input, setInput] = useState({
     name: "",
@@ -40,10 +39,6 @@ export default function CreateRenter() {
     setAvatar({ avatar: e.target.files[0] });
   }
 
-  // const handleMotorbikeImage = (e) => {
-  //   setMotorbikeImage({ motorbike_image: e.target.files[0] });
-  // }
-
   const createRenter = (e) => {
     e.preventDefault();
     const renter = new FormData();
@@ -56,13 +51,9 @@ export default function CreateRenter() {
     renter.append("occupation", input.occupation);
     renter.append("permanent_address", input.permanent_address);
     renter.append("role_id", input.role_id);
-    // renter.append("license_plate", input.motorbike_license_plate);
     if(avatar.avatar) {
       renter.append('profile_picture', avatar.avatar);
     }
-    // if(motorbikeImage.motorbike_image) {
-    //   renter.append('motorbike_image', motorbikeImage.motorbike_image);
-    // }
 
     axios
       .post(AppUrl.StoreRenter, renter)
@@ -223,27 +214,6 @@ export default function CreateRenter() {
               </select>
             </div>
             <small className="text-danger">{errors.gender}</small>
-            {/* <div className="formInput">
-              <label>Motorbike license plate:</label>
-              <input
-                type="text"
-                className="inputItem"
-                name="license_plate"
-                onChange={handleInput}
-                value={input.license_plate}
-              />
-            </div>
-            <small className="text-danger">{errors.license_plate}</small>
-            <div className="formInput form-group">
-              <label>Motorbike image:</label>
-              <input
-                type="file"
-                className="form-control"
-                name="motorbike_image"
-                onChange={handleMotorbikeImage}
-              />
-            </div>
-            <small className="text-danger">{errors.motorbike_image}</small> */}
             <button type="submit" className="formButton">
               Create
             </button>

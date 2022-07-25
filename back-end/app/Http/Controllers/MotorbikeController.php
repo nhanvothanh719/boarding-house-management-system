@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\CustomHelper;
+
 use Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -55,5 +57,42 @@ class MotorbikeController extends Controller
                 'status' => 404,
             ]);
         }
+    }
+
+    public function storeMotorbike(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required|unique:motorbikes',
+            'license_plate' => 'required|min:6|max:10|unique:motorbikes',
+            'motorbike_image' => 'image',
+        ]);
+        if($validator->fails()) 
+        {
+            return response([
+                'errors' => $validator->messages(),
+                'status' => 422,
+            ]);
+        }
+        try {
+            $motorbike = new Motorbike;
+            $motorbike->user_id = $request->input('user_id');
+            $motorbike->license_plate = $request->input('license_plate');
+            if($request->hasFile('motorbike_image')) {
+                $image = $request->file('motorbike_image');
+                $upload_folder = MotorbikeController::motorbike_image_public_folder;
+                $motorbike->motorbike_image = CustomHelper::addImage($image, $upload_folder);
+                $motorbike->save();
+            }
+            return response([
+                'message' => 'Create new motorbike successfully',
+                'status' => 200,
+            ], 200);
+        }
+        catch(Exception $exception) {
+            return response([
+                'message' => $exception->getMessage(),
+                'status' => 404,
+            ], 404);
+        }
+
     }
 }

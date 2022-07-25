@@ -34,7 +34,10 @@ class AppUrl {
 
   static ShowMotorbikes = this.BaseURL + "/all-motorbikes";
   static GetAllMotorbikeOwners = this.BaseURL + "/all-motorbike_owners";
+  static StoreMotorbike = this.BaseURL + "/store-motorbike";
   static DeleteMotorbike = this.BaseURL + "/delete-motorbike/";
+  
+  static FindName = this.BaseURL + "/get-name/";
 }
 
 export default AppUrl;
