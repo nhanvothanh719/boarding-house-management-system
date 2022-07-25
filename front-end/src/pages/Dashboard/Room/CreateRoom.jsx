@@ -18,7 +18,7 @@ export default function CreateRoom() {
     has_fridge: "",
     has_wardrobe: "",
   });
-  const [picture, setPicture] = useState("");
+  const [pictures, setPictures] = useState("");
   const [errors, setErrors] = useState([]);
 
   useEffect(() => {
@@ -35,17 +35,19 @@ export default function CreateRoom() {
   };
 
   const handleImage = (e) => {
-    setPicture(e.target.files);
+    setPictures(e.target.files);
   };
 
   const createRoom = (e) => {
     e.preventDefault();
     const newRoom = new FormData();
-    for (let i = 0; i < picture.length; i++) {
-      //Appends a new value onto an existing key inside a FormData object
-      //or adds the key if it does not already exist.
-      newRoom.append(`image[${i}]`, picture[i]);
-      console.log(picture[i]);
+    if(pictures) {
+      for (let i = 0; i < pictures.length; i++) {
+        //Appends a new value onto an existing key inside a FormData object
+        //or adds the key if it does not already exist.
+        newRoom.append(`image[${i}]`, pictures[i]);
+        console.log(pictures[i]);
+      }
     }
     newRoom.append("category_id", input.category_id);
     newRoom.append("status", input.status);
@@ -210,14 +212,12 @@ export default function CreateRoom() {
               <input
                 type="file"
                 className="form-control"
-                //name="image[]"
                 name="image[]"
                 id="inputImage"
                 onChange={handleImage}
                 multiple
               />
             </div>
-            <small className="text-danger">{errors.image}</small>
             <button type="submit" className="formButton">
               Create
             </button>

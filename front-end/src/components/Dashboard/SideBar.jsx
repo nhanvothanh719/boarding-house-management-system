@@ -46,7 +46,7 @@ function SideBar() {
             <p className="itemGroup text-uppercase">Lists</p>
             <NavLink
               exact
-              to="/admin/renters"
+              to="/admin/view-all-renters"
               style={{ textDecoration: "none" }}
             >
               <li className="customLi">
@@ -76,7 +76,7 @@ function SideBar() {
                 <span className="itemName"> Categories </span>
               </li>
             </NavLink>
-            <NavLink exact to="/" style={{ textDecoration: "none" }}>
+            <NavLink exact to="/admin/view-all-motorbikes" style={{ textDecoration: "none" }}>
               <li className="customLi">
                 <TwoWheelerIcon className="sideBarIcon" />
                 <span className="itemName"> Motorbikes </span>

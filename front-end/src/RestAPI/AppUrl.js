@@ -23,6 +23,23 @@ class AppUrl {
   static EditRoom = this.BaseURL + "/edit-room/";
   static UpdateRoom = this.BaseURL + "/update-room/";
   static DeleteRoom = this.BaseURL + "/delete-room/";
+
+  static ShowRenters = this.BaseURL + "/all-renters";
+  static StoreRenter = this.BaseURL + "/store-renter";
+  static EditRenter = this.BaseURL + "/edit-renter/";
+  static UpdateRenter = this.BaseURL + "/update-renter/";
+  static DeleteRenter = this.BaseURL + "/delete-renter/";
+
+  static ShowRoles = this.BaseURL + "/all-roles";
+
+  static ShowMotorbikes = this.BaseURL + "/all-motorbikes";
+  static StoreMotorbike = this.BaseURL + "/store-motorbike";
+  static EditMotorbike = this.BaseURL + "/edit-motorbike/";
+  static UpdateMotorbike = this.BaseURL + "/update-motorbike/";
+  static DeleteMotorbike = this.BaseURL + "/delete-motorbike/";
+  static GetAllMotorbikeOwners = this.BaseURL + "/all-motorbike_owners";
+  
+  static FindName = this.BaseURL + "/get-name/";
 }
 
 export default AppUrl;

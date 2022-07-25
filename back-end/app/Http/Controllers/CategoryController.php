@@ -13,17 +13,17 @@ use App\Http\Requests\CategoryStoreRequest;
 class CategoryController extends Controller
 {
     public function index() {
-        $allCategories = Category::all();
+        $all_categories = Category::all();
         return response([
             'status' => 200,
-            'allCategories' => $allCategories,
+            'allCategories' => $all_categories,
         ]);
     }
 
     public function storeCategory(Request $request) {
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:categories',
-            'price' => 'required',
+            'price' => 'required|numeric',
         ]);
         if($validator->fails())
         {
@@ -71,7 +71,7 @@ class CategoryController extends Controller
     public function updateCategory(Request $request, $id) {
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'price' => 'required',
+            'price' => 'required|numeric',
         ]);
         if($validator->fails())
         {

@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
-use Image;
 use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File; 
 
 use App\Models\Room;
@@ -17,10 +16,10 @@ use App\Models\Category;
 class RoomController extends Controller
 {
     public function index() {
-        $allRooms = Room::all();
+        $all_rooms = Room::all();
         return response([
             'status' => 200,
-            'allRooms' => $allRooms,
+            'allRooms' => $all_rooms,
         ]);
     }
 

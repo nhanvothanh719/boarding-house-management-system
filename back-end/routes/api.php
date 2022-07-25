@@ -8,6 +8,9 @@ use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\RenterController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\MotorbikeController;
 
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/register', [AuthController::class, 'register']);
@@ -40,6 +43,26 @@ Route::middleware('auth:api')->group(function(){
         Route::get('/edit-room/{id}', [RoomController::class, 'editRoom']);
         Route::post('/update-room/{id}', [RoomController::class, 'updateRoom']);
         Route::delete('/delete-room/{id}', [RoomController::class, 'deleteRoom']);
+
+        //Renter
+        Route::get('/all-renters', [RenterController::class, 'index']);
+        Route::post('/store-renter', [RenterController::class, 'storeRenter']);
+        Route::get('/edit-renter/{id}', [RenterController::class, 'editRenter']);
+        Route::post('/update-renter/{id}', [RenterController::class, 'updateRenter']);
+        Route::delete('/delete-renter/{id}', [RenterController::class, 'deleteRenter']);
+
+        //Role
+        Route::get('/all-roles', [RoleController::class, 'index']);
+
+        //Motorbike
+        Route::get('/all-motorbikes', [MotorbikeController::class, 'index']);
+        Route::post('/store-motorbike', [MotorbikeController::class, 'storeMotorbike']);
+        Route::get('/edit-motorbike/{id}', [MotorbikeController::class, 'editMotorbike']);
+        Route::post('/update-motorbike/{id}', [MotorbikeController::class, 'updateMotorbike']);
+        Route::delete('/delete-motorbike/{id}', [MotorbikeController::class, 'deleteMotorbike']);
+        Route::get('/all-motorbike_owners', [MotorbikeController::class, 'getMotorbikeOwners']);
+
+        Route::get('/get-name/{id}', [UserController::class, 'getName']);
     });
 });
 
