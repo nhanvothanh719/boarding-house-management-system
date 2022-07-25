@@ -1,6 +1,8 @@
 <?php
 namespace App\Helpers;
 
+use Illuminate\Support\Facades\File;
+
 class CustomHelper{
 
     public static function addImage($image, $upload_folder) {
@@ -27,9 +29,6 @@ class CustomHelper{
         $new_image->move($upload_folder, $image_name);
         return $upload_folder.$image_name;
     }
-
-
-
 }
 
 ?>

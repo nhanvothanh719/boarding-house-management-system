@@ -80,8 +80,8 @@ class MotorbikeController extends Controller
                 $image = $request->file('motorbike_image');
                 $upload_folder = MotorbikeController::motorbike_image_public_folder;
                 $motorbike->motorbike_image = CustomHelper::addImage($image, $upload_folder);
-                $motorbike->save();
             }
+            $motorbike->save();
             return response([
                 'message' => 'Create new motorbike successfully',
                 'status' => 200,
@@ -94,5 +94,57 @@ class MotorbikeController extends Controller
             ], 404);
         }
 
+    }
+
+    public function editMotorbike($id) {
+        $motorbike = Motorbike::find($id);
+        if($motorbike) {
+            return response([
+                'status' => 200,
+                'motorbike' => $motorbike,
+            ]);
+        }
+        else {
+            return response([
+                'status' => 404,
+                'message' => 'No motorbike found',
+            ]);
+        }
+    }
+
+    public function updateMotorbike(Request $request, $id) {
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required',
+            'license_plate' => 'required|min:6|max:10',
+            'motorbike_image' => 'image',
+        ]);
+        if($validator->fails())
+        {
+            return response([
+                'errors' => $validator->messages(),
+                'status' => 422, //Unprocessable entity
+            ]);
+        }
+        $motorbike = Motorbike::find($id);
+        if($motorbike) {
+            $motorbike->user_id = $request->input('user_id');
+            $motorbike->license_plate = $request->input('license_plate');
+            if($request->hasFile('motorbike_image')) {
+                $new_image = $request->file('motorbike_image');
+                $old_image = $motorbike->motorbike_image;
+                $upload_folder = MotorbikeController::motorbike_image_public_folder;
+                $motorbike->motorbike_image = CustomHelper::updateImage($old_image, $new_image, $upload_folder);
+            }
+            $motorbike->save();
+            return response([
+                'message' => 'Successfully update motorbike',
+                'status' => 200,
+            ]);
+        } else {
+            return response([
+                'message' => 'No motorbike found',
+                'status' => 404,
+            ]);
+        }
     }
 }

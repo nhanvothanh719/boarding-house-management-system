@@ -11,8 +11,6 @@ export default function EditRenter({ match }) {
 
   const [roles, setRoles] = useState([]);
   const [avatar, setAvatar] = useState([]);
-  // const [motorbike, setMotorbike] = useState([]);
-  // const [motorbikeImage, setMotorbikeImage] = useState([]);
   const [errors, setErrors] = useState([]);
   const [input, setInput] = useState({
     name: "",
@@ -25,7 +23,6 @@ export default function EditRenter({ match }) {
     permanent_address: "",
     role_id: "",
     profile_picture: "",
-    // license_plate: "",
   });
   const [loading, setLoading] = useState([]);
 
@@ -57,10 +54,6 @@ export default function EditRenter({ match }) {
     setAvatar({ avatar: e.target.files[0] });
   };
 
-  // const handleMotorbikeImage = (e) => {
-  //   setMotorbikeImage({ motorbike_image: e.target.files[0] });
-  // };
-
   const updateRenter = (e) => {
     e.preventDefault();
     const renter = new FormData();
@@ -73,13 +66,9 @@ export default function EditRenter({ match }) {
     renter.append("occupation", input.occupation);
     renter.append("permanent_address", input.permanent_address);
     renter.append("role_id", input.role_id);
-    // renter.append("license_plate", input.motorbike_license_plate);
     if (avatar.avatar) {
       renter.append("profile_picture", avatar.avatar);
     }
-    // if (motorbikeImage.motorbike_image) {
-    //   renter.append("motorbike_image", motorbikeImage.motorbike_image);
-    // }
 
     axios
       .post(AppUrl.UpdateRenter + renterId, renter)
