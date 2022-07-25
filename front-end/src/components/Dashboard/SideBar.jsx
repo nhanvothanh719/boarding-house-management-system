@@ -76,7 +76,7 @@ function SideBar() {
                 <span className="itemName"> Categories </span>
               </li>
             </NavLink>
-            <NavLink exact to="/" style={{ textDecoration: "none" }}>
+            <NavLink exact to="/admin/view-all-motorbikes" style={{ textDecoration: "none" }}>
               <li className="customLi">
                 <TwoWheelerIcon className="sideBarIcon" />
                 <span className="itemName"> Motorbikes </span>

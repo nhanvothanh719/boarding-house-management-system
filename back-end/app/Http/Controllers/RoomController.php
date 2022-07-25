@@ -16,10 +16,10 @@ use App\Models\Category;
 class RoomController extends Controller
 {
     public function index() {
-        $allRooms = Room::all();
+        $all_rooms = Room::all();
         return response([
             'status' => 200,
-            'allRooms' => $allRooms,
+            'allRooms' => $all_rooms,
         ]);
     }
 

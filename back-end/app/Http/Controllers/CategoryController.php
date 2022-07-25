@@ -13,10 +13,10 @@ use App\Http\Requests\CategoryStoreRequest;
 class CategoryController extends Controller
 {
     public function index() {
-        $allCategories = Category::all();
+        $all_categories = Category::all();
         return response([
             'status' => 200,
-            'allCategories' => $allCategories,
+            'allCategories' => $all_categories,
         ]);
     }
 

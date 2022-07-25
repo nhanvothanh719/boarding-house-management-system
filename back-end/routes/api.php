@@ -10,6 +10,7 @@ use App\Http\Controllers\RoomController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\RenterController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\MotorbikeController;
 
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/register', [AuthController::class, 'register']);
@@ -52,6 +53,11 @@ Route::middleware('auth:api')->group(function(){
 
         //Role
         Route::get('/all-roles', [RoleController::class, 'index']);
+
+        //Motorbike
+        Route::get('/all-motorbikes', [MotorbikeController::class, 'index']);
+        Route::get('/all-motorbike_owners', [MotorbikeController::class, 'getMotorbikeOwners']);
+        Route::delete('/delete-motorbike/{id}', [MotorbikeController::class, 'deleteMotorbike']);
     });
 });
 

@@ -20,7 +20,6 @@ use App\Mail\FirstPasswordChangeMail;
 class RenterController extends Controller
 {
     public const avatar_public_folder = 'uploaded/avatar/';
-    public const motorbike_image_public_folder = 'uploaded/motorbikes/';
 
     public function index() {
         $allRenters = User::where('role_id', 1)->get();

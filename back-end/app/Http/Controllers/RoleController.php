@@ -9,10 +9,10 @@ use App\Models\Role;
 class RoleController extends Controller
 {
     public function index() {
-        $allRoles = Role::all();
+        $all_roles = Role::all();
         return response([
             'status' => 200,
-            'allRoles' => $allRoles,
+            'allRoles' => $all_roles,
         ]);
     }
 }

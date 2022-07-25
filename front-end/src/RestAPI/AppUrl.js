@@ -31,6 +31,10 @@ class AppUrl {
   static DeleteRenter = this.BaseURL + "/delete-renter/";
 
   static ShowRoles = this.BaseURL + "/all-roles";
+
+  static ShowMotorbikes = this.BaseURL + "/all-motorbikes";
+  static GetAllMotorbikeOwners = this.BaseURL + "/all-motorbike_owners";
+  static DeleteMotorbike = this.BaseURL + "/delete-motorbike/";
 }
 
 export default AppUrl;

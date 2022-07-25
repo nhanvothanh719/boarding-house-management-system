@@ -10,6 +10,7 @@ import EditRoom from "../pages/Dashboard/Room/EditRoom";
 import RentersList from "../pages/Dashboard/Renter/RentersList";
 import CreateRenter from "../pages/Dashboard/Renter/CreateRenter";
 import EditRenter from "../pages/Dashboard/Renter/EditRenter";
+import MotorbikesList from "../pages/Dashboard/Motorbike/MotorbikesList";
 
 const routes = [
     { path: '/admin', exact: true, name: 'Admin' },
@@ -28,6 +29,9 @@ const routes = [
     { path: '/admin/create-renter', exact: true, name: 'CreateRenter', component: CreateRenter },
     { path: '/admin/view-all-renters', exact: true, name: 'AllRenters', component: RentersList },
     { path: '/admin/edit-renter/:renterID', exact: true, name: 'EditRenter', component: EditRenter },
+    //Motorbike
+    
+    { path: '/admin/view-all-motorbikes', exact: true, name: 'AllMotorbikes', component: MotorbikesList },
 ]
 
 export default routes;
