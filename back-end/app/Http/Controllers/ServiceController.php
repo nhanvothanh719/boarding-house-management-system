@@ -94,7 +94,7 @@ class ServiceController extends Controller
         $service = Service::find($id);
         if($service) {
             $is_compulsory_before = $service->is_compulsory;
-            if($is_compulsory_before == false && $is_compulsory_before!= $request->is_compulsory) {
+            if($is_compulsory_before == 0 && $is_compulsory_before!= $request->is_compulsory) {
                 $check_use_service = ServiceRegistration::where('service_id', $id)->count();
                 if($check_use_service > 0){
                     return response([
@@ -121,7 +121,34 @@ class ServiceController extends Controller
         }
     }
 
-    public function deleteService() {
-
+    public function deleteService($id) {
+        $service = Service::find($id);
+        if($service) {
+            if($service->is_compulsory == 1) {
+                return response([
+                    'message' => 'Cannot delete compulsory service, change to optional service first',
+                    'status' => 404,
+                ]);
+            }
+            $check_use_service = ServiceRegistration::where('service_id', $id)->count();
+            if($check_use_service > 0) {
+                return response([
+                    'message' => 'Cannot delete this service since it is used',
+                    'status' => 404,
+                ]);
+            }
+            else {
+                $service->delete();
+                return response([
+                    'status' => 200,
+                    'message' => 'Successfully delete service',
+                ]);
+            }
+        } else {
+            return response([
+                'message' => 'No category ID found',
+                'status' => 404,
+            ]);
+        }
     }
 }

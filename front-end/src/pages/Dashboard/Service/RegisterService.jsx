@@ -129,7 +129,7 @@ export default function RegisterService() {
         swal("Success", response.data.message, "success");
         //Delete table row
         selectedRegistration.closest("tr").remove();
-        setColumnNumberChange(true);
+        //setColumnNumberChange(true);
       } else if (response.data.status === 404) {
         swal("Fail", response.data.message, "error");
         selectedRegistration.innerText = "Delete";
@@ -147,7 +147,6 @@ export default function RegisterService() {
           <form
             className="flexForm"
             onSubmit={register}
-            id="createCategoryForm"
           >
             <div className="formInput">
               <label>Renter ID:</label>
@@ -180,7 +179,7 @@ export default function RegisterService() {
                 })}
               </select>
             </div>
-            <small className="text-danger">{errors.category_id}</small>
+            <small className="text-danger">{errors.service_id}</small>
             <button type="submit" className="formButton">
               Register
             </button>

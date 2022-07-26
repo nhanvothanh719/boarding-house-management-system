@@ -45,8 +45,8 @@ class ServiceRegistrationController extends Controller
                 'status' => 404,
             ]);
         }
-        $check_existed_registration = ServiceRegistration::where([['user_id', $user->id],['service_id', $request->service_id]])->get();
-        if($check_existed_registration) {
+        $check_existed_registration = ServiceRegistration::where([['user_id', $user->id],['service_id', $request->service_id]])->count();
+        if($check_existed_registration > 0) {
             return response([
                 'message' => 'This renter has already registered to use this service',
                 'status' => 404,
