@@ -62,11 +62,63 @@ class ServiceController extends Controller
         ]);
     }
 
-    public function editService() {
+    public function editService($id) {
+        $service = Service::find($id);
+        if($service) {
+            return response([
+                'status' => 200,
+                'service' => $service,
+            ]);
+        }
+        else {
+            return response([
+                'status' => 404,
+                'message' => 'No service found',
+            ]);
+        }
     }
 
-    public function updateService() {
-
+    public function updateService(Request $request, $id) {
+        $validator = Validator::make($request->all(), [
+            'name' => ['required','unique:services,name,'.$id],
+            'unit' => 'required|max:50',
+            'unit_price' => 'required|numeric',
+        ]);
+        if($validator->fails())
+        {
+            return response([
+                'errors' => $validator->messages(),
+                'status' => 422, //Unprocessable entity
+            ]);
+        }
+        $service = Service::find($id);
+        if($service) {
+            $is_compulsory_before = $service->is_compulsory;
+            if($is_compulsory_before == false && $is_compulsory_before!= $request->is_compulsory) {
+                $check_use_service = ServiceRegistration::where('service_id', $id)->count();
+                if($check_use_service > 0){
+                    return response([
+                        'message' => 'Cannot update this service since it is used',
+                        'status' => 404,
+                    ]);
+                }
+            }
+            $service->name = $request->name;
+            $service->description = $request->description;
+            $service->unit = $request->unit;
+            $service->unit_price = $request->unit_price;
+            $service->is_compulsory = $request->is_compulsory == true ? '1' : '0';
+            $service->save();
+            return response([
+                'message' => 'Successfully update service',
+                'status' => 200,
+            ]);
+        } else {
+            return response([
+                'message' => 'No service found',
+                'status' => 404,
+            ]);
+        }
     }
 
     public function deleteService() {

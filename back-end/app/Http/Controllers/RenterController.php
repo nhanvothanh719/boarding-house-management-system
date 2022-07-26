@@ -113,11 +113,11 @@ class RenterController extends Controller
         $after_appropriate_time = date('Y-m-d', strtotime(' -40 year'));
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:50|string',
-            'email' => 'required|max:50|string',
+            'email' => 'required|max:50|string|unique:users,email,'.$id,
             'gender' => 'required',
             'date_of_birth' => ['required','date', 'before_or_equal:'.$before_appropriate_time, 'after_or_equal:'.$after_appropriate_time],
-            'id_card_number' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|size:10',
-            'phone_number' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|size:10',
+            'id_card_number' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|size:10|unique:users,id_card_number,'.$id,
+            'phone_number' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|size:10|unique:users,phone_number,'.$id,
             'occupation' => 'required|max:100|string',
             'permanent_address' => 'required',
             'profile_picture' => 'image',

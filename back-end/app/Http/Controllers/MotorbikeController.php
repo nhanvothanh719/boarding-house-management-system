@@ -121,8 +121,8 @@ class MotorbikeController extends Controller
             ]);
         }
         $validator = Validator::make($request->all(), [
-            'user_id' => 'required',
-            'license_plate' => 'required|min:6|max:10',
+            'user_id' => 'required|unique:motorbikes,user_id,'.$id,
+            'license_plate' => 'required|min:6|max:10|unique:motorbikes,license_plate,'.$id,
             'motorbike_image' => 'image',
         ]);
         if($validator->fails())
