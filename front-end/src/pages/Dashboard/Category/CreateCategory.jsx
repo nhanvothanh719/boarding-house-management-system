@@ -36,7 +36,7 @@ function CreateCategory() {
           swal("Success", response.data.message, "success");
           history.push("/admin/view-all-categories");
 
-        } else if (response.data.status === 400) {
+        } else if (response.data.status === 404) {
           setInput({ ...input, errors_list: response.data.errors });
         }
       })

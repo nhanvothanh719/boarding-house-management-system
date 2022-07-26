@@ -22,7 +22,7 @@ export default function CreateService() {
 
   const createService = (e) => {
     e.preventDefault();
-    const data = {
+    const service = {
       name: input.name,
       description: input.description,
       unit: input.unit,
@@ -30,12 +30,12 @@ export default function CreateService() {
       is_compulsory: input.is_compulsory,
     };
     axios
-      .post(AppUrl.StoreService, data)
+      .post(AppUrl.StoreService, service)
       .then((response) => {
         if (response.data.status === 200) {
           swal("Success", response.data.message, "success");
           history.push("/admin/view-all-services");
-        } else if (response.data.status === 400) {
+        } else if (response.data.status === 404) {
           setInput({ ...input, errors_list: response.data.errors });
         }
       })
@@ -43,7 +43,7 @@ export default function CreateService() {
         console.log(error);
       });
   };
-
+  
   return (
     <Fragment>
       <div className="topContainer">

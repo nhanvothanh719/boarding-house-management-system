@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 use App\Models\Service;
+use App\Models\User;
+use App\Models\ServiceRegistration;
 
 class ServiceController extends Controller
 {
@@ -27,7 +29,7 @@ class ServiceController extends Controller
         {
             return response([
                 'errors' => $validator->messages(),
-                'status' => 404,
+                'status' => 422,
             ]);
         }
         try {
@@ -47,13 +49,20 @@ class ServiceController extends Controller
         catch(Exception $exception) {
             return response([
                 'message' => $exception->getMessage(),
-                'status' => 404,
-            ], 404);
+                'status' => 400,
+            ], 400);
         }
     }
 
-    public function editService() {
+    public function getOptionalServices() {
+        $optional_services = Service::where('is_compulsory', 0)->get();
+        return response([
+            'status' => 200,
+            'allOptionalServices' => $optional_services,
+        ]);
+    }
 
+    public function editService() {
     }
 
     public function updateService() {

@@ -46,6 +46,11 @@ class AppUrl {
   static EditService = this.BaseURL + "/edit-service/";
   static UpdateService = this.BaseURL + "/update-service/";
   static DeleteService = this.BaseURL + "/delete-service/";
+  static GetOptionalServices = this.BaseURL + "/all-optional-services";
+  
+  static ShowRegistrations = this.BaseURL + "/all-registrations";
+  static RegisterService = this.BaseURL + "/register-service";
+  static UnregisterService = this.BaseURL + "/unregister-service/";
 }
 
 export default AppUrl;
