@@ -20,7 +20,8 @@ class PasswordResetController extends Controller
         if(User::where('email', $email)->doesntExist()) {
             return response([
                 'message' => 'Input email does not exist',
-            ], 401);
+                'status' => 404,
+            ]);
         }
         //Generate random token
         $token = rand(10, 1000);
@@ -33,6 +34,7 @@ class PasswordResetController extends Controller
             Mail::to($email)->send(new PasswordResetMail($token)); //Send email to user
             return response([
                 'message' => 'An email was sent. Check it to reset password',
+                'status' => 200,
             ], 200);
         }
         catch(Exception $exception) {
@@ -52,13 +54,15 @@ class PasswordResetController extends Controller
         if (!$check_email) {
             return response([
                 'message' => 'Email does not exist',
-            ], 401);
+                'status' => 404,
+            ]);
         }
 
         if (!$check_token) {
             return response([
                 'message' => 'Invalid pincode (token)',
-            ], 401);
+                'status' => 404,
+            ]);
         }
 
         try {
@@ -66,6 +70,7 @@ class PasswordResetController extends Controller
             DB::table('password_resets')->where('email', $email)->delete();
             return response([
                 'message' => 'Change password successfully',
+                'status' => 200,
             ], 200);
         }
         catch(Exception $exception) {

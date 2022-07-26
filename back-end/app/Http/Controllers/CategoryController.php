@@ -8,8 +8,6 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Category;
 use App\Models\Room;
 
-use App\Http\Requests\CategoryStoreRequest;
-
 class CategoryController extends Controller
 {
     public function index() {
@@ -29,8 +27,8 @@ class CategoryController extends Controller
         {
             return response([
                 'errors' => $validator->messages(),
-                'status' => 400,
-            ], 200);
+                'status' => 404,
+            ]);
         }
         try {
             $category = Category::create([
@@ -63,14 +61,14 @@ class CategoryController extends Controller
         else {
             return response([
                 'status' => 404,
-                'message' => 'No category ID found',
+                'message' => 'No category found',
             ]);
         }
     }
 
     public function updateCategory(Request $request, $id) {
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
+            'name' => ['required','unique:categories,name,'.$id],
             'price' => 'required|numeric',
         ]);
         if($validator->fails())

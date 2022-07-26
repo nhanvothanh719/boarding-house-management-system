@@ -4,12 +4,14 @@ import { useHistory } from "react-router-dom";
 import swal from "sweetalert";
 import axios from "axios";
 
-function CreateCategory() {
+export default function CreateService() {
   const history = useHistory();
   const [input, setInput] = useState({
     name: "",
-    price: "",
     description: "",
+    unit: "",
+    unit_price: "",
+    is_compulsory: "",
     errors_list: [],
   });
 
@@ -18,24 +20,21 @@ function CreateCategory() {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
 
-  const formSubmit = (e) => {
+  const createService = (e) => {
     e.preventDefault();
-    const data = {
+    const service = {
       name: input.name,
-      price: input.price,
       description: input.description,
+      unit: input.unit,
+      unit_price: input.unit_price,
+      is_compulsory: input.is_compulsory,
     };
     axios
-      .post(AppUrl.StoreCategory, data)
+      .post(AppUrl.StoreService, service)
       .then((response) => {
         if (response.data.status === 200) {
-          //Delete input after submit the form
-          document.getElementById("inputName").value = "";
-          document.getElementById("inputPrice").value = "";
-          document.getElementById("inputDescription").value = "";
           swal("Success", response.data.message, "success");
-          history.push("/admin/view-all-categories");
-
+          history.push("/admin/view-all-services");
         } else if (response.data.status === 404) {
           setInput({ ...input, errors_list: response.data.errors });
         }
@@ -44,55 +43,29 @@ function CreateCategory() {
         console.log(error);
       });
   };
-
-  var all_errors = [];
-  if (input.errors_list) {
-    all_errors = [
-      input.errors_list.name,
-      input.errors_list.price,
-      input.errors_list.description,
-    ];
-  }
+  
   return (
     <Fragment>
       <div className="topContainer">
-        <h1>Add new category</h1>
-
-        {all_errors.map((error) => {
-          return <l>{error}</l>;
-        })}
+        <h1>Add new service</h1>
       </div>
       <div className="bottomContainer">
         <div className="bottomRightContainer">
           <form
             className="flexForm"
-            onSubmit={formSubmit}
-            id="createCategoryForm"
+            onSubmit={createService}
           >
             <div className="formInput">
-              <label className="inputItemLabel">Category name:</label>
+              <label className="inputItemLabel">Service name:</label>
               <input
                 type="text"
                 className="inputItem"
                 name="name"
                 onChange={handleInput}
                 value={input.name}
-                id="inputName"
               />
             </div>
-            {/* <span>{this.state.errors_list.name}</span> */}
-            <div className="formInput">
-              <label className="inputItemLabel">Price:</label>
-              <input
-                type="text"
-                className="inputItem"
-                name="price"
-                onChange={handleInput}
-                value={input.price}
-                id="inputPrice"
-              />
-            </div>
-            {/* <span>{this.state.errors_list.price}</span> */}
+            <span>{input.errors_list.name}</span>
             <div className="formInput">
               <label className="inputItemLabel">Description:</label>
               <textarea
@@ -101,10 +74,41 @@ function CreateCategory() {
                 name="description"
                 onChange={handleInput}
                 value={input.description}
-                id="inputDescription"
               />
             </div>
-            {/* <span>{this.state.errors_list.description}</span> */}
+            <div className="formInput">
+              <label className="inputItemLabel">Unit:</label>
+              <input
+                type="text"
+                className="inputItem"
+                name="unit"
+                onChange={handleInput}
+                value={input.unit}
+              />
+            </div>
+            <span>{input.errors_list.unit}</span>
+            <div className="formInput">
+              <label className="inputItemLabel">Cost per unit:</label>
+              <input
+                type="text"
+                className="inputItem"
+                name="unit_price"
+                onChange={handleInput}
+                value={input.unit_price}
+              />
+            </div>
+            <span>{input.errors_list.unit_price}</span>
+            <div className="formInput">
+              <label>Compulsory:</label>
+              <input
+                type="checkbox"
+                className="inputItem"
+                name="is_compulsory"
+                onChange={handleInput}
+                defaultChecked={input.is_compulsory === 1 ? true : false}
+              />
+            </div>
+            <span>{input.errors_list.is_compulsory}</span>
             <button type="submit" className="formButton">
               Create
             </button>
@@ -114,5 +118,3 @@ function CreateCategory() {
     </Fragment>
   );
 }
-
-export default CreateCategory;

@@ -122,7 +122,7 @@ class RoomController extends Controller
 
     public function updateRoom(Request $request, $id) {
         $validator = Validator::make($request->all(), [
-            'number' => 'required',
+            'number' => 'required|unique:rooms,number,'.$id,
             'status' => 'required',
             'category_id' => 'required',
             'area' => 'required|digits_between:2,4',
@@ -186,7 +186,7 @@ class RoomController extends Controller
             ]);
         } else {
             return response([
-                'message' => 'No room ID found',
+                'message' => 'No room found',
                 'status' => 404,
             ]);
         }

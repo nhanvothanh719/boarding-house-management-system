@@ -30,13 +30,14 @@ export default function MotorbikesList() {
   if (loading) {
     return <Loading />;
   } else {
+
     const names = [];
-    let id = 0;
+    let owner_id = 0;
     motorbikeOwners.forEach(owner => {
-      id = owner['id'];
-      names[id] = owner['name'];
-      console.log(names[id]);
+      owner_id = owner['id'];
+      names[owner_id] = owner['name'];
     });
+
     columns = [
       { field: "id", title: "ID", align: "center" },
       { field: "license_plate", title: "License plate" },

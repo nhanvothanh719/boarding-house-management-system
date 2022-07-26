@@ -11,6 +11,8 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\RenterController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\MotorbikeController;
+use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\ServiceRegistrationController;
 
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/register', [AuthController::class, 'register']);
@@ -63,6 +65,18 @@ Route::middleware('auth:api')->group(function(){
         Route::get('/all-motorbike_owners', [MotorbikeController::class, 'getMotorbikeOwners']);
 
         Route::get('/get-name/{id}', [UserController::class, 'getName']);
+
+        //Service
+        Route::get('/all-services', [ServiceController::class, 'index']);
+        Route::post('/store-service', [ServiceController::class, 'storeService']);
+        Route::get('/edit-service/{id}', [ServiceController::class, 'editService']);
+        Route::put('/update-service/{id}', [ServiceController::class, 'updateService']);
+        Route::delete('/delete-service/{id}', [ServiceController::class, 'deleteService']);
+        Route::get('/all-optional-services', [ServiceController::class, 'getOptionalServices']);
+        
+        Route::get('/all-registrations', [ServiceRegistrationController::class, 'index']);
+        Route::post('/register-service', [ServiceRegistrationController::class, 'registerService']);
+        Route::delete('/unregister-service/{id}', [ServiceRegistrationController::class, 'unregisterService']);
     });
 });
 

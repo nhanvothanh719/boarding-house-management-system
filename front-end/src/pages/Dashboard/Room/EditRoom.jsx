@@ -35,12 +35,9 @@ export default function EditRoom({ match }) {
         setInput(response.data.room);
         setCheckbox(response.data.room);
         setOldImages(response.data.images);
-      } else if (response.data.status === 422) {
-        swal("All fields are mandatory", "", "error");
-        setErrors(response.data.errors);
       } else if (response.data.status === 404) {
         swal("Error", response.data.message, "error");
-        history.push("/admin/view-all-rooms");
+        history.push("/admin/view-all-services");
       }
       setLoading(false);
     });
