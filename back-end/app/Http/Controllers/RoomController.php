@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\File;
 use App\Models\Room;
 use App\Models\RoomImages;
 use App\Models\Category;
+use App\Models\RoomStatus;
 
 class RoomController extends Controller
 {
@@ -46,7 +47,6 @@ class RoomController extends Controller
     public function storeRoom(Request $request) {
         $validator = Validator::make($request->all(), [
             'number' => 'required|unique:rooms',
-            'status' => 'required',
             'category_id' => 'required',
             'area' => 'required|digits_between:2,4',
             'description' => 'required',
@@ -61,7 +61,8 @@ class RoomController extends Controller
         try {
             $room = new Room;
             $room->number = $request->input('number');
-            $room->status = $request->input('status');
+            $empty_status_id = RoomStatus::where('name', RoomStatus::STATUS_EMPTY)->value('id');
+            $room->status = $empty_status_id;
             $room->category_id = $request->input('category_id');
             $room->description = $request->input('description');
             $room->area = $request->input('area');
@@ -123,7 +124,6 @@ class RoomController extends Controller
     public function updateRoom(Request $request, $id) {
         $validator = Validator::make($request->all(), [
             'number' => 'required|unique:rooms,number,'.$id,
-            'status' => 'required',
             'category_id' => 'required',
             'area' => 'required|digits_between:2,4',
             'description' => 'required',
@@ -139,7 +139,6 @@ class RoomController extends Controller
         if($room) {
             $old_number = Room::where('id', $id)->value('number');
             $room->number = $request->input('number');
-            $room->status = $request->input('status');
             $room->category_id = $request->input('category_id');
             $room->description = $request->input('description');
             $room->area = $request->input('area');
@@ -197,7 +196,8 @@ class RoomController extends Controller
         if($room) {
             $room_status = Room::where('id', $id)->value('status');
             $room_number = Room::where('id', $id)->value('number');
-            if($room_status > 0) {
+            $empty_status_id = RoomStatus::where('name', RoomStatus::STATUS_EMPTY)->value('id');
+            if($room_status != $empty_status_id) {
                 return response([
                     'message' => 'Cannot delete room' .$room_number. ' since it is used: ',
                     'status' => 404,

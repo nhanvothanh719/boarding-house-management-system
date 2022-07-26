@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\RoomController;
+use App\Http\Controllers\RoomStatusController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\RenterController;
 use App\Http\Controllers\RoleController;
@@ -45,6 +46,9 @@ Route::middleware('auth:api')->group(function(){
         Route::get('/edit-room/{id}', [RoomController::class, 'editRoom']);
         Route::post('/update-room/{id}', [RoomController::class, 'updateRoom']);
         Route::delete('/delete-room/{id}', [RoomController::class, 'deleteRoom']);
+
+        //Status
+        Route::get('/all-statuses', [RoomStatusController::class, 'index']);
 
         //Renter
         Route::get('/all-renters', [RenterController::class, 'index']);

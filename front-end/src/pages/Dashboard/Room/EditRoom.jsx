@@ -13,7 +13,6 @@ export default function EditRoom({ match }) {
   const [input, setInput] = useState({
     number: "",
     category_id: "",
-    status: "",
     description: "",
     area: "",
   });
@@ -67,7 +66,6 @@ export default function EditRoom({ match }) {
       console.log(picture[i]);
     }
     room.append("category_id", input.category_id);
-    room.append("status", input.status);
     room.append("number", input.number);
     room.append("description", input.description);
     room.append("area", input.area);

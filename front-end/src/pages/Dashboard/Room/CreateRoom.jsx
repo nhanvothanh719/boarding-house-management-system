@@ -11,7 +11,6 @@ export default function CreateRoom() {
   const [input, setInput] = useState({
     number: "",
     category_id: "",
-    status: "",
     description: "",
     area: "",
     has_conditioner: "",
@@ -50,7 +49,6 @@ export default function CreateRoom() {
       }
     }
     newRoom.append("category_id", input.category_id);
-    newRoom.append("status", input.status);
     newRoom.append("number", input.number);
     newRoom.append("description", input.description);
     newRoom.append("area", input.area);
@@ -103,30 +101,6 @@ export default function CreateRoom() {
               />
             </div>
             <small className="text-danger">{errors.number}</small>
-            <div className="formInput">
-              <label>Status:</label>
-              <select
-                class="form-control"
-                name="status"
-                onChange={handleInput}
-                value={input.status}
-              >
-                <option selected>--- Select category ---</option>
-                <option value="0" key="0">
-                  {" "}
-                  Empty{" "}
-                </option>
-                <option value="1" key="1">
-                  {" "}
-                  Hectic{" "}
-                </option>
-                <option value="2" key="2">
-                  {" "}
-                  Full{" "}
-                </option>
-              </select>
-            </div>
-            <small className="text-danger">{errors.status}</small>
             <div className="formInput">
               <label>Category:</label>
               <select

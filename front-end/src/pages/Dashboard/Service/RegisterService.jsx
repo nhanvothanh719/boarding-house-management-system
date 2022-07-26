@@ -1,13 +1,11 @@
 import React, { Fragment, useEffect, useState } from "react";
 import AppUrl from "../../../RestAPI/AppUrl";
-import { useHistory } from "react-router-dom";
 import swal from "sweetalert";
 import axios from "axios";
 import Loading from "../../../components/Loading";
 import MaterialTable from "material-table";
 
 export default function RegisterService() {
-  const history = useHistory();
   const [loading, setLoading] = useState(true);
   const [services, setServices] = useState([]);
   const [renters, setRenters] = useState([]);

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 use App\Models\User;
+use App\Models\Role;
 
 use App\Http\Requests\RegisterRequest;
 
@@ -51,11 +52,14 @@ class AuthController extends Controller
         ], 401); //Unauthorized
     }
 
-    public function register(RegisterRequest $request) {
+    public function register(Request $request) {
         try {
+            //$renter_role_id = Role::where('name', Role::ROLE_ADMIN)->value('id');
+            $renter_role_id = 1;
             $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
+                'role_id' => $renter_role_id,
                 'password' => Hash::make($request->password),
                 'gender' => $request->gender,
                 'date_of_birth' => $request->date_of_birth,
