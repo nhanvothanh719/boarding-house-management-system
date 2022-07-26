@@ -13,6 +13,9 @@ import EditRenter from "../pages/Dashboard/Renter/EditRenter";
 import MotorbikesList from "../pages/Dashboard/Motorbike/MotorbikesList";
 import CreateMotorbike from "../pages/Dashboard/Motorbike/CreateMotorbike";
 import EditMotorbike from "../pages/Dashboard/Motorbike/EditMotorbike";
+import CreateService from "../pages/Dashboard/Service/CreateService";
+import ServicesList from "../pages/Dashboard/Service/ServicesList";
+import EditService from "../pages/Dashboard/Service/EditService";
 
 const routes = [
     { path: '/admin', exact: true, name: 'Admin' },
@@ -35,6 +38,10 @@ const routes = [
     { path: '/admin/create-motorbike', exact: true, name: 'CreateMotorbike', component: CreateMotorbike },
     { path: '/admin/view-all-motorbikes', exact: true, name: 'MotorbikesList', component: MotorbikesList },
     { path: '/admin/edit-motorbike/:motorbikeID', exact: true, name: 'EditMotorbike', component: EditMotorbike },
+    //Service
+    { path: '/admin/create-service', exact: true, name: 'CreateService', component: CreateService },
+    { path: '/admin/view-all-services', exact: true, name: 'ServicesList', component: ServicesList },
+    { path: '/admin/edit-service/:serviceID', exact: true, name: 'EditService', component: EditService },
 ]
 
 export default routes;

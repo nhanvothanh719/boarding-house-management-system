@@ -90,8 +90,8 @@ class MotorbikeController extends Controller
         catch(Exception $exception) {
             return response([
                 'message' => $exception->getMessage(),
-                'status' => 404,
-            ], 404);
+                'status' => 400,
+            ], 400);
         }
 
     }

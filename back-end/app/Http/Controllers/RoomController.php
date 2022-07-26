@@ -186,7 +186,7 @@ class RoomController extends Controller
             ]);
         } else {
             return response([
-                'message' => 'No room ID found',
+                'message' => 'No room found',
                 'status' => 404,
             ]);
         }
