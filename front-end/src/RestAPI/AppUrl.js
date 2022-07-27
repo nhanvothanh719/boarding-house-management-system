@@ -8,7 +8,7 @@ class AppUrl {
   static ContactUs = this.BaseURL + "/contact-us";
 
   static AvailableRooms = this.BaseURL + "/all-available-rooms";
-  static AvailableRoomDetails = this.BaseURL + "/room-details/";
+  static AvailableRoomDetails = this.BaseURL + "/available-room-details/";
 
   static CheckAuthenticated = this.BaseURL + "/check-authenticated";
 
@@ -27,7 +27,7 @@ class AppUrl {
   static GetAllRoomRents = this.BaseURL + "/all-room_rents";
   static RentRoom = this.BaseURL + "/rent-room";
   static CancelRentRoom = this.BaseURL + "/cancel-rent-room/";
-
+  static GetRoomDetails = this.BaseURL + "/room-details/";
 
   static ShowRenters = this.BaseURL + "/all-renters";
   static StoreRenter = this.BaseURL + "/store-renter";

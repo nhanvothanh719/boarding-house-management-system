@@ -4,210 +4,99 @@ import swal from "sweetalert";
 import axios from "axios";
 import Loading from "../../../components/Loading";
 import MaterialTable from "material-table";
+import { useHistory } from "react-router-dom";
 
-export default function RoomDetails({ params }) {
+export default function RoomDetails({ match }) {
+  const history = useHistory();
+  const roomId = match.params.roomID;
+
   const [loading, setLoading] = useState(true);
-  const [rentsList, setRentsLists] = useState([]);
+  const [details, setDetails] = useState({});
+  const [images, setImages] = useState([]);
+  const [category, setCategory] = useState({});
   const [renters, setRenters] = useState([]);
-  const [rooms, setRooms] = useState([]);
-  const [errors, setErrors] = useState([]);
-  const [input, setInput] = useState({
-    room_number: "",
-    renter_id: "",
-  });
-  const [columnNumberChange, setColumnNumberChange] = useState(false);
 
   useEffect(() => {
-    axios.get(AppUrl.ShowRooms).then((response) => {
+    axios.get(AppUrl.GetRoomDetails + roomId).then((response) => {
       if (response.data.status === 200) {
-        setRooms(response.data.allRooms);
-      }
-    });
-    axios.get(AppUrl.ShowRenters).then((response) => {
-      if (response.data.status === 200) {
+        setDetails(response.data.roomDetails);
+        setImages(response.data.roomImages);
+        setCategory(response.data.category);
         setRenters(response.data.allRenters);
+      } else if (response.data.status === 404) {
+        swal("Error", response.data.message, "error");
+        history.push("/admin/view-all-services");
       }
+      setLoading(false);
     });
-    axios.get(AppUrl.GetAllRoomRents).then((response) => {
-      if (response.data.status === 200) {
-        setRentsLists(response.data.allRoomRents);
-      }
-    });
-    if (columnNumberChange) {
-      setColumnNumberChange(false);
-    }
-    setLoading(false);
-  }, [columnNumberChange]);
+  }, [roomId, history]);
 
-  const handleInput = (e) => {
-    e.persist();
-    setInput({ ...input, [e.target.name]: e.target.value });
-  };
-
-  const makeNewRent = (e) => {
-    e.preventDefault();
-    const rent = {
-      renter_id: input.renter_id,
-      room_number: input.room_number,
-    };
-    axios
-      .post(AppUrl.RentRoom, rent)
-      .then((response) => {
-        if (response.data.status === 200) {
-          swal("Success", response.data.message, "success");
-          setErrors([]);
-          setColumnNumberChange(true);
-        } else if (response.data.status === 422) {
-          swal("All fields are mandatory", "", "error");
-          setErrors(response.data.errors);
-        } else if (response.data.status === 404) {
-          swal("Error", response.data.message, "error");
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
-  const findUser = (e) => {
-    e.preventDefault();
-    if (input.renter_id) {
-      axios
-        .get(AppUrl.FindName + input.renter_id)
-        .then((response) => {
-          if (response.data.status === 200) {
-            swal("User found", response.data.name, "success");
-          } else if (response.data.status === 404) {
-            swal("No user found", response.data.message, "error");
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-  };
-
-  let roomNumbers = [];
-  let renterNames = [];
-  let id = 0;
-  renters.forEach((renter) => {
-    id = renter["id"];
-    renterNames[id] = renter["name"];
-  });
-  rooms.forEach((room) => {
-    id = room["id"];
-    roomNumbers[id] = room["number"];
-  });
-
-  let columns = [];
   if (loading) {
     return <Loading />;
-  } else {
-    columns = [
-      { field: "id", title: "ID", align: "center" },
-      {
-        field: "room_id",
-        title: "Room number",
-        render: (rowData) => <p> {roomNumbers[rowData.room_id]} </p>,
-      },
-      {
-        field: "renter_id",
-        title: "Renter",
-        render: (rowData) => <p> {renterNames[rowData.renter_id]} </p>,
-      },
-    ];
   }
 
-  const cancelRent = (e, id) => {
-    e.preventDefault();
-    const selectedRentSection = e.currentTarget;
-    selectedRentSection.innerText = "Deleting";
-    axios.delete(AppUrl.CancelRentRoom + id).then((response) => {
-      if (response.data.status === 200) {
-        swal("Success", response.data.message, "success");
-        //Delete table row
-        selectedRentSection.closest("tr").remove();
-      } else if (response.data.status === 404) {
-        swal("Fail", response.data.message, "error");
-        selectedRentSection.innerText = "Delete";
-      }
-    });
-  };
+  const room_images = images.map((image) => {
+    return (
+      <ul class="list-group">
+        <li class="list-group-item">
+          <img
+            src={`http://127.0.0.1:8000/${image.image_name}`}
+            alt="room_image"
+          />
+          <p>{image.image_name}</p>
+        </li>
+      </ul>
+    );
+  });
+
+
+  const ChangeDateFormat = (date) => {
+    return date.value.split("-").reverse().join("-"); 
+  }
+
+  const all_renters = renters.map((renter) => {
+    return (
+      <ul class="list-group">
+        <li class="list-group-item">
+          <p>Name: {renter.name}</p>
+          <p>Email: {renter.email}</p>
+          <img
+            src={`http://127.0.0.1:8000/${renter.profile_picture}`}
+            alt="room_image"
+          />
+          <p>Date of birth: {ChangeDateFormat(renter.date_of_birth)}</p>
+          <p>Gender: {renter.gender === 1 ? "Male" : "Female"}</p>
+          <p>ID card number: {renter.id_card_number}</p>
+          <p>Occupation: {renter.occupation}</p>
+          <p>Permanent address: {renter.permanent_address}</p>
+
+        </li>
+      </ul>
+    );
+  });
 
   return (
     <Fragment>
-      <div className="topContainer">
-        <h1>Register to use service</h1>
-      </div>
-      <div className="bottomContainer">
-        <div className="bottomRightContainer">
-          <form className="flexForm" onSubmit={makeNewRent}>
-            <div className="formInput">
-              <label>Renter ID:</label>
-              <input
-                type="text"
-                className="inputItem"
-                name="renter_id"
-                onChange={handleInput}
-                value={input.renter_id}
-              />
-            </div>
-            <small className="text-danger">{errors.renter_id}</small>
-            <button onClick={findUser}>Find person</button>
-            <div className="formInput">
-            <label>Room number:</label>
-              <select
-                className="form-control"
-                name="room_number"
-                onChange={handleInput}
-                value={input.room_number}
-              >
-                <option selected>--- Select room ---</option>
-                {rooms.map((room) => {
-                  return (
-                    <option value={room.number} key={room.id}>
-                      {" "}
-                      {room.number}{" "}
-                    </option>
-                  );
-                })}
-              </select>
-            </div>
-            <small className="text-danger">{errors.room_number}</small>
-            <button type="submit" className="formButton">
-              Register
-            </button>
-          </form>
-          <div>
-            <br /> <br /> <br />
-            <MaterialTable
-              columns={columns}
-              data={rentsList}
-              title="All registrations"
-              options={{
-                searchAutoFocus: false,
-                searchFieldVariant: "outlined",
-                filtering: false,
-                pageSizeOptions: [5, 10],
-                paginationType: "stepped",
-                exportButton: true,
-                exportAllData: true,
-                actionsColumnIndex: -1,
-                grouping: true,
-              }}
-              actions={[
-                {
-                  icon: () => (
-                    <button className="btn btn-danger">Cancel</button>
-                  ),
-                  onClick: (event, registration) =>
-                    cancelRent(event, registration.id),
-                },
-              ]}
-            />
-          </div>
-        </div>
-      </div>
+      <p>All details of room {roomId}</p>
+      <ul class="list-group">
+        <li class="list-group-item">Room number: {roomId}</li>
+        <li class="list-group-item">Description: {details.description}</li>
+        <li class="list-group-item">Area: {details.area}</li>
+        <li class="list-group-item">
+          Conditioner: {details.has_conditioner === 1 ? "Yes" : "No"}
+        </li>
+        <li class="list-group-item">
+          Wardrobe: {details.has_wardrobe === 1 ? "Yes" : "No"}
+        </li>
+        <li class="list-group-item">
+          Fridge: {details.has_fridge === 1 ? "Yes" : "No"}
+        </li>
+        <li class="list-group-item">Status: {details.status}</li>
+      </ul>
+      <p>List of images</p>
+      {room_images}
+      <p>List of renters</p>
+      {all_renters}
     </Fragment>
   );
 }

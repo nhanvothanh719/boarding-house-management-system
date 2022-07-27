@@ -18,6 +18,7 @@ import ServicesList from "../pages/Dashboard/Service/ServicesList";
 import EditService from "../pages/Dashboard/Service/EditService";
 import RegisterService from "../pages/Dashboard/Service/RegisterService";
 import RoomDetails from "../pages/Dashboard/Room/RoomDetails";
+import RentRoom from "../pages/Dashboard/Room/RentRoom";
 
 const routes = [
     { path: '/admin', exact: true, name: 'Admin' },
@@ -30,6 +31,7 @@ const routes = [
     { path: '/admin/edit-category/:categoryID', exact: true, name: 'EditCategory', component: EditCategory },
     //Room
     { path: '/admin/room/:roomID', exact: true, name: 'RoomDetails', component: RoomDetails },
+    { path: '/admin/rent-room', exact: true, name: 'RentRoom', component: RentRoom },
     { path: '/admin/create-room', exact: true, name: 'CreateRoom', component: CreateRoom },
     { path: '/admin/view-all-rooms', exact: true, name: 'RoomsList', component: RoomsList },
     { path: '/admin/edit-room/:roomID', exact: true, name: 'EditRoom', component: EditRoom },

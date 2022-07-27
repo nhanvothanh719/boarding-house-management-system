@@ -49,7 +49,7 @@ class RoomController extends Controller
         return $rooms;
     }
 
-    public function getRoomDetails($id) {
+    public function getAvailableRoomDetails($id) {
         $room_details = Room::where('id', $id)->get();
         $room_category_id = Room::where('id', $id)->value('category_id');
         $room_price= Category::where('id', $room_category_id)->value('price');
@@ -136,7 +136,7 @@ class RoomController extends Controller
         else {
             return response([
                 'status' => 404,
-                'message' => 'No room ID found',
+                'message' => 'No room found',
             ]);
         }
     }
@@ -330,6 +330,32 @@ class RoomController extends Controller
         return response([
             'message' => 'Remove rent successfully',
             'status' => 200,
+        ]);
+    }
+
+    public function getRoomDetails($id) {
+        $room = Room::find($id);
+        if(!$room) {
+            return response([
+                'status' => 404,
+                'message' => 'No room found',
+            ]);
+        }
+        $room_images = RoomImages::where('room_id', $id)->get();
+        $category = Category::find($room->category_id);
+        $all_renters_id = DB::table('room_rents')->where('room_id', $room->id)->pluck('renter_id');
+        $all_renters = array();
+        foreach ($all_renters_id as $renter_id) {
+            $renter = User::find($renter_id);
+            array_push($all_renters, $renter);
+        }
+        //$renters = User::where('',)->get();
+        return response([
+            'status' => 200,
+            'roomDetails' => $room,
+            'roomImages' => $room_images,
+            'category' => $category,
+            'allRenters' => $all_renters,
         ]);
     }
 }
