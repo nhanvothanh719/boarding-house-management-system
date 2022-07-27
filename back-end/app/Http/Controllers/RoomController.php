@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\CustomHelper;
+
 use Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -13,6 +15,8 @@ use App\Models\Room;
 use App\Models\RoomImages;
 use App\Models\Category;
 use App\Models\RoomStatus;
+use App\Models\RoomRent;
+use App\Models\User;
 
 class RoomController extends Controller
 {
@@ -21,6 +25,22 @@ class RoomController extends Controller
         return response([
             'status' => 200,
             'allRooms' => $all_rooms,
+        ]);
+    }
+
+    public function getAllRoomRents() {
+        $all_room_rents = RoomRent::all();
+        return response([
+            'status' => 200,
+            'allRoomRents' => $all_room_rents,
+        ]);
+    }
+
+    public function getAllRoomStatuses() {
+        $all_statuses = RoomStatus::all();
+        return response([
+            'status' => 200,
+            'allStatuses' => $all_statuses,
         ]);
     }
 
@@ -220,5 +240,65 @@ class RoomController extends Controller
                 'status' => 404,
             ]);
         }
+    }
+
+    public function rentRoom(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'renter_id' => 'unique:room_rents',
+            'room_number' => 'required',
+        ]);
+        if($validator->fails())
+        {
+            return response([
+                'errors' => $validator->messages(),
+                'status' => 422, //Unprocessable entity
+            ]);
+        }
+        $user = User::find($request->renter_id);
+        if(!$user) 
+        {
+            return response([
+                'message' => 'No user found',
+                'status' => 404,
+            ]);
+        }
+        if(CustomHelper::isAdminRole($user))
+        {
+            return response([
+                'message' => 'The user with ID is not renter',
+                'status' => 404,
+            ]);
+        }
+        $room_id = Room::where('number', $request->room_number)->value('id');
+        $room = Room::find($room_id);
+        $room_status = $room->status;
+        switch($room_status) {
+            case(CustomHelper::getRoomStatusId(RoomStatus::STATUS_FULL)):
+                return response([
+                    'message' => 'Cannot add renter since the room is full',
+                    'status' => 404,
+                ]);
+                break;
+            case(CustomHelper::getRoomStatusId(RoomStatus::STATUS_EMPTY)):
+                $rent = new RoomRent;
+                $rent->room_id = $room_id;
+                $rent->renter_id = $request->renter_id;
+                $rent->save();
+                $room->status = CustomHelper::getRoomStatusId(RoomStatus::STATUS_OCCUPIED);
+                $room->save();
+                break;
+            case(CustomHelper::getRoomStatusId(RoomStatus::STATUS_OCCUPIED)):
+                $rent = new RoomRent;
+                $rent->room_id = $room_id;
+                $rent->renter_id = $request->renter_id;
+                $rent->save();
+                $room->status = CustomHelper::getRoomStatusId(RoomStatus::STATUS_FULL);
+                $room->save();
+                break;
+        }
+        return response([
+            'message' => 'Add renter successfully',
+            'status' => 200,
+        ]);
     }
 }

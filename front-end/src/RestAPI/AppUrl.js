@@ -23,8 +23,10 @@ class AppUrl {
   static EditRoom = this.BaseURL + "/edit-room/";
   static UpdateRoom = this.BaseURL + "/update-room/";
   static DeleteRoom = this.BaseURL + "/delete-room/";
+  static GetAllStatuses = this.BaseURL + "/all-statuses";
+  static GetAllRoomRents = this.BaseURL + "/all-room_rents";
+  static RentRoom = this.BaseURL + "/rent-room";
 
-  static ShowStatuses = this.BaseURL + "/all-statuses";
 
   static ShowRenters = this.BaseURL + "/all-renters";
   static StoreRenter = this.BaseURL + "/store-renter";

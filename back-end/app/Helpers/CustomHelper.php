@@ -3,6 +3,9 @@ namespace App\Helpers;
 
 use Illuminate\Support\Facades\File;
 
+use App\Models\RoomStatus;
+use App\Models\Role;
+
 class CustomHelper{
 
     public static function addImage($image, $upload_folder) {
@@ -28,6 +31,27 @@ class CustomHelper{
         $image_name = $generated_name.'.'.$extension;
         $new_image->move($upload_folder, $image_name);
         return $upload_folder.$image_name;
+    }
+
+    public static function getRoomStatusId($room_status) {
+        $status_id = RoomStatus::where('name', $room_status)->value('id');
+        return $status_id;
+    }
+
+    public static function getAdminRoleId() {
+        return Role::where('name', Role::ROLE_ADMIN)->value('id');
+    }
+
+    public static function getRenterRoleId() {
+        return Role::where('name', Role::ROLE_RENTER)->value('id');
+    }
+
+    public static function isAdminRole($user) {
+        $isAdmin = false;
+        if($user->role == CustomHelper::getAdminRoleId()) {
+            $isAdmin = true;
+        }
+        return $isAdmin;
     }
 }
 

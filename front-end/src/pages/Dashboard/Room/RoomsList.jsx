@@ -21,7 +21,7 @@ export default function RoomsList() {
       }
       setLoading(false);
     });
-    axios.get(AppUrl.ShowStatuses).then((response) => {
+    axios.get(AppUrl.GetAllStatuses).then((response) => {
       if (response.status === 200) {
         setStatuses(response.data.allStatuses);
       }
@@ -95,6 +95,11 @@ export default function RoomsList() {
               actionsColumnIndex: -1,
             }}
             actions={[
+              {
+                icon: () => <button className="btn btn-info">Details</button>,
+                onClick: (event, room) =>
+                  history.push(`/admin/room/${room.id}`),
+              },
               {
                 icon: () => <button className="btn btn-warning">Edit</button>,
                 onClick: (event, room) =>
