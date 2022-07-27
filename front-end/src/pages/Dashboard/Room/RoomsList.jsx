@@ -93,6 +93,7 @@ export default function RoomsList() {
               exportButton: true,
               exportAllData: true,
               actionsColumnIndex: -1,
+              grouping: true,
             }}
             actions={[
               {

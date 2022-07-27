@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\File;
 use App\Models\RoomStatus;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\RoomRent;
 
 class CustomHelper{
 
@@ -53,6 +54,12 @@ class CustomHelper{
             $isAdmin = true;
         }
         return $isAdmin;
+    }
+
+    public static function checkSameGender(User $renter, $room_id) {
+        $room_partner_id = RoomRent::where('room_id', $room_id)->value('renter_id');
+        $room_partner_gender = User::find($room_partner_id)->gender;
+        return $renter->gender == $room_partner_gender ? true : false;
     }
 }
 

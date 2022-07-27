@@ -127,7 +127,6 @@ export default function RoomDetails({ params }) {
         swal("Success", response.data.message, "success");
         //Delete table row
         selectedRentSection.closest("tr").remove();
-        //setColumnNumberChange(true);
       } else if (response.data.status === 404) {
         swal("Fail", response.data.message, "error");
         selectedRentSection.innerText = "Delete";
@@ -156,14 +155,23 @@ export default function RoomDetails({ params }) {
             <small className="text-danger">{errors.renter_id}</small>
             <button onClick={findUser}>Find person</button>
             <div className="formInput">
-              <label>Room number:</label>
-              <input
-                type="text"
-                className="inputItem"
+            <label>Room number:</label>
+              <select
+                className="form-control"
                 name="room_number"
                 onChange={handleInput}
                 value={input.room_number}
-              />
+              >
+                <option selected>--- Select room ---</option>
+                {rooms.map((room) => {
+                  return (
+                    <option value={room.number} key={room.id}>
+                      {" "}
+                      {room.number}{" "}
+                    </option>
+                  );
+                })}
+              </select>
             </div>
             <small className="text-danger">{errors.room_number}</small>
             <button type="submit" className="formButton">
@@ -185,6 +193,7 @@ export default function RoomDetails({ params }) {
                 exportButton: true,
                 exportAllData: true,
                 actionsColumnIndex: -1,
+                grouping: true,
               }}
               actions={[
                 {
