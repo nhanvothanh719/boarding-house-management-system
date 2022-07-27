@@ -98,7 +98,7 @@ class ServiceController extends Controller
                 $check_use_service = ServiceRegistration::where('service_id', $id)->count();
                 if($check_use_service > 0){
                     return response([
-                        'message' => 'Cannot update this service since it is used',
+                        'message' => 'Cannot update this service to compulsory since it is used',
                         'status' => 404,
                     ]);
                 }

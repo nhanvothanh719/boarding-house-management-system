@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\CustomHelper;
+
 use Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -12,6 +14,9 @@ use Illuminate\Support\Facades\File;
 use App\Models\Room;
 use App\Models\RoomImages;
 use App\Models\Category;
+use App\Models\RoomStatus;
+use App\Models\RoomRent;
+use App\Models\User;
 
 class RoomController extends Controller
 {
@@ -23,12 +28,28 @@ class RoomController extends Controller
         ]);
     }
 
+    public function getAllRoomRents() {
+        $all_room_rents = RoomRent::all();
+        return response([
+            'status' => 200,
+            'allRoomRents' => $all_room_rents,
+        ]);
+    }
+
+    public function getAllRoomStatuses() {
+        $all_statuses = RoomStatus::all();
+        return response([
+            'status' => 200,
+            'allStatuses' => $all_statuses,
+        ]);
+    }
+
     public function displayAllAvailableRooms() {
         $rooms = Room::all();
         return $rooms;
     }
 
-    public function getRoomDetails($id) {
+    public function getAvailableRoomDetails($id) {
         $room_details = Room::where('id', $id)->get();
         $room_category_id = Room::where('id', $id)->value('category_id');
         $room_price= Category::where('id', $room_category_id)->value('price');
@@ -46,7 +67,6 @@ class RoomController extends Controller
     public function storeRoom(Request $request) {
         $validator = Validator::make($request->all(), [
             'number' => 'required|unique:rooms',
-            'status' => 'required',
             'category_id' => 'required',
             'area' => 'required|digits_between:2,4',
             'description' => 'required',
@@ -61,7 +81,8 @@ class RoomController extends Controller
         try {
             $room = new Room;
             $room->number = $request->input('number');
-            $room->status = $request->input('status');
+            $empty_status_id = RoomStatus::where('name', RoomStatus::STATUS_EMPTY)->value('id');
+            $room->status = $empty_status_id;
             $room->category_id = $request->input('category_id');
             $room->description = $request->input('description');
             $room->area = $request->input('area');
@@ -115,7 +136,7 @@ class RoomController extends Controller
         else {
             return response([
                 'status' => 404,
-                'message' => 'No room ID found',
+                'message' => 'No room found',
             ]);
         }
     }
@@ -123,7 +144,6 @@ class RoomController extends Controller
     public function updateRoom(Request $request, $id) {
         $validator = Validator::make($request->all(), [
             'number' => 'required|unique:rooms,number,'.$id,
-            'status' => 'required',
             'category_id' => 'required',
             'area' => 'required|digits_between:2,4',
             'description' => 'required',
@@ -139,7 +159,6 @@ class RoomController extends Controller
         if($room) {
             $old_number = Room::where('id', $id)->value('number');
             $room->number = $request->input('number');
-            $room->status = $request->input('status');
             $room->category_id = $request->input('category_id');
             $room->description = $request->input('description');
             $room->area = $request->input('area');
@@ -197,7 +216,8 @@ class RoomController extends Controller
         if($room) {
             $room_status = Room::where('id', $id)->value('status');
             $room_number = Room::where('id', $id)->value('number');
-            if($room_status > 0) {
+            $empty_status_id = RoomStatus::where('name', RoomStatus::STATUS_EMPTY)->value('id');
+            if($room_status != $empty_status_id) {
                 return response([
                     'message' => 'Cannot delete room' .$room_number. ' since it is used: ',
                     'status' => 404,
@@ -220,5 +240,122 @@ class RoomController extends Controller
                 'status' => 404,
             ]);
         }
+    }
+
+    public function rentRoom(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'renter_id' => 'unique:room_rents',
+            'room_number' => 'required',
+        ]);
+        if($validator->fails())
+        {
+            return response([
+                'errors' => $validator->messages(),
+                'status' => 422, //Unprocessable entity
+            ]);
+        }
+        $user = User::find($request->renter_id);
+        if(!$user) 
+        {
+            return response([
+                'message' => 'No user found',
+                'status' => 404,
+            ]);
+        }
+        if(CustomHelper::isAdminRole($user))
+        {
+            return response([
+                'message' => 'The user with ID is not renter',
+                'status' => 404,
+            ]);
+        }
+        $room_id = Room::where('number', $request->room_number)->value('id');
+        $room = Room::find($room_id);
+        $room_status = $room->status;
+        switch($room_status) {
+            case(CustomHelper::getRoomStatusId(RoomStatus::STATUS_FULL)):
+                return response([
+                    'message' => 'Cannot add renter since the room is full',
+                    'status' => 404,
+                ]);
+                break;
+            case(CustomHelper::getRoomStatusId(RoomStatus::STATUS_EMPTY)):
+                $rent = new RoomRent;
+                $rent->room_id = $room_id;
+                $rent->renter_id = $request->renter_id;
+                $rent->save();
+                $room->status = CustomHelper::getRoomStatusId(RoomStatus::STATUS_OCCUPIED);
+                $room->save();
+                break;
+            case(CustomHelper::getRoomStatusId(RoomStatus::STATUS_OCCUPIED)):
+                if(CustomHelper::checkSameGender($user, $room_id) == false) {
+                    return response([
+                        'message' => 'Cannot add this renter due to his/her gender',
+                        'status' => 404,
+                    ]);
+                }
+                $rent = new RoomRent;
+                $rent->room_id = $room_id;
+                $rent->renter_id = $request->renter_id;
+                $rent->save();
+                $room->status = CustomHelper::getRoomStatusId(RoomStatus::STATUS_FULL);
+                $room->save();
+                break;
+        }
+        return response([
+            'message' => 'Add renter successfully',
+            'status' => 200,
+        ]);
+    }
+
+    public function cancelRentRoom($id) {
+        $rent = RoomRent::find($id);
+        if(!$rent) {
+            return response([
+                'message' => 'The rent has not been made',
+                'status' => 404,
+            ]);
+        }
+        $room = Room::find($rent->room_id);
+        switch($room->status) {
+            case(CustomHelper::getRoomStatusId(RoomStatus::STATUS_FULL)):
+                $room->status = CustomHelper::getRoomStatusId(RoomStatus::STATUS_OCCUPIED);
+                break;
+            case(CustomHelper::getRoomStatusId(RoomStatus::STATUS_OCCUPIED)):
+                $room->status = CustomHelper::getRoomStatusId(RoomStatus::STATUS_EMPTY);
+                break;
+        }
+        $room->save();
+        $rent->delete();
+        return response([
+            'message' => 'Remove rent successfully',
+            'status' => 200,
+        ]);
+    }
+
+    public function getRoomDetails($id) {
+        $room = Room::find($id);
+        if(!$room) {
+            return response([
+                'status' => 404,
+                'message' => 'No room found',
+            ]);
+        }
+        $room_images = RoomImages::where('room_id', $id)->get();
+        $category = Category::find($room->category_id);
+        $all_renters_id = DB::table('room_rents')->where('room_id', $room->id)->pluck('renter_id');
+        $all_renters = array();
+        foreach ($all_renters_id as $renter_id) {
+            $renter = User::find($renter_id);
+            array_push($all_renters, $renter);
+        }
+        //$renters = User::where('',)->get();
+        return response([
+            'status' => 200,
+            'roomDetails' => $room,
+            'roomImages' => $room_images,
+            'category' => $category,
+            'allRenters' => $all_renters,
+        ]);
     }
 }

@@ -22,7 +22,7 @@ Route::post('/forget-password', [PasswordResetController::class, 'sendEmailToRes
 Route::post('/reset-password', [PasswordResetController::class, 'resetPassword']);  
                 
 Route::get('/all-available-rooms', [RoomController::class, 'displayAllAvailableRooms']);
-Route::get('/room-details/{id}', [RoomController::class, 'getRoomDetails']);
+Route::get('/available-room-details/{id}', [RoomController::class, 'getAvailableRoomDetails']);
 
 Route::middleware('auth:api')->group(function(){
     Route::post('/logout', [AuthController::class, 'logout']);
@@ -45,6 +45,11 @@ Route::middleware('auth:api')->group(function(){
         Route::get('/edit-room/{id}', [RoomController::class, 'editRoom']);
         Route::post('/update-room/{id}', [RoomController::class, 'updateRoom']);
         Route::delete('/delete-room/{id}', [RoomController::class, 'deleteRoom']);
+        Route::get('/all-statuses', [RoomController::class, 'getAllRoomStatuses']);
+        Route::get('/all-room_rents', [RoomController::class, 'getAllRoomRents']);
+        Route::post('/rent-room', [RoomController::class, 'rentRoom']);
+        Route::delete('/cancel-rent-room/{id}', [RoomController::class, 'cancelRentRoom']);
+        Route::get('/room-details/{id}', [RoomController::class, 'getRoomDetails']);
 
         //Renter
         Route::get('/all-renters', [RenterController::class, 'index']);

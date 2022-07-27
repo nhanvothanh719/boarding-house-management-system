@@ -5,10 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Role extends Model
+class RoomRent extends Model
 {
     use HasFactory;
-    const ROLE_ADMIN = 'Admin';
-    const ROLE_RENTER = 'Renter';
     protected $guarded = ['id'];
 }

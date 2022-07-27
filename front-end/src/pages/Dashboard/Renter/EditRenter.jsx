@@ -205,7 +205,7 @@ export default function EditRenter({ match }) {
                 <option selected>--- Select role ---</option>
                 {roles.map((role) => {
                   return (
-                    <option value={role.role_id} key={role.role_id}>
+                    <option value={role.id} key={role.id}>
                       {" "}
                       {role.name}{" "}
                     </option>
