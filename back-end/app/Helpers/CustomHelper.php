@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\File;
 
 use App\Models\RoomStatus;
 use App\Models\Role;
+use App\Models\User;
 
 class CustomHelper{
 
@@ -46,9 +47,9 @@ class CustomHelper{
         return Role::where('name', Role::ROLE_RENTER)->value('id');
     }
 
-    public static function isAdminRole($user) {
+    public static function isAdminRole(User $user) {
         $isAdmin = false;
-        if($user->role == CustomHelper::getAdminRoleId()) {
+        if($user->role_id == CustomHelper::getAdminRoleId()) {
             $isAdmin = true;
         }
         return $isAdmin;

@@ -51,9 +51,7 @@ export default function RoomDetails({ params }) {
       room_number: input.room_number,
     };
     axios
-      //-->
       .post(AppUrl.RentRoom, rent)
-      //-->
       .then((response) => {
         if (response.data.status === 200) {
           swal("Success", response.data.message, "success");
@@ -122,6 +120,19 @@ export default function RoomDetails({ params }) {
 
   const cancelRent = (e, id) => {
     e.preventDefault();
+    const selectedRentSection = e.currentTarget;
+    selectedRentSection.innerText = "Deleting";
+    axios.delete(AppUrl.CancelRentRoom + id).then((response) => {
+      if (response.data.status === 200) {
+        swal("Success", response.data.message, "success");
+        //Delete table row
+        selectedRentSection.closest("tr").remove();
+        //setColumnNumberChange(true);
+      } else if (response.data.status === 404) {
+        swal("Fail", response.data.message, "error");
+        selectedRentSection.innerText = "Delete";
+      }
+    });
   };
 
   return (

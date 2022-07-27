@@ -301,4 +301,29 @@ class RoomController extends Controller
             'status' => 200,
         ]);
     }
+
+    public function cancelRentRoom($id) {
+        $rent = RoomRent::find($id);
+        if(!$rent) {
+            return response([
+                'message' => 'The rent has not been made',
+                'status' => 404,
+            ]);
+        }
+        $room = Room::find($rent->room_id);
+        switch($room->status) {
+            case(CustomHelper::getRoomStatusId(RoomStatus::STATUS_FULL)):
+                $room->status = CustomHelper::getRoomStatusId(RoomStatus::STATUS_OCCUPIED);
+                break;
+            case(CustomHelper::getRoomStatusId(RoomStatus::STATUS_OCCUPIED)):
+                $room->status = CustomHelper::getRoomStatusId(RoomStatus::STATUS_EMPTY);
+                break;
+        }
+        $room->save();
+        $rent->delete();
+        return response([
+            'message' => 'Remove rent successfully',
+            'status' => 200,
+        ]);
+    }
 }
