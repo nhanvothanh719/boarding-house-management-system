@@ -49,9 +49,8 @@ export default function RoomDetails({ match }) {
     );
   });
 
-
   const ChangeDateFormat = (date) => {
-    return date.value.split("-").reverse().join("-"); 
+    return date.split("-").reverse().join("/"); 
   }
 
   const all_renters = renters.map((renter) => {
@@ -69,7 +68,6 @@ export default function RoomDetails({ match }) {
           <p>ID card number: {renter.id_card_number}</p>
           <p>Occupation: {renter.occupation}</p>
           <p>Permanent address: {renter.permanent_address}</p>
-
         </li>
       </ul>
     );
