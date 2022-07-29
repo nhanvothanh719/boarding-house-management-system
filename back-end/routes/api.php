@@ -13,6 +13,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\MotorbikeController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\ServiceRegistrationController;
+use App\Http\Controllers\InvoiceController;
 
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/register', [AuthController::class, 'register']);
@@ -82,6 +83,16 @@ Route::middleware('auth:api')->group(function(){
         Route::get('/all-registrations', [ServiceRegistrationController::class, 'index']);
         Route::post('/register-service', [ServiceRegistrationController::class, 'registerService']);
         Route::delete('/unregister-service/{id}', [ServiceRegistrationController::class, 'unregisterService']);
+
+        Route::get('/all-invoices', [InvoiceController::class, 'index']);
+        Route::post('/store-invoice/{id}', [InvoiceController::class, 'storeInvoice']);
+        Route::get('/invoice-details/{id}', [InvoiceController::class, 'getInvoiceDetails']);
+        Route::put('/update-invoice/{id}', [InvoiceController::class, 'updateInvoice']);
+        Route::delete('/delete-invoice/{id}', [InvoiceController::class, 'deleteInvoice']);
+        Route::get('/all-registered_services/{id}', [InvoiceController::class, 'getRegisteredServices']);
+        Route::post('/create-temporary-invoice/{id}', [InvoiceController::class, 'createTemporaryInvoice']);
+        //Route::post('/update-service-quantity/{user_id}/{service_id}/{value}',[CartController::class, 'updateServiceQuantity']);
+        Route::post('/update-service-quantity/{service_id}/{value}',[InvoiceController::class, 'updateServiceQuantity']);
     });
 });
 

@@ -19,6 +19,8 @@ import EditService from "../pages/Dashboard/Service/EditService";
 import RegisterService from "../pages/Dashboard/Service/RegisterService";
 import RoomDetails from "../pages/Dashboard/Room/RoomDetails";
 import RentRoom from "../pages/Dashboard/Room/RentRoom";
+import InvoicesRentersList from "../pages/Dashboard/Invoice/InvoicesRentersList";
+import CreateInvoice from "../pages/Dashboard/Invoice/CreateInvoice";
 
 const routes = [
     { path: '/admin', exact: true, name: 'Admin' },
@@ -48,6 +50,9 @@ const routes = [
     { path: '/admin/view-all-services', exact: true, name: 'ServicesList', component: ServicesList },
     { path: '/admin/edit-service/:serviceID', exact: true, name: 'EditService', component: EditService },
     { path: '/admin/register-service', exact: true, name: 'RegisterService', component: RegisterService },
+    //Invoice
+    { path: '/admin/view-all-renters-with-invoices', exact: true, name: 'InvoicesRentersList', component: InvoicesRentersList },
+    { path: '/admin/create-invoice/:renterID', exact: true, name: 'CreateInvoice', component: CreateInvoice },
 ]
 
 export default routes;

@@ -107,7 +107,7 @@ function SideBar() {
                 <span className="itemName"> Notifications </span>
               </li>
             </NavLink>
-            <NavLink exact to="/" style={{ textDecoration: "none" }}>
+            <NavLink exact to="/admin/view-all-renters-with-invoices" style={{ textDecoration: "none" }}>
               <li className="customLi">
                 <ReceiptIcon className="sideBarIcon" />
                 <span className="itemName"> Invoices </span>

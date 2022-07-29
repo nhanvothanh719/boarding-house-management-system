@@ -56,6 +56,9 @@ class AppUrl {
   static ShowRegistrations = this.BaseURL + "/all-registrations";
   static RegisterService = this.BaseURL + "/register-service";
   static UnregisterService = this.BaseURL + "/unregister-service/";
+
+  static GetRegisteredServices = this.BaseURL + "/all-registered_services/";
+  static CreateTemporaryInvoice = this.BaseURL + "/create-temporary-invoice/";
 }
 
 export default AppUrl;
