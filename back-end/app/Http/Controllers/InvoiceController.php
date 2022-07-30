@@ -237,4 +237,21 @@ class InvoiceController extends Controller
             ]);
         }
     }
+    
+    public function deleteInvoice($id) {
+        $invoice = Invoice::find($id);
+        if(!$invoice) {
+            return response([
+                'message' => 'No invoice found',
+                'status' => 404,
+            ]);
+        }
+        InvoiceDetail::where('invoice_id', $id)->delete();
+        ExtraFee::where('invoice_id', $id)->delete();
+        $invoice->delete();
+        return response([
+            'message' => 'Successfully delete invoice',
+            'status' => 200,
+        ]);
+    }
 }
