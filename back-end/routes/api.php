@@ -91,7 +91,6 @@ Route::middleware('auth:api')->group(function(){
         Route::delete('/delete-invoice/{id}', [InvoiceController::class, 'deleteInvoice']);
         Route::get('/all-registered_services/{id}', [InvoiceController::class, 'getRegisteredServices']);
         Route::post('/create-temporary-invoice/{id}', [InvoiceController::class, 'createTemporaryInvoice']);
-        //Route::post('/update-service-quantity/{user_id}/{service_id}/{value}',[CartController::class, 'updateServiceQuantity']);
         Route::post('/update-service-quantity/{service_id}/{value}',[InvoiceController::class, 'updateServiceQuantity']);
     });
 });

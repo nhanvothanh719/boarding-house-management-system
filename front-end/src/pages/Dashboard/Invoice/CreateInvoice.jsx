@@ -11,10 +11,14 @@ export default function CreateInvoice({ match }) {
   const renterId = match.params.renterID;
   const [errors, setErrors] = useState([]);
   const [input, setInput] = useState({
-    effective_at: "",
+    effective_from: "",
     valid_until: "",
     discount: "",
+    month: "",
+    extra_fee: "",
+    description: "",
   });
+  var totalPrice = 0;
 
   useEffect(() => {
     axios.post(AppUrl.CreateTemporaryInvoice + renterId).then((response) => {
@@ -55,22 +59,32 @@ export default function CreateInvoice({ match }) {
 
   const createInvoice = (e) => {
     e.preventDefault();
-    // const service = {
-    //   name: input.name,
-    // };
-    // axios
-    //   .post(AppUrl.StoreService, service)
-    //   .then((response) => {
-    //     if (response.data.status === 200) {
-    //       swal("Success", response.data.message, "success");
-    //       history.push("/admin/view-all-services");
-    //     } else if (response.data.status === 404) {
-    //       setInput({ ...input, errors_list: response.data.errors });
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
+    const otherInput = {
+      discount: input.discount,
+      effective_from: input.effective_from,
+      valid_until: input.valid_until,
+      month: input.month,
+      extra_fee: input.extra_fee,
+      description: input.description,
+    };
+    axios
+      .post(AppUrl.StoreInvoice + renterId, otherInput)
+      .then((response) => {
+        if (response.data.status === 200) {
+          swal("Success", response.data.message, "success");
+          history.push("/admin/view-all-renters-with-invoices");
+        }
+        else if (response.data.status === 422) {
+          swal("All fields are mandatory", "", "error");
+          setErrors(response.data.errors);
+        } 
+        else if (response.data.status === 404) {
+          setInput({ ...input, errors_list: response.data.errors });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -89,6 +103,7 @@ export default function CreateInvoice({ match }) {
           </thead>
           <tbody>
             {registeredServices.map((item, index) => {
+              totalPrice += item.service.unit_price * item.temporary_quantity
               return (
                 <tr key={index}>
                   <td width="10%" className="text-center">
@@ -116,6 +131,74 @@ export default function CreateInvoice({ match }) {
             })}
           </tbody>
         </table>
+        <h3>Total: {totalPrice}</h3>
+        <br/><br/><br/>
+        <div className="formInput">
+              <label>Discount (%):</label>
+              <input
+                type="text"
+                className="inputItem"
+                name="discount"
+                onChange={handleInput}
+                value={input.discount}
+              /> 
+        </div>
+        <small className="text-danger">{errors.discount}</small>
+        <div className="formInput">
+              <label>Month:</label>
+              <input
+                type="text"
+                className="inputItem"
+                name="month"
+                onChange={handleInput}
+                value={input.month}
+              />
+        </div>
+        <small className="text-danger">{errors.month}</small>
+        <div className="formInput">
+              <label>Effective from:</label>
+              <input
+                type="date"
+                className="inputItem"
+                name="effective_from"
+                onChange={handleInput}
+                value={input.effective_from}
+              />
+        </div>
+        <small className="text-danger">{errors.effective_from}</small>
+        <div className="formInput">
+              <label>Can be paid until:</label>
+              <input
+                type="date"
+                className="inputItem"
+                name="valid_until"
+                onChange={handleInput}
+                value={input.valid_until}
+              />
+        </div>
+        <small className="text-danger">{errors.valid_until}</small>
+        <div className="formInput">
+              <label>Extra fee:</label>
+              <input
+                type="text"
+                className="inputItem"
+                name="extra_fee"
+                onChange={handleInput}
+                value={input.extra_fee}
+              />
+        </div>
+        <small className="text-danger">{errors.user_id}</small>
+        <div className="formInput">
+              <label>Description for extra fee:</label>
+              <textarea
+                type="text"
+                className="inputItem"
+                name="description"
+                onChange={handleInput}
+                value={input.description}
+              />
+        </div>
+        <small className="text-danger">{errors.user_id}</small>
         <button type="submit" className="formButton">
           Create
         </button>

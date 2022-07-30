@@ -11,4 +11,6 @@ class Service extends Model
     const COMPULSORY = 1;
     const OPTIONAL = 0;
     protected $guarded = ['id'];
+
+    
 }
