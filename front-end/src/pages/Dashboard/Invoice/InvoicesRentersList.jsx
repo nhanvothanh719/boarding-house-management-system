@@ -11,6 +11,7 @@ export default function InvoicesRentersList() {
 
     const [loading, setLoading] = useState(true);
     const [rentersList, setRentersList] = useState([]);
+    const [invoicesList, setInvoicesList] = useState([]);
   
     useEffect(() => {
       axios.get(AppUrl.ShowRenters).then((response) => {
@@ -19,14 +20,30 @@ export default function InvoicesRentersList() {
         }
         setLoading(false);
       });
+      axios.get(AppUrl.ShowInvoices).then((response) => {
+        if (response.data.status === 200) {
+          setInvoicesList(response.data.allInvoices);
+        }
+      });
     }, []);
+
+    const deleteInvoice = (e, id) => {
+
+    }
   
-    var columns = [];
+    var renters_columns = [];
+    var invoices_columns = [];
+    let renterNames = [];
+    let id;
+    rentersList.forEach((renter) => {
+      id = renter["id"];
+      renterNames[id] = renter["name"];
+    });
   
     if (loading) {
       return <Loading />;
     } else {
-      columns = [
+      renters_columns = [
         { field: "id", title: "ID", align: "center" },
         {
           field: "profile_picture",
@@ -42,6 +59,18 @@ export default function InvoicesRentersList() {
         { field: "name", title: "Name" },
         { field: "email", title: "Email" },
       ];
+
+      invoices_columns = [
+        { field: "id", title: "ID", align: "center" },
+        { field: "renter_id", title: "User", render: (rowData) => (
+          <p>{renterNames[rowData.renter_id]}</p>
+        ),},
+        { field: "total", title: "Total" },
+        { field: "month", title: "Month"},
+        { field: "effective_from", title: "Can be paid from" },
+        { field: "valid_until", title: "Can be paid until" },
+        { field: "is_paid", title: "Paid", lookup: { 0:"Not yet", 1:"Paid" } },
+      ]
       return (
         <Fragment>
           <div className="customDatatable">
@@ -51,7 +80,7 @@ export default function InvoicesRentersList() {
               </Link>
             </div>
             <MaterialTable
-              columns={columns}
+              columns={renters_columns}
               data={rentersList}
               title="All renters"
               options={{
@@ -72,6 +101,34 @@ export default function InvoicesRentersList() {
                 {
                   icon: () => <button className="btn btn-success">Create</button>,
                   onClick: (event, renter) => history.push(`/admin/create-invoice/${renter.id}`),
+                },
+              ]}
+            />
+            <MaterialTable
+              columns={invoices_columns}
+              data={invoicesList}
+              title="All invoices"
+              options={{
+                searchAutoFocus: false,
+                searchFieldVariant: "outlined",
+                filtering: false,
+                pageSizeOptions: [5, 10],
+                paginationType: "stepped",
+                actionsColumnIndex: -1,
+              }}
+              actions={[
+                {
+                  icon: () => <button className="btn btn-info">Export</button>,
+                  onClick: (event, invoice) => history.push(`/admin/edit-invoice/${invoice.id}`),
+                },
+                {
+                  icon: () => <button className="btn btn-warning">Edit</button>,
+                  onClick: (event, invoice) => history.push(`/admin/edit-invoice/${invoice.id}`),
+                },
+                {
+                  icon: () => <button className="btn btn-danger">Delete</button>,
+                  onClick: (event, room) => 
+                  deleteInvoice(event, room.id),
                 },
               ]}
             />

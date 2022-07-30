@@ -17,6 +17,14 @@ use App\Models\TemporaryInvoice;
 
 class InvoiceController extends Controller
 {
+    public function index() {
+        $all_invoices = Invoice::all();
+        return response([
+            'status' => 200,
+            'allInvoices' => $all_invoices,
+        ]);
+    }
+
     public function getRegisteredServices($id) {
         $user = User::find($id);
         if(!$user) {
@@ -177,5 +185,56 @@ class InvoiceController extends Controller
     
     public function deleteTemporaryInvoice($user_id) {
         TemporaryInvoice::where('user_id', $user_id)->delete();
+    }
+
+    public function editInvoice($id) {
+        $invoice = Invoice::find($id);
+        if(!$invoice) {
+            return response([
+                'message' => 'No invoice found',
+                'status' => 404,
+            ]);
+        }
+        $invoice_details = InvoiceDetail::where('invoice_id', $id)->get();
+        $extra_fee = ExtraFee::where('invoice_id', $id)->get();
+        if(!$extra_fee) {
+            $extra_fee = 0;
+        }
+        return response([
+            'invoice' => $invoice,
+            'status' => 200,
+        ]);
+    }
+
+    public function updateInvoice(Request $request, $id) {
+        $appropriate_time = date('Y-m-d', strtotime(' +0 day'));
+        $validator = Validator::make($request->all(), [
+            'effective_from' => 'required|date|after_or_equal:'.$appropriate_time,
+            'valid_until' => ['required', 'date', 'before_or_equal:'.date("Y-m-d", strtotime($appropriate_time."+15 day")), 'after_or_equal:'.date("Y-m-d", strtotime($appropriate_time."+1 day"))],
+            'month' => 'required|min:1|max:12',
+        ]);
+        if($validator->fails()) 
+        {
+            return response([
+                'errors' => $validator->messages(),
+                'status' => 422,
+            ]);
+        }
+        $invoice = Invoice::find($id);
+        if($invoice) {
+            $invoice->effective_from = $request->effective_from;
+            $invoice->valid_until = $request->valid_until;
+            $invoice->month = $request->month;
+            $invoice->save();
+            return response([
+                'message' => 'Successfully update invoice',
+                'status' => 200,
+            ]);
+        } else {
+            return response([
+                'message' => 'No invoice found',
+                'status' => 404,
+            ]);
+        }
     }
 }

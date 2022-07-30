@@ -187,7 +187,7 @@ export default function CreateInvoice({ match }) {
                 value={input.extra_fee}
               />
         </div>
-        <small className="text-danger">{errors.user_id}</small>
+        <small className="text-danger">{errors.extra_fee}</small>
         <div className="formInput">
               <label>Description for extra fee:</label>
               <textarea
@@ -198,7 +198,7 @@ export default function CreateInvoice({ match }) {
                 value={input.description}
               />
         </div>
-        <small className="text-danger">{errors.user_id}</small>
+        <small className="text-danger">{errors.description}</small>
         <button type="submit" className="formButton">
           Create
         </button>

@@ -86,7 +86,7 @@ Route::middleware('auth:api')->group(function(){
 
         Route::get('/all-invoices', [InvoiceController::class, 'index']);
         Route::post('/store-invoice/{id}', [InvoiceController::class, 'storeInvoice']);
-        Route::get('/invoice-details/{id}', [InvoiceController::class, 'getInvoiceDetails']);
+        Route::get('/edit-invoice/{id}', [InvoiceController::class, 'editInvoice']);
         Route::put('/update-invoice/{id}', [InvoiceController::class, 'updateInvoice']);
         Route::delete('/delete-invoice/{id}', [InvoiceController::class, 'deleteInvoice']);
         Route::get('/all-registered_services/{id}', [InvoiceController::class, 'getRegisteredServices']);

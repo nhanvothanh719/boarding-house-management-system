@@ -24,10 +24,10 @@ class RenterController extends Controller
     public const avatar_public_folder = 'uploaded/avatar/';
 
     public function index() {
-        $allRenters = User::where('role_id', CustomHelper::getRenterRoleId())->get();
+        $all_renters = User::where('role_id', CustomHelper::getRenterRoleId())->get();
         return response([
             'status' => 200,
-            'allRenters' => $allRenters,
+            'allRenters' => $all_renters,
         ]);
     }
 

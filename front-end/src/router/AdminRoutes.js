@@ -22,6 +22,7 @@ import RentRoom from "../pages/Dashboard/Room/RentRoom";
 import InvoicesRentersList from "../pages/Dashboard/Invoice/InvoicesRentersList";
 import CreateInvoice from "../pages/Dashboard/Invoice/CreateInvoice";
 import ViewGeneratedInvoice from "../pages/Dashboard/Invoice/ViewGeneratedInvoice";
+import EditInvoice from "../pages/Dashboard/Invoice/EditInvoice";
 
 const routes = [
     { path: '/admin', exact: true, name: 'Admin' },
@@ -55,6 +56,7 @@ const routes = [
     { path: '/admin/view-all-renters-with-invoices', exact: true, name: 'InvoicesRentersList', component: InvoicesRentersList },
     { path: '/admin/create-invoice/:renterID', exact: true, name: 'CreateInvoice', component: CreateInvoice },
     { path: '/admin/view-generated-invoice', exact: true, name: 'ViewGeneratedInvoice', component: ViewGeneratedInvoice },
+    { path: '/admin/edit-invoice/:invoiceID', exact: true, name: 'EditInvoice', component: EditInvoice },
 ]
 
 export default routes;
