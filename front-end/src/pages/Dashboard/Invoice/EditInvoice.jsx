@@ -17,10 +17,9 @@ export default function EditInvoice({ match }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get(AppUrl.EditInvoice + invoiceId).then((response) => {
+    axios.get(AppUrl.InvoiceDetails + invoiceId).then((response) => {
       if (response.data.status === 200) {
         setInvoiceInput(response.data.invoice);
-        console.log(response.data.extraFee);
       }  else if (response.data.status === 404) {
         swal("Error", response.data.message, "error");
         history.push("/admin/view-all-renters-with-invoices");

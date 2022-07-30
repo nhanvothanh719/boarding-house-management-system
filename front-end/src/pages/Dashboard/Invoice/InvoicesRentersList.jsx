@@ -134,14 +134,14 @@ export default function InvoicesRentersList() {
             }}
             actions={[
               {
-                icon: () => <button className="btn btn-info">Export</button>,
+                icon: () => <button className="btn btn-warning">Edit</button>,
                 onClick: (event, invoice) =>
                   history.push(`/admin/edit-invoice/${invoice.id}`),
               },
               {
-                icon: () => <button className="btn btn-warning">Edit</button>,
+                icon: () => <button className="btn btn-info">Details</button>,
                 onClick: (event, invoice) =>
-                  history.push(`/admin/edit-invoice/${invoice.id}`),
+                  history.push(`/admin/invoice-details/${invoice.id}`),
               },
               {
                 icon: () => <button className="btn btn-danger">Delete</button>,

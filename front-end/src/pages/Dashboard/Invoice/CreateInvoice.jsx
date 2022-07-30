@@ -1,7 +1,6 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import AppUrl from "../../../RestAPI/AppUrl";
-import MaterialTable from "material-table";
 import swal from "sweetalert";
 import axios from "axios";
 
@@ -124,14 +123,14 @@ export default function CreateInvoice({ match }) {
                     />
                   </td>
                   <td width="20%">
-                    {item.service.unit_price * item.temporary_quantity}
+                    {(item.service.unit_price * item.temporary_quantity).toFixed(2)}
                   </td>
                 </tr>
               );
             })}
           </tbody>
         </table>
-        <h3>Total: {totalPrice}</h3>
+        <h3>Total: {totalPrice.toFixed(2)}</h3>
         <br/><br/><br/>
         <div className="formInput">
               <label>Discount (%):</label>

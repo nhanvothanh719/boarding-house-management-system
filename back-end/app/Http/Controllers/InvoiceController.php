@@ -202,6 +202,8 @@ class InvoiceController extends Controller
         }
         return response([
             'invoice' => $invoice,
+            'invoiceDetails' => $invoice_details,
+            'extraFee' => $extra_fee,
             'status' => 200,
         ]);
     }

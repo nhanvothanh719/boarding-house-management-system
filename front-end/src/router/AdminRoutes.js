@@ -23,6 +23,7 @@ import InvoicesRentersList from "../pages/Dashboard/Invoice/InvoicesRentersList"
 import CreateInvoice from "../pages/Dashboard/Invoice/CreateInvoice";
 import ViewGeneratedInvoice from "../pages/Dashboard/Invoice/ViewGeneratedInvoice";
 import EditInvoice from "../pages/Dashboard/Invoice/EditInvoice";
+import InvoiceDetails from "../pages/Dashboard/Invoice/InvoiceDetails";
 
 const routes = [
     { path: '/admin', exact: true, name: 'Admin' },
@@ -57,6 +58,7 @@ const routes = [
     { path: '/admin/create-invoice/:renterID', exact: true, name: 'CreateInvoice', component: CreateInvoice },
     { path: '/admin/view-generated-invoice', exact: true, name: 'ViewGeneratedInvoice', component: ViewGeneratedInvoice },
     { path: '/admin/edit-invoice/:invoiceID', exact: true, name: 'EditInvoice', component: EditInvoice },
+    { path: '/admin/invoice-details/:invoiceID', exact: true, name: 'InvoiceDetails', component: InvoiceDetails },
 ]
 
 export default routes;
