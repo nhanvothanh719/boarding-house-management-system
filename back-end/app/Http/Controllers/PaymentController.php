@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Models\PaymentHistory;
 use App\Models\PaymentMethod;
+use App\Models\Invoice;
 
 class PaymentController extends Controller
 {
@@ -20,6 +21,10 @@ class PaymentController extends Controller
         $payment->made_by_user_id = $user_id;
         $payment->made_at = date('Y-m-d H:i:s');
         $payment->save();
+        //Mark the invoice as is paid
+        $invoice = Invoice::find($id);
+        $invoice->is_paid = Invoice::STATUS_PAID;
+        $invoice->save();
         return response([
             'status' => 200,
             'message' => 'The invoice is paid successfully'

@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Invoice extends Model
 {
+    const STATUS_PAID = 1;
+    const STATUS_NOT_PAID = 0;
     use HasFactory;
     protected $guarded = ['id'];
     protected $with = ['renter'];

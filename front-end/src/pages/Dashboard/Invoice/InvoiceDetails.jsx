@@ -4,6 +4,10 @@ import AppUrl from "../../../RestAPI/AppUrl";
 import swal from "sweetalert";
 import axios from "axios";
 import Loading from "../../../components/Loading";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
+import * as ReactDOM from "react-dom";
+import { ActionTypes } from "@mui/base";
 
 export default function InvoiceDetails({ match }) {
   const history = useHistory();
@@ -37,6 +41,11 @@ export default function InvoiceDetails({ match }) {
     phone_number: "",
   });
 
+  var paymentInfo = {
+    payment_method: "Paypal",
+    payment_id: '',
+  }
+
   useEffect(() => {
     axios.get(AppUrl.ShowServices).then((response) => {
       if (response.data.status === 200) {
@@ -60,59 +69,102 @@ export default function InvoiceDetails({ match }) {
     });
   }, [invoiceId, history]);
 
+  //Paypal components
+  const PayPalButton = window.paypal.Buttons.driver("react", {
+    React,
+    ReactDOM,
+  });
+  const createOrder = (data, actions) => {
+    return actions.order.create({
+      purchase_units: [
+        {
+          amount: {
+            value: invoice.total,
+          },
+        },
+      ],
+    });
+  };
+  //When make payment successfully
+  const onApprove = (data, actions) => {
+    return actions.order.capture().then(function(details) {
+      console.log(details);
+      paymentInfo.payment_id = details.id;
+      axios
+            .post(AppUrl.MakeInvoicePayment + invoiceId, paymentInfo)
+            .then((response) => {
+              if (response.data.status === 200) {
+                swal("Invoice is paid", response.data.message, "success");
+                history.push("");
+              }
+            });
+    })
+  };
+  //
+
   const makePayment = (e, payment_method) => {
     e.preventDefault();
-    const payment = {
-      payment_method: payment_method,
-    };
-
-    switch (payment_method) {
-      case "Cash":
-        axios
-          .post(AppUrl.MakeInvoicePayment + invoiceId, payment)
-          .then((response) => {
-            if (response.data.status === 200) {
-              swal("Invoice is paid", response.data.message, "Success");
-              history.push("");
-            }
-          });
-        break;
-      case "Razorpay":
-        var options = {
-          key: "rzp_test_iIhF6VSIWJ0NRp", // Enter the Key ID generated from the Dashboard
-          amount: invoice.total * 100,
-          //"currency": "",
-          name: "BeeHouse",
-          description: "Make invoice payment",
-          image: "",
-          handler: function (response) {
-            //alert(response.razorpay_payment_id);
-            payment.payment_id = response.razorpay_payment_id;
-            axios
-              .post(AppUrl.MakeInvoicePayment + invoiceId, payment)
-              .then((res) => {
-                if (res.data.status === 200) {
-                  swal("success", res.data.message ,"Success");
-                }
-              });
+    if (invoice.is_paid === 1) {
+      swal("Error", "The invoice has been paid", "error");
+    } else {
+      const payment = {
+        payment_method: payment_method,
+      };
+      switch (payment_method) {
+        case "Cash":
+          axios
+            .post(AppUrl.MakeInvoicePayment + invoiceId, payment)
+            .then((response) => {
+              if (response.data.status === 200) {
+                swal("Invoice is paid", response.data.message, "success");
+                history.push("");
+              }
+            });
+          break;
+        case "Razorpay":
+          var options = {
+            key: "rzp_test_iIhF6VSIWJ0NRp", // Enter the Key ID generated from the Dashboard
+            amount: invoice.total * 100,
+            //"currency": "",
+            name: "BeeHouse",
+            description: "Make invoice payment",
+            image: "",
+            handler: function (response) {
+              //alert(response.razorpay_payment_id);
+              payment.payment_id = response.razorpay_payment_id;
+              axios
+                .post(AppUrl.MakeInvoicePayment + invoiceId, payment)
+                .then((res) => {
+                  if (res.data.status === 200) {
+                    swal("success", res.data.message, "Success");
+                  }
+                });
               alert(response.razorpay_payment_id);
-          },
-          prefill: {
-            name: user.name,
-            email: user.email,
-            contact: user.phone_number,
-          },
-          theme: {
-            color: "#3399cc",
-          },
-        };
-        var razorpay = new window.Razorpay(options);
-        razorpay.open();
-        break;
-      case "Paypal":
-        break;
-      default:
-        break;
+            },
+            prefill: {
+              name: user.name,
+              email: user.email,
+              contact: user.phone_number,
+            },
+            theme: {
+              color: "#3399cc",
+            },
+          };
+          var razorpay = new window.Razorpay(options);
+          razorpay.open();
+          break;
+        case "Paypal":
+          //Show modal
+          var paypalPaymentModal = new window.bootstrap.Modal(
+            document.getElementById("paypalPaymentModal")
+          );
+          paypalPaymentModal.show();
+          //
+
+          break;
+        default:
+          break;
+      }
     }
   };
 
@@ -250,6 +302,47 @@ export default function InvoiceDetails({ match }) {
       >
         Paypal
       </button>
+      <div
+        class="modal fade"
+        id="paypalPaymentModal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">
+                Modal title
+              </h5>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <hr />
+              <PayPalButton
+                createOrder={(data, actions) => createOrder(data, actions)}
+                onApprove={(data, actions) => onApprove(data, actions)}
+              />
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </Fragment>
   );
 }
