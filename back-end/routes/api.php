@@ -14,6 +14,7 @@ use App\Http\Controllers\MotorbikeController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\ServiceRegistrationController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\PaymentController;
 
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/register', [AuthController::class, 'register']);
@@ -92,6 +93,8 @@ Route::middleware('auth:api')->group(function(){
         Route::get('/all-registered_services/{id}', [InvoiceController::class, 'getRegisteredServices']);
         Route::post('/create-temporary-invoice/{id}', [InvoiceController::class, 'createTemporaryInvoice']);
         Route::post('/update-service-quantity/{service_id}/{value}',[InvoiceController::class, 'updateServiceQuantity']);
+
+        Route::post('/make-payment/{id}', [PaymentController::class, 'makePayment']);
     });
 });
 

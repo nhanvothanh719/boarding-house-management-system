@@ -21,7 +21,9 @@ export default function CreateInvoice({ match }) {
 
   useEffect(() => {
     axios.post(AppUrl.CreateTemporaryInvoice + renterId).then((response) => {
-      swal("success", response.data.message, "Success");
+      if(response.data.status === 200) {
+        swal("success", response.data.message, "Success");
+      }
     });
     axios.get(AppUrl.GetRegisteredServices + renterId).then((response) => {
       if (response.data.status === 200) {

@@ -31,12 +31,21 @@ export default function InvoiceDetails({ match }) {
   ]);
   const [loading, setLoading] = useState(true);
   const [servicesList, setServicesList] = useState([]);
+  const [user, setUser] = useState({
+    name: "",
+    email: "",
+    phone_number: "",
+  });
 
   useEffect(() => {
     axios.get(AppUrl.ShowServices).then((response) => {
-        if (response.data.status === 200) {
-          setServicesList(response.data.allServices);
-        }
+      if (response.data.status === 200) {
+        setServicesList(response.data.allServices);
+      }
+    });
+    axios.get(AppUrl.GetUserProfile).then((response) => {
+      setUser(response.data);
+      console.log(response.data);
     });
     axios.get(AppUrl.InvoiceDetails + invoiceId).then((response) => {
       if (response.data.status === 200) {
@@ -51,15 +60,71 @@ export default function InvoiceDetails({ match }) {
     });
   }, [invoiceId, history]);
 
+  const makePayment = (e, payment_method) => {
+    e.preventDefault();
+    const payment = {
+      payment_method: payment_method,
+    };
+
+    switch (payment_method) {
+      case "Cash":
+        axios
+          .post(AppUrl.MakeInvoicePayment + invoiceId, payment)
+          .then((response) => {
+            if (response.data.status === 200) {
+              swal("Invoice is paid", response.data.message, "Success");
+              history.push("");
+            }
+          });
+        break;
+      case "Razorpay":
+        var options = {
+          key: "rzp_test_iIhF6VSIWJ0NRp", // Enter the Key ID generated from the Dashboard
+          amount: invoice.total * 100,
+          //"currency": "",
+          name: "BeeHouse",
+          description: "Make invoice payment",
+          image: "",
+          handler: function (response) {
+            //alert(response.razorpay_payment_id);
+            payment.payment_id = response.razorpay_payment_id;
+            axios
+              .post(AppUrl.MakeInvoicePayment + invoiceId, payment)
+              .then((res) => {
+                if (res.data.status === 200) {
+                  swal("success", res.data.message ,"Success");
+                }
+              });
+              alert(response.razorpay_payment_id);
+          },
+          prefill: {
+            name: user.name,
+            email: user.email,
+            contact: user.phone_number,
+          },
+          theme: {
+            color: "#3399cc",
+          },
+        };
+        var razorpay = new window.Razorpay(options);
+        razorpay.open();
+        break;
+      case "Paypal":
+        break;
+      default:
+        break;
+    }
+  };
+
   let serviceNames = [];
   let id;
   servicesList.forEach((service) => {
     id = service["id"];
     serviceNames[id] = service["name"];
   });
-  
-  if(loading) {
-    return <Loading/>
+
+  if (loading) {
+    return <Loading />;
   }
   return (
     <Fragment>
@@ -94,72 +159,97 @@ export default function InvoiceDetails({ match }) {
                       value={item.quantity}
                     />
                   </td>
-                  <td width="20%">
-                    {item.subtotal.toFixed(2)}
-                  </td>
+                  <td width="20%">{item.subtotal.toFixed(2)}</td>
                 </tr>
               );
             })}
           </tbody>
         </table>
         <h3>Total: {invoice.total}</h3>
-        <br/><br/><br/>
+        <br />
+        <br />
+        <br />
         <div className="formInput">
-              <label>Discount (%):</label>
-              <input
-                type="text"
-                className="inputItem"
-                name="discount"
-                value={invoice.discount}
-              /> 
+          <label>Discount (%):</label>
+          <input
+            type="text"
+            className="inputItem"
+            name="discount"
+            value={invoice.discount}
+          />
         </div>
         <div className="formInput">
-              <label>Month:</label>
-              <input
-                type="text"
-                className="inputItem"
-                name="month"
-                value={invoice.month}
-              />
+          <label>Month:</label>
+          <input
+            type="text"
+            className="inputItem"
+            name="month"
+            value={invoice.month}
+          />
         </div>
         <div className="formInput">
-              <label>Effective from:</label>
-              <input
-                type="date"
-                className="inputItem"
-                name="effective_from"
-                value={invoice.effective_from}
-              />
+          <label>Effective from:</label>
+          <input
+            type="date"
+            className="inputItem"
+            name="effective_from"
+            value={invoice.effective_from}
+          />
         </div>
         <div className="formInput">
-              <label>Can be paid until:</label>
-              <input
-                type="date"
-                className="inputItem"
-                name="valid_until"
-                value={invoice.valid_until}
-              />
+          <label>Can be paid until:</label>
+          <input
+            type="date"
+            className="inputItem"
+            name="valid_until"
+            value={invoice.valid_until}
+          />
         </div>
         <div className="formInput">
-              <label>Extra fee:</label>
-              <input
-                type="text"
-                className="inputItem"
-                name="extra_fee"
-                value={extraFee.subtotal}
-              />
+          <label>Extra fee:</label>
+          <input
+            type="text"
+            className="inputItem"
+            name="extra_fee"
+            value={extraFee.subtotal}
+          />
         </div>
         <div className="formInput">
-              <label>Description for extra fee:</label>
-              <textarea
-                type="text"
-                className="inputItem"
-                name="description"
-                value={extraFee.description}
-              />
+          <label>Description for extra fee:</label>
+          <textarea
+            type="text"
+            className="inputItem"
+            name="description"
+            value={extraFee.description}
+          />
         </div>
-        <button className="btn btn-primary">Generate PDF invoice</button>
+        <div className="formInput">
+          <label>Is paid:</label>
+          <textarea
+            type="text"
+            className="inputItem"
+            name="is_paid"
+            value={invoice.is_paid === 1 ? "Yes" : "No"}
+          />
+        </div>
       </form>
+      <button className="btn btn-primary">Generate PDF invoice</button>
+      <br />
+      <br />
+      <button
+        className="btn btn-primary"
+        onClick={(e) => makePayment(e, "Razorpay")}
+      >
+        Razorpay
+      </button>
+      <br />
+      <br />
+      <button
+        className="btn btn-primary"
+        onClick={(e) => makePayment(e, "Paypal")}
+      >
+        Paypal
+      </button>
     </Fragment>
   );
 }
