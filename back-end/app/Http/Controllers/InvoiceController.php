@@ -4,16 +4,21 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
 
-use App\Models\Service;
 use App\Models\User;
-use App\Models\ServiceRegistration;
+use App\Models\Room;
+use App\Models\Service;
 use App\Models\Invoice;
-use App\Models\InvoiceDetail;
+use App\Models\RoomRent;
 use App\Models\ExtraFee;
+use App\Models\InvoiceDetail;
 use App\Models\TemporaryInvoice;
+use App\Models\ServiceRegistration;
+
+use App\Mail\InvoiceSendMail;
 
 class InvoiceController extends Controller
 {
@@ -189,21 +194,21 @@ class InvoiceController extends Controller
 
     public function editInvoice($id) {
         $invoice = Invoice::find($id);
+        $invoice_details = InvoiceDetail::where('invoice_id', $id)->get();
+        $extra_fee = ExtraFee::where('invoice_id', $id)->get();
+         if(!$extra_fee) {
+             $extra_fee = 0;
+         }
         if(!$invoice) {
             return response([
                 'message' => 'No invoice found',
                 'status' => 404,
             ]);
         }
-        $invoice_details = InvoiceDetail::where('invoice_id', $id)->get();
-        $extra_fee = ExtraFee::where('invoice_id', $id)->get();
-        if(!$extra_fee) {
-            $extra_fee = 0;
-        }
         return response([
             'invoice' => $invoice,
-            'invoiceDetails' => $invoice_details,
             'extraFee' => $extra_fee,
+            'invoiceDetails' => $invoice_details,
             'status' => 200,
         ]);
     }
@@ -253,6 +258,35 @@ class InvoiceController extends Controller
         $invoice->delete();
         return response([
             'message' => 'Successfully delete invoice',
+            'status' => 200,
+        ]);
+    }
+
+    public function sendInvoice($id) {
+        $invoice = Invoice::find($id);
+        //
+        $renter_id = Invoice::where('id', $id)->value('renter_id');
+        $renter = User::find($renter_id);
+        $renter_name = $renter->name;
+        //
+        $room_id = RoomRent::where('renter_id', $renter_id)->value('room_id');
+        $room_number = Room::find($room_id)->number;
+        //
+        $invoice_details = InvoiceDetail::where('invoice_id', $id)->get();
+        $extra_fee = ExtraFee::where('invoice_id', $id)->get();
+        if(!$extra_fee) {
+            $extra_fee->subtotal = 0;
+            $extra_fee->description = "";
+        }
+        if(!$renter) {
+            return response([
+                'message' => 'No renter found',
+                'status' => 404,
+            ]);
+        }
+        Mail::to($renter->email)->send(new InvoiceSendMail($renter_name, $room_number, $invoice, $invoice_details, $extra_fee)); 
+        return response([
+            'message' => 'Successfully send invoice to the renter',
             'status' => 200,
         ]);
     }

@@ -5,7 +5,7 @@ import swal from "sweetalert";
 import axios from "axios";
 import Loading from "../../../components/Loading";
 import * as ReactDOM from "react-dom";
-import { useReactToPrint } from 'react-to-print';
+import { useReactToPrint } from "react-to-print";
 
 export default function InvoiceDetails({ match }) {
   const history = useHistory();
@@ -72,7 +72,10 @@ export default function InvoiceDetails({ match }) {
   }, [invoiceId, history]);
 
   //Paypal components
-  const PayPalButton = window.paypal.Buttons.driver("react", { React, ReactDOM, });
+  const PayPalButton = window.paypal.Buttons.driver("react", {
+    React,
+    ReactDOM,
+  });
   const createOrder = (data, actions) => {
     return actions.order.create({
       purchase_units: [
@@ -101,6 +104,7 @@ export default function InvoiceDetails({ match }) {
   };
   //
 
+  //Handle payment
   const makePayment = (e, payment_method) => {
     e.preventDefault();
     if (invoice.is_paid === 1) {
@@ -163,11 +167,28 @@ export default function InvoiceDetails({ match }) {
       }
     }
   };
+  //
 
+  //Handle print
   const componentRef = useRef();
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
+  //
+
+  //Send email
+  const sendInvoice = () => {
+    axios.get(AppUrl.SendInvoice + invoiceId).then((response) => {
+      if (response.data.status === 200) {
+        swal("Invoice has been sent", response.data.message, "success");
+        //history.push("");
+      } else if (response.data.status === 404) {
+        swal("Error", response.data.message, "error");
+        history.push("/admin/view-all-renters-with-invoices");
+      }
+    });
+  };
+  //
 
   let serviceNames = [];
   let id;
@@ -286,8 +307,12 @@ export default function InvoiceDetails({ match }) {
           />
         </div>
       </div>
-      <button className="btn btn-primary" onClick={handlePrint}>Print invoice</button>
-      <button className="btn btn-success">Send to renter</button>
+      <button className="btn btn-primary" onClick={handlePrint}>
+        Print invoice
+      </button>
+      <button className="btn btn-success" onClick={sendInvoice}>
+        Send to renter
+      </button>
       <br />
       <br />
       <button

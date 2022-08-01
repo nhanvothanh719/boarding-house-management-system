@@ -64,10 +64,9 @@ class AppUrl {
   static InvoiceDetails = this.BaseURL + "/edit-invoice/";
   static UpdateInvoice = this.BaseURL + "/update-invoice/";
   static DeleteInvoice = this.BaseURL + "/delete-invoice/";
+  static SendInvoice = this.BaseURL + "/send-invoice/";
 
   static MakeInvoicePayment = this.BaseURL + "/make-payment/";
-  static GetUserInfo
-
 }
 
 export default AppUrl;
