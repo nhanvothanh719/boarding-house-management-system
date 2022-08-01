@@ -1,17 +1,18 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import AppUrl from "../../../RestAPI/AppUrl";
 import swal from "sweetalert";
 import axios from "axios";
 import Loading from "../../../components/Loading";
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
 import * as ReactDOM from "react-dom";
-import { ActionTypes } from "@mui/base";
+import { useReactToPrint } from 'react-to-print';
 
 export default function InvoiceDetails({ match }) {
   const history = useHistory();
   const invoiceId = match.params.invoiceID;
+
+  const [loading, setLoading] = useState(true);
+  const [servicesList, setServicesList] = useState([]);
   const [invoice, setInvoice] = useState({
     month: "",
     effective_from: "",
@@ -33,8 +34,6 @@ export default function InvoiceDetails({ match }) {
       subtotal: "",
     },
   ]);
-  const [loading, setLoading] = useState(true);
-  const [servicesList, setServicesList] = useState([]);
   const [user, setUser] = useState({
     name: "",
     email: "",
@@ -43,8 +42,8 @@ export default function InvoiceDetails({ match }) {
 
   var paymentInfo = {
     payment_method: "Paypal",
-    payment_id: '',
-  }
+    payment_id: "",
+  };
 
   useEffect(() => {
     axios.get(AppUrl.ShowServices).then((response) => {
@@ -60,7 +59,10 @@ export default function InvoiceDetails({ match }) {
       if (response.data.status === 200) {
         setInvoice(response.data.invoice);
         setUsedServices(response.data.invoiceDetails);
-        setExtraFee(response.data.extraFee[0]);
+        if (!response.data.extraFee[0]) {
+        } else {
+          setExtraFee(response.data.extraFee[0]);
+        }
       } else if (response.data.status === 404) {
         swal("Error", response.data.message, "error");
         history.push("/admin/view-all-renters-with-invoices");
@@ -70,10 +72,7 @@ export default function InvoiceDetails({ match }) {
   }, [invoiceId, history]);
 
   //Paypal components
-  const PayPalButton = window.paypal.Buttons.driver("react", {
-    React,
-    ReactDOM,
-  });
+  const PayPalButton = window.paypal.Buttons.driver("react", { React, ReactDOM, });
   const createOrder = (data, actions) => {
     return actions.order.create({
       purchase_units: [
@@ -87,18 +86,18 @@ export default function InvoiceDetails({ match }) {
   };
   //When make payment successfully
   const onApprove = (data, actions) => {
-    return actions.order.capture().then(function(details) {
+    return actions.order.capture().then(function (details) {
       console.log(details);
       paymentInfo.payment_id = details.id;
       axios
-            .post(AppUrl.MakeInvoicePayment + invoiceId, paymentInfo)
-            .then((response) => {
-              if (response.data.status === 200) {
-                swal("Invoice is paid", response.data.message, "success");
-                history.push("");
-              }
-            });
-    })
+        .post(AppUrl.MakeInvoicePayment + invoiceId, paymentInfo)
+        .then((response) => {
+          if (response.data.status === 200) {
+            swal("Invoice is paid", response.data.message, "success");
+            history.push("");
+          }
+        });
+    });
   };
   //
 
@@ -125,7 +124,6 @@ export default function InvoiceDetails({ match }) {
           var options = {
             key: "rzp_test_iIhF6VSIWJ0NRp", // Enter the Key ID generated from the Dashboard
             amount: invoice.total * 100,
-            //"currency": "",
             name: "BeeHouse",
             description: "Make invoice payment",
             image: "",
@@ -159,14 +157,17 @@ export default function InvoiceDetails({ match }) {
             document.getElementById("paypalPaymentModal")
           );
           paypalPaymentModal.show();
-          //
-
           break;
         default:
           break;
       }
     }
   };
+
+  const componentRef = useRef();
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
 
   let serviceNames = [];
   let id;
@@ -180,7 +181,7 @@ export default function InvoiceDetails({ match }) {
   }
   return (
     <Fragment>
-      <form className="">
+      <div ref={componentRef}>
         <table class="table table-striped">
           <thead>
             <tr>
@@ -284,8 +285,9 @@ export default function InvoiceDetails({ match }) {
             value={invoice.is_paid === 1 ? "Yes" : "No"}
           />
         </div>
-      </form>
-      <button className="btn btn-primary">Generate PDF invoice</button>
+      </div>
+      <button className="btn btn-primary" onClick={handlePrint}>Print invoice</button>
+      <button className="btn btn-success">Send to renter</button>
       <br />
       <br />
       <button
@@ -313,7 +315,7 @@ export default function InvoiceDetails({ match }) {
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="exampleModalLabel">
-                Modal title
+                Invoice payment
               </h5>
               <button
                 type="button"
