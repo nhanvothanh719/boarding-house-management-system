@@ -111,7 +111,8 @@ export default function InvoicesRentersList() {
                 icon: () => (
                   <button className="btn btn-primary">All invoices</button>
                 ),
-                onClick: (event, renter) => console.log(),
+                onClick: (event, renter) => 
+                history.push(`/admin/view-all-invoices-of-renter/${renter.id}`),
               },
               {
                 icon: () => <button className="btn btn-success">Create</button>,

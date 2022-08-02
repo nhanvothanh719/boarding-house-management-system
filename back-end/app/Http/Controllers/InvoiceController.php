@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use \stdClass;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -289,5 +290,46 @@ class InvoiceController extends Controller
             'message' => 'Successfully send invoice to the renter',
             'status' => 200,
         ]);
+    }
+
+    public function getRenterInvoices($id) {
+        $renter = User::find($id);
+        if(!$renter) {
+            return response([
+                'message' => 'No renter found',
+                'status' => 404,
+            ]);
+        }
+        $all_invoices = Invoice::where('renter_id', $id)->get();
+        
+        return response([
+            'status' => 200,
+            'allInvoices' => $all_invoices,
+            'servicesCount' => InvoiceController::countUsedServices($id),
+        ]);
+    }
+
+    public function countUsedServices($id) {
+        $services_count = array();
+        $services_id = Service::pluck('id')->toArray();
+        $renter_invoices_id = Invoice::where('renter_id', $id)->pluck('id');
+        //Get all invoices belonging to renter
+        foreach($services_id as $service_id) {
+            $count = 0;
+            foreach($renter_invoices_id as $invoice_id) {
+                $services_id_in_invoice_details = InvoiceDetail::where('invoice_id', $invoice_id)->pluck('service_id');
+                foreach($services_id_in_invoice_details as $detail_service_id) {
+                    if($detail_service_id == $service_id) {
+                        $count++;
+                    }
+                }
+            }
+            $item = new stdClass(); //stdClass is a generic 'empty' class used when casting other types to objects
+            $item->service_name = Service::where('id', $service_id)->value('name');
+            $item->total = $count;
+            array_push($services_count, $item);
+        }
+        return $services_count;
+        
     }
 }

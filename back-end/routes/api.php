@@ -94,6 +94,7 @@ Route::middleware('auth:api')->group(function(){
         Route::post('/create-temporary-invoice/{id}', [InvoiceController::class, 'createTemporaryInvoice']);
         Route::post('/update-service-quantity/{service_id}/{value}',[InvoiceController::class, 'updateServiceQuantity']);
         Route::get('/send-invoice/{id}', [InvoiceController::class, 'sendInvoice']);
+        Route::get('/get-renter-invoices/{id}', [InvoiceController::class, 'getRenterInvoices']);
 
         Route::post('/make-payment/{id}', [PaymentController::class, 'makePayment']);
     });
