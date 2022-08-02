@@ -19,6 +19,12 @@ import EditService from "../pages/Dashboard/Service/EditService";
 import RegisterService from "../pages/Dashboard/Service/RegisterService";
 import RoomDetails from "../pages/Dashboard/Room/RoomDetails";
 import RentRoom from "../pages/Dashboard/Room/RentRoom";
+import InvoicesRentersList from "../pages/Dashboard/Invoice/InvoicesRentersList";
+import CreateInvoice from "../pages/Dashboard/Invoice/CreateInvoice";
+import ViewGeneratedInvoice from "../pages/Dashboard/Invoice/ViewGeneratedInvoice";
+import EditInvoice from "../pages/Dashboard/Invoice/EditInvoice";
+import InvoiceDetails from "../pages/Dashboard/Invoice/InvoiceDetails";
+import RenterInvoicesList from "../pages/Dashboard/Invoice/RenterInvoicesList";
 
 const routes = [
     { path: '/admin', exact: true, name: 'Admin' },
@@ -48,6 +54,15 @@ const routes = [
     { path: '/admin/view-all-services', exact: true, name: 'ServicesList', component: ServicesList },
     { path: '/admin/edit-service/:serviceID', exact: true, name: 'EditService', component: EditService },
     { path: '/admin/register-service', exact: true, name: 'RegisterService', component: RegisterService },
+    //Invoice
+    { path: '/admin/view-all-renters-with-invoices', exact: true, name: 'InvoicesRentersList', component: InvoicesRentersList },
+    { path: '/admin/create-invoice/:renterID', exact: true, name: 'CreateInvoice', component: CreateInvoice },
+    { path: '/admin/view-generated-invoice', exact: true, name: 'ViewGeneratedInvoice', component: ViewGeneratedInvoice },
+    { path: '/admin/edit-invoice/:invoiceID', exact: true, name: 'EditInvoice', component: EditInvoice },
+    { path: '/admin/invoice-details/:invoiceID', exact: true, name: 'InvoiceDetails', component: InvoiceDetails },
+    { path: '/admin/view-all-invoices-of-renter/:renterID', exact: true, name: 'RenterInvoicesList', component: RenterInvoicesList },
+
+    
 ]
 
 export default routes;

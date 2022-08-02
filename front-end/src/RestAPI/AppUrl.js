@@ -56,6 +56,18 @@ class AppUrl {
   static ShowRegistrations = this.BaseURL + "/all-registrations";
   static RegisterService = this.BaseURL + "/register-service";
   static UnregisterService = this.BaseURL + "/unregister-service/";
+
+  static GetRegisteredServices = this.BaseURL + "/all-registered_services/";
+  static CreateTemporaryInvoice = this.BaseURL + "/create-temporary-invoice/";
+  static ShowInvoices = this.BaseURL + "/all-invoices";
+  static StoreInvoice = this.BaseURL + "/store-invoice/";
+  static InvoiceDetails = this.BaseURL + "/edit-invoice/";
+  static UpdateInvoice = this.BaseURL + "/update-invoice/";
+  static DeleteInvoice = this.BaseURL + "/delete-invoice/";
+  static SendInvoice = this.BaseURL + "/send-invoice/";
+  static GetRenterInvoices = this.BaseURL + "/get-renter-invoices/";
+
+  static MakeInvoicePayment = this.BaseURL + "/make-payment/";
 }
 
 export default AppUrl;
