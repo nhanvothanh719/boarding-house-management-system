@@ -15,6 +15,7 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\ServiceRegistrationController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\AnnouncementController;
 
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/register', [AuthController::class, 'register']);
@@ -97,6 +98,8 @@ Route::middleware('auth:api')->group(function(){
         Route::get('/get-renter-invoices/{id}', [InvoiceController::class, 'getRenterInvoices']);
 
         Route::post('/make-payment/{id}', [PaymentController::class, 'makePayment']);
+
+        Route::post('send-announcement', [AnnouncementController::class, 'sendAnnouncement']);
     });
 });
 

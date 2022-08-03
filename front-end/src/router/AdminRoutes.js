@@ -25,6 +25,7 @@ import ViewGeneratedInvoice from "../pages/Dashboard/Invoice/ViewGeneratedInvoic
 import EditInvoice from "../pages/Dashboard/Invoice/EditInvoice";
 import InvoiceDetails from "../pages/Dashboard/Invoice/InvoiceDetails";
 import RenterInvoicesList from "../pages/Dashboard/Invoice/RenterInvoicesList";
+import CreateAnnouncement from "../pages/Dashboard/Announcement/CreateAnnouncement";
 
 const routes = [
     { path: '/admin', exact: true, name: 'Admin' },
@@ -61,7 +62,8 @@ const routes = [
     { path: '/admin/edit-invoice/:invoiceID', exact: true, name: 'EditInvoice', component: EditInvoice },
     { path: '/admin/invoice-details/:invoiceID', exact: true, name: 'InvoiceDetails', component: InvoiceDetails },
     { path: '/admin/view-all-invoices-of-renter/:renterID', exact: true, name: 'RenterInvoicesList', component: RenterInvoicesList },
-
+    //Announcement
+    { path: '/admin/create-announcement', exact: true, name: 'CreateAnnouncement', component: CreateAnnouncement},
     
 ]
 
