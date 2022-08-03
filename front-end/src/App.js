@@ -13,10 +13,10 @@ function App() {
         propertyId="62e95dc037898912e960e203"
         widgetId="1g9fpce2n"
       />
-      <MessengerCustomerChat
+      {/* <MessengerCustomerChat
         pageId="104103952405175"
         appId="1160238107906300"
-      />
+      /> */}
     </Router>
   );
 }

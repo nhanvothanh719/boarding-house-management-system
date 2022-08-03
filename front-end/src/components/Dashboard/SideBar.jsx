@@ -101,10 +101,10 @@ function SideBar() {
               </li>
             </NavLink>
             <p className="itemGroup text-uppercase">Generating</p>
-            <NavLink exact to="/" style={{ textDecoration: "none" }}>
+            <NavLink exact to="/admin/create-announcement" style={{ textDecoration: "none" }}>
               <li className="customLi">
                 <NotificationsActiveIcon className="sideBarIcon" />
-                <span className="itemName"> Notifications </span>
+                <span className="itemName"> Announcements </span>
               </li>
             </NavLink>
             <NavLink exact to="/admin/view-all-renters-with-invoices" style={{ textDecoration: "none" }}>
