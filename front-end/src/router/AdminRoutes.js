@@ -26,6 +26,7 @@ import EditInvoice from "../pages/Dashboard/Invoice/EditInvoice";
 import InvoiceDetails from "../pages/Dashboard/Invoice/InvoiceDetails";
 import RenterInvoicesList from "../pages/Dashboard/Invoice/RenterInvoicesList";
 import CreateAnnouncement from "../pages/Dashboard/Announcement/CreateAnnouncement";
+import BalanceDetails from "../pages/Dashboard/Balance/BalanceDetails";
 
 const routes = [
     { path: '/admin', exact: true, name: 'Admin' },
@@ -64,6 +65,8 @@ const routes = [
     { path: '/admin/view-all-invoices-of-renter/:renterID', exact: true, name: 'RenterInvoicesList', component: RenterInvoicesList },
     //Announcement
     { path: '/admin/create-announcement', exact: true, name: 'CreateAnnouncement', component: CreateAnnouncement},
+    //Balance
+    { path: '/admin/view-balance-details', exact: true, name: 'BalanceDetails', component: BalanceDetails},
     
 ]
 

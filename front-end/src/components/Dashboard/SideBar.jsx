@@ -119,7 +119,7 @@ function SideBar() {
                 <span className="itemName"> Breaches </span>
               </li>
             </NavLink>
-            <NavLink exact to="/" style={{ textDecoration: "none" }}>
+            <NavLink exact to="/admin/view-balance-details" style={{ textDecoration: "none" }}>
               <li className="customLi">
                 <ShowChartIcon className="sideBarIcon" />
                 <span className="itemName"> Balance </span>

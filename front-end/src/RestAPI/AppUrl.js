@@ -70,6 +70,11 @@ class AppUrl {
   static MakeInvoicePayment = this.BaseURL + "/make-payment/";
 
   static SendAnnouncement = this.BaseURL + "/send-announcement";
+
+  static GetBalance = this.BaseURL + "/get-balance";
+  static UpdateBalance = this.BaseURL + "/update-balance";
+  static GetRecentBalanceChanges = this.BaseURL + "/recent-balance-changes";
+  static GetPieChartData = this.BaseURL + "/get-pie-chart-data";
 }
 
 export default AppUrl;
