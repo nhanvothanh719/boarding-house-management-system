@@ -75,6 +75,7 @@ class AppUrl {
   static UpdateBalance = this.BaseURL + "/update-balance";
   static GetRecentBalanceChanges = this.BaseURL + "/recent-balance-changes";
   static GetPieChartData = this.BaseURL + "/get-pie-chart-data";
+  
 }
 
 export default AppUrl;

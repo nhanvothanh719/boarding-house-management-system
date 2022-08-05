@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Validator;
 
 use App\Models\User;
 use App\Models\Room;
+use App\Models\Balance;
 use App\Models\Service;
 use App\Models\Invoice;
 use App\Models\RoomRent;

@@ -46,6 +46,7 @@ export default function BalanceDetails() {
     axios.get(AppUrl.GetRecentBalanceChanges).then((response) => {
       if (response.data.status === 200) {
         setBalanceChanges(response.data.recentBalanceChanges);
+        console.log(response.data.recentBalanceChanges);
       }
     });
     axios.get(AppUrl.GetPieChartData).then((response) => {

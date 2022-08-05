@@ -52,19 +52,25 @@ class BalanceController extends Controller
     }
 
     public function calculateBalance() {
-        $changes_number = DB::table('balance')->count();
-        //Get maximum 15 recent values 
-        if($changes_number < 15) {
-            $recent_changes = Balance::orderBy('occurred_on', 'DESC')->take($changes_number)->get();
-        } else {
-            $recent_changes = Balance::orderBy('occurred_on', 'DESC')->take(15)->get();
-        }
-        //Reverse the collection --> (values() for resetting the keys)
-        $recent_changes = $recent_changes->reverse()->values();
+        //Get recent changes
+        $recent_changes = Balance::orderBy('occurred_on', 'DESC')->get();
         //Group all the same date
         $recent_changes = $recent_changes->groupBy('occurred_on');
+        //
+        $recent_changes_array = array();
+        foreach ($recent_changes as $change) {
+            array_push($recent_changes_array, $change);
+        }
+        //Get maximum 15 recent values
+        $changes_number = count($recent_changes_array);
+        if($changes_number > 15) {
+            $recent_changes_array = array_splice($recent_changes_array, 0, 14);
+        }
+        //Reverse the collection --> (values() for resetting the keys)
+        $recent_changes_array = array_reverse($recent_changes_array);
+        //$recent_changes = $recent_changes;
         $grouped_recent_changes = array();
-        foreach($recent_changes as $recent_changes_item) {
+        foreach($recent_changes_array as $recent_changes_item) {
             $amount = 0;
             $item = new stdClass();
             $item->occurred_on = $recent_changes_item[0]['occurred_on'];

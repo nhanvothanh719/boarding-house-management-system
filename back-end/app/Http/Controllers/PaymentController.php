@@ -4,10 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 use App\Models\PaymentHistory;
 use App\Models\PaymentMethod;
 use App\Models\Invoice;
+use App\Models\Balance;
+use App\Models\User;
+
+use App\Mail\InvoicePaidMail;
 
 class PaymentController extends Controller
 {
@@ -25,9 +30,28 @@ class PaymentController extends Controller
         $invoice = Invoice::find($id);
         $invoice->is_paid = Invoice::STATUS_PAID;
         $invoice->save();
+        PaymentController::handleAfterPayment($request, $user_id ,$id);
         return response([
             'status' => 200,
             'message' => 'The invoice is paid successfully'
         ]);
+    }
+
+    public function handleAfterPayment(Request $request, $user_id, $invoice_id) {
+        //Automatically add income
+        $balance = Balance::create([
+            'description' => 'Income from invoice with ID: '.$invoice_id,
+            'is_income' => 1,
+            'amount' => $request->amount,
+            'occurred_on' => date('Y-m-d', strtotime(' +0 day')),
+        ]);
+        //Send email confirmation
+        $renter_email = User::find($user_id)->email;
+        Mail::to($renter_email)->send(new InvoicePaidMail(
+            $request->month,
+            $request->year,
+            $request->amount,
+            $request->payment_method
+        ));
     }
 }
