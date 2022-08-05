@@ -97,7 +97,6 @@ export default function InvoiceDetails({ match }) {
         .then((response) => {
           if (response.data.status === 200) {
             swal("Invoice is paid", response.data.message, "success");
-            history.push("");
           }
         });
     });
@@ -112,6 +111,10 @@ export default function InvoiceDetails({ match }) {
     } else {
       const payment = {
         payment_method: payment_method,
+        month: invoice.month,
+        year: invoice.year,
+        amount: invoice.total,
+        payer_id: invoice.renter_id,
       };
       switch (payment_method) {
         case "Cash":
@@ -120,7 +123,6 @@ export default function InvoiceDetails({ match }) {
             .then((response) => {
               if (response.data.status === 200) {
                 swal("Invoice is paid", response.data.message, "success");
-                history.push("");
               }
             });
           break;
@@ -132,16 +134,15 @@ export default function InvoiceDetails({ match }) {
             description: "Make invoice payment",
             image: "",
             handler: function (response) {
-              //alert(response.razorpay_payment_id);
               payment.payment_id = response.razorpay_payment_id;
               axios
                 .post(AppUrl.MakeInvoicePayment + invoiceId, payment)
                 .then((res) => {
                   if (res.data.status === 200) {
-                    swal("success", res.data.message, "Success");
+                    swal("success", res.data.message, "success");
                   }
                 });
-              alert(response.razorpay_payment_id);
+              //alert(response.razorpay_payment_id);
             },
             prefill: {
               name: user.name,

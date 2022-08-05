@@ -24,7 +24,7 @@ class ContactUsController extends Controller
                 'email' => $email,
                 'message' => $message
             ]);
-            Mail::to('nhanvothanh719@gmail.com')->send(new ContactUsMail($name, $email, $message));
+            Mail::to($email)->send(new ContactUsMail($name, $email, $message));
             return response([
                 'message' => 'Thank you for contacting us',
             ], 200); //OK

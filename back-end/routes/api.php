@@ -16,6 +16,7 @@ use App\Http\Controllers\ServiceRegistrationController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\AnnouncementController;
+use App\Http\Controllers\BalanceController;
 
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/register', [AuthController::class, 'register']);
@@ -100,6 +101,13 @@ Route::middleware('auth:api')->group(function(){
         Route::post('/make-payment/{id}', [PaymentController::class, 'makePayment']);
 
         Route::post('send-announcement', [AnnouncementController::class, 'sendAnnouncement']);
+
+        Route::get('/get-balance', [BalanceController::class, 'index']);
+        Route::post('/update-balance', [BalanceController::class, 'updateBalance']);
+        Route::get('/recent-balance-changes', [BalanceController::class, 'calculateBalance']);
+        Route::get('/get-pie-chart-data', [BalanceController::class, 'getDataForPieChart']);
+        Route::put('/update-balance-change/{id}', [BalanceController::class, 'updateBalanceChange']);
+        Route::delete('/delete-balance-change/{id}', [BalanceController::class, 'deleteBalanceChange']);
     });
 });
 

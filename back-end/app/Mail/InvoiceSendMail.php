@@ -11,11 +11,11 @@ class InvoiceSendMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $invoice;
-    public $extra_fee;
-    public $renter_name;
-    public $room_number;
-    public $invoice_details;
+    protected $invoice;
+    protected $extra_fee;
+    protected $renter_name;
+    protected $room_number;
+    protected $invoice_details;
 
     /**
      * Create a new message instance.

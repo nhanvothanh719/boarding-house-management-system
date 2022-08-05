@@ -11,8 +11,8 @@ class FirstPasswordChangeMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $generatedPassword;
-    public $generatedToken;
+    protected $generatedPassword;
+    protected $generatedToken;
 
     /**
      * Create a new message instance.
