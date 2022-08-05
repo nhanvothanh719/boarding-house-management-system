@@ -123,4 +123,39 @@ class BalanceController extends Controller
             'pieData' => $pie_data, 
         ]);
     }
+
+    public function updateBalanceChange(Request $request, $id) {
+        $balance_change = Balance::find($id);
+        if(!$balance_change) {
+            return response([
+                'message' => 'No balance change found',
+                'status' => 404,
+            ]);
+        }
+        $balance_change->amount = $request->amount;
+        $balance_change->occurred_on = $request->occurred_on;
+        $balance_change->description = $request->description;
+        $balance_change->save();
+        return response([
+            'status' => 200,
+            'message' => 'Successfully update balance change',
+        ]);
+    }
+
+    public function deleteBalanceChange($id) {
+        $balance_change = Balance::find($id);
+        if(!$balance_change) {
+            return response([
+                'message' => 'No balance change found',
+                'status' => 404,
+            ]);
+        }
+        else {
+            $balance_change->delete();
+            return response([
+                'status' => 200,
+                'message' => 'Successfully delete balance change',
+            ]);
+        }
+    }
 }

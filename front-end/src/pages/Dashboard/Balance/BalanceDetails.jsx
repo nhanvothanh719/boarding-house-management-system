@@ -18,6 +18,8 @@ import {
 } from "recharts";
 
 export default function BalanceDetails() {
+  let currentDate = new Date();
+
   const [loading, setLoading] = useState(true);
   const [details, setDetails] = useState([]);
   const [balanceChanges, setBalanceChanges] = useState([]);
@@ -95,15 +97,38 @@ export default function BalanceDetails() {
     return <Loading />;
   } else {
     columns = [
-      { field: "id", title: "ID", align: "center" },
-      { field: "description", title: "Description" },
+      { field: "id", title: "ID", align: "center", editable: "never" },
+      {
+        field: "description",
+        title: "Description",
+        validate: (rowData) =>
+          rowData.description === ""
+            ? { isValid: false, helperText: "Description cannot be empty" }
+            : true,
+      },
       {
         field: "is_income",
         title: "Category",
         lookup: { 0: "Expenses", 1: "Earned" },
       },
-      { field: "amount", title: "Amount" },
-      { field: "occurred_on", title: "Occurred on" },
+      {
+        field: "amount",
+        title: "Amount",
+        type: "numeric",
+        validate: (rowData) =>
+          rowData.amount <= 0
+            ? { isValid: false, helperText: "Amount must bigger than 0" }
+            : true,
+      },
+      {
+        field: "occurred_on",
+        title: "Occurred on",
+        type: "date",
+        validate: (rowData) =>
+          rowData.occurred_on >= currentDate || rowData.occurred_on < currentDate.setFullYear(currentDate.getFullYear() - 1)
+            ? { isValid: false, helperText: "Inappropriate value" }
+            : true,
+      },
     ];
   }
 
@@ -179,18 +204,44 @@ export default function BalanceDetails() {
           exportAllData: true,
           actionsColumnIndex: -1,
         }}
-        actions={[
-          {
-            icon: () => <button className="btn btn-warning">Edit</button>,
-            // onClick: (event, category) =>
-            //   history.push(`/admin/edit-category/${category.id}`),
-          },
-          {
-            icon: () => <button className="btn btn-danger">Delete</button>,
-            // onClick: (event, category) =>
-            //   deleteCategory(event, category.id),
-          },
-        ]}
+        editable={{
+          onRowUpdate: (newBalanceChange, oldBalanceChange) =>
+            new Promise((resolve, reject) => {
+              setTimeout(() => {
+                const data = {
+                  amount: newBalanceChange.amount,
+                  description: newBalanceChange.description,
+                  occurred_on: newBalanceChange.occurred_on,
+                }
+                axios.put(AppUrl.UpdateBalanceChange + oldBalanceChange.id, data).then((response) => {
+                  if (response.data.status === 200) {
+                    swal("Success", response.data.message, "success");
+                    setBalanceAmountChange(true);
+                  } else if (response.data.status === 404) {
+                    swal("Error", response.data.message, "error");
+                  }
+                });
+                resolve();
+              }, 1000);
+            }),
+          onRowDelete: (oldBalanceChange) =>
+            new Promise((resolve, reject) => {
+              setTimeout(() => {
+                const selectBalanceChange = [...details];
+                const index = oldBalanceChange.tableData.id;
+                selectBalanceChange.splice(index, 1); //1: only one record
+                axios.delete(AppUrl.DeleteBalanceChange + oldBalanceChange.id).then((response) => {
+                  if (response.data.status === 200) {
+                    swal("Success", response.data.message, "success");
+                    setBalanceAmountChange(true);
+                  } else if (response.data.status === 404) {
+                    swal("Error", response.data.message, "error");
+                  }
+                });
+                resolve();
+              }, 1000);
+            }),
+        }}
       />
       <button className="btn btn-primary" onClick={showModal}>
         Add new change

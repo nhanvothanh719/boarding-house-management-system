@@ -106,6 +106,8 @@ Route::middleware('auth:api')->group(function(){
         Route::post('/update-balance', [BalanceController::class, 'updateBalance']);
         Route::get('/recent-balance-changes', [BalanceController::class, 'calculateBalance']);
         Route::get('/get-pie-chart-data', [BalanceController::class, 'getDataForPieChart']);
+        Route::put('/update-balance-change/{id}', [BalanceController::class, 'updateBalanceChange']);
+        Route::delete('/delete-balance-change/{id}', [BalanceController::class, 'deleteBalanceChange']);
     });
 });
 
