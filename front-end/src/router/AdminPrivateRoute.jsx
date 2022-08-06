@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Redirect, Route, useHistory } from "react-router-dom";
-import MasterLayout from "../pages/Dashboard/MasterLayout";
-import RestClient from "../RestAPI/RestClient";
-import AppUrl from "../RestAPI/AppUrl";
-import Loading from "../components/Loading";
+
 import axios from "axios";
 import swal from "sweetalert";
+
+import MasterLayout from "../layouts/Admin/MasterLayout";
+import RestClient from "../RestAPI/RestClient";
+import AppUrl from "../RestAPI/AppUrl";
+import Loading from "../components/Loading/Loading";
 
 function AdminPrivateRoute({ ...rest }) {
   const history = useHistory();
@@ -25,14 +27,13 @@ function AdminPrivateRoute({ ...rest }) {
     };
   }, []);
 
-
-  // axios.interceptors.response.use(undefined, function axiosRetryInterceptors(error) {
-  //   if(error.response.status === 401) {
-  //     swal("Unauthenticated", error.response.data.message, "warning");
-  //     history.push("/home");
-  //   }
-  //   return Promise.reject(error);
-  // });
+  axios.interceptors.response.use(undefined, function axiosRetryInterceptors(error) {
+    if(error.response.status === 401) {
+      swal("Unauthenticated", error.response.data.message, "warning");
+      history.push("/home");
+    }
+    return Promise.reject(error);
+  });
 
   axios.interceptors.response.use(undefined, function axiosRetryInterceptors(error) {
     if(error.response.status === 403) { //Access denied
@@ -63,6 +64,5 @@ function AdminPrivateRoute({ ...rest }) {
     />
   );
 }
-
 
 export default AdminPrivateRoute;

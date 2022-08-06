@@ -1,36 +1,35 @@
-import MainDashboard from "../pages/Dashboard/MainDashboard";
-//import RentersList from "../pages/Dashboard/RentersList";
-import RenterDetails from "../pages/Dashboard/Form";
-import CreateCategory from "../pages/Dashboard/Category/CreateCategory";
-import CategoriesList from "../pages/Dashboard/Category/CategoriesList";
-import EditCategory from "../pages/Dashboard/Category/EditCategory";
-import CreateRoom from "../pages/Dashboard/Room/CreateRoom";
-import RoomsList from "../pages/Dashboard/Room/RoomsList";
-import EditRoom from "../pages/Dashboard/Room/EditRoom";
-import RentersList from "../pages/Dashboard/Renter/RentersList";
-import CreateRenter from "../pages/Dashboard/Renter/CreateRenter";
-import EditRenter from "../pages/Dashboard/Renter/EditRenter";
-import MotorbikesList from "../pages/Dashboard/Motorbike/MotorbikesList";
-import CreateMotorbike from "../pages/Dashboard/Motorbike/CreateMotorbike";
-import EditMotorbike from "../pages/Dashboard/Motorbike/EditMotorbike";
-import CreateService from "../pages/Dashboard/Service/CreateService";
-import ServicesList from "../pages/Dashboard/Service/ServicesList";
-import EditService from "../pages/Dashboard/Service/EditService";
-import RegisterService from "../pages/Dashboard/Service/RegisterService";
-import RoomDetails from "../pages/Dashboard/Room/RoomDetails";
-import RentRoom from "../pages/Dashboard/Room/RentRoom";
-import InvoicesRentersList from "../pages/Dashboard/Invoice/InvoicesRentersList";
-import CreateInvoice from "../pages/Dashboard/Invoice/CreateInvoice";
-import ViewGeneratedInvoice from "../pages/Dashboard/Invoice/ViewGeneratedInvoice";
-import EditInvoice from "../pages/Dashboard/Invoice/EditInvoice";
-import InvoiceDetails from "../pages/Dashboard/Invoice/InvoiceDetails";
-import RenterInvoicesList from "../pages/Dashboard/Invoice/RenterInvoicesList";
-import CreateAnnouncement from "../pages/Dashboard/Announcement/CreateAnnouncement";
-import BalanceDetails from "../pages/Dashboard/Balance/BalanceDetails";
+import MainDashboard from "../pages/Admin/Dashboard/MainDashboard";
+//import RentersList from "../pages/Admin/Dashboard/RentersList";
+import RenterDetails from "../pages/Admin/Dashboard/Form";
+import CreateCategory from "../pages/Admin/Dashboard/Category/CreateCategory";
+import CategoriesList from "../pages/Admin/Dashboard/Category/CategoriesList";
+import EditCategory from "../pages/Admin/Dashboard/Category/EditCategory";
+import CreateRoom from "../pages/Admin/Dashboard/Room/CreateRoom";
+import RoomsList from "../pages/Admin/Dashboard/Room/RoomsList";
+import EditRoom from "../pages/Admin/Dashboard/Room/EditRoom";
+import RentersList from "../pages/Admin/Dashboard/Renter/RentersList";
+import CreateRenter from "../pages/Admin/Dashboard/Renter/CreateRenter";
+import EditRenter from "../pages/Admin/Dashboard/Renter/EditRenter";
+import MotorbikesList from "../pages/Admin/Dashboard/Motorbike/MotorbikesList";
+import CreateMotorbike from "../pages/Admin/Dashboard/Motorbike/CreateMotorbike";
+import EditMotorbike from "../pages/Admin/Dashboard/Motorbike/EditMotorbike";
+import CreateService from "../pages/Admin/Dashboard/Service/CreateService";
+import ServicesList from "../pages/Admin/Dashboard/Service/ServicesList";
+import EditService from "../pages/Admin/Dashboard/Service/EditService";
+import RegisterService from "../pages/Admin/Dashboard/Service/RegisterService";
+import RoomDetails from "../pages/Admin/Dashboard/Room/RoomDetails";
+import RentRoom from "../pages/Admin/Dashboard/Room/RentRoom";
+import InvoicesRentersList from "../pages/Admin/Dashboard/Invoice/InvoicesRentersList";
+import CreateInvoice from "../pages/Admin/Dashboard/Invoice/CreateInvoice";
+import EditInvoice from "../pages/Admin/Dashboard/Invoice/EditInvoice";
+import InvoiceDetails from "../pages/Admin/Dashboard/Invoice/InvoiceDetails";
+import RenterInvoicesList from "../pages/Admin/Dashboard/Invoice/RenterInvoicesList";
+import CreateAnnouncement from "../pages/Admin/Dashboard/Announcement/CreateAnnouncement";
+import BalanceDetails from "../pages/Admin/Dashboard/Balance/BalanceDetails";
 
 const routes = [
     { path: '/admin', exact: true, name: 'Admin' },
-    { path: '/admin/dashboard', exact: true, name: 'Dashboard', component: MainDashboard },
+    { path: '/admin/dashboard', exact: true, name: 'MainDashboard', component: MainDashboard },
     //{ path: '/admin/renters', exact: true, name: 'AllRenters', component: RentersList },
     { path: '/admin/renters/:renterID', exact: true, name: 'RenterDetails', component: RenterDetails },
     //Category
@@ -59,7 +58,6 @@ const routes = [
     //Invoice
     { path: '/admin/view-all-renters-with-invoices', exact: true, name: 'InvoicesRentersList', component: InvoicesRentersList },
     { path: '/admin/create-invoice/:renterID', exact: true, name: 'CreateInvoice', component: CreateInvoice },
-    { path: '/admin/view-generated-invoice', exact: true, name: 'ViewGeneratedInvoice', component: ViewGeneratedInvoice },
     { path: '/admin/edit-invoice/:invoiceID', exact: true, name: 'EditInvoice', component: EditInvoice },
     { path: '/admin/invoice-details/:invoiceID', exact: true, name: 'InvoiceDetails', component: InvoiceDetails },
     { path: '/admin/view-all-invoices-of-renter/:renterID', exact: true, name: 'RenterInvoicesList', component: RenterInvoicesList },
