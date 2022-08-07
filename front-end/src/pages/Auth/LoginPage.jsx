@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Link, Redirect, useHistory } from "react-router-dom";
 import { Col, Container, Row } from "react-bootstrap";
 
 import axios from "axios";
@@ -10,6 +10,7 @@ import AppUrl from "../../RestAPI/AppUrl";
 import "../../assets/css/Login.css";
 
 function LoginPage(props) {
+  const history = useHistory();
   const [isLogin, setIsLogin] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [email, setEmail] = useState("");
@@ -29,11 +30,14 @@ function LoginPage(props) {
     axios
       .post(AppUrl.Login, data)
       .then((response) => {
-        localStorage.setItem("token", response.data.token);
-        setIsLogin(true);
-        setIsAdmin(response.data.isAdmin);
-        props.setUser(response.data.user);
-        swal("Success", response.data.message, "success");
+        if (response.data.status === 200) {
+          localStorage.setItem("auth_token", response.data.token);
+          setIsLogin(true);
+          setIsAdmin(response.data.isAdmin);
+          props.setUser(response.data.user);
+          swal("Success", response.data.message, "success");
+          history.push('/');
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -43,9 +47,11 @@ function LoginPage(props) {
   if (isLogin) {
     if (isAdmin === false) {
       return <Redirect to={"/admin/dashboard"} />;
+    } else {
+      return <Redirect to={"/home"} />;
     }
-    return <Redirect to={"/home"} />;
   }
+
   return (
     <Fragment>
       <WebPageTitle pageTitle="Login" />

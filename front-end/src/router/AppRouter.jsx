@@ -5,8 +5,15 @@ import PublicRoute from "./PublicRoute";
 import AdminPrivateRoute from "./AdminPrivateRoute";
 import Error_403 from "../pages/Error/Error_403";
 import Error_404 from "../pages/Error/Error_404";
+import axios from "axios";
 
 function AppRouter() {
+  axios.interceptors.request.use(function (config){
+    const token = localStorage.getItem('auth_token');
+    config.headers.Authorization = token ? `Bearer ${token}` : '';
+    return config;
+  })
+
   return (
     <div>
       <Switch>

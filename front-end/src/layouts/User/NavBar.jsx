@@ -1,10 +1,11 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import { Navbar, Nav } from "react-bootstrap";
 import axios from "axios";
-import alert from "sweetalert";
+import swal from "sweetalert";
 
-function NavBar(props) {
+function NavBar() {
+  const history = useHistory();
   const [navBarTitle, setNavBarTitle] = useState("brandName");
   const [navBarColor, setNavBarColor] = useState("navBar");
   const [navBarItem, setNavBarItem] = useState("navItem");
@@ -26,15 +27,16 @@ function NavBar(props) {
     e.preventDefault();
     axios.post("/logout").then((response) => {
       //Remove the token
-      localStorage.clear();
+      localStorage.removeItem('auth_token');
       //Remove all user data
-      props.setUser(null);
-      alert("Success", response.data.message, "success");
+      swal("Success", response.data.message, "success");
+      history.push("/");
     });
   };
+  
   let login;
   let profile;
-  if (localStorage.getItem("token")) {
+  if (localStorage.getItem("auth_token")) {
     login = (
       <Nav.Link>
         <NavLink

@@ -5,18 +5,17 @@ import axios from "axios";
 import swal from "sweetalert";
 
 import MasterLayout from "../layouts/Admin/MasterLayout";
-import RestClient from "../RestAPI/RestClient";
 import AppUrl from "../RestAPI/AppUrl";
 import Loading from "../components/Loading/Loading";
 
 function AdminPrivateRoute({ ...rest }) {
   const history = useHistory();
-  
+
   const [isAuthenticated, setAuthenticated] = useState(false);
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
-    RestClient.GetRequest(AppUrl.CheckAuthenticated).then((response) => {
+    axios.get(AppUrl.CheckAdminAuthenticated).then((response) => {
       if (response.status === 200) {
         setAuthenticated(true);
       }
@@ -27,34 +26,42 @@ function AdminPrivateRoute({ ...rest }) {
     };
   }, []);
 
-  axios.interceptors.response.use(undefined, function axiosRetryInterceptors(error) {
-    if(error.response.status === 401) {
-      swal("Unauthenticated", error.response.data.message, "warning");
-      history.push("/home");
+  axios.interceptors.response.use(
+    undefined,
+    function axiosRetryInterceptors(error) {
+      if (error.response.status === 401) {
+        swal("Unauthenticated", error.response.data.message, "warning");
+        history.push("/home");
+      }
+      return Promise.reject(error);
     }
-    return Promise.reject(error);
-  });
+  );
 
-  axios.interceptors.response.use(undefined, function axiosRetryInterceptors(error) {
-    if(error.response.status === 403) { //Access denied
-      swal("Forbidden", error.response.data.message, "warning");
-      history.push("/error-403");
+  axios.interceptors.response.use(
+    function (response) {
+      return response;
+    },
+    function (error) {
+      if (error.response.status === 403) {
+        //access denied
+        swal("Forbidden", error.response.data.message, "warning");
+        history.push("/error-403");
+      } else if (error.response.status === 404) {
+        swal("404 Error", "URL/Page does not exist", "warning");
+        history.push("/error-404");
+      }
+      return Promise.reject(error);
     }
-    else if(error.response.status === 404) { //Page not found
-      swal("404 Error", "URL/Page does not exist", "warning");
-      history.push("/error-404");
-    }
-    return Promise.reject(error);
-  });
+  );
 
-  if(isLoading) {
-    return <Loading />
+  if (isLoading) {
+    return <Loading />;
   }
 
   return (
     <Route
       {...rest} //name, path,...
-      component={({ props, location }) =>
+      component = { ({ props, location }) =>
         isAuthenticated ? (
           <MasterLayout {...props} />
         ) : (

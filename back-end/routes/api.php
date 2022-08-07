@@ -31,10 +31,13 @@ Route::get('/available-room-details/{id}', [RoomController::class, 'getAvailable
 Route::middleware('auth:api')->group(function(){
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/get-user-profile', [UserController::class, 'getUser']);
+    Route::get('/check-user-authenticated', function() {
+        return response(['message' => 'You are in', 'status' => 200]);
+    });    
     //Dashboard
     Route::middleware('isAdmin')->group(function(){
-        Route::get('/check-authenticated', function() {
-            return response(['message' => 'You are in', 'status' => 200], 200);
+        Route::get('/check-admin-authenticated', function() {
+            return response(['message' => 'You are in', 'status' => 200]);
         });    
         //Category
         Route::get('/all-categories', [CategoryController::class, 'index']);

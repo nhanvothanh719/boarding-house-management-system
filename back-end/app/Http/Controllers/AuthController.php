@@ -25,20 +25,21 @@ class AuthController extends Controller
                 if($user->role_id == 0) 
                 {
                     //Generate access token with scope
-                    $token = $user->createToken('admin_auth_token',['admin'])->accessToken;
+                    $auth_token = $user->createToken('auth_token',['admin'])->accessToken;
                     $is_admin = true;
                 }
                 else {
-                    $token = $user->createToken('auth_token')->accessToken;
+                    $auth_token = $user->createToken('auth_token')->accessToken;
                     $is_admin = false;
                 }
                 
                 return response([
                     'message' => 'Login successfully',
-                    'token' => $token,
+                    'token' => $auth_token,
                     'user' => $user, //User data
                     'tokenType' => 'Bearer',
                     'isAdmin' => $is_admin,
+                    'status' => 200,
                 ], 200); //OK
             }
         }
@@ -54,8 +55,8 @@ class AuthController extends Controller
 
     public function register(Request $request) {
         try {
-            //$renter_role_id = Role::where('name', Role::ROLE_ADMIN)->value('id');
-            $renter_role_id = 1;
+            $renter_role_id = Role::where('name', Role::ROLE_ADMIN)->value('id');
+            //$renter_role_id = 1;
             $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
@@ -68,7 +69,7 @@ class AuthController extends Controller
                 'occupation' => $request->occupation,
                 'permanent_address' => $request->permanent_address,
             ]);
-            $token = $user->createToken('auth_token_check')->accessToken;
+            //$token = $user->createToken('auth_token')->accessToken;
             return response([
                 'message' => 'Register successfully',
                 'user' => $user,
@@ -96,6 +97,4 @@ class AuthController extends Controller
             ], 400);
         }
     }
-
-    
 }
