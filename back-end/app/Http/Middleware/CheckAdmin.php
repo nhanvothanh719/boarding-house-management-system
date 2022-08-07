@@ -19,7 +19,7 @@ class CheckAdmin
     {
         if(Auth::check()) {
             //Check abilities using token
-            if (auth()->user()->tokenCan('admin')) {
+            if (auth()->user()->tokenCan('use-dashboard')) {
                 return $next($request);
             }
             else {

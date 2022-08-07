@@ -36,6 +36,8 @@ function NavBar() {
   
   let login;
   let profile;
+  let dashboard;
+
   if (localStorage.getItem("auth_token")) {
     login = (
       <Nav.Link>
@@ -61,6 +63,18 @@ function NavBar() {
           PROFILE
         </NavLink>
       </Nav.Link>
+    );
+    dashboard = (
+      <Nav.Link>
+      <NavLink
+        to="/admin/dashboard"
+        exact
+        activeStyle={{ color: "yellow" }}
+        className={navBarItem}
+      >
+        DASHBOARD
+      </NavLink>
+    </Nav.Link>
     );
   } else {
     login = (
@@ -144,17 +158,8 @@ function NavBar() {
                 CONTACT US
               </NavLink>
             </Nav.Link>
+            {dashboard}
             {profile}
-            <Nav.Link>
-              <NavLink
-                to="/admin/dashboard"
-                exact
-                activeStyle={{ color: "yellow" }}
-                className={navBarItem}
-              >
-                DASHBOARD
-              </NavLink>
-            </Nav.Link>
           </Nav>
           <Nav>{login}</Nav>
         </Navbar.Collapse>

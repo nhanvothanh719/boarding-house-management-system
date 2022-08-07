@@ -19,21 +19,21 @@ function AdminPrivateRoute({ ...rest }) {
       if (response.status === 200) {
         setAuthenticated(true);
       }
-      setLoading(false);
+      setLoading(false); //Must have to set authenticated
     });
     return () => {
-      setAuthenticated(false);
+      setAuthenticated(false);  //Cleanup
     };
   }, []);
 
   axios.interceptors.response.use(
-    undefined,
+    undefined, //undefined => 401 error
     function axiosRetryInterceptors(error) {
       if (error.response.status === 401) {
         swal("Unauthenticated", error.response.data.message, "warning");
         history.push("/home");
       }
-      return Promise.reject(error);
+      return Promise.reject(error); //fail
     }
   );
 

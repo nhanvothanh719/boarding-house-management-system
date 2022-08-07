@@ -36,7 +36,7 @@ class AuthServiceProvider extends ServiceProvider
 
         //Define scope
         Passport::tokensCan([
-            'admin' => 'Admin abilities',
+            'use-dashboard' => 'Admin ability to use dashboard',
         ]);
     }
 }

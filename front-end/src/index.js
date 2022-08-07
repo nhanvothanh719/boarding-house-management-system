@@ -8,9 +8,12 @@ import axios from 'axios';
 //Set base URL
 axios.defaults.baseURL = 'http://127.0.0.1:8000/api';
 //Set Bearer token to route
-axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
+axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('auth_token');
 //CSRF protection
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+//Accept JSON
+axios.defaults.headers.post['Content-Type'] = 'application/json';
+axios.defaults.headers.post['Accept'] = 'application/json';
 
 ReactDOM.render(
   <React.StrictMode>

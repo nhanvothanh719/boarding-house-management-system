@@ -28,7 +28,7 @@ import CreateAnnouncement from "../pages/Admin/Dashboard/Announcement/CreateAnno
 import BalanceDetails from "../pages/Admin/Dashboard/Balance/BalanceDetails";
 
 const routes = [
-    { path: '/admin', exact: true, name: 'Admin' },
+    { path: '/admin', exact: true, name: 'Admin' }, // '/admin/123', 'admin/weq', ...
     { path: '/admin/dashboard', exact: true, name: 'MainDashboard', component: MainDashboard },
     //{ path: '/admin/renters', exact: true, name: 'AllRenters', component: RentersList },
     { path: '/admin/renters/:renterID', exact: true, name: 'RenterDetails', component: RenterDetails },

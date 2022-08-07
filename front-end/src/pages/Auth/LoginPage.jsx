@@ -6,10 +6,12 @@ import axios from "axios";
 import swal from "sweetalert";
 
 import WebPageTitle from "../../components/WebPageTitle/WebPageTitle";
+import NavBar from "../../layouts/User/NavBar";
+import Footer from "../../layouts/User/Footer";
 import AppUrl from "../../RestAPI/AppUrl";
 import "../../assets/css/Login.css";
 
-function LoginPage(props) {
+function LoginPage() {
   const history = useHistory();
   const [isLogin, setIsLogin] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -32,11 +34,10 @@ function LoginPage(props) {
       .then((response) => {
         if (response.data.status === 200) {
           localStorage.setItem("auth_token", response.data.token);
+          console.log(response.data);
           setIsLogin(true);
           setIsAdmin(response.data.isAdmin);
-          props.setUser(response.data.user);
           swal("Success", response.data.message, "success");
-          history.push('/');
         }
       })
       .catch((error) => {
@@ -45,15 +46,15 @@ function LoginPage(props) {
   };
   //Redirect to Profile page if user logs in successfully
   if (isLogin) {
-    if (isAdmin === false) {
+    if (isAdmin === true) {
       return <Redirect to={"/admin/dashboard"} />;
     } else {
       return <Redirect to={"/home"} />;
     }
   }
-
   return (
     <Fragment>
+      <NavBar/>
       <WebPageTitle pageTitle="Login" />
       <Container fluid={true} className="loginBackground">
         <Row>
@@ -141,6 +142,7 @@ function LoginPage(props) {
           <Col lg={4} md={2} sm={2}></Col>
         </Row>
       </Container>
+      <Footer/>
     </Fragment>
   );
 }
