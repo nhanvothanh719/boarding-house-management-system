@@ -1,10 +1,12 @@
 import React, { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
-import "../../assets/css/Dashboard/widget.css";
+
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
 import BedIcon from "@mui/icons-material/Bed";
 import AccountBalanceWalletOutlinedIcon from "@mui/icons-material/AccountBalanceWalletOutlined";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+
+import "../../assets/css/Dashboard/widget.css";
 
 function Widget(props) {
   const [type] = useState(props.type);

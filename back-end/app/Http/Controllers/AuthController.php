@@ -19,26 +19,26 @@ class AuthController extends Controller
     public function login(Request $request) {
         try {
             if(Auth::attempt($request->only('email', 'password'))) {
+                $is_admin = false;
                 $user = Auth::user();
                 //Generate access token
                 //If user logins with Admin role
-                if($user->role_id == 0) 
+                if($user->role_id == Role::where('name', Role::ROLE_ADMIN)->value('id')) 
                 {
                     //Generate access token with scope
-                    $token = $user->createToken('admin_auth_token',['admin'])->accessToken;
+                    //createToken method accepts the name of the token as its first argument and an optional array of scopes
+                    $auth_token = $user->createToken('admin_auth_token',['use-dashboard'])->accessToken;
                     $is_admin = true;
                 }
                 else {
-                    $token = $user->createToken('auth_token')->accessToken;
-                    $is_admin = false;
+                    $auth_token = $user->createToken('auth_token')->accessToken;
                 }
-                
                 return response([
                     'message' => 'Login successfully',
-                    'token' => $token,
+                    'token' => $auth_token,
                     'user' => $user, //User data
-                    'tokenType' => 'Bearer',
                     'isAdmin' => $is_admin,
+                    'status' => 200,
                 ], 200); //OK
             }
         }
@@ -54,8 +54,8 @@ class AuthController extends Controller
 
     public function register(Request $request) {
         try {
-            //$renter_role_id = Role::where('name', Role::ROLE_ADMIN)->value('id');
-            $renter_role_id = 1;
+            $renter_role_id = Role::where('name', Role::ROLE_RENTER)->value('id');
+            //$renter_role_id = 1;
             $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
@@ -68,7 +68,7 @@ class AuthController extends Controller
                 'occupation' => $request->occupation,
                 'permanent_address' => $request->permanent_address,
             ]);
-            $token = $user->createToken('auth_token_check')->accessToken;
+            //$token = $user->createToken('auth_token')->accessToken;
             return response([
                 'message' => 'Register successfully',
                 'user' => $user,
@@ -96,6 +96,4 @@ class AuthController extends Controller
             ], 400);
         }
     }
-
-    
 }

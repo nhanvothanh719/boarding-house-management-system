@@ -33,8 +33,8 @@ Route::middleware('auth:api')->group(function(){
     Route::get('/get-user-profile', [UserController::class, 'getUser']);
     //Dashboard
     Route::middleware('isAdmin')->group(function(){
-        Route::get('/check-authenticated', function() {
-            return response(['message' => 'You are in', 'status' => 200], 200);
+        Route::get('/check-admin-authenticated', function() {
+            return response(['message' => 'Login successfully. You are the admin', 'status' => 200]);
         });    
         //Category
         Route::get('/all-categories', [CategoryController::class, 'index']);
