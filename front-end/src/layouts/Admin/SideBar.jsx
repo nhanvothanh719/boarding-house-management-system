@@ -96,7 +96,7 @@ function SideBar() {
                 <span className="itemName"> Contracts </span>
               </li>
             </NavLink>
-            <NavLink exact to="/" style={{ textDecoration: "none" }}>
+            <NavLink exact to="/admin/view-all-breaches" style={{ textDecoration: "none" }}>
               <li className="customLi">
                 <ReportIcon className="sideBarIcon" />
                 <span className="itemName"> Breaches </span>

@@ -17,6 +17,7 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\BalanceController;
+use App\Http\Controllers\BreachController;
 
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/register', [AuthController::class, 'register']);
@@ -86,7 +87,8 @@ Route::middleware('auth:api')->group(function(){
         Route::get('/all-registrations', [ServiceRegistrationController::class, 'index']);
         Route::post('/register-service', [ServiceRegistrationController::class, 'registerService']);
         Route::delete('/unregister-service/{id}', [ServiceRegistrationController::class, 'unregisterService']);
-
+        
+        //Invoice
         Route::get('/all-invoices', [InvoiceController::class, 'index']);
         Route::post('/store-invoice/{id}', [InvoiceController::class, 'storeInvoice']);
         Route::get('/edit-invoice/{id}', [InvoiceController::class, 'editInvoice']);
@@ -100,14 +102,22 @@ Route::middleware('auth:api')->group(function(){
 
         Route::post('/make-payment/{id}', [PaymentController::class, 'makePayment']);
 
+        //Announcement
         Route::post('send-announcement', [AnnouncementController::class, 'sendAnnouncement']);
 
+        //Balance
         Route::get('/get-balance', [BalanceController::class, 'index']);
         Route::post('/update-balance', [BalanceController::class, 'updateBalance']);
         Route::get('/recent-balance-changes', [BalanceController::class, 'calculateBalance']);
         Route::get('/get-pie-chart-data', [BalanceController::class, 'getDataForPieChart']);
         Route::put('/update-balance-change/{id}', [BalanceController::class, 'updateBalanceChange']);
         Route::delete('/delete-balance-change/{id}', [BalanceController::class, 'deleteBalanceChange']);
+
+        //Breach
+        Route::get('/all-breaches', [BreachController::class, 'index']);
+        Route::post('/store-breach', [BreachController::class, 'storeBreach']);
+        Route::put('/update-breach/{id}', [BreachController::class, 'updateBreach']);
+        Route::delete('/delete-breach/{id}', [BreachController::class, 'deleteBreach']);
     });
 });
 

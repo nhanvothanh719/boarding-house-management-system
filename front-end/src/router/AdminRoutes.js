@@ -26,6 +26,7 @@ import InvoiceDetails from "../pages/Admin/Dashboard/Invoice/InvoiceDetails";
 import RenterInvoicesList from "../pages/Admin/Dashboard/Invoice/RenterInvoicesList";
 import CreateAnnouncement from "../pages/Admin/Dashboard/Announcement/CreateAnnouncement";
 import BalanceDetails from "../pages/Admin/Dashboard/Balance/BalanceDetails";
+import BreachesList from "../pages/Admin/Dashboard/Breach/BreachesList";
 
 const routes = [
     { path: '/admin', exact: true, name: 'Admin' }, // '/admin/123', 'admin/weq', ...
@@ -65,7 +66,8 @@ const routes = [
     { path: '/admin/create-announcement', exact: true, name: 'CreateAnnouncement', component: CreateAnnouncement},
     //Balance
     { path: '/admin/view-balance-details', exact: true, name: 'BalanceDetails', component: BalanceDetails},
-    
+    //Breach
+    { path: '/admin/view-all-breaches', exact: true, name: 'BreachesList', component: BreachesList },
 ]
 
 export default routes;

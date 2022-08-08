@@ -6,7 +6,6 @@ import TermsAndConditionPage from "../pages/User/TermsAndConditionPage";
 import PrivacyPolicyPage from "../pages/User/PrivacyPolicyPage";
 import AvailableRoomsPage from "../pages/User/AvailableRoomsPage";
 import AvailableRoomDetailsPage from "../pages/User/AvailableRoomDetailsPage";
-import Error_404 from "../pages/Error/Error_404";
 
 const routes = [
     { path: '/', exact: true, name: 'Home', component: HomePage },

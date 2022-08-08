@@ -36,7 +36,7 @@ function ForgetPasswordPage(props) {
   if (message) {
     error = (
       <div>
-        <div class="alert alert-danger" role="alert">
+        <div className="alert alert-danger" role="alert">
           {message}
         </div>
       </div>
@@ -56,21 +56,20 @@ function ForgetPasswordPage(props) {
             <div id="logreg-forms">
               <form id="forgetPasswordForm" onSubmit={formSubmit}>
                 <h3
-                  class="mb-3 font-weight-normal"
-                  style={{ "text-align": "center" }}
-                  className="loginText"
+                  className="mb-3 font-weight-normal loginText"
+                  style={{ "textAlign": "center" }}
                 >
                   Forget Password
                 </h3>
                 {error}
-                <div class="form-group">
+                <div className="form-group">
                   <label for="inputEmail" className="formLabel">
                     Email address:
                   </label>
                   <input
                     type="email"
                     name="email"
-                    class="form-control"
+                    className="form-control"
                     id="inputEmail"
                     aria-describedby="emailHelp"
                     placeholder="Email to reset password"
@@ -82,7 +81,7 @@ function ForgetPasswordPage(props) {
                 </div>
                 <button
                   type="submit"
-                  class="btn btn-primary btn-block loginFormButton"
+                  className="btn btn-primary btn-block loginFormButton"
                 >
                   Submit
                 </button>

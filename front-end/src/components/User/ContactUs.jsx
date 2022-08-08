@@ -58,9 +58,9 @@ function ContactUS() {
                       </FormGroup>
                       <Form.Group style={{ "margin-top": "1rem" }}>
                         <Form.Label for="email">Email address:</Form.Label>
-                        <div class="input-group">
-                          <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-envelope"></span>
+                        <div className="input-group">
+                          <span className="input-group-addon">
+                            <span className="glyphicon glyphicon-envelope"></span>
                           </span>
                           <Form.Control
                             type="email"

@@ -77,6 +77,11 @@ class AppUrl {
   static GetPieChartData = this.BaseURL + "/get-pie-chart-data";
   static UpdateBalanceChange = this.BaseURL + "/update-balance-change/";
   static DeleteBalanceChange = this.BaseURL + "/delete-balance-change/";
+
+  static ShowBreaches = this.BaseURL + "/all-breaches";
+  static StoreBreach = this.BaseURL + "/store-breach";
+  static UpdateBreach = this.BaseURL + "/update-breach/";
+  static DeleteBreach = this.BaseURL + "/delete-breach/";
   
 }
 
