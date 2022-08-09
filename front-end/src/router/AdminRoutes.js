@@ -28,6 +28,7 @@ import CreateAnnouncement from "../pages/Admin/Dashboard/Announcement/CreateAnno
 import BalanceDetails from "../pages/Admin/Dashboard/Balance/BalanceDetails";
 import BreachesList from "../pages/Admin/Dashboard/Breach/BreachesList";
 import BreachHistories from "../pages/Admin/Dashboard/Breach/BreachHistories";
+import BreachDetails from "../pages/Admin/Dashboard/Breach/BreachDetails";
 
 const routes = [
     { path: '/admin', exact: true, name: 'Admin' }, // '/admin/123', 'admin/weq', ...
@@ -70,6 +71,7 @@ const routes = [
     //Breach
     { path: '/admin/view-all-breaches', exact: true, name: 'BreachesList', component: BreachesList },
     { path: '/admin/view-all-breach-histories', exact: true, name: 'BreachHistories', component: BreachHistories },
+    { path: '/admin/view-breach-details/:breachID', exact: true, name: 'BreachDetails', component: BreachDetails },
 ]
 
 export default routes;

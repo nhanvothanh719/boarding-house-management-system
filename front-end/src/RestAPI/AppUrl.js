@@ -86,6 +86,10 @@ class AppUrl {
   static ShowBreachHistories = this.BaseURL + "/all-breach-histories";
   static StoreBreachHistory = this.BaseURL + "/store-breach-history";
   static DeleteBreachHistory = this.BaseURL + "/delete-breach-history/";
+
+  static GetTotalNumberBreachMade = this.BaseURL + "/get-total-number-breach-made";
+  static GetBreachPercentage = this.BaseURL + "/get-breach-percentage/";
+  static GetRenterTotalNumberBreachMade = this.BaseURL + "/get-renter-total-number-breach-made/";
   
 }
 

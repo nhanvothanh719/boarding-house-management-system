@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use \stdClass;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
@@ -152,7 +153,7 @@ class BreachController extends Controller
         $breach_history = BreachHistory::find($id);
         if(!$breach_history) {
             return response([
-                'message' => 'No record found '.$id,
+                'message' => 'No record found',
                 'status' => 404,
             ]);
         }
@@ -163,5 +164,28 @@ class BreachController extends Controller
                 'message' => 'Successfully delete breach history',
             ]);
         }
+    }
+
+    public function calculateTotalNumberBreachMade() {
+        $all_breaches = Breach::all();
+        $breach_totals = array();
+        foreach ($all_breaches as $breach) {
+            $breach_total = new stdClass();
+            $breach_total->name = $breach->name;
+            $breach_total->total = BreachHistory::where('breach_id', $breach->id)->count();
+            array_push($breach_totals, $breach_total);
+        }
+        return response([
+            'status' => 200,
+            'breachTotals' => $breach_totals,
+        ]);
+    }
+
+    public function calculateBreachPercentage($id) {
+
+    }
+
+    public function getRenterTotalNumberBreachMade($id) {
+
     }
 }

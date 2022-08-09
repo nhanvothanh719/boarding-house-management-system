@@ -122,6 +122,10 @@ Route::middleware('auth:api')->group(function(){
         Route::get('/all-breach-histories', [BreachController::class, 'getBreachHistories']);
         Route::post('/store-breach-history', [BreachController::class, 'storeBreachHistory']);
         Route::delete('/delete-breach-history/{id}', [BreachController::class, 'deleteBreachHistory']);
+
+        Route::get('/get-total-number-breach-made', [BreachController::class, 'calculateTotalNumberBreachMade']);
+        Route::get('/get-breach-percentage/{$id}', [BreachController::class, 'calculateBreachPercentage']);
+        Route::get('/get-renter-total-number-breach-made/{$id}', [BreachController::class, 'getRenterTotalNumberBreachMade']);
     });
 });
 

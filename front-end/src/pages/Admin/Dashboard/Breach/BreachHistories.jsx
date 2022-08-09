@@ -8,6 +8,16 @@ import TextField from "@mui/material/TextField";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import {
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  Bar,
+  BarChart,
+  LabelList
+} from "recharts";
 
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
@@ -24,11 +34,18 @@ export default function BreachHistories() {
   const [breachHistoriesChange, setBreachHistoriesChange] = useState(false);
   const [breachesList, setBreachesList] = useState([]);
   const [violateMoment, setViolateMoment] = useState(moment());
+  const [barChartData, setBarChartData] = useState([]);
 
   useEffect(() => {
     axios.get(AppUrl.ShowBreaches).then((response) => {
       if (response.data.status === 200) {
         setBreachesList(response.data.allBreaches);
+      }
+    });
+    axios.get(AppUrl.GetTotalNumberBreachMade).then((response) => {
+      if (response.data.status === 200) {
+        setBarChartData(response.data.breachTotals);
+        console.log(response.data.breachTotals);
       }
     });
     axios.get(AppUrl.ShowBreachHistories).then((response) => {
@@ -128,6 +145,22 @@ export default function BreachHistories() {
 
   return (
     <Fragment>
+      <BarChart 
+      width={500} 
+      height={300} 
+      data={barChartData}
+      margin={{ top: 30, right: 30, left: 20, bottom: 5 }}
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="name" />
+        <YAxis />
+        <Tooltip />
+        <Legend />
+        <Bar dataKey="total" fill="#82ca9d">
+        <LabelList dataKey="total" position="top" />
+        </Bar>
+      </BarChart>
+
       <MaterialTable
         columns={columns}
         data={breachHistories}
