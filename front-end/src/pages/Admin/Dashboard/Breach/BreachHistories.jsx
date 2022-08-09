@@ -156,7 +156,6 @@ export default function BreachHistories() {
                       swal("Success", response.data.message, "success");
                       setBreachHistoriesChange(true);
                     } else if (response.data.status === 404) {
-                      // alert(AppUrl.DeleteBreachHistory + oldBreachHistory.id);
                       swal("Error", response.data.message, "error");
                     }
                   });

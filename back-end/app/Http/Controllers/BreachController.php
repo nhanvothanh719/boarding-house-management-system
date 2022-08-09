@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 use App\Helpers\CustomHelper;
@@ -10,6 +11,8 @@ use App\Helpers\CustomHelper;
 use App\Models\User;
 use App\Models\Breach;
 use App\Models\BreachHistory;
+
+use App\Mail\RuleViolateMail;
 
 class BreachController extends Controller
 {
@@ -124,14 +127,21 @@ class BreachController extends Controller
                 'status' => 404,
             ]);
         }
+        $breach = Breach::find($request->breach_id);
+        $breach_count = BreachHistory::where('breach_id', $request->breach_id)->where('renter_id', $request->renter_id)->count();
+        $remain_allowed_number = $breach->allowed_violate_number - $breach_count;
+        if($remain_allowed_number <= 0) {
+            return response([
+                'message' => 'Fail to add since the renter has committed this breach more than allowed times',
+                'status' => 404,
+            ]);
+        }
         $breach_history = BreachHistory::create([
             'breach_id' => $request->breach_id,
             'renter_id' => $request->renter_id,
             'violate_at' => $request->violate_at,
         ]);
-
-        //Todo: Send email
-
+        Mail::to($user->email)->send(new RuleViolateMail($user->name, $breach->name, $request->violate_at, $remain_allowed_number));
         return response([
             'status' => 200,
             'message' => 'Successfully add breach history',
