@@ -74,7 +74,13 @@ class BreachController extends Controller
             ]);
         }
         else {
-            //Todo: If the breach has renters --> Not allow
+            $is_used = BreachHistory::where('breach_id', $id)->first();
+            if($is_used) {
+                return response([
+                    'message' => 'Cannot delete this breach since it is used',
+                    'status' => 404,
+                ]);
+            }
             $breach->delete();
             return response([
                 'status' => 200,
@@ -132,11 +138,20 @@ class BreachController extends Controller
         ]);
     }
 
-    public function updateBreachHistory(Request $request, $id) {
-
-    }
-
     public function deleteBreachHistory($id) {
-
+        $breach_history = BreachHistory::find($id);
+        if(!$breach_history) {
+            return response([
+                'message' => 'No record found '.$id,
+                'status' => 404,
+            ]);
+        }
+        else {
+            $breach_history->delete();
+            return response([
+                'status' => 200,
+                'message' => 'Successfully delete breach history',
+            ]);
+        }
     }
 }

@@ -143,27 +143,6 @@ export default function BreachHistories() {
           actionsColumnIndex: -1,
         }}
         editable={{
-          onRowUpdate: (newBreachHistory, oldBreachHistory) =>
-            new Promise((resolve, reject) => {
-              setTimeout(() => {
-                const data = {
-                  breach_id: newBreachHistory.breach_id,
-                  renter_id: newBreachHistory.renter_id,
-                  violate_at: newBreachHistory.violate_at,
-                };
-                axios
-                  .put(AppUrl.UpdateBreachHistory + oldBreachHistory.id, data)
-                  .then((response) => {
-                    if (response.data.status === 200) {
-                      swal("Success", response.data.message, "success");
-                      setBreachHistoriesChange(true);
-                    } else if (response.data.status === 404) {
-                      swal("Error", response.data.message, "error");
-                    }
-                  });
-                resolve();
-              }, 1000);
-            }),
           onRowDelete: (oldBreachHistory) =>
             new Promise((resolve, reject) => {
               setTimeout(() => {
@@ -177,6 +156,7 @@ export default function BreachHistories() {
                       swal("Success", response.data.message, "success");
                       setBreachHistoriesChange(true);
                     } else if (response.data.status === 404) {
+                      // alert(AppUrl.DeleteBreachHistory + oldBreachHistory.id);
                       swal("Error", response.data.message, "error");
                     }
                   });
