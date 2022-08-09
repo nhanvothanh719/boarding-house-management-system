@@ -82,6 +82,11 @@ class AppUrl {
   static StoreBreach = this.BaseURL + "/store-breach";
   static UpdateBreach = this.BaseURL + "/update-breach/";
   static DeleteBreach = this.BaseURL + "/delete-breach/";
+
+  static ShowBreachHistories = this.BaseURL + "/all-breach-histories";
+  static StoreBreachHistory = this.BaseURL + "/store-breach-history";
+  static UpdateBreachHistory = this.BaseURL + "/update-breach-history/";
+  static DeleteBreachHistory = this.BaseURL + "/delete-breach-history/";
   
 }
 

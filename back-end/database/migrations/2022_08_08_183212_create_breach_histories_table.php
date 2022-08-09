@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreign('breach_id')->references('id')->on('breaches');
             $table->bigInteger('renter_id')->unsigned();
             $table->foreign('renter_id')->references('id')->on('users');
+            $table->datetime('violate_at');
             $table->timestamps();
         });
     }

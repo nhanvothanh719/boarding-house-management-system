@@ -13,17 +13,11 @@ export default function BreachesList() {
   const [input, setInput] = useState({
     name: "",
     description: "",
+    severity_level: "",
     allowed_violate_number: "",
   });
   const [details] = useState([]);
   const [breachChange, setBreachChange] = useState(false);
-
-  const showModal = () => {
-    var model = new window.bootstrap.Modal(
-      document.getElementById("addBreachModal")
-    );
-    model.show();
-  };
 
   useEffect(() => {
     axios.get(AppUrl.ShowBreaches).then((response) => {
@@ -38,11 +32,24 @@ export default function BreachesList() {
     }
   }, [breachChange]);
 
+  const showModal = () => {
+    var model = new window.bootstrap.Modal(
+      document.getElementById("addBreachModal")
+    );
+    model.show();
+  };
+
+  const handleInput = (e) => {
+    e.persist();
+    setInput({ ...input, [e.target.name]: e.target.value });
+  };
+
   const addBreach = (e) => {
     e.preventDefault();
     const breach = {
       name: input.name,
       description: input.description,
+      severity_level: input.severity_level,
       allowed_violate_number: input.allowed_violate_number,
     };
     axios
@@ -54,6 +61,7 @@ export default function BreachesList() {
           setInput({
             name: "",
             description: "",
+            severity_level: "",
             allowed_violate_number: "",
           });
           swal("Success", response.data.message, "success");
@@ -68,11 +76,6 @@ export default function BreachesList() {
       .catch((error) => {
         console.log(error);
       });
-  };
-
-  const handleInput = (e) => {
-    e.persist();
-    setInput({ ...input, [e.target.name]: e.target.value });
   };
 
   var columns = [];
@@ -108,6 +111,16 @@ export default function BreachesList() {
       {
         field: "description",
         title: "Description",
+      },
+      {
+        field: "severity_level",
+        title: "Severity level",
+        lookup: {
+          1: "Serious",
+          2: "Significant",
+          3: "Normal",
+          4: "Negligible",
+        },
       },
       {
         field: "allowed_violate_number",
@@ -150,6 +163,7 @@ export default function BreachesList() {
                 const data = {
                   name: newBreach.name,
                   description: newBreach.description,
+                  severity_level: newBreach.severity_level,
                   allowed_violate_number: newBreach.allowed_violate_number,
                 };
                 axios
@@ -200,7 +214,7 @@ export default function BreachesList() {
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="exampleModalLabel">
-                Add change to balance
+                Add new breach
               </h5>
               <button
                 type="button"
@@ -238,6 +252,33 @@ export default function BreachesList() {
                   />
                 </div>
                 <small className="text-danger">{errors.description}</small>
+                <div className="formInput">
+                  <label className="inputItemLabel">Severity level:</label>
+                  <select
+                    class="form-control"
+                    name="severity_level"
+                    onChange={handleInput}
+                    value={input.severity_level}
+                  >
+                    <option selected>--- Severity level ---</option>
+                    <option value="1" key="1">
+                      {" "}
+                      Serious{" "}
+                    </option>
+                    <option value="2" key="2">
+                      {" "}
+                      Significant{" "}
+                    </option>
+                    <option value="3" key="3">
+                      {" "}
+                      Normal{" "}
+                    </option>
+                    <option value="4" key="4">
+                      {" "}
+                      Negligible{" "}
+                    </option>
+                  </select>
+                </div>
                 <div className="formInput">
                   <label className="inputItemLabel">
                     Number of offenses allowed:

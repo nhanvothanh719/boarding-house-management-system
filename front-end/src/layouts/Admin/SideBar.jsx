@@ -115,7 +115,7 @@ function SideBar() {
                 <span className="itemName"> Invoices </span>
               </li>
             </NavLink>
-            <NavLink exact to="/" style={{ textDecoration: "none" }}>
+            <NavLink exact to="/admin/view-all-breach-histories" style={{ textDecoration: "none" }}>
               <li className="customLi">
                 <FlagIcon className="sideBarIcon" />
                 <span className="itemName"> Breaches </span>

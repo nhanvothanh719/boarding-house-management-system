@@ -118,6 +118,11 @@ Route::middleware('auth:api')->group(function(){
         Route::post('/store-breach', [BreachController::class, 'storeBreach']);
         Route::put('/update-breach/{id}', [BreachController::class, 'updateBreach']);
         Route::delete('/delete-breach/{id}', [BreachController::class, 'deleteBreach']);
+
+        Route::get('/all-breach-histories', [BreachController::class, 'getBreachHistories']);
+        Route::post('/store-breach-history', [BreachController::class, 'storeBreachHistory']);
+        Route::put('/update-breach-history/{id}', [BreachController::class, 'updateBreachHistory']);
+        Route::delete('/delete-breach-history/{id}', [BreachController::class, 'deleteBreach']);
     });
 });
 
