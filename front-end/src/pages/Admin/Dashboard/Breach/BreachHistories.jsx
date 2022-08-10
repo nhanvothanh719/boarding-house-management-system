@@ -210,6 +210,7 @@ export default function BreachHistories() {
       {
         field: "violate_at",
         title: "Violate at",
+        render: rowData => moment(rowData.violate_at).format('hh:mm:ss - DD/MM/YYYY')
       },
     ];
   }

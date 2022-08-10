@@ -1,6 +1,7 @@
 import React, { Fragment, useState, useEffect } from "react";
 import MaterialTable from "material-table";
 import swal from "sweetalert";
+import moment from "moment";
 import axios from "axios";
 import {
   XAxis,
@@ -56,6 +57,7 @@ export default function RenterBreachDetails({ match }) {
       {
         field: "violate_at",
         title: "Violate at",
+        render: rowData => moment(rowData.violate_at).format('hh:mm:ss - DD/MM/YYYY')
       },
     ];
   }
