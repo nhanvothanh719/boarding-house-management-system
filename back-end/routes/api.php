@@ -124,8 +124,9 @@ Route::middleware('auth:api')->group(function(){
         Route::delete('/delete-breach-history/{id}', [BreachController::class, 'deleteBreachHistory']);
 
         Route::get('/get-total-number-breach-made', [BreachController::class, 'calculateTotalNumberBreachMade']);
-        Route::get('/get-breach-percentage/{$id}', [BreachController::class, 'calculateBreachPercentage']);
-        Route::get('/get-renter-total-number-breach-made/{$id}', [BreachController::class, 'getRenterTotalNumberBreachMade']);
+        Route::get('/get-renter-total-number-breach-made', [BreachController::class, 'getRenterTotalNumberBreachMade']);
+        Route::get('/get-all-renter-breaches/{id}', [BreachController::class, 'getRenterBreaches']);
+        Route::get('/count-renter-breaches/{id}', [BreachController::class, 'countRenterBreaches']);
     });
 });
 

@@ -88,9 +88,10 @@ class AppUrl {
   static DeleteBreachHistory = this.BaseURL + "/delete-breach-history/";
 
   static GetTotalNumberBreachMade = this.BaseURL + "/get-total-number-breach-made";
-  static GetBreachPercentage = this.BaseURL + "/get-breach-percentage/";
-  static GetRenterTotalNumberBreachMade = this.BaseURL + "/get-renter-total-number-breach-made/";
-  
+  static GetRenterTotalNumberBreachMade = this.BaseURL + "/get-renter-total-number-breach-made";
+  static GetRenterBreaches = this.BaseURL + "/get-all-renter-breaches/";
+  static CountRenterBreaches = this.BaseURL + "/count-renter-breaches/";
+
 }
 
 export default AppUrl;

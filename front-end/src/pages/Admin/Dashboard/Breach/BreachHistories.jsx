@@ -3,6 +3,7 @@ import MaterialTable from "material-table";
 import swal from "sweetalert";
 import axios from "axios";
 import moment from "moment";
+import { useHistory } from "react-router-dom";
 
 import TextField from "@mui/material/TextField";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
@@ -26,6 +27,7 @@ import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
 
 export default function BreachHistories() {
+  const history = useHistory();
   const [errors, setErrors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [breachHistories, setBreachHistories] = useState([]);
@@ -39,8 +41,16 @@ export default function BreachHistories() {
   const [violateMoment, setViolateMoment] = useState(moment());
   const [chartData, setChartData] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [renterBreachMadeTotal, setRenterBreachMadeTotal] = useState([]);
+  const [rentersList, setRentersList] = useState([]);
 
   useEffect(() => {
+    axios.get(AppUrl.ShowRenters).then((response) => {
+      if (response.data.status === 200) {
+        setRentersList(response.data.allRenters);
+      }
+      setLoading(false);
+    });
     axios.get(AppUrl.ShowBreaches).then((response) => {
       if (response.data.status === 200) {
         setBreachesList(response.data.allBreaches);
@@ -49,6 +59,12 @@ export default function BreachHistories() {
     axios.get(AppUrl.GetTotalNumberBreachMade).then((response) => {
       if (response.data.status === 200) {
         setChartData(response.data.breachTotals);
+      }
+    });
+    axios.get(AppUrl.GetRenterTotalNumberBreachMade).then((response) => {
+      if (response.data.status === 200) {
+        setRenterBreachMadeTotal(response.data.renterTotal);
+        console.log(response.data.renterTotal);
       }
     });
     axios.get(AppUrl.ShowBreachHistories).then((response) => {
@@ -184,10 +200,12 @@ export default function BreachHistories() {
       {
         field: "breach_id",
         title: "Breach name",
+        render: (rowData) => <p>{breachNames[rowData.breach_id]}</p>,
       },
       {
         field: "renter_id",
         title: "Renter",
+        render: (rowData) => <p>{renterNames[rowData.renter_id]}</p>,
       },
       {
         field: "violate_at",
@@ -195,6 +213,38 @@ export default function BreachHistories() {
       },
     ];
   }
+
+  var summarize_columns = [];
+  if (loading) {
+    return <Loading />;
+  } else {
+    summarize_columns = [
+      {
+        field: "renter_id",
+        title: "Renter ID",
+      },
+      {
+        field: "renter_name",
+        title: "Renter name",
+      },
+      {
+        field: "total",
+        title: "Total breach made",
+      },
+    ];
+  }
+
+  let renterNames = [];
+  let breachNames = [];
+  let id;
+  rentersList.forEach((renter) => {
+    id = renter["id"];
+    renterNames[id] = renter["name"];
+  });
+  breachesList.forEach((breach) => {
+    id = breach["id"];
+    breachNames[id] = breach["name"];
+  })
 
   return (
     <Fragment>
@@ -232,43 +282,6 @@ export default function BreachHistories() {
 					onMouseEnter={onPieEnter}
 				/>
 			</PieChart>
-
-      <MaterialTable
-        columns={columns}
-        data={breachHistories}
-        title="Breach histories"
-        options={{
-          searchAutoFocus: false,
-          searchFieldVariant: "outlined",
-          filtering: false,
-          pageSizeOptions: [5, 10],
-          paginationType: "stepped",
-          exportButton: true,
-          exportAllData: true,
-          actionsColumnIndex: -1,
-        }}
-        editable={{
-          onRowDelete: (oldBreachHistory) =>
-            new Promise((resolve, reject) => {
-              setTimeout(() => {
-                const selectBreachHistory = [...details];
-                const index = oldBreachHistory.tableData.id;
-                selectBreachHistory.splice(index, 1); //1: only one record
-                axios
-                  .delete(AppUrl.DeleteBreachHistory + oldBreachHistory.id)
-                  .then((response) => {
-                    if (response.data.status === 200) {
-                      swal("Success", response.data.message, "success");
-                      setBreachHistoriesChange(true);
-                    } else if (response.data.status === 404) {
-                      swal("Error", response.data.message, "error");
-                    }
-                  });
-                resolve();
-              }, 1000);
-            }),
-        }}
-      />
 
       <button className="btn btn-primary" onClick={showModal}>
         Add new breach history
@@ -368,7 +381,66 @@ export default function BreachHistories() {
         </div>
       </form>
 
-      <button className="btn btn-info">Summarize histories</button>
+      <MaterialTable
+        columns={columns}
+        data={breachHistories}
+        title="Breach histories"
+        options={{
+          searchAutoFocus: false,
+          searchFieldVariant: "outlined",
+          filtering: false,
+          pageSizeOptions: [5, 10],
+          paginationType: "stepped",
+          exportButton: true,
+          exportAllData: true,
+          actionsColumnIndex: -1,
+        }}
+        editable={{
+          onRowDelete: (oldBreachHistory) =>
+            new Promise((resolve, reject) => {
+              setTimeout(() => {
+                const selectBreachHistory = [...details];
+                const index = oldBreachHistory.tableData.id;
+                selectBreachHistory.splice(index, 1); //1: only one record
+                axios
+                  .delete(AppUrl.DeleteBreachHistory + oldBreachHistory.id)
+                  .then((response) => {
+                    if (response.data.status === 200) {
+                      swal("Success", response.data.message, "success");
+                      setBreachHistoriesChange(true);
+                    } else if (response.data.status === 404) {
+                      swal("Error", response.data.message, "error");
+                    }
+                  });
+                resolve();
+              }, 1000);
+            }),
+        }}
+      />
+
+      <MaterialTable
+        columns={summarize_columns}
+        data={renterBreachMadeTotal}
+        title="Total breach made by renters"
+        options={{
+          searchAutoFocus: false,
+          searchFieldVariant: "outlined",
+          filtering: false,
+          pageSizeOptions: [5, 10],
+          paginationType: "stepped",
+          exportButton: true,
+          exportAllData: true,
+          actionsColumnIndex: -1,
+        }}
+        actions={[
+          {
+            icon: 'visibility',
+            tooltip: 'Details',
+            onClick: (event, renter_total) => 
+            history.push(`/admin/view-renter-breach-details/${renter_total.renter_id}`),
+          },
+        ]}
+      />
     </Fragment>
   );
 }

@@ -2,13 +2,11 @@ import React, { Fragment, useState, useEffect } from "react";
 import MaterialTable from "material-table";
 import swal from "sweetalert";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
 
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
 
 export default function BreachesList() {
-  const history = useHistory();
 
   const [errors, setErrors] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -202,19 +200,6 @@ export default function BreachesList() {
               }, 1000);
             }),
         }}
-        actions={[
-          {
-            icon: 'visibility',
-            tooltip: 'Details',
-            onClick: (event, breach) => 
-            history.push(`/admin/view-breach-details/${breach.id}`),
-          },
-          // {
-          //   icon: () => <button className="btn btn-success">Create</button>,
-          //   onClick: (event, renter) =>
-          //     history.push(`/admin/create-invoice/${renter.id}`),
-          // },
-        ]}
       />
       <button className="btn btn-primary" onClick={showModal}>
         Add new breach
