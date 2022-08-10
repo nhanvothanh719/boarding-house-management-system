@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch, Route, useHistory, Redirect } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 
 import PublicRoute from "./PublicRoute";
 import AdminPrivateRoute from "./AdminPrivateRoute";
@@ -8,23 +8,8 @@ import Error_404 from "../pages/Error/Error_404";
 import LoginPage from "../pages/Auth/LoginPage";
 import ForgetPassword from "../pages/Auth/ForgetPasswordPage";
 import ResetPasswordPage from "../pages/Auth/ResetPasswordPage";
-import axios from "axios";
-import swal from "sweetalert";
 
 function AppRouter() {
-//   const history = useHistory();
-//   axios.interceptors.response.use(
-//     function (response) {
-//       return response;
-//     },
-//     function (error) {
-// if (error.response.status === 404) {
-//         swal("404 Error", "URL/Page does not exist", "warning");
-//         history.push("/error-404");
-//       }
-//       return Promise.reject(error);
-//     });
-
   return (
     <div>
       <Switch>

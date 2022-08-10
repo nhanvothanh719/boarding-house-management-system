@@ -21,13 +21,19 @@ function NavBar() {
         setNavBarColor("navBarScroll");
         setNavBarItem("navItemScroll");
       }});
+      return () => {
+        setNavBarTitle(("brandName"));
+        setNavBarColor("navBar");
+        setNavBarItem("navItem");
+      };
   }, []);
 
   const logout = (e) => {
     e.preventDefault();
     axios.post("/logout").then((response) => {
       //Remove the token
-      localStorage.removeItem('auth_token');
+      // localStorage.removeItem('auth_token');
+      localStorage.clear();
       //Remove all user data
       swal("Success", response.data.message, "success");
       history.push("/");

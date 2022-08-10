@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { Link, Redirect, useHistory } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { Col, Container, Row } from "react-bootstrap";
 
 import axios from "axios";
@@ -12,7 +12,6 @@ import AppUrl from "../../RestAPI/AppUrl";
 import "../../assets/css/Login.css";
 
 function LoginPage() {
-  const history = useHistory();
   const [isLogin, setIsLogin] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [email, setEmail] = useState("");
@@ -61,33 +60,32 @@ function LoginPage() {
           <Col lg={4} md={2} sm={2}></Col>
           <Col lg={4} md={8} sm={8}>
             <div id="logreg-forms">
-              <form class="form-signin" onSubmit={formSubmit}>
+              <form className="form-signin" onSubmit={formSubmit}>
                 <h1
-                  class="mb-3 font-weight-normal"
-                  style={{ "text-align": "center" }}
-                  className="loginText"
+                  className="mb-3 font-weight-normal loginText"
+                  style={{ "textAlign": "center" }}
                 >
                   - Sign in -
                 </h1>
 
                 <Row>
                   <Col>
-                    <button class="btn facebook-btn social-btn" type="button">
-                      <span class="font-weight-bolder">
-                        <i class="fab fa-facebook-f"></i> Login with Facebook
+                    <button className="btn facebook-btn social-btn" type="button">
+                      <span className="font-weight-bolder">
+                        <i className="fab fa-facebook-f"></i> Login with Facebook
                       </span>{" "}
                     </button>
                   </Col>
                   <Col>
-                    <button class="btn google-btn social-btn" type="button">
-                      <span class="font-weight-bolder">
-                        <i class="fab fa-google-plus-g"></i> Login with Google
+                    <button className="btn google-btn social-btn" type="button">
+                      <span className="font-weight-bolder">
+                        <i className="fab fa-google-plus-g"></i> Login with Google
                       </span>{" "}
                     </button>
                   </Col>
                 </Row>
                 <p
-                  style={{ "text-align": "center", margin: "5px" }}
+                  style={{ "textAlign": "center", margin: "5px" }}
                   className="loginText"
                 >
                   {" "}
@@ -96,7 +94,7 @@ function LoginPage() {
                 <input
                   type="email"
                   name="email"
-                  class="form-control"
+                  className="form-control"
                   placeholder="Email address"
                   onChange={(event) => {
                     setEmail(event.target.value);
@@ -106,7 +104,7 @@ function LoginPage() {
                 <input
                   type="password"
                   name="password"
-                  class="form-control"
+                  className="form-control"
                   placeholder="Password"
                   onChange={(event) => {
                     setPassword(event.target.value);
@@ -114,17 +112,17 @@ function LoginPage() {
                   required
                 />
                 <button
-                  class="btn btn-success btn-block loginFormButton"
+                  className="btn btn-success btn-block loginFormButton"
                   type="submit"
                 >
-                  <i class="fas fa-sign-in-alt"></i> Sign in
+                  <i className="fas fa-sign-in-alt"></i> Sign in
                 </button>
                 <Link to="/forget-password" className="customLink">
                   Forgot password?
                 </Link>
                 <hr />
                 <button
-                  class="btn btn-primary btn-block loginFormButton"
+                  className="btn btn-primary btn-block loginFormButton"
                   type="button"
                   id="btn-signup"
                 >
@@ -132,7 +130,7 @@ function LoginPage() {
                     to="/register"
                     style={{ textDecoration: "none", color: "white" }}
                   >
-                    <i class="fas fa-user-plus"></i> Sign up
+                    <i className="fas fa-user-plus"></i> Sign up
                   </Link>
                 </button>
               </form>

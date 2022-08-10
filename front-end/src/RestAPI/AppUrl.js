@@ -77,7 +77,21 @@ class AppUrl {
   static GetPieChartData = this.BaseURL + "/get-pie-chart-data";
   static UpdateBalanceChange = this.BaseURL + "/update-balance-change/";
   static DeleteBalanceChange = this.BaseURL + "/delete-balance-change/";
-  
+
+  static ShowBreaches = this.BaseURL + "/all-breaches";
+  static StoreBreach = this.BaseURL + "/store-breach";
+  static UpdateBreach = this.BaseURL + "/update-breach/";
+  static DeleteBreach = this.BaseURL + "/delete-breach/";
+
+  static ShowBreachHistories = this.BaseURL + "/all-breach-histories";
+  static StoreBreachHistory = this.BaseURL + "/store-breach-history";
+  static DeleteBreachHistory = this.BaseURL + "/delete-breach-history/";
+
+  static GetTotalNumberBreachMade = this.BaseURL + "/get-total-number-breach-made";
+  static GetRenterTotalNumberBreachMade = this.BaseURL + "/get-renter-total-number-breach-made";
+  static GetRenterBreaches = this.BaseURL + "/get-all-renter-breaches/";
+  static CountRenterBreaches = this.BaseURL + "/count-renter-breaches/";
+
 }
 
 export default AppUrl;

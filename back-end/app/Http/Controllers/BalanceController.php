@@ -31,7 +31,7 @@ class BalanceController extends Controller
         {
             return response([
                 'errors' => $validator->messages(),
-                'status' => 404,
+                'status' => 422,
             ]);
         }
         $balance = Balance::create([
@@ -40,15 +40,10 @@ class BalanceController extends Controller
             'amount' => $request->amount,
             'occurred_on' => $request->occurred_on,
         ]);
-        BalanceController::updateBalanceAmount();
         return response([
             'status' => 200,
             'message' => 'Successfully add change',
         ]);
-    }
-
-    public function updateBalanceAmount() {
-
     }
 
     public function calculateBalance() {

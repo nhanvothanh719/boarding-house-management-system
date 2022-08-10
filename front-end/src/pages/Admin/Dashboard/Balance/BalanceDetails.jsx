@@ -33,7 +33,7 @@ export default function BalanceDetails() {
     occurred_on: "",
   });
   const [balanceAmountChange, setBalanceAmountChange] = useState(false);
-  const [currentBalance, setCurrentBalance] = useState('');
+  const [currentBalance, setCurrentBalance] = useState("");
 
   const handleInput = (e) => {
     e.persist();
@@ -84,6 +84,12 @@ export default function BalanceDetails() {
       .post(AppUrl.UpdateBalance, data)
       .then((response) => {
         if (response.data.status === 200) {
+          setInput({
+            description: "",
+            is_income: "",
+            amount: "",
+            occurred_on: "",
+          });
           swal("Success", response.data.message, "success");
           setBalanceAmountChange(true);
         } else if (response.data.status === 404) {
@@ -150,7 +156,9 @@ export default function BalanceDetails() {
             border: "1px solid #cccc",
           }}
         >
-          <label>{`${payload[0].name} - Total: ${payload[0].value.toFixed(2)}`}</label>
+          <label>{`${payload[0].name} - Total: ${payload[0].value.toFixed(
+            2
+          )}`}</label>
         </div>
       );
     }

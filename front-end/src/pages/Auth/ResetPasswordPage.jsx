@@ -49,7 +49,7 @@ function ResetPasswordPage(props) {
   if (message) {
     error = (
       <div>
-        <div class="alert alert-danger" role="alert">
+        <div className="alert alert-danger" role="alert">
           {message}
         </div>
       </div>
@@ -66,19 +66,18 @@ function ResetPasswordPage(props) {
               <form id="resetPasswordForm" onSubmit={formSubmit}>
                 {error}
                 <h1
-                  class="mb-3 font-weight-normal"
-                  style={{ "text-align": "center" }}
-                  className="loginText"
+                  className="mb-3 font-weight-normal loginText"
+                  style={{ "textAlign": "center" }}
                 >
                   Reset Password
                 </h1>
-                <div class="form-group">
+                <div className="form-group">
                   <label for="inputToken" className="formLabel">
                     Pin code:
                   </label>
                   <input
                     type="text"
-                    class="form-control"
+                    className="form-control"
                     name="token"
                     id="inputToken"
                     onChange={handleInput}
@@ -86,13 +85,13 @@ function ResetPasswordPage(props) {
                     required
                   />
                 </div>
-                <div class="form-group">
+                <div className="form-group">
                   <label for="inputEmail" className="formLabel">
                     Email address:
                   </label>
                   <input
                     type="email"
-                    class="form-control"
+                    className="form-control"
                     name="email"
                     id="inputEmail"
                     aria-describedby="emailHelp"
@@ -101,13 +100,13 @@ function ResetPasswordPage(props) {
                     required
                   />
                 </div>
-                <div class="form-group">
+                <div className="form-group">
                   <label for="inputPassword" className="formLabel">
                     New password:
                   </label>
                   <input
                     type="password"
-                    class="form-control"
+                    className="form-control"
                     name="password"
                     id="inputPassword"
                     onChange={handleInput}
@@ -115,14 +114,14 @@ function ResetPasswordPage(props) {
                     required
                   />
                 </div>
-                <div class="form-group">
+                <div className="form-group">
                   <label for="confirmedPassword" className="formLabel">
                     Confirmed password:
                   </label>
                   <input
                     type="password"
                     name="password_confirmation"
-                    class="form-control"
+                    className="form-control"
                     id="confirmedPassword"
                     onChange={handleInput}
                     value={input.password_confirmation}
@@ -131,7 +130,7 @@ function ResetPasswordPage(props) {
                 </div>
                 <button
                   type="submit"
-                  class="btn btn-primary btn-block loginFormButton"
+                  className="btn btn-primary btn-block loginFormButton"
                 >
                   Submit
                 </button>
