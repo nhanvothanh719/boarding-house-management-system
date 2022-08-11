@@ -92,6 +92,11 @@ class AppUrl {
   static GetRenterBreaches = this.BaseURL + "/get-all-renter-breaches/";
   static CountRenterBreaches = this.BaseURL + "/count-renter-breaches/";
 
+  static ShowRoomContracts = this.BaseURL + "/all-room-contracts";
+  static StoreRoomContract = this.BaseURL + "/store-room-contract";
+  static UpdateRoomContract = this.BaseURL + "/update-room-contract/";
+  static DeleteRoomContract = this.BaseURL + "/delete-room-contract/";
+  static GetRoomContractDetails = this.BaseURL + "/get-room-contract-details/";
 }
 
 export default AppUrl;

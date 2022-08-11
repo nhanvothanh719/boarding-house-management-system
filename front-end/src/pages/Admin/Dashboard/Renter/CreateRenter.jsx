@@ -21,7 +21,6 @@ export default function CreateRenter() {
     occupation: "",
     permanent_address: "",
     role_id: "",
-    // license_plate: "",
   });
   
   useEffect(() => {
