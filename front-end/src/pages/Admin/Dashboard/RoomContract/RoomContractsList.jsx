@@ -1,5 +1,4 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
 
 import MaterialTable from "material-table";
 import swal from "sweetalert";
@@ -12,9 +11,9 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
+import SearchRenter from "../../../../components/Search/SearchRenter";
 
 export default function RoomContractsList() {
-  const history = useHistory();
   const [details] = useState([]);
   const [errors, setErrors] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -22,7 +21,6 @@ export default function RoomContractsList() {
   const [roomContractsList, setRoomContractsList] = useState([]);
   const [contractRoomChange, setContractRoomChange] = useState(false);
   const [input, setInput] = useState({
-    renter_id: "",
     deposit_amount: "",
   });
   const [images, setImages] = useState({
@@ -31,6 +29,8 @@ export default function RoomContractsList() {
   });
   const [effectiveFromDate, setEffectiveFromDate] = useState(moment());
   const [effectiveUntilDate, setEffectiveUntilDate] = useState(moment());
+  const [selectedRenterId, setSelectedRenterId] = useState(null);
+
 
   useEffect(() => {
     axios.get(AppUrl.ShowRenters).then((response) => {
@@ -66,10 +66,14 @@ export default function RoomContractsList() {
     setImages({ ...images, [e.target.name]: e.target.files[0] });
   };
 
+  const getSelectedRenter = (renter) => {
+    setSelectedRenterId(renter.id);
+  }
+
   const addRoomContract = (e) => {
     e.preventDefault();
     const roomContract = new FormData();
-    roomContract.append("renter_id", input.renter_id);
+    roomContract.append("renter_id", selectedRenterId);
     roomContract.append("deposit_amount", input.deposit_amount);
     roomContract.append("owner_signature", images.owner_signature);
     roomContract.append("renter_signature", images.renter_signature);
@@ -89,9 +93,9 @@ export default function RoomContractsList() {
           setErrors([]);
           // Delete input after submit the form
           setInput({
-            renter_id: "",
             deposit_amount: "",
           });
+          document.getElementById("inputRenterId").value = '';
           document.getElementById("inputRenterSignature").value = '';
           document.getElementById("inputOwnerSignature").value = '';
           setEffectiveFromDate(moment());
@@ -233,16 +237,7 @@ export default function RoomContractsList() {
             <div class="modal-body">
               <hr />
               <form className="flexForm" enctype="multipart/form-data">
-                <div className="formInput">
-                  <label className="inputItemLabel">Renter ID:</label>
-                  <input
-                    type="text"
-                    className="inputItem"
-                    name="renter_id"
-                    onChange={handleInput}
-                    value={input.renter_id}
-                  />
-                </div>
+                <SearchRenter getSelectedRenter = {getSelectedRenter}/>
                 <small className="text-danger">{errors.renter_id}</small>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                   <DatePicker
