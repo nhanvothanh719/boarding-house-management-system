@@ -97,6 +97,7 @@ class AppUrl {
   static UpdateRoomContract = this.BaseURL + "/update-room-contract/";
   static DeleteRoomContract = this.BaseURL + "/delete-room-contract/";
   static GetRoomContractDetails = this.BaseURL + "/get-room-contract-details/";
+  static UpdateSignatures = this.BaseURL + "/update-signatures/";
 }
 
 export default AppUrl;

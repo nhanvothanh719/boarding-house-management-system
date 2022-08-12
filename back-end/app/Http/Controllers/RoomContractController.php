@@ -30,7 +30,7 @@ class RoomContractController extends Controller
         $max_effective_until = date('Y-m-d', strtotime(' +3 year'));
         $validator = Validator::make($request->all(), [
             'renter_id' => 'required|unique:room_contracts',
-            'deposit_amount' => 'required|numeric',
+            'deposit_amount' => 'required|numeric|min:50|max:200',
             'effective_from' => ['required','date', 'before_or_equal:'.$max_effective_from, 'after_or_equal:'.$min_effective_from],
             'effective_until' => ['required','date', 'before_or_equal:'.$max_effective_until, 'after_or_equal:'.$min_effective_until],
             'owner_signature' => 'required|image',
@@ -72,18 +72,87 @@ class RoomContractController extends Controller
         return response([
             'message' => 'Create new room contract successfully',
             'status' => 200,
-        ], 200);
+        ]);
     }
 
-    public function updateRoomContract($id) {
-
-    }
-
-    public function deleteRoomContract($id) {
-
+    public function updateRoomContract(Request $request, $id) {
+        $room_contract = RoomContract::find($id);
+        if(!$room_contract) {
+            return response([
+                'message' => 'No room contract found',
+                'status' => 404,
+            ]);
+        }
+        $room_contract->effective_until = $request->effective_until;
+        $room_contract->deposit_amount = $request->deposit_amount;
+        $room_contract->save();
+        return response([
+            'message' => 'Update room contract successfully',
+            'status' => 200,
+        ]);
     }
 
     public function getRoomContractDetails($id) {
+        $room_contract = RoomContract::find($id);
+        if(!$room_contract) {
+            return response([
+                'message' => 'No room contract found',
+                'status' => 404,
+            ]);
+        }
+        return response([
+            'status' => 200,
+            'roomContractDetails' => $room_contract,
+        ]);
+    }
 
+    public function updateSignatures(Request $request, $id) {
+        $validator = Validator::make($request->all(), [
+            'owner_signature' => 'image',
+            'renter_signature' => 'image',
+        ]);
+        if($validator->fails()) 
+        {
+            return response([
+                'errors' => $validator->messages(),
+                'status' => 422,
+            ]);
+        }
+        $room_contract = RoomContract::find($id);
+        if(!$room_contract) {
+            return response([
+                'message' => 'No room contract found',
+                'status' => 404,
+            ]);
+        }
+        $old_owner_signature = $room_contract->owner_signature;
+        $old_renter_signature = $room_contract->renter_signature;
+        $upload_folder = RoomContractController::room_contract_public_folder.'/'.$room_contract->renter_id.'/';
+        $room_contract->owner_signature = CustomHelper::updateImage($old_owner_signature, $request->file('owner_signature'), $upload_folder);
+        $room_contract->renter_signature = CustomHelper::updateImage($old_renter_signature, $request->file('renter_signature'), $upload_folder);
+        $room_contract->save();
+        return response([
+            'message' => 'Update signatures in room contract successfully',
+            'status' => 200,
+        ]);
+    }
+
+    public function deleteRoomContract($id) {
+        $room_contract = RoomContract::find($id);
+        if(!$room_contract) {
+            return response([
+                'message' => 'No renter found',
+                'status' => 404,
+            ]);
+        }
+        //Delete existed images:
+        $upload_folder = RoomContractController::room_contract_public_folder.'/'.$room_contract->renter_id.'/';
+        //In folder
+        File::deleteDirectory(public_path($upload_folder));
+        $room_contract->delete();
+        return response([
+            'message' => 'Successfully delete room contract',
+            'status' => 200,
+        ]);
     }
 }

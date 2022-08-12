@@ -135,6 +135,7 @@ Route::middleware('auth:api')->group(function(){
         Route::put('/update-room-contract/{id}', [RoomContractController::class, 'updateRoomContract']);
         Route::delete('/delete-room-contract/{id}', [RoomContractController::class, 'deleteRoomContract']);
         Route::get('/get-room-contract-details/{id}', [RoomContractController::class, 'getRoomContractDetails']);
+        Route::post('/update-signatures/{id}', [RoomContractController::class, 'updateSignatures']);
     });
 });
 

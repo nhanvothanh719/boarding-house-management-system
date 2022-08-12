@@ -12,8 +12,12 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
 import SearchRenter from "../../../../components/Search/SearchRenter";
+import { useHistory } from "react-router-dom";
+import EditSignatures from "./EditSignatures";
 
 export default function RoomContractsList() {
+  const history = useHistory();
+
   const [details] = useState([]);
   const [errors, setErrors] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -30,6 +34,8 @@ export default function RoomContractsList() {
   const [effectiveFromDate, setEffectiveFromDate] = useState(moment());
   const [effectiveUntilDate, setEffectiveUntilDate] = useState(moment());
   const [selectedRenterId, setSelectedRenterId] = useState(null);
+  const [showEditSignaturesModel, setShowEditSignaturesModel] = useState(false);
+  const [selectedRoomContractId, setSelectedRoomContractId] = useState(null);
 
 
   useEffect(() => {
@@ -49,7 +55,7 @@ export default function RoomContractsList() {
     }
   }, [contractRoomChange]);
 
-  const showModal = () => {
+  const showAddContractModal = () => {
     var model = new window.bootstrap.Modal(
       document.getElementById("addRoomContractModal")
     );
@@ -70,6 +76,10 @@ export default function RoomContractsList() {
     setSelectedRenterId(renter.id);
   }
 
+  const setModalStatus = (status) => {
+    setShowEditSignaturesModel(status);
+  }
+
   const addRoomContract = (e) => {
     e.preventDefault();
     const roomContract = new FormData();
@@ -85,7 +95,6 @@ export default function RoomContractsList() {
       "effective_until",
       moment(effectiveUntilDate).utc().format("YYYY-MM-DD")
     );
-    console.log(roomContract);
     axios
       .post(AppUrl.StoreRoomContract, roomContract)
       .then((response) => {
@@ -105,7 +114,7 @@ export default function RoomContractsList() {
         } else if (response.data.status === 422) {
           setErrors(response.data.errors);
           setTimeout(() => {
-            showModal();
+            showAddContractModal();
           }, 1000);
         }
       })
@@ -123,17 +132,21 @@ export default function RoomContractsList() {
       {
         field: "renter_id",
         title: "Renter name",
+        editable: "never",
         render: (rowData) => <p>{renterNames[rowData.renter_id]}</p>,
       },
       {
         field: "effective_from",
         title: "Effective from",
+        editable: "never",
+        type: "date",
         render: (rowData) =>
           moment(rowData.effective_from).format("DD/MM/YYYY"),
       },
       {
         field: "effective_until",
         title: "Effective until",
+        type: "date",
         render: (rowData) =>
           moment(rowData.effective_until).format("DD/MM/YYYY"),
       },
@@ -172,7 +185,7 @@ export default function RoomContractsList() {
             new Promise((resolve, reject) => {
               setTimeout(() => {
                 const data = {
-                  effective_until: newRoomContract.effective_until,
+                  effective_until: moment(newRoomContract.effective_until).utc().format("YYYY-MM-DD"),
                   deposit_amount: newRoomContract.deposit_amount,
                 };
                 axios
@@ -208,10 +221,27 @@ export default function RoomContractsList() {
               }, 1000);
             }),
         }}
+        actions={[
+          {
+            icon: 'visibility',
+            tooltip: 'Details',
+            onClick: (event, room_contract) => 
+            history.push(`/`),
+          },
+          {
+            icon: 'image',
+            tooltip: 'Edit signatures',
+            onClick: (event, room_contract) => {
+              setShowEditSignaturesModel(true);
+              setSelectedRoomContractId(room_contract.id);
+            }
+          },
+        ]}
       />
-      <button className="btn btn-primary" onClick={showModal}>
+      <button className="btn btn-primary" onClick={showAddContractModal}>
         Add new breach
       </button>
+
       <form
         class="modal fade"
         id="addRoomContractModal"
@@ -222,7 +252,7 @@ export default function RoomContractsList() {
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">
+              <h5 class="modal-title">
                 Add new room contract
               </h5>
               <button
@@ -319,6 +349,8 @@ export default function RoomContractsList() {
           </div>
         </div>
       </form>
+      {/* <EditSignatures isShown = {showEditSignaturesModel}/> */}
+      <EditSignatures isShown = {showEditSignaturesModel} setModalStatus = {setModalStatus} roomContractId = {selectedRoomContractId}/>
     </Fragment>
   );
 }

@@ -23,7 +23,7 @@ class ServiceController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:services|max:100|string',
             'unit' => 'required|max:50',
-            'unit_price' => 'required|numeric',
+            'unit_price' => 'required|numeric|min:0.1',
         ]);
         if($validator->fails())
         {
@@ -123,31 +123,30 @@ class ServiceController extends Controller
 
     public function deleteService($id) {
         $service = Service::find($id);
-        if($service) {
-            if($service->is_compulsory == 1) {
-                return response([
-                    'message' => 'Cannot delete compulsory service, change to optional service first',
-                    'status' => 404,
-                ]);
-            }
-            $check_use_service = ServiceRegistration::where('service_id', $id)->count();
-            if($check_use_service > 0) {
-                return response([
-                    'message' => 'Cannot delete this service since it is used',
-                    'status' => 404,
-                ]);
-            }
-            else {
-                $service->delete();
-                return response([
-                    'status' => 200,
-                    'message' => 'Successfully delete service',
-                ]);
-            }
-        } else {
+        if(!$service) {
             return response([
-                'message' => 'No category ID found',
+                'message' => 'No service found',
                 'status' => 404,
+            ]);
+        }
+        if($service->is_compulsory == 1) {
+            return response([
+                'message' => 'Cannot delete compulsory service, change to optional service first',
+                'status' => 404,
+            ]);
+        }
+        $check_use_service = ServiceRegistration::where('service_id', $id)->count();
+        if($check_use_service > 0) {
+            return response([
+                'message' => 'Cannot delete this service since it is used',
+                'status' => 404,
+            ]);
+        }
+        else {
+            $service->delete();
+            return response([
+                'status' => 200,
+                'message' => 'Successfully delete service',
             ]);
         }
     }
