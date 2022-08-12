@@ -90,7 +90,7 @@ function SideBar() {
                 <span className="itemName"> Services </span>
               </li>
             </NavLink>
-            <NavLink exact to="/" style={{ textDecoration: "none" }}>
+            <NavLink exact to="/admin/view-all-room-contracts" style={{ textDecoration: "none" }}>
               <li className="customLi">
                 <HandshakeIcon className="sideBarIcon" />
                 <span className="itemName"> Contracts </span>

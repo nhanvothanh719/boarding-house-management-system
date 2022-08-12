@@ -18,6 +18,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\BalanceController;
 use App\Http\Controllers\BreachController;
+use App\Http\Controllers\RoomContractController;
 
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/register', [AuthController::class, 'register']);
@@ -127,6 +128,14 @@ Route::middleware('auth:api')->group(function(){
         Route::get('/get-renter-total-number-breach-made', [BreachController::class, 'getRenterTotalNumberBreachMade']);
         Route::get('/get-all-renter-breaches/{id}', [BreachController::class, 'getRenterBreaches']);
         Route::get('/count-renter-breaches/{id}', [BreachController::class, 'countRenterBreaches']);
+
+        //Room contract
+        Route::get('/all-room-contracts', [RoomContractController::class, 'index']);
+        Route::post('/store-room-contract', [RoomContractController::class, 'storeRoomContract']);
+        Route::put('/update-room-contract/{id}', [RoomContractController::class, 'updateRoomContract']);
+        Route::delete('/delete-room-contract/{id}', [RoomContractController::class, 'deleteRoomContract']);
+        Route::get('/get-room-contract-details/{id}', [RoomContractController::class, 'getRoomContractDetails']);
+        Route::post('/update-signatures/{id}', [RoomContractController::class, 'updateSignatures']);
     });
 });
 
