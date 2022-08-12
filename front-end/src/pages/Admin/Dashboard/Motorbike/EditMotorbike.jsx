@@ -23,7 +23,6 @@ export default function EditMotorbike({ match }) {
     axios.get(AppUrl.EditMotorbike + motorbikeId).then((response) => {
       if (response.data.status === 200) {
         setInput(response.data.motorbike);
-        console.log(response.data.motorbike);
       } else if (response.data.status === 404) {
         swal("Error", response.data.message, "error");
         history.push("/admin/view-all-motorbikes");

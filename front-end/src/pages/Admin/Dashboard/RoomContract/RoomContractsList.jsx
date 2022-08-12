@@ -226,7 +226,7 @@ export default function RoomContractsList() {
             icon: 'visibility',
             tooltip: 'Details',
             onClick: (event, room_contract) => 
-            history.push(`/`),
+            history.push(`/admin/view-room-contract-details/${room_contract.id}`),
           },
           {
             icon: 'image',
