@@ -92,7 +92,6 @@ export default function EditMotorbike({ match }) {
   if(loading) {
     return <Loading />;
   }
-
   return (
     <Fragment>
       <div className="topContainer">

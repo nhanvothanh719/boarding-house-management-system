@@ -150,9 +150,10 @@ Route::middleware('auth:api')->group(function(){
 
         //Problem
         Route::get('/all-problems', [ProblemController::class, 'index']);
-        Route::put('/update-problem/{id}', [ProblemController::class, 'updateProblem']);
+        Route::put('/reply-problem/{id}', [ProblemController::class, 'replyProblem']);
         Route::delete('/delete-problem/{id}', [ProblemController::class, 'deleteProblem']);
         Route::get('/get-problem-details/{id}', [ProblemController::class, 'getProblemDetails']);
+        Route::put('/update-problem-status/{id}', [ProblemController::class, 'updateProblemStatus']);
     });
 });
 

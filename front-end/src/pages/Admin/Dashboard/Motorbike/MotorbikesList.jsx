@@ -18,8 +18,8 @@ export default function MotorbikesList() {
       if (response.status === 200) {
         setMotorbikesList(response.data.allMotorbikes);
       }
-      setLoading(false);
     });
+    setLoading(false);
   }, []);
 
   var columns = [];

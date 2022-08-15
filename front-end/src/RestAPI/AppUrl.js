@@ -107,9 +107,11 @@ class AppUrl {
   static ReportBreaches = this.BaseURL + "/report-breaches";
 
   static ShowProblems = this.BaseURL + "/all-problems";
-  static UpdateProblem = this.BaseURL + "/update-problem/";
+  
+  static ReplyProblem = this.BaseURL + "/reply-problem/";
   static DeleteProblem = this.BaseURL + "/delete-problem/";
   static GetProblemDetails = this.BaseURL + "/get-problem-details/";
+  static UpdateProblemStatus = this.BaseURL + "/update-problem-status/";
 }
 
 export default AppUrl;

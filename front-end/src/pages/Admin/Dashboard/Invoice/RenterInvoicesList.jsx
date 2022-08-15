@@ -12,7 +12,6 @@ import {
   Tooltip,
   LabelList,
   BarChart,
-  Label,
   Bar,
 } from "recharts";
 

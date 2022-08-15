@@ -70,16 +70,6 @@ export default function ProblemsList() {
         title: "Status",
         lookup: { 1: "Pending", 2: "On-going", 3: "Solved" }
       },
-      {
-        field: "replied_by",
-        title: "Replied by",
-        editable: "never",
-        render: (rowData) => <p>{rowData.admin.name}</p>,
-      },
-      {
-        field: "reply_content",
-        title: "Reply content",
-      },
     ];
   }
 
@@ -99,6 +89,64 @@ export default function ProblemsList() {
           exportAllData: true,
           actionsColumnIndex: -1,
         }}
+        editable={{
+          onRowUpdate: (newProblem, oldProblem) =>
+            new Promise((resolve, reject) => {
+              setTimeout(() => {
+                const data = {
+                  status: newProblem.status,
+                };
+                axios
+                  .put(AppUrl.UpdateProblemStatus + oldProblem.id, data)
+                  .then((response) => {
+                    if (response.data.status === 200) {
+                      swal("Success", response.data.message, "success");
+                      setProblemsListChange(true);
+                    } else if (response.data.status === 404) {
+                      swal("Error", response.data.message, "error");
+                    }
+                  });
+                resolve();
+              }, 1000);
+            }),
+          onRowDelete: (oldProblem) =>
+            new Promise((resolve, reject) => {
+              setTimeout(() => {
+                const selectedProblem = [...details];
+                const index = oldProblem.tableData.id;
+                selectedProblem.splice(index, 1); //1: only one record
+                axios
+                  .delete(AppUrl.DeleteProblem + oldProblem.id)
+                  .then((response) => {
+                    if (response.data.status === 200) {
+                      swal("Success", response.data.message, "success");
+                      setProblemsListChange(true);
+                    } else if (response.data.status === 404) {
+                      swal("Error", response.data.message, "error");
+                    }
+                  });
+                resolve();
+              }, 1000);
+            }),
+        }}
+        actions={[
+          {
+            icon: 'visibility',
+            tooltip: 'Details',
+            onClick: (event, room_contract) => 
+            history.push(`/admin/view-room-contract-details/${room_contract.id}`),
+          },
+          rowData => ({
+            icon: 'reply',
+            tooltip: 'Reply problem',
+            onClick: (event, room_contract) => {
+              // setShowEditSignaturesModel(true);
+              // setSelectedRoomContractId(room_contract.id);
+              alert("Hello");
+            },
+            disabled: rowData.replied_by !== null
+          }),
+        ]}
       />
     </Fragment>
   );

@@ -27,10 +27,10 @@ export default function BreachesList() {
         console.log(response.data.allBreaches);
       }
     });
-    setLoading(false);
     if (breachChange) {
       setBreachChange(false);
     }
+    setLoading(false);
   }, [breachChange]);
 
   const showModal = () => {
