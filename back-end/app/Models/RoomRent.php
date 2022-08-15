@@ -9,4 +9,13 @@ class RoomRent extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
+    protected $with = ['renter', 'room'];
+
+    public function renter() {
+        return $this->belongsTo(User::class,'renter_id','id');
+    }
+
+    public function room() {
+        return $this->belongsTo(Room::class,'room_id','id');
+    }
 }

@@ -21,7 +21,6 @@ export default function RoomContractsList() {
   const [details] = useState([]);
   const [errors, setErrors] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [rentersList, setRentersList] = useState([]);
   const [roomContractsList, setRoomContractsList] = useState([]);
   const [contractRoomChange, setContractRoomChange] = useState(false);
   const [input, setInput] = useState({
@@ -39,11 +38,6 @@ export default function RoomContractsList() {
 
 
   useEffect(() => {
-    axios.get(AppUrl.ShowRenters).then((response) => {
-      if (response.data.status === 200) {
-        setRentersList(response.data.allRenters);
-      }
-    });
     axios.get(AppUrl.ShowRoomContracts).then((response) => {
       if (response.status === 200) {
         setRoomContractsList(response.data.allRoomContracts);
@@ -133,7 +127,7 @@ export default function RoomContractsList() {
         field: "renter_id",
         title: "Renter name",
         editable: "never",
-        render: (rowData) => <p>{renterNames[rowData.renter_id]}</p>,
+        render: (rowData) => <p>{rowData.renter.name}</p>,
       },
       {
         field: "effective_from",
@@ -156,13 +150,6 @@ export default function RoomContractsList() {
       },
     ];
   }
-
-  let renterNames = [];
-  let id;
-  rentersList.forEach((renter) => {
-    id = renter["id"];
-    renterNames[id] = renter["name"];
-  });
 
   return (
     <Fragment>

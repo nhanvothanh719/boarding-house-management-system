@@ -30,7 +30,7 @@ class MotorbikeController extends Controller
     }
 
     public function getMotorbikeOwners() {
-        $all_owners_id = DB::table('motorbikes')->pluck('user_id');
+        $all_owners_id = DB::table('motorbikes')->pluck('renter_id');
         $motorbike_owners = array();
         foreach ($all_owners_id as $owner_id) {
             $owner = User::find($owner_id);
@@ -61,7 +61,7 @@ class MotorbikeController extends Controller
 
     public function storeMotorbike(Request $request) {
         $validator = Validator::make($request->all(), [
-            'user_id' => 'required|unique:motorbikes',
+            'renter_id' => 'required|unique:motorbikes',
             'license_plate' => 'required|min:6|max:10|unique:motorbikes',
             'motorbike_image' => 'image',
         ]);
@@ -74,7 +74,7 @@ class MotorbikeController extends Controller
         }
         try {
             $motorbike = new Motorbike;
-            $motorbike->user_id = $request->input('user_id');
+            $motorbike->renter_id = $request->input('renter_id');
             $motorbike->license_plate = $request->input('license_plate');
             if($request->hasFile('motorbike_image')) {
                 $image = $request->file('motorbike_image');
@@ -113,7 +113,7 @@ class MotorbikeController extends Controller
     }
 
     public function updateMotorbike(Request $request, $id) {
-        $user = User::find($request->input('user_id'));
+        $user = User::find($request->input('renter_id'));
         if(!$user) {
             return response([
                 'message' => 'No person with provided ID found',
@@ -121,7 +121,7 @@ class MotorbikeController extends Controller
             ]);
         }
         $validator = Validator::make($request->all(), [
-            'user_id' => 'required|unique:motorbikes,user_id,'.$id,
+            'renter_id' => 'required|unique:motorbikes,renter_id,'.$id,
             'license_plate' => 'required|min:6|max:10|unique:motorbikes,license_plate,'.$id,
             'motorbike_image' => 'image',
         ]);
@@ -134,7 +134,7 @@ class MotorbikeController extends Controller
         }
         $motorbike = Motorbike::find($id);
         if($motorbike) {
-            $motorbike->user_id = $request->input('user_id');
+            $motorbike->renter_id = $request->input('renter_id');
             $motorbike->license_plate = $request->input('license_plate');
             if($request->hasFile('motorbike_image')) {
                 $new_image = $request->file('motorbike_image');

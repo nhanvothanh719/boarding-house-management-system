@@ -42,15 +42,8 @@ export default function BreachHistories() {
   const [chartData, setChartData] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [renterBreachMadeTotal, setRenterBreachMadeTotal] = useState([]);
-  const [rentersList, setRentersList] = useState([]);
 
   useEffect(() => {
-    axios.get(AppUrl.ShowRenters).then((response) => {
-      if (response.data.status === 200) {
-        setRentersList(response.data.allRenters);
-      }
-      setLoading(false);
-    });
     axios.get(AppUrl.ShowBreaches).then((response) => {
       if (response.data.status === 200) {
         setBreachesList(response.data.allBreaches);
@@ -71,11 +64,11 @@ export default function BreachHistories() {
       if (response.data.status === 200) {
         setBreachHistories(response.data.allBreachHistories);
       }
-      setLoading(false);
     });
     if (breachHistoriesChange) {
       setBreachHistoriesChange(false);
     }
+    setLoading(false);
   }, [breachHistoriesChange]);
 
   const showModal = () => {
@@ -200,12 +193,12 @@ export default function BreachHistories() {
       {
         field: "breach_id",
         title: "Breach name",
-        render: (rowData) => <p>{breachNames[rowData.breach_id]}</p>,
+        render: (rowData) => <p>{rowData.breach.name}</p>,
       },
       {
         field: "renter_id",
         title: "Renter",
-        render: (rowData) => <p>{renterNames[rowData.renter_id]}</p>,
+        render: (rowData) => <p>{rowData.renter.name}</p>,
       },
       {
         field: "violate_at",
@@ -234,18 +227,6 @@ export default function BreachHistories() {
       },
     ];
   }
-
-  let renterNames = [];
-  let breachNames = [];
-  let id;
-  rentersList.forEach((renter) => {
-    id = renter["id"];
-    renterNames[id] = renter["name"];
-  });
-  breachesList.forEach((breach) => {
-    id = breach["id"];
-    breachNames[id] = breach["name"];
-  })
 
   return (
     <Fragment>
