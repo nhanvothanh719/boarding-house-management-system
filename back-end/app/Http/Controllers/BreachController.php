@@ -221,7 +221,7 @@ class BreachController extends Controller
                 'status' => 404,
             ]);
         }
-        $breaches_id = Breach::pluck('id')->toArray();;
+        $breaches_id = Breach::pluck('id')->toArray();
         $breaches_total = array();
         foreach($breaches_id as $breach_id) {
             $item = new stdClass();

@@ -98,6 +98,12 @@ class AppUrl {
   static DeleteRoomContract = this.BaseURL + "/delete-room-contract/";
   static GetRoomContractDetails = this.BaseURL + "/get-room-contract-details/";
   static UpdateSignatures = this.BaseURL + "/update-signatures/";
+
+  static CountRentersByGender = this.BaseURL + "/count-renters-by-gender";
+  static CountRoomsByStatus = this.BaseURL + "/count-rooms-by-status";
+  static CountUsedServices = this.BaseURL + "/count-used-services";
+  static GetPaidInvoicesRate = this.BaseURL + "/get-paid-invoices-rate";
+  static ReportBreaches = this.BaseURL + "/report-breaches";
 }
 
 export default AppUrl;

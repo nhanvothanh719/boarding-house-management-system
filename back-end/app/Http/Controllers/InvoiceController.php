@@ -17,6 +17,7 @@ use App\Models\Service;
 use App\Models\Invoice;
 use App\Models\RoomRent;
 use App\Models\ExtraFee;
+use App\Models\PaymentHistory;
 use App\Models\InvoiceDetail;
 use App\Models\TemporaryInvoice;
 use App\Models\ServiceRegistration;
@@ -256,8 +257,15 @@ class InvoiceController extends Controller
                 'status' => 404,
             ]);
         }
+        if($invoice->is_paid == STATUS_PAID) {
+            return response([
+                'message' => 'Cannot delete since this invoice is paid',
+                'status' => 404,
+            ]);
+        }
         InvoiceDetail::where('invoice_id', $id)->delete();
         ExtraFee::where('invoice_id', $id)->delete();
+        PaymentHistory::where('invoice_id', $id)->delete();
         $invoice->delete();
         return response([
             'message' => 'Successfully delete invoice',
