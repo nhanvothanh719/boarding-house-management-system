@@ -62,10 +62,10 @@ function SideBar() {
                 <span className="itemName"> Rooms </span>
               </li>
             </NavLink>
-            <NavLink exact to="/" style={{ textDecoration: "none" }}>
+            <NavLink exact to="/admin/view-all-problems" style={{ textDecoration: "none" }}>
               <li className="customLi">
                 <CommentIcon className="sideBarIcon" />
-                <span className="itemName"> Suggestions </span>
+                <span className="itemName"> Problems </span>
               </li>
             </NavLink>
             <NavLink

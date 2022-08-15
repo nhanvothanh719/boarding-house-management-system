@@ -11,6 +11,7 @@ class AppUrl {
   static AvailableRoomDetails = this.BaseURL + "/available-room-details/";
 
   static CheckAdminAuthenticated = this.BaseURL + "/check-admin-authenticated";
+  static GetAllUsers = this.BaseURL + "/all-users";
 
   static StoreCategory = this.BaseURL + "/store-category";
   static ShowCategories = this.BaseURL + "/all-categories";
@@ -104,6 +105,11 @@ class AppUrl {
   static CountUsedServices = this.BaseURL + "/count-used-services";
   static GetPaidInvoicesRate = this.BaseURL + "/get-paid-invoices-rate";
   static ReportBreaches = this.BaseURL + "/report-breaches";
+
+  static ShowProblems = this.BaseURL + "/all-problems";
+  static UpdateProblem = this.BaseURL + "/update-problem/";
+  static DeleteProblem = this.BaseURL + "/delete-problem/";
+  static GetProblemDetails = this.BaseURL + "/get-problem-details/";
 }
 
 export default AppUrl;

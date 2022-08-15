@@ -9,6 +9,14 @@ use App\Models\User;
 
 class UserController extends Controller
 {
+    public function index() {
+        $all_users = User::all();
+        return response([
+            'status' => 200,
+            'allUsers' => $all_users,
+        ]);
+    }
+
     public function getUser() {
         return Auth::user();
     }
