@@ -19,6 +19,7 @@ use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\BalanceController;
 use App\Http\Controllers\BreachController;
 use App\Http\Controllers\RoomContractController;
+use App\Http\Controllers\DashboardController;
 
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/register', [AuthController::class, 'register']);
@@ -136,6 +137,13 @@ Route::middleware('auth:api')->group(function(){
         Route::delete('/delete-room-contract/{id}', [RoomContractController::class, 'deleteRoomContract']);
         Route::get('/get-room-contract-details/{id}', [RoomContractController::class, 'getRoomContractDetails']);
         Route::post('/update-signatures/{id}', [RoomContractController::class, 'updateSignatures']);
+
+        //Dashboard
+        Route::get('/count-renters-by-gender', [DashboardController::class, 'countRentersByGender']);
+        Route::get('/count-rooms-by-status', [DashboardController::class, 'countRoomsByStatus']);
+        Route::get('/count-used-services', [DashboardController::class, 'countUsedServices']);
+        Route::get('/get-paid-invoices-rate', [DashboardController::class, 'getPaidInvoicesRate']);
+        Route::get('/report-breaches', [DashboardController::class, 'reportBreaches']);
     });
 });
 

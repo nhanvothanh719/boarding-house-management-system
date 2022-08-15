@@ -1,4 +1,4 @@
-import MainDashboard from "../pages/Admin/Dashboard/MainDashboard";
+import MainDashboard from "../pages/Admin/Dashboard/MainPage/MainDashboard";
 //import RentersList from "../pages/Admin/Dashboard/RentersList";
 import RenterDetails from "../pages/Admin/Dashboard/Form";
 import CreateCategory from "../pages/Admin/Dashboard/Category/CreateCategory";
