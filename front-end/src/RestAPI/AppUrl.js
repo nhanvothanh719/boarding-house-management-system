@@ -35,6 +35,7 @@ class AppUrl {
   static EditRenter = this.BaseURL + "/edit-renter/";
   static UpdateRenter = this.BaseURL + "/update-renter/";
   static DeleteRenter = this.BaseURL + "/delete-renter/";
+  static LockRenterAccount = this.BaseURL + "/lock-renter-account/";
 
   static ShowRoles = this.BaseURL + "/all-roles";
 

@@ -4,6 +4,8 @@ import { Link, useHistory } from "react-router-dom";
 import MaterialTable from "material-table";
 import swal from "sweetalert";
 import axios from "axios";
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import LockOpenIcon from '@mui/icons-material/LockOpen';
 
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
@@ -14,15 +16,19 @@ export default function RentersList() {
 
   const [loading, setLoading] = useState(true);
   const [rentersList, setRentersList] = useState([]);
+  const [rentersListChange, setRentersListChange] = useState(false);
 
   useEffect(() => {
     axios.get(AppUrl.ShowRenters).then((response) => {
       if (response.data.status === 200) {
         setRentersList(response.data.allRenters);
       }
-      setLoading(false);
     });
-  }, []);
+    setLoading(false);
+    if (rentersListChange) {
+      setRentersListChange(false);
+    }
+  }, [rentersListChange]);
 
   const deleteRenter = (e, id) => {
     e.preventDefault();
@@ -40,6 +46,15 @@ export default function RentersList() {
       }
     });
   };
+
+  const lockRenterAccount = (id) => {
+    axios.put(AppUrl.LockRenterAccount + id).then((response) => {
+      if (response.data.status === 200) {
+        swal("Success", response.data.message, "success");
+        setRentersListChange(true);
+      }
+    });
+  }
 
   var main_profile_columns = [];
   var sub_profile_columns = [];
@@ -102,10 +117,10 @@ export default function RentersList() {
                 icon: () => <button className="btn btn-danger">Delete</button>,
                 onClick: (event, renter) => deleteRenter(event, renter.id),
               },
-              {
-                icon: () => <button className="btn btn-primary">Lock</button>,
-                onClick: (event, renter) => console.log(),
-              },
+              renter => ({
+                icon: renter.is_locked ? LockOutlinedIcon : LockOpenIcon,
+                onClick: (event, renter) => lockRenterAccount(renter.id),
+              }),
             ]}
           />
 

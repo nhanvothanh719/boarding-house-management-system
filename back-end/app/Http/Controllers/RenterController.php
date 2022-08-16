@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 use App\Models\User;
+use App\Models\Role;
 use App\Models\Motorbike;
 
 use App\Mail\FirstPasswordChangeMail;
@@ -181,5 +182,29 @@ class RenterController extends Controller
                 'status' => 404,
             ]);
         }
+    }
+
+    public function lockRenterAccount($id) {
+        $user = User::find($id);
+        if($user->role_id == Role::ROLE_ADMIN){
+            return response([
+                'message' => 'Cannot lock account of user with admin role',
+                'status' => 404,
+            ]);
+        }
+        if($user->is_locked == User::LOCKED_ACCOUNT) {
+            $user->is_locked = User::AVAILABLE_ACCOUNT;
+            $user->save();
+            return response([
+                'message' => 'Unlock account successfully',
+                'status' => 200,
+            ]);
+        }
+        $user->is_locked = User::LOCKED_ACCOUNT;
+        $user->save();
+        return response([
+            'message' => 'Lock account successfully',
+            'status' => 200,
+        ]);
     }
 }

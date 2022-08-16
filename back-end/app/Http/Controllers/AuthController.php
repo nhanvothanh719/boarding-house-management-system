@@ -21,6 +21,11 @@ class AuthController extends Controller
             if(Auth::attempt($request->only('email', 'password'))) {
                 $is_admin = false;
                 $user = Auth::user();
+                if($user->is_locked === User::LOCKED_ACCOUNT) {
+                    return response([
+                        'message' => 'This account is temporary locked',
+                    ]);
+                }
                 //Generate access token
                 //If user logins with Admin role
                 if($user->role_id == Role::where('name', Role::ROLE_ADMIN)->value('id')) 
