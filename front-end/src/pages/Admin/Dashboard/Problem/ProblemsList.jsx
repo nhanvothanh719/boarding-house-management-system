@@ -1,5 +1,4 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
 
 import MaterialTable from "material-table";
 import swal from "sweetalert";
@@ -8,18 +7,16 @@ import axios from "axios";
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
 import ReplyProblemModal from "../../../../components/Modals/ReplyProblemModal";
+import ViewReplyProblemModal from "../../../../components/Modals/ViewProblemReplyModal";
 
 export default function ProblemsList() {
-  const history = useHistory();
 
   const [details] = useState([]);
   const [loading, setLoading] = useState(true);
   const [problemsListChange, setProblemsListChange] = useState(false);
   const [problemsList, setProblemsList] = useState([]);
-  const [input, setInput] = useState({
-    status: "",
-  });
   const [showReplyModal, setShowReplyModal] = useState(false);
+  const [showReplyDetailsModal, setShowReplyDetailsModal] = useState(false);
   const [selectedProblemId, setSelectedProblemId] = useState(null);
 
   useEffect(() => {
@@ -34,13 +31,12 @@ export default function ProblemsList() {
     }
   }, [problemsListChange]);
 
-  const handleInput = (e) => {
-    e.persist();
-    setInput({ ...input, [e.target.name]: e.target.value });
-  };
-
-  const setModalStatus = (status) => {
+  const setReplyModalStatus = (status) => {
     setShowReplyModal(status);
+  }
+
+  const setReplyDetailsModalStatus = (status) => {
+    setShowReplyDetailsModal(status);
   }
 
   const updateProblemReplyStatus = (status) => {
@@ -143,8 +139,10 @@ export default function ProblemsList() {
           {
             icon: 'visibility',
             tooltip: 'Details',
-            onClick: (event, room_contract) => 
-            history.push(`/admin/view-room-contract-details/${room_contract.id}`),
+            onClick: (event, problem) => {
+              setShowReplyDetailsModal(true);
+              setSelectedProblemId(problem.id);
+            }
           },
           rowData => ({
             icon: 'reply',
@@ -157,7 +155,8 @@ export default function ProblemsList() {
           }),
         ]}
       />
-      <ReplyProblemModal isShown = {showReplyModal} setModalStatus = {setModalStatus} updateProblemReplyStatus = {updateProblemReplyStatus} problemId = {selectedProblemId}/>
+      <ViewReplyProblemModal isShown = {showReplyDetailsModal} setReplyDetailsModalStatus = {setReplyDetailsModalStatus} problemId = {selectedProblemId} />
+      <ReplyProblemModal isShown = {showReplyModal} setReplyModalStatus = {setReplyModalStatus} updateProblemReplyStatus = {updateProblemReplyStatus} problemId = {selectedProblemId}/>
     </Fragment>
   );
 }

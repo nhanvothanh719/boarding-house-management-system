@@ -26,7 +26,7 @@ export default function ReplyProblemModal(props) {
       };
 
       const closeModal = (e, value) => {
-        props.setModalStatus(false);
+        props.setReplyModalStatus(false);
       };
     
       const submitReply = (e) => {

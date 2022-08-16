@@ -23,7 +23,19 @@ class ProblemController extends Controller
     }
 
     public function getProblemDetails($id) {
-        
+        $problem = RenterProblem::find($id);
+        if($problem) {
+            return response([
+                'status' => 200,
+                'problem' => $problem,
+            ]);
+        }
+        else {
+            return response([
+                'status' => 404,
+                'message' => 'No problem found',
+            ]);
+        }
     }
 
     public function updateProblemStatus(Request $request, $id) {
