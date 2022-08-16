@@ -26,11 +26,11 @@ export default function BreachesList() {
         setBreaches(response.data.allBreaches);
         console.log(response.data.allBreaches);
       }
-      setLoading(false);
     });
     if (breachChange) {
       setBreachChange(false);
     }
+    setLoading(false);
   }, [breachChange]);
 
   const showModal = () => {

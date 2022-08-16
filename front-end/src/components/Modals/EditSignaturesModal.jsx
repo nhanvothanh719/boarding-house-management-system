@@ -3,7 +3,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import swal from "sweetalert";
 import axios from "axios";
 
-import AppUrl from "../../../../RestAPI/AppUrl";
+import AppUrl from "../../RestAPI/AppUrl";
 
 export default function EditSignatures(props) {
   const [errors, setErrors] = useState([]);
@@ -40,10 +40,10 @@ export default function EditSignatures(props) {
             );
           }
         });
-      var model = new window.bootstrap.Modal(
+      var modal = new window.bootstrap.Modal(
         document.getElementById("updateSignaturesModal")
       );
-      model.show();
+      modal.show();
     }
   }, [props.isShown, props.roomContractId]);
 
@@ -51,11 +51,11 @@ export default function EditSignatures(props) {
     props.setModalStatus(false);
   };
 
-  const updateSignaturesModal = () => {
-    var model = new window.bootstrap.Modal(
+  const displayModal = () => {
+    var modal = new window.bootstrap.Modal(
       document.getElementById("updateSignaturesModal")
     );
-    model.show();
+    modal.show();
   };
 
   const handleOwnerSignature = (e) => {
@@ -84,7 +84,7 @@ export default function EditSignatures(props) {
         } else if (response.data.status === 422) {
           setErrors(response.data.errors);
           setTimeout(() => {
-            updateSignaturesModal();
+            displayModal();
           }, 1000);
         }
       })

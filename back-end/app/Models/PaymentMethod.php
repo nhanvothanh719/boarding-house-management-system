@@ -11,4 +11,5 @@ class PaymentMethod extends Model
     const METHOD_RAZORPAY = 'Rayzorpay';
     const METHOD_PAYPAL = 'Paypal';
     use HasFactory;
+    protected $guarded = ['id'];
 }

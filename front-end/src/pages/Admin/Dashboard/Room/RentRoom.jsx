@@ -10,8 +10,7 @@ import AppUrl from "../../../../RestAPI/AppUrl";
 export default function RentRoom() {
     const [loading, setLoading] = useState(true);
     const [rentsList, setRentsLists] = useState([]);
-    const [renters, setRenters] = useState([]);
-    const [rooms, setRooms] = useState([]);
+    const [rooms] = useState([]);
     const [errors, setErrors] = useState([]);
     const [input, setInput] = useState({
       room_number: "",
@@ -20,16 +19,6 @@ export default function RentRoom() {
     const [columnNumberChange, setColumnNumberChange] = useState(false);
   
     useEffect(() => {
-      axios.get(AppUrl.ShowRooms).then((response) => {
-        if (response.data.status === 200) {
-          setRooms(response.data.allRooms);
-        }
-      });
-      axios.get(AppUrl.ShowRenters).then((response) => {
-        if (response.data.status === 200) {
-          setRenters(response.data.allRenters);
-        }
-      });
       axios.get(AppUrl.GetAllRoomRents).then((response) => {
         if (response.data.status === 200) {
           setRentsLists(response.data.allRoomRents);
@@ -89,18 +78,6 @@ export default function RentRoom() {
       }
     };
   
-    let roomNumbers = [];
-    let renterNames = [];
-    let id = 0;
-    renters.forEach((renter) => {
-      id = renter["id"];
-      renterNames[id] = renter["name"];
-    });
-    rooms.forEach((room) => {
-      id = room["id"];
-      roomNumbers[id] = room["number"];
-    });
-  
     let columns = [];
     if (loading) {
       return <Loading />;
@@ -110,12 +87,12 @@ export default function RentRoom() {
         {
           field: "room_id",
           title: "Room number",
-          render: (rowData) => <p> {roomNumbers[rowData.room_id]} </p>,
+          render: (rowData) => <p> {rowData.room.number} </p>,
         },
         {
           field: "renter_id",
           title: "Renter",
-          render: (rowData) => <p> {renterNames[rowData.renter_id]} </p>,
+          render: (rowData) => <p> {rowData.renter.name} </p>,
         },
       ];
     }

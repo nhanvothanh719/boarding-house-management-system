@@ -20,6 +20,7 @@ use App\Http\Controllers\BalanceController;
 use App\Http\Controllers\BreachController;
 use App\Http\Controllers\RoomContractController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ProblemController;
 
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/register', [AuthController::class, 'register']);
@@ -39,6 +40,8 @@ Route::middleware('auth:api')->group(function(){
         Route::get('/check-admin-authenticated', function() {
             return response(['message' => 'Login successfully. You are the admin', 'status' => 200]);
         });    
+        Route::get('/all-users', [UserController::class], 'index');
+
         //Category
         Route::get('/all-categories', [CategoryController::class, 'index']);
         Route::post('/store-category', [CategoryController::class, 'storeCategory']);
@@ -144,6 +147,13 @@ Route::middleware('auth:api')->group(function(){
         Route::get('/count-used-services', [DashboardController::class, 'countUsedServices']);
         Route::get('/get-paid-invoices-rate', [DashboardController::class, 'getPaidInvoicesRate']);
         Route::get('/report-breaches', [DashboardController::class, 'reportBreaches']);
+
+        //Problem
+        Route::get('/all-problems', [ProblemController::class, 'index']);
+        Route::put('/reply-problem/{id}', [ProblemController::class, 'replyProblem']);
+        Route::delete('/delete-problem/{id}', [ProblemController::class, 'deleteProblem']);
+        Route::get('/get-problem-details/{id}', [ProblemController::class, 'getProblemDetails']);
+        Route::put('/update-problem-status/{id}', [ProblemController::class, 'updateProblemStatus']);
     });
 });
 

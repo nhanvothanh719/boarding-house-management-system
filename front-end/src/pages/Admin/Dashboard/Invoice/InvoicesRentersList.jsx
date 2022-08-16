@@ -48,12 +48,6 @@ export default function InvoicesRentersList() {
 
   var renters_columns = [];
   var invoices_columns = [];
-  let renterNames = [];
-  let id;
-  rentersList.forEach((renter) => {
-    id = renter["id"];
-    renterNames[id] = renter["name"];
-  });
 
   if (loading) {
     return <Loading />;
@@ -80,7 +74,7 @@ export default function InvoicesRentersList() {
       {
         field: "renter_id",
         title: "User",
-        render: (rowData) => <p>{renterNames[rowData.renter_id]}</p>,
+        render: (rowData) => <p>{rowData.renter.name}</p>,
       },
       { field: "total", title: "Total" },
       { field: "month", title: "Month" },

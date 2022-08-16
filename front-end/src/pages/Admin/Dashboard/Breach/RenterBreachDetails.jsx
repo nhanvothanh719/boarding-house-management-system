@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect } from "react";
+
 import MaterialTable from "material-table";
-import swal from "sweetalert";
 import moment from "moment";
 import axios from "axios";
 import {
@@ -21,18 +21,11 @@ export default function RenterBreachDetails({ match }) {
   const [breaches, setBreaches] = useState([]);
   const [chartData, setChartData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [breachesList, setBreachesList] = useState([]);
 
   useEffect(() => {
     axios.get(AppUrl.GetRenterBreaches + renterId).then((response) => {
       if (response.data.status === 200) {
         setBreaches(response.data.renterBreaches);
-      }
-      setLoading(false);
-    });
-    axios.get(AppUrl.ShowBreaches).then((response) => {
-      if (response.data.status === 200) {
-        setBreachesList(response.data.allBreaches);
       }
     });
     axios.get(AppUrl.CountRenterBreaches + renterId).then((response) => {
@@ -40,7 +33,8 @@ export default function RenterBreachDetails({ match }) {
         setChartData(response.data.breachesTotal);
         console.log(response.data.breachesTotal);
       }
-    })
+    });
+    setLoading(false);
   }, [renterId]);
 
   var columns = [];
@@ -52,7 +46,7 @@ export default function RenterBreachDetails({ match }) {
       {
         field: "breach_id",
         title: "Breach name",
-        render: (rowData) => <p>{breachNames[rowData.breach_id]}</p>,
+        render: (rowData) => <p>{rowData.breach.name}</p>,
       },
       {
         field: "violate_at",
@@ -61,13 +55,6 @@ export default function RenterBreachDetails({ match }) {
       },
     ];
   }
-
-  let breachNames = [];
-  let id;
-  breachesList.forEach((breach) => {
-    id = breach["id"];
-    breachNames[id] = breach["name"];
-  })
 
 
   return (

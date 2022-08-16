@@ -10,7 +10,6 @@ import AppUrl from "../../../../RestAPI/AppUrl";
 export default function RegisterService() {
   const [loading, setLoading] = useState(true);
   const [services, setServices] = useState([]);
-  const [renters, setRenters] = useState([]);
   const [registrations, setRegistrations] = useState([]);
   const [input, setInput] = useState({
     user_id: "",
@@ -23,11 +22,6 @@ export default function RegisterService() {
     axios.get(AppUrl.GetOptionalServices).then((response) => {
       if (response.data.status === 200) {
         setServices(response.data.allOptionalServices);
-      }
-    });
-    axios.get(AppUrl.ShowRenters).then((response) => {
-      if (response.data.status === 200) {
-        setRenters(response.data.allRenters);
       }
     });
     axios.get(AppUrl.ShowRegistrations).then((response) => {
@@ -89,18 +83,6 @@ export default function RegisterService() {
     }
   };
 
-  let renterNames = [];
-  let serviceNames = [];
-  let id = 0;
-  renters.forEach((renter) => {
-    id = renter["id"];
-    renterNames[id] = renter["name"];
-  });
-  services.forEach((service) => {
-    id = service["id"];
-    serviceNames[id] = service["name"];
-  });
-
   let columns = [];
   if (loading) {
     return <Loading />;
@@ -110,12 +92,12 @@ export default function RegisterService() {
       {
         field: "user_id",
         title: "Renter",
-        render: (rowData) => <p> {renterNames[rowData.user_id]} </p>,
+        render: (rowData) => <p> {rowData.user.name} </p>,
       },
       {
         field: "service_id",
         title: "Service",
-        render: (rowData) => <p> {serviceNames[rowData.service_id]} </p>,
+        render: (rowData) => <p> {rowData.service.name} </p>,
       },
     ];
   }

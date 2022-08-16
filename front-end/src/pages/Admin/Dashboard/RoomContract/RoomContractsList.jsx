@@ -1,4 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 
 import MaterialTable from "material-table";
 import swal from "sweetalert";
@@ -12,8 +13,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
 import SearchRenter from "../../../../components/Search/SearchRenter";
-import { useHistory } from "react-router-dom";
-import EditSignatures from "./EditSignatures";
+import EditSignaturesModal from "../../../../components/Modals/EditSignaturesModal";
 
 export default function RoomContractsList() {
   const history = useHistory();
@@ -21,7 +21,6 @@ export default function RoomContractsList() {
   const [details] = useState([]);
   const [errors, setErrors] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [rentersList, setRentersList] = useState([]);
   const [roomContractsList, setRoomContractsList] = useState([]);
   const [contractRoomChange, setContractRoomChange] = useState(false);
   const [input, setInput] = useState({
@@ -34,16 +33,11 @@ export default function RoomContractsList() {
   const [effectiveFromDate, setEffectiveFromDate] = useState(moment());
   const [effectiveUntilDate, setEffectiveUntilDate] = useState(moment());
   const [selectedRenterId, setSelectedRenterId] = useState(null);
-  const [showEditSignaturesModel, setShowEditSignaturesModel] = useState(false);
+  const [showEditSignaturesModal, setShowEditSignaturesModal] = useState(false);
   const [selectedRoomContractId, setSelectedRoomContractId] = useState(null);
 
 
   useEffect(() => {
-    axios.get(AppUrl.ShowRenters).then((response) => {
-      if (response.data.status === 200) {
-        setRentersList(response.data.allRenters);
-      }
-    });
     axios.get(AppUrl.ShowRoomContracts).then((response) => {
       if (response.status === 200) {
         setRoomContractsList(response.data.allRoomContracts);
@@ -77,7 +71,7 @@ export default function RoomContractsList() {
   }
 
   const setModalStatus = (status) => {
-    setShowEditSignaturesModel(status);
+    setShowEditSignaturesModal(status);
   }
 
   const addRoomContract = (e) => {
@@ -133,7 +127,7 @@ export default function RoomContractsList() {
         field: "renter_id",
         title: "Renter name",
         editable: "never",
-        render: (rowData) => <p>{renterNames[rowData.renter_id]}</p>,
+        render: (rowData) => <p>{rowData.renter.name}</p>,
       },
       {
         field: "effective_from",
@@ -156,13 +150,6 @@ export default function RoomContractsList() {
       },
     ];
   }
-
-  let renterNames = [];
-  let id;
-  rentersList.forEach((renter) => {
-    id = renter["id"];
-    renterNames[id] = renter["name"];
-  });
 
   return (
     <Fragment>
@@ -232,7 +219,7 @@ export default function RoomContractsList() {
             icon: 'image',
             tooltip: 'Edit signatures',
             onClick: (event, room_contract) => {
-              setShowEditSignaturesModel(true);
+              setShowEditSignaturesModal(true);
               setSelectedRoomContractId(room_contract.id);
             }
           },
@@ -349,8 +336,7 @@ export default function RoomContractsList() {
           </div>
         </div>
       </form>
-      {/* <EditSignatures isShown = {showEditSignaturesModel}/> */}
-      <EditSignatures isShown = {showEditSignaturesModel} setModalStatus = {setModalStatus} roomContractId = {selectedRoomContractId}/>
+      <EditSignaturesModal isShown = {showEditSignaturesModal} setModalStatus = {setModalStatus} roomContractId = {selectedRoomContractId}/>
     </Fragment>
   );
 }

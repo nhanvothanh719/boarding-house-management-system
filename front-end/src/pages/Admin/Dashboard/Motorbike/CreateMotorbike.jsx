@@ -11,7 +11,7 @@ export default function CreateMotorbike() {
   const [errors, setErrors] = useState([]);
   const [motorbikeImage, setMotorbikeImage] = useState([]);
   const [input, setInput] = useState({
-    user_id: "",
+    renter_id: "",
     license_plate: "",
   });
 
@@ -27,7 +27,7 @@ export default function CreateMotorbike() {
   const createMotorbike = (e) => {
     e.preventDefault();
     const motorbike = new FormData();
-    motorbike.append("user_id", input.user_id);
+    motorbike.append("renter_id", input.renter_id);
     motorbike.append("license_plate", input.license_plate);
     if (motorbikeImage.motorbike_image) {
       motorbike.append("motorbike_image", motorbikeImage.motorbike_image);
@@ -54,9 +54,9 @@ export default function CreateMotorbike() {
 
   const findUser = (e) => {
     e.preventDefault();
-    if (input.user_id) {
+    if (input.renter_id) {
       axios
-        .get(AppUrl.FindName + input.user_id)
+        .get(AppUrl.FindName + input.renter_id)
         .then((response) => {
           if (response.data.status === 200) {
             swal("User found", response.data.name, "success");
@@ -97,12 +97,12 @@ export default function CreateMotorbike() {
               <input
                 type="text"
                 className="inputItem"
-                name="user_id"
+                name="renter_id"
                 onChange={handleInput}
-                value={input.user_id}
+                value={input.renter_id}
               />
             </div>
-            <small className="text-danger">{errors.user_id}</small>
+            <small className="text-danger">{errors.renter_id}</small>
             <button onClick={findUser}>Find person</button>
             <div className="formInput form-group">
               <label>Motorbike image:</label>

@@ -31,6 +31,7 @@ import BreachHistories from "../pages/Admin/Dashboard/Breach/BreachHistories";
 import RenterBreachDetails from "../pages/Admin/Dashboard/Breach/RenterBreachDetails";
 import RoomContractsList from "../pages/Admin/Dashboard/RoomContract/RoomContractsList";
 import RoomContractDetails from "../pages/Admin/Dashboard/RoomContract/RoomContractDetails";
+import ProblemsList from "../pages/Admin/Dashboard/Problem/ProblemsList";
 
 const routes = [
     { path: '/admin', exact: true, name: 'Admin' }, // '/admin/123', 'admin/weq', ...
@@ -77,6 +78,8 @@ const routes = [
     //Room contract
     { path: '/admin/view-all-room-contracts', exact: true, name: 'RoomContractsList', component: RoomContractsList },
     { path: '/admin/view-room-contract-details/:roomContractID', exact: true, name: 'RoomContractDetails', component: RoomContractDetails },
+    //Problem
+    { path: '/admin/view-all-problems', exact: true, name: 'ProblemsList', component: ProblemsList },
 ]
 
 export default routes;

@@ -13,29 +13,16 @@ export default function RoomsList() {
 
   const [loading, setLoading] = useState(true);
   const [roomsList, setRoomsList] = useState([]);
-  const [statuses, setStatuses] = useState([]);
 
   useEffect(() => {
     axios.get(AppUrl.ShowRooms).then((response) => {
       if (response.status === 200) {
         setRoomsList(response.data.allRooms);
       }
-      setLoading(false);
     });
-    axios.get(AppUrl.GetAllStatuses).then((response) => {
-      if (response.status === 200) {
-        setStatuses(response.data.allStatuses);
-      }
-      setLoading(false);
-    });
+    setLoading(false);
   }, []);
 
-  let statusNames = [];
-  let id = 0;
-  statuses.forEach((status) => {
-    id = status["id"];
-    statusNames[id] = status["name"];
-  });
 
   var columns = [];
   if (loading) {
@@ -43,8 +30,8 @@ export default function RoomsList() {
   } else {
     columns = [
       { field: "number", title: "Number", align: "center" },
-      { field: "category_id", title: "Category ID" },
-      { field: "status", title: "Status", render: rowData => <p> {statusNames[rowData.status]} </p>},
+      { field: "category_id", title: "Category", render: rowData => <p> {rowData.category.name} </p> },
+      { field: "status", title: "Status", render: rowData => <p> {rowData.status.name} </p>},
       {
         field: "description",
         title: "Description",

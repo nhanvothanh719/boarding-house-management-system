@@ -13,38 +13,24 @@ export default function MotorbikesList() {
 
   const [loading, setLoading] = useState(true);
   const [motorbikesList, setMotorbikesList] = useState([]);
-  const [motorbikeOwners, setOwners] = useState([]);
   useEffect(() => {
     axios.get(AppUrl.ShowMotorbikes).then((response) => {
       if (response.status === 200) {
         setMotorbikesList(response.data.allMotorbikes);
       }
-      setLoading(false);
     });
-    axios.get(AppUrl.GetAllMotorbikeOwners).then((response) => {
-      if (response.status === 200) {
-        setOwners(response.data.allOwners);
-      }
-    });
+    setLoading(false);
   }, []);
 
   var columns = [];
   if (loading) {
     return <Loading />;
   } else {
-
-    const names = [];
-    let owner_id = 0;
-    motorbikeOwners.forEach(owner => {
-      owner_id = owner['id'];
-      names[owner_id] = owner['name'];
-    });
-
     columns = [
       { field: "id", title: "ID", align: "center" },
       { field: "license_plate", title: "License plate" },
       { field: "motorbike_image", title: "Image", export: false, render: rowData => <img src={rowData} alt="motorbike_image" style={{width: 40, borderRadius: '50%'}}/> },
-      { field: "user_id", title: "Owner", render: rowData => <p> {names[rowData.user_id]} </p> },
+      { field: "renter_id", title: "Owner", render: rowData => <p> {rowData.renter.name} </p> },
     ];
 
     const deleteMotorbike = (e, id) => {
