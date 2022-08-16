@@ -15,6 +15,9 @@ class User extends Authenticatable
     const GENDER_MALE_ID = 1;
     const GENDER_FEMALE_ID = 0;
 
+    const LOCKED_ACCOUNT = 1;
+    const AVAILABLE_ACCOUNT = 0;
+
     /**
      * The attributes that are mass assignable.
      *

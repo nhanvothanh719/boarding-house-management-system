@@ -132,6 +132,11 @@ class BreachController extends Controller
         $breach = Breach::find($request->breach_id);
         $breach_count = BreachHistory::where('breach_id', $request->breach_id)->where('renter_id', $request->renter_id)->count();
         $remain_allowed_number = $breach->allowed_violate_number - $breach_count;
+        //Lock user's account
+        if($remain_allowed_number == 1) {
+            $user->is_locked = User::LOCKED_ACCOUNT;
+            $user->save();
+        }
         if($remain_allowed_number <= 0) {
             return response([
                 'message' => 'Fail to add since the renter has committed this breach more than allowed times',
