@@ -7,18 +7,20 @@ import axios from "axios";
 
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
+import ReplyProblemModal from "../../../../components/Modals/ReplyProblemModal";
 
 export default function ProblemsList() {
   const history = useHistory();
 
   const [details] = useState([]);
-  const [errors, setErrors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [problemsListChange, setProblemsListChange] = useState(false);
   const [problemsList, setProblemsList] = useState([]);
   const [input, setInput] = useState({
     status: "",
   });
+  const [showReplyModal, setShowReplyModal] = useState(false);
+  const [selectedProblemId, setSelectedProblemId] = useState(null);
 
   useEffect(() => {
     axios.get(AppUrl.ShowProblems).then((response) => {
@@ -36,6 +38,14 @@ export default function ProblemsList() {
     e.persist();
     setInput({ ...input, [e.target.name]: e.target.value });
   };
+
+  const setModalStatus = (status) => {
+    setShowReplyModal(status);
+  }
+
+  const updateProblemReplyStatus = (status) => {
+    setProblemsListChange(status);
+  }
 
   var columns = [];
   if (loading) {
@@ -138,16 +148,16 @@ export default function ProblemsList() {
           },
           rowData => ({
             icon: 'reply',
-            tooltip: 'Reply problem',
-            onClick: (event, room_contract) => {
-              // setShowEditSignaturesModel(true);
-              // setSelectedRoomContractId(room_contract.id);
-              alert("Hello");
+            tooltip: 'Reply',
+            onClick: (event, problem) => {
+              setShowReplyModal(true);
+              setSelectedProblemId(problem.id);
             },
             disabled: rowData.replied_by !== null
           }),
         ]}
       />
+      <ReplyProblemModal isShown = {showReplyModal} setModalStatus = {setModalStatus} updateProblemReplyStatus = {updateProblemReplyStatus} problemId = {selectedProblemId}/>
     </Fragment>
   );
 }

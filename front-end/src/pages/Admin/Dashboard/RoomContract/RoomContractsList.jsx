@@ -13,7 +13,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
 import SearchRenter from "../../../../components/Search/SearchRenter";
-import EditSignatures from "./EditSignatures";
+import EditSignaturesModal from "../../../../components/Modals/EditSignaturesModal";
 
 export default function RoomContractsList() {
   const history = useHistory();
@@ -33,7 +33,7 @@ export default function RoomContractsList() {
   const [effectiveFromDate, setEffectiveFromDate] = useState(moment());
   const [effectiveUntilDate, setEffectiveUntilDate] = useState(moment());
   const [selectedRenterId, setSelectedRenterId] = useState(null);
-  const [showEditSignaturesModel, setShowEditSignaturesModel] = useState(false);
+  const [showEditSignaturesModal, setShowEditSignaturesModal] = useState(false);
   const [selectedRoomContractId, setSelectedRoomContractId] = useState(null);
 
 
@@ -71,7 +71,7 @@ export default function RoomContractsList() {
   }
 
   const setModalStatus = (status) => {
-    setShowEditSignaturesModel(status);
+    setShowEditSignaturesModal(status);
   }
 
   const addRoomContract = (e) => {
@@ -219,7 +219,7 @@ export default function RoomContractsList() {
             icon: 'image',
             tooltip: 'Edit signatures',
             onClick: (event, room_contract) => {
-              setShowEditSignaturesModel(true);
+              setShowEditSignaturesModal(true);
               setSelectedRoomContractId(room_contract.id);
             }
           },
@@ -336,8 +336,7 @@ export default function RoomContractsList() {
           </div>
         </div>
       </form>
-      {/* <EditSignatures isShown = {showEditSignaturesModel}/> */}
-      <EditSignatures isShown = {showEditSignaturesModel} setModalStatus = {setModalStatus} roomContractId = {selectedRoomContractId}/>
+      <EditSignaturesModal isShown = {showEditSignaturesModal} setModalStatus = {setModalStatus} roomContractId = {selectedRoomContractId}/>
     </Fragment>
   );
 }
