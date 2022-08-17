@@ -48,7 +48,7 @@ export default function ProblemsList() {
     return <Loading />;
   } else {
     columns = [
-      { field: "id", title: "ID", align: "center", editable: "never" },
+      { title: '#', render: (rowData) => rowData.tableData.id + 1 },
       {
         field: "renter_id",
         title: "Renter name",

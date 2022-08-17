@@ -45,7 +45,7 @@ export default function ServicesList() {
     return <Loading />;
   } else {
     columns = [
-      { field: "id", title: "ID", align: "center" },
+      { title: '#', render: (rowData) => rowData.tableData.id + 1 },
       { field: "name", title: "Name" },
       {
         field: "description",
@@ -89,12 +89,14 @@ export default function ServicesList() {
             }}
             actions={[
               {
-                icon: () => <button className="btn btn-warning">Edit</button>,
+                icon: 'edit',
+                tooltip: 'Edit',
                 onClick: (event, service) =>
                   history.push(`/admin/edit-service/${service.id}`),
               },
               {
-                icon: () => <button className="btn btn-danger">Delete</button>,
+                icon: 'delete',
+                tooltip: 'Delete',
                 onClick: (event, service) => deleteService(event, service.id),
               },
             ]}

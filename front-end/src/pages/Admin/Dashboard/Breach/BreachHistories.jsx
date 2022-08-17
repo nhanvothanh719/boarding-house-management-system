@@ -189,7 +189,7 @@ export default function BreachHistories() {
     return <Loading />;
   } else {
     columns = [
-      { field: "id", title: "ID", align: "center", editable: "never" },
+      { title: '#', render: (rowData) => rowData.tableData.id + 1 },
       {
         field: "breach_id",
         title: "Breach name",

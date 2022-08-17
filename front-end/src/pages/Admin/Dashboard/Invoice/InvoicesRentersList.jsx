@@ -53,7 +53,7 @@ export default function InvoicesRentersList() {
     return <Loading />;
   } else {
     renters_columns = [
-      { field: "id", title: "ID", align: "center" },
+      { title: '#', render: (rowData) => rowData.tableData.id + 1 },
       {
         field: "profile_picture",
         title: "Avatar",
@@ -70,7 +70,7 @@ export default function InvoicesRentersList() {
     ];
 
     invoices_columns = [
-      { field: "id", title: "ID", align: "center" },
+      { title: '#', render: (rowData) => rowData.tableData.id + 1 },
       {
         field: "renter_id",
         title: "User",
@@ -131,17 +131,20 @@ export default function InvoicesRentersList() {
             }}
             actions={[
               {
-                icon: () => <button className="btn btn-warning">Edit</button>,
-                onClick: (event, invoice) =>
-                  history.push(`/admin/edit-invoice/${invoice.id}`),
-              },
-              {
-                icon: () => <button className="btn btn-info">Details</button>,
+                icon: 'visibility',
+                tooltip: 'Details',
                 onClick: (event, invoice) =>
                   history.push(`/admin/invoice-details/${invoice.id}`),
               },
               {
-                icon: () => <button className="btn btn-danger">Delete</button>,
+                icon: 'edit',
+                tooltip: 'Edit',
+                onClick: (event, invoice) =>
+                  history.push(`/admin/edit-invoice/${invoice.id}`),
+              },
+              {
+                icon: 'delete',
+                tooltip: 'Delete',
                 onClick: (event, invoice) => deleteInvoice(event, invoice.id),
               },
             ]}

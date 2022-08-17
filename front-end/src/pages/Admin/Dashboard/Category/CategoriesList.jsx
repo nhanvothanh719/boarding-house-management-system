@@ -45,7 +45,7 @@ function CategoriesList() {
     return <Loading />;
   } else {
     columns = [
-      { field: "id", title: "ID", align: "center" },
+      { title: '#', render: (rowData) => rowData.tableData.id + 1 },
       { field: "name", title: "Name" },
       {
         field: "description",
@@ -79,12 +79,14 @@ function CategoriesList() {
             }}
             actions={[
               {
-                icon: () => <button className="btn btn-warning">Edit</button>,
+                icon: 'edit',
+                tooltip: 'Edit',
                 onClick: (event, category) =>
                   history.push(`/admin/edit-category/${category.id}`),
               },
               {
-                icon: () => <button className="btn btn-danger">Delete</button>,
+                icon: 'delete',
+                tooltip: 'Delete',
                 onClick: (event, category) =>
                   deleteCategory(event, category.id),
               },

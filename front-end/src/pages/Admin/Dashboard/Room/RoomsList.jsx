@@ -29,6 +29,7 @@ export default function RoomsList() {
     return <Loading />;
   } else {
     columns = [
+      { title: '#', render: (rowData) => rowData.tableData.id + 1 },
       { field: "number", title: "Number", align: "center" },
       { field: "category_id", title: "Category", render: rowData => <p> {rowData.category.name} </p> },
       { field: "status", title: "Status", render: rowData => <p> {rowData.status.name} </p>},
@@ -38,7 +39,7 @@ export default function RoomsList() {
         emptyValue: () => <em>No description</em>,
       },
       { field: "area", title: "Area" },
-      { field: "has_conditioner", title: "Conditioner", lookup: {0:"No", 1:"Yes"} },
+      { field: "has_conditioner", title: "Conditioner", lookup: {0:"No", 1:"Yes"}},
       { field: "has_fridge", title: "Fridge", lookup: {0:"No", 1:"Yes"} },
       { field: "has_wardrobe", title: "Wardrobe", lookup: {0:"No", 1:"Yes"} },
     ];
@@ -88,17 +89,20 @@ export default function RoomsList() {
             }}
             actions={[
               {
-                icon: () => <button className="btn btn-info">Details</button>,
+                icon: 'visibility',
+                tooltip: 'Details',
                 onClick: (event, room) =>
                   history.push(`/admin/room/${room.id}`),
               },
               {
-                icon: () => <button className="btn btn-warning">Edit</button>,
+                icon: 'edit',
+                tooltip: 'Edit',
                 onClick: (event, room) =>
                   history.push(`/admin/edit-room/${room.id}`),
               },
               {
-                icon: () => <button className="btn btn-danger">Delete</button>,
+                icon: 'delete',
+                tooltip: 'Delete',
                 onClick: (event, room) => 
                 deleteRoom(event, room.id),
               },

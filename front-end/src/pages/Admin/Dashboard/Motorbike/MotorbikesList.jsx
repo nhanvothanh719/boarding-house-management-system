@@ -27,7 +27,7 @@ export default function MotorbikesList() {
     return <Loading />;
   } else {
     columns = [
-      { field: "id", title: "ID", align: "center" },
+      { title: '#', render: (rowData) => rowData.tableData.id + 1 },
       { field: "license_plate", title: "License plate" },
       { field: "motorbike_image", title: "Image", export: false, render: rowData => <img src={rowData} alt="motorbike_image" style={{width: 40, borderRadius: '50%'}}/> },
       { field: "renter_id", title: "Owner", render: rowData => <p> {rowData.renter.name} </p> },
@@ -74,12 +74,14 @@ export default function MotorbikesList() {
             }}
             actions={[
               {
-                icon: () => <button className="btn btn-warning">Edit</button>,
+                icon: 'edit',
+                tooltip: 'Edit',
                 onClick: (event, motorbike) =>
                   history.push(`/admin/edit-motorbike/${motorbike.id}`),
               },
               {
-                icon: () => <button className="btn btn-danger">Delete</button>,
+                icon: 'delete',
+                tooltip: 'Delete',
                 onClick: (event, motorbike) => 
                 deleteMotorbike(event, motorbike.id),
               },

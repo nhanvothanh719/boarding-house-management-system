@@ -56,13 +56,12 @@ export default function RentersList() {
     });
   }
 
-  var main_profile_columns = [];
-  var sub_profile_columns = [];
+  var columns = [];
   if (loading) {
     return <Loading />;
   } else {
-    main_profile_columns = [
-      { field: "id", title: "ID", align: "center", width: "5%" },
+    columns = [
+      { title: '#', render: (rowData) => rowData.tableData.id + 1 },
       { field: "profile_picture", title: "Avatar", export: false, width: "10%", render: rowData => <img src={DefaultAvatar} alt="avatar" style={{width: 40, borderRadius: '50%'}}/> },
       // { field: "profile_picture", title: "Avatar", export: false, width: "10%", render: rowData => <img src={rowData.profile_picture} alt="avatar" style={{width: 40, borderRadius: '50%'}}/> },
       { field: "name", title: "Name", width: "20%" },
@@ -75,16 +74,6 @@ export default function RentersList() {
         lookup: { 0: "Active", 1: "Locked" },
       },
     ];
-
-    sub_profile_columns = [
-      { field: "id", title: "ID", align: "center", width: "3%" },
-      { field: "profile_picture", title: "Avatar", export: false, width: "7%", render: rowData => <img src={rowData.profile_picture} alt="avatar" style={{width: 40, borderRadius: '50%'}}/> },
-      { field: "name", title: "Name", width: "15%" },
-      { field: "date_of_birth", title: "Date of birth", type: "date", dateSetting: { locale: "en-GB" }, width: "15%" },
-      { field: "id_card_number", title: "ID Card", width: "10%" },
-      { field: "occupation", title: "Occupation", width: "10%" },
-      { field: "permanent_address", title: "Permanent address" },
-    ];
     return (
       <Fragment>
         <div className="customDatatable">
@@ -94,7 +83,7 @@ export default function RentersList() {
             </Link>
           </div>
           <MaterialTable
-            columns={main_profile_columns}
+            columns={columns}
             data={rentersList}
             title="All renters"
             options={{
@@ -109,35 +98,22 @@ export default function RentersList() {
             }}
             actions={[
               {
-                icon: () => <button className="btn btn-warning">Edit</button>,
+                icon: 'edit',
+                tooltip: 'Edit',
                 onClick: (event, renter) =>
                   history.push(`/admin/edit-renter/${renter.id}`),
               },
               {
-                icon: () => <button className="btn btn-danger">Delete</button>,
+                icon: 'delete',
+                tooltip: 'Delete',
                 onClick: (event, renter) => deleteRenter(event, renter.id),
               },
               renter => ({
-                icon: renter.is_locked ? LockOutlinedIcon : LockOpenIcon,
+                icon: renter.is_locked ? LockOpenIcon : LockOutlinedIcon,
+                tooltip: renter.is_locked ? 'Unlock account' : 'Lock account',
                 onClick: (event, renter) => lockRenterAccount(renter.id),
               }),
             ]}
-          />
-
-          <MaterialTable
-            columns={sub_profile_columns}
-            data={rentersList}
-            title="Additional renters' profile"
-            options={{
-              searchAutoFocus: false,
-              searchFieldVariant: "outlined",
-              filtering: false,
-              pageSizeOptions: [5, 10],
-              paginationType: "stepped",
-              exportButton: true,
-              exportAllData: true,
-              actionsColumnIndex: -1,
-            }}
           />
         </div>
       </Fragment>
