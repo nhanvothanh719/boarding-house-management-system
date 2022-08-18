@@ -20,7 +20,6 @@ import RoomDetails from "../pages/Admin/Dashboard/Room/RoomDetails";
 import RentRoom from "../pages/Admin/Dashboard/Room/RentRoom";
 import InvoicesRentersList from "../pages/Admin/Dashboard/Invoice/InvoicesRentersList";
 import CreateInvoice from "../pages/Admin/Dashboard/Invoice/CreateInvoice";
-import EditInvoice from "../pages/Admin/Dashboard/Invoice/EditInvoice";
 import InvoiceDetails from "../pages/Admin/Dashboard/Invoice/InvoiceDetails";
 import RenterInvoicesList from "../pages/Admin/Dashboard/Invoice/RenterInvoicesList";
 import CreateAnnouncement from "../pages/Admin/Dashboard/Announcement/CreateAnnouncement";
@@ -62,7 +61,6 @@ const routes = [
     //Invoice
     { path: '/admin/view-all-renters-with-invoices', exact: true, name: 'InvoicesRentersList', component: InvoicesRentersList },
     { path: '/admin/create-invoice/:renterID', exact: true, name: 'CreateInvoice', component: CreateInvoice },
-    { path: '/admin/edit-invoice/:invoiceID', exact: true, name: 'EditInvoice', component: EditInvoice },
     { path: '/admin/invoice-details/:invoiceID', exact: true, name: 'InvoiceDetails', component: InvoiceDetails },
     { path: '/admin/view-all-invoices-of-renter/:renterID', exact: true, name: 'RenterInvoicesList', component: RenterInvoicesList },
     //Announcement

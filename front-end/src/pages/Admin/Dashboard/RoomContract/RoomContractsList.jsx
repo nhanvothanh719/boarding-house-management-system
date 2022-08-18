@@ -17,6 +17,7 @@ import EditSignaturesModal from "../../../../components/Modals/EditSignaturesMod
 
 export default function RoomContractsList() {
   const history = useHistory();
+  var currentDate = new Date();
 
   const [details] = useState([]);
   const [errors, setErrors] = useState([]);
@@ -67,11 +68,11 @@ export default function RoomContractsList() {
 
   const getSelectedRenter = (renter) => {
     setSelectedRenterId(renter.id);
-  }
+  };
 
   const setModalStatus = (status) => {
     setShowEditSignaturesModal(status);
-  }
+  };
 
   const addRoomContract = (e) => {
     e.preventDefault();
@@ -97,9 +98,9 @@ export default function RoomContractsList() {
           setInput({
             deposit_amount: "",
           });
-          document.getElementById("inputRenterId").value = '';
-          document.getElementById("inputRenterSignature").value = '';
-          document.getElementById("inputOwnerSignature").value = '';
+          document.getElementById("inputRenterId").value = "";
+          document.getElementById("inputRenterSignature").value = "";
+          document.getElementById("inputOwnerSignature").value = "";
           setEffectiveFromDate(moment());
           setEffectiveUntilDate(moment());
           swal("Success", response.data.message, "success");
@@ -121,7 +122,7 @@ export default function RoomContractsList() {
     return <Loading />;
   } else {
     columns = [
-      { title: '#', render: (rowData) => rowData.tableData.id + 1 },
+      { title: "#", render: (rowData) => rowData.tableData.id + 1 },
       {
         field: "renter_id",
         title: "Renter name",
@@ -142,6 +143,10 @@ export default function RoomContractsList() {
         type: "date",
         render: (rowData) =>
           moment(rowData.effective_until).format("DD/MM/YYYY"),
+        validate: (rowData) =>
+          rowData.effective_until <= currentDate 
+            ? { isValid: false, helperText: "Inappropriate value" }
+            : true,
       },
       {
         field: "deposit_amount",
@@ -171,7 +176,9 @@ export default function RoomContractsList() {
             new Promise((resolve, reject) => {
               setTimeout(() => {
                 const data = {
-                  effective_until: moment(newRoomContract.effective_until).utc().format("YYYY-MM-DD"),
+                  effective_until: moment(newRoomContract.effective_until)
+                    .utc()
+                    .format("YYYY-MM-DD"),
                   deposit_amount: newRoomContract.deposit_amount,
                 };
                 axios
@@ -209,18 +216,20 @@ export default function RoomContractsList() {
         }}
         actions={[
           {
-            icon: 'visibility',
-            tooltip: 'Details',
-            onClick: (event, room_contract) => 
-            history.push(`/admin/view-room-contract-details/${room_contract.id}`),
+            icon: "visibility",
+            tooltip: "Details",
+            onClick: (event, room_contract) =>
+              history.push(
+                `/admin/view-room-contract-details/${room_contract.id}`
+              ),
           },
           {
-            icon: 'image',
-            tooltip: 'Edit signatures',
+            icon: "image",
+            tooltip: "Edit signatures",
             onClick: (event, room_contract) => {
               setShowEditSignaturesModal(true);
               setSelectedRoomContractId(room_contract.id);
-            }
+            },
           },
         ]}
       />
@@ -238,9 +247,7 @@ export default function RoomContractsList() {
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">
-                Add new room contract
-              </h5>
+              <h5 class="modal-title">Add new room contract</h5>
               <button
                 type="button"
                 class="close"
@@ -253,12 +260,13 @@ export default function RoomContractsList() {
             <div class="modal-body">
               <hr />
               <form className="flexForm" enctype="multipart/form-data">
-                <SearchRenter getSelectedRenter = {getSelectedRenter}/>
+                <SearchRenter getSelectedRenter={getSelectedRenter} />
                 <small className="text-danger">{errors.renter_id}</small>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                   <DatePicker
                     views={["day", "month", "year"]}
                     label="Effective from"
+                    name="effective_from"
                     value={effectiveFromDate}
                     onChange={(selectedDate) => {
                       setEffectiveFromDate(selectedDate);
@@ -267,9 +275,11 @@ export default function RoomContractsList() {
                       <TextField {...params} helperText={null} />
                     )}
                   />
+                  <small className="text-danger">{errors.effective_from}</small>
                   <DatePicker
                     views={["day", "month", "year"]}
                     label="Effective until"
+                    name="effective_until"
                     value={effectiveUntilDate}
                     onChange={(selectedDate) => {
                       setEffectiveUntilDate(selectedDate);
@@ -278,6 +288,9 @@ export default function RoomContractsList() {
                       <TextField {...params} helperText={null} />
                     )}
                   />
+                  <small className="text-danger">
+                    {errors.effective_until}
+                  </small>
                 </LocalizationProvider>
                 <div className="formInput">
                   <label className="inputItemLabel">Deposit amount:</label>
@@ -335,7 +348,11 @@ export default function RoomContractsList() {
           </div>
         </div>
       </form>
-      <EditSignaturesModal isShown = {showEditSignaturesModal} setModalStatus = {setModalStatus} roomContractId = {selectedRoomContractId}/>
+      <EditSignaturesModal
+        isShown={showEditSignaturesModal}
+        setModalStatus={setModalStatus}
+        roomContractId={selectedRoomContractId}
+      />
     </Fragment>
   );
 }

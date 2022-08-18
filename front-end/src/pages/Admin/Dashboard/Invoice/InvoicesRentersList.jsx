@@ -4,12 +4,14 @@ import { Link, useHistory } from "react-router-dom";
 import MaterialTable from "material-table";
 import swal from "sweetalert";
 import axios from "axios";
+import moment from "moment";
 
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
 
 export default function InvoicesRentersList() {
   const history = useHistory();
+  var currentDate = new Date();
 
   const [details] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -41,7 +43,7 @@ export default function InvoicesRentersList() {
     return <Loading />;
   } else {
     renters_columns = [
-      { title: '#', render: (rowData) => rowData.tableData.id + 1 },
+      { title: "#", render: (rowData) => rowData.tableData.id + 1 },
       {
         field: "profile_picture",
         title: "Avatar",
@@ -58,17 +60,43 @@ export default function InvoicesRentersList() {
     ];
 
     invoices_columns = [
-      { title: '#', render: (rowData) => rowData.tableData.id + 1 },
+      { title: "#", render: (rowData) => rowData.tableData.id + 1 },
       {
         field: "renter_id",
         title: "User",
+        editable: "never",
         render: (rowData) => <p>{rowData.renter.name}</p>,
       },
-      { field: "total", title: "Total" },
-      { field: "month", title: "Month" },
-      { field: "effective_from", title: "Can be paid from" },
-      { field: "valid_until", title: "Can be paid until" },
-      { field: "is_paid", title: "Paid", lookup: { 0: "Not yet", 1: "Paid" } },
+      { field: "total", title: "Total", editable: "never" },
+      {
+        field: "month",
+        title: "Month",
+        type: "numeric",
+        validate: (rowData) =>
+          rowData.month < 1 || rowData.month > 12 || !Number.isInteger(rowData.month)
+            ? { isValid: false, helperText: "Inappropriate month input" }
+            : true,
+      },
+      {
+        field: "effective_from",
+        title: "Can be paid from",
+        type: "date",
+        editable: "never",
+        render: (rowData) =>
+          moment(rowData.effective_from).format("DD/MM/YYYY"),
+      },
+      {
+        field: "valid_until",
+        title: "Can be paid until",
+        type: "date",
+        editable: ( row ,rowData ) => rowData.is_paid === 0,
+        render: (rowData) => moment(rowData.valid_until).format("DD/MM/YYYY"),
+        validate: (rowData) =>
+          rowData.valid_until <= currentDate
+            ? { isValid: false, helperText: "Inappropriate value" }
+            : true,
+      },
+      { field: "is_paid", title: "Paid", editable: ( row ,rowData ) => rowData.is_paid === 0, lookup: { 0: "Not yet", 1: "Paid" } },
     ];
     return (
       <Fragment>
@@ -95,8 +123,10 @@ export default function InvoicesRentersList() {
                 icon: () => (
                   <button className="btn btn-primary">All invoices</button>
                 ),
-                onClick: (event, renter) => 
-                history.push(`/admin/view-all-invoices-of-renter/${renter.id}`),
+                onClick: (event, renter) =>
+                  history.push(
+                    `/admin/view-all-invoices-of-renter/${renter.id}`
+                  ),
               },
               {
                 icon: () => <button className="btn btn-success">Create</button>,
@@ -119,19 +149,38 @@ export default function InvoicesRentersList() {
             }}
             actions={[
               {
-                icon: 'visibility',
-                tooltip: 'Details',
+                icon: "visibility",
+                tooltip: "Details",
                 onClick: (event, invoice) =>
                   history.push(`/admin/invoice-details/${invoice.id}`),
               },
-              {
-                icon: 'edit',
-                tooltip: 'Edit',
-                onClick: (event, invoice) =>
-                  history.push(`/admin/edit-invoice/${invoice.id}`),
-              },
             ]}
             editable={{
+              onRowUpdate: (newInvoice, oldInvoice) =>
+                new Promise((resolve, reject) => {
+                  setTimeout(() => {
+                    const data = {
+                      effective_from: moment(newInvoice.effective_until)
+                        .utc()
+                        .format("YYYY-MM-DD"),
+                      valid_until: moment(newInvoice.valid_until)
+                        .utc()
+                        .format("YYYY-MM-DD"),
+                      month: newInvoice.month,
+                    };
+                    axios
+                      .put(AppUrl.UpdateInvoice + oldInvoice.id, data)
+                      .then((response) => {
+                        if (response.data.status === 200) {
+                          swal("Success", response.data.message, "success");
+                          setInvoicesListChange(true);
+                        } else if (response.data.status === 404) {
+                          swal("Error", response.data.message, "error");
+                        }
+                      });
+                    resolve();
+                  }, 1000);
+                }),
               onRowDelete: (thisInvoice) =>
                 new Promise((resolve, reject) => {
                   setTimeout(() => {

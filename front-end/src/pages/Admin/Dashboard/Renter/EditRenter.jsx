@@ -3,6 +3,11 @@ import { useHistory } from "react-router-dom";
 
 import swal from "sweetalert";
 import axios from "axios";
+import moment from "moment";
+import TextField from "@mui/material/TextField";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
@@ -18,7 +23,6 @@ export default function EditRenter({ match }) {
     name: "",
     email: "",
     gender: "",
-    date_of_birth: "",
     id_card_number: "",
     phone_number: "",
     occupation: "",
@@ -27,6 +31,7 @@ export default function EditRenter({ match }) {
     profile_picture: "",
   });
   const [loading, setLoading] = useState([]);
+  const [dateOfBirth, setDateOfBirth] = useState(null);
 
   useEffect(() => {
     axios.get(AppUrl.ShowRoles).then((response) => {
@@ -38,10 +43,14 @@ export default function EditRenter({ match }) {
     axios.get(AppUrl.EditRenter + renterId).then((response) => {
         if (response.data.status === 200) {
           setInput(response.data.renter);
-          // setMotorbike(response.data.motorbike[0]);
+          console.log(response.data.renter);
+          setDateOfBirth(response.data.renter.date_of_birth);
         } else if (response.data.status === 404) {
           swal("Error", response.data.message, "error");
           history.push("/admin/view-all-renters");
+        } else if (response.data.status === 422) {
+          swal("All fields are mandatory", "", "error");
+          setErrors(response.data.errors);
         }
         setLoading(false);
       });
@@ -62,7 +71,7 @@ export default function EditRenter({ match }) {
     renter.append("name", input.name);
     renter.append("email", input.email);
     renter.append("gender", input.gender);
-    renter.append("date_of_birth", input.date_of_birth);
+    renter.append("date_of_birth",  moment(dateOfBirth).utc().format("YYYY-MM-DD"));
     renter.append("id_card_number", input.id_card_number);
     renter.append("phone_number", input.phone_number);
     renter.append("occupation", input.occupation);
@@ -82,8 +91,6 @@ export default function EditRenter({ match }) {
         } else if (response.data.status === 422) {
           swal("All fields are mandatory", "", "error");
           setErrors(response.data.errors);
-        } else if (response.data.status === 400) {
-          setInput({ ...input, errors_list: response.data.errors });
         }
       })
       .catch((error) => {
@@ -143,13 +150,16 @@ export default function EditRenter({ match }) {
             <small className="text-danger">{errors.phone_number}</small>
             <div className="formInput">
               <label>Date of birth:</label>
-              <input
-                type="date"
-                className="inputItem"
-                name="date_of_birth"
-                onChange={handleInput}
-                value={input.date_of_birth}
-              />
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    <DatePicker
+                      renderInput={(props) => <TextField {...props} />}
+                      value={dateOfBirth}
+                      name="date_of_birth"
+                      onChange={(selectedDate) => {
+                        setDateOfBirth(selectedDate);
+                      }}
+                    />
+                  </LocalizationProvider>
             </div>
             <small className="text-danger">{errors.date_of_birth}</small>
             <div className="formInput">
@@ -236,28 +246,6 @@ export default function EditRenter({ match }) {
               </select>
             </div>
             <small className="text-danger">{errors.gender}</small>
-            {/* <div className="formInput">
-              <label>Motorbike license plate:</label>
-              <input
-                type="text"
-                className="inputItem"
-                name="license_plate"
-                onChange={handleInput}
-                value={motorbike.license_plate}
-              />
-            </div>
-            <small className="text-danger">{errors.license_plate}</small>
-            <div className="formInput form-group">
-              <label>Motorbike image:</label>
-              <input
-                type="file"
-                className="form-control"
-                name="motorbike_image"
-                onChange={handleMotorbikeImage}
-              />
-            </div>
-            <img src={`http://127.0.0.1:8000/${motorbike.motorbike_image}`} alt= "" style={{width: "60px", height: "60px", borderRadius: "50%"}}/>
-            <small className="text-danger">{errors.motorbike_image}</small> */}
             <button type="submit" className="formButton">
               Update
             </button>

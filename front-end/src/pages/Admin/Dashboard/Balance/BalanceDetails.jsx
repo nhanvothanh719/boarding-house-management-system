@@ -20,7 +20,7 @@ import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
 
 export default function BalanceDetails() {
-  let currentDate = new Date();
+  var currentDate = new Date();
 
   const [loading, setLoading] = useState(true);
   const [details, setDetails] = useState([]);
