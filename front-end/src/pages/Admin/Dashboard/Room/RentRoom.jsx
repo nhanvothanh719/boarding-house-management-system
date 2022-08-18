@@ -176,9 +176,8 @@ export default function RentRoom() {
                 }}
                 actions={[
                   {
-                    icon: () => (
-                      <button className="btn btn-danger">Cancel</button>
-                    ),
+                    icon: 'delete',
+                    tooltip: 'Cancel',
                     onClick: (event, registration) =>
                       cancelRent(event, registration.id),
                   },

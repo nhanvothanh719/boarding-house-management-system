@@ -82,7 +82,7 @@ class RoomController extends Controller
             $room = new Room;
             $room->number = $request->input('number');
             $empty_status_id = RoomStatus::where('name', RoomStatus::STATUS_EMPTY)->value('id');
-            $room->status = $empty_status_id;
+            $room->status_id = $empty_status_id;
             $room->category_id = $request->input('category_id');
             $room->description = $request->input('description');
             $room->area = $request->input('area');
@@ -214,10 +214,10 @@ class RoomController extends Controller
     public function deleteRoom($id) {
         $room = Room::find($id);
         if($room) {
-            $room_status = Room::where('id', $id)->value('status');
+            $room_status_id = Room::where('id', $id)->value('status_id');
             $room_number = Room::where('id', $id)->value('number');
             $empty_status_id = RoomStatus::where('name', RoomStatus::STATUS_EMPTY)->value('id');
-            if($room_status != $empty_status_id) {
+            if($room_status_id != $empty_status_id) {
                 return response([
                     'message' => 'Cannot delete room' .$room_number. ' since it is used: ',
                     'status' => 404,
@@ -271,8 +271,8 @@ class RoomController extends Controller
         }
         $room_id = Room::where('number', $request->room_number)->value('id');
         $room = Room::find($room_id);
-        $room_status = $room->status;
-        switch($room_status) {
+        $room_status_id = $room->status_id;
+        switch($room_status_id) {
             case(CustomHelper::getRoomStatusId(RoomStatus::STATUS_FULL)):
                 return response([
                     'message' => 'Cannot add renter since the room is full',
@@ -284,7 +284,7 @@ class RoomController extends Controller
                 $rent->room_id = $room_id;
                 $rent->renter_id = $request->renter_id;
                 $rent->save();
-                $room->status = CustomHelper::getRoomStatusId(RoomStatus::STATUS_OCCUPIED);
+                $room->status_id = CustomHelper::getRoomStatusId(RoomStatus::STATUS_OCCUPIED);
                 $room->save();
                 break;
             case(CustomHelper::getRoomStatusId(RoomStatus::STATUS_OCCUPIED)):
@@ -298,7 +298,7 @@ class RoomController extends Controller
                 $rent->room_id = $room_id;
                 $rent->renter_id = $request->renter_id;
                 $rent->save();
-                $room->status = CustomHelper::getRoomStatusId(RoomStatus::STATUS_FULL);
+                $room->status_id = CustomHelper::getRoomStatusId(RoomStatus::STATUS_FULL);
                 $room->save();
                 break;
         }
@@ -317,12 +317,12 @@ class RoomController extends Controller
             ]);
         }
         $room = Room::find($rent->room_id);
-        switch($room->status) {
+        switch($room->status_id) {
             case(CustomHelper::getRoomStatusId(RoomStatus::STATUS_FULL)):
-                $room->status = CustomHelper::getRoomStatusId(RoomStatus::STATUS_OCCUPIED);
+                $room->status_id = CustomHelper::getRoomStatusId(RoomStatus::STATUS_OCCUPIED);
                 break;
             case(CustomHelper::getRoomStatusId(RoomStatus::STATUS_OCCUPIED)):
-                $room->status = CustomHelper::getRoomStatusId(RoomStatus::STATUS_EMPTY);
+                $room->status_id = CustomHelper::getRoomStatusId(RoomStatus::STATUS_EMPTY);
                 break;
         }
         $room->save();

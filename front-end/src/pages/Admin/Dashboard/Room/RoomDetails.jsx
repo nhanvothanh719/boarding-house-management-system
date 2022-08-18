@@ -14,7 +14,6 @@ export default function RoomDetails({ match }) {
   const [loading, setLoading] = useState(true);
   const [details, setDetails] = useState({});
   const [images, setImages] = useState([]);
-  const [category, setCategory] = useState({});
   const [renters, setRenters] = useState([]);
 
   useEffect(() => {
@@ -22,7 +21,6 @@ export default function RoomDetails({ match }) {
       if (response.data.status === 200) {
         setDetails(response.data.roomDetails);
         setImages(response.data.roomImages);
-        setCategory(response.data.category);
         setRenters(response.data.allRenters);
       } else if (response.data.status === 404) {
         swal("Error", response.data.message, "error");
@@ -60,10 +58,10 @@ export default function RoomDetails({ match }) {
         <li class="list-group-item">
           <p>Name: {renter.name}</p>
           <p>Email: {renter.email}</p>
-          <img
+          {/* <img
             src={`http://127.0.0.1:8000/${renter.profile_picture}`}
-            alt="room_image"
-          />
+            alt="renter_profile_picture"
+          /> */}
           <p>Date of birth: {ChangeDateFormat(renter.date_of_birth)}</p>
           <p>Gender: {renter.gender === 1 ? "Male" : "Female"}</p>
           <p>ID card number: {renter.id_card_number}</p>
@@ -77,8 +75,8 @@ export default function RoomDetails({ match }) {
   return (
     <Fragment>
       <p>All details of room {roomId}</p>
-      <ul class="list-group">
-        <li class="list-group-item">Room number: {roomId}</li>
+     <ul class="list-group">
+         <li class="list-group-item">Room number: {roomId}</li>
         <li class="list-group-item">Description: {details.description}</li>
         <li class="list-group-item">Area: {details.area}</li>
         <li class="list-group-item">
@@ -90,7 +88,7 @@ export default function RoomDetails({ match }) {
         <li class="list-group-item">
           Fridge: {details.has_fridge === 1 ? "Yes" : "No"}
         </li>
-        <li class="list-group-item">Status: {details.status}</li>
+        <li class="list-group-item">Status: {details.status.name}</li>
       </ul>
       <p>List of images</p>
       {room_images}

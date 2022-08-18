@@ -243,14 +243,14 @@ export default function BalanceDetails() {
                 resolve();
               }, 1000);
             }),
-          onRowDelete: (oldBalanceChange) =>
+          onRowDelete: (thisBalanceChange) =>
             new Promise((resolve, reject) => {
               setTimeout(() => {
-                const selectBalanceChange = [...details];
-                const index = oldBalanceChange.tableData.id;
-                selectBalanceChange.splice(index, 1); //1: only one record
+                const selectedBalanceChange = [...details];
+                const index = thisBalanceChange.tableData.id;
+                selectedBalanceChange.splice(index, 1); //1: only one record
                 axios
-                  .delete(AppUrl.DeleteBalanceChange + oldBalanceChange.id)
+                  .delete(AppUrl.DeleteBalanceChange + thisBalanceChange.id)
                   .then((response) => {
                     if (response.data.status === 200) {
                       swal("Success", response.data.message, "success");

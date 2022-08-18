@@ -21,7 +21,6 @@ export default function ReportBreaches() {
     axios.get(AppUrl.ReportBreaches).then((response) => {
       if (response.data.status === 200) {
         setBreachesInMonthCount(response.data.breachesInMonthCount);
-        console.log(response.data.breachesInMonthCount);
       }
     });
   }, []);

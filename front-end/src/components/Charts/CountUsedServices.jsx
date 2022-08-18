@@ -20,7 +20,6 @@ export default function CountUsedServices() {
     axios.get(AppUrl.CountUsedServices).then((response) => {
       if (response.data.status === 200) {
         setUsedServiceCount(response.data.usedServicesCount);
-        // console.log(response.data.usedServicesCount);
       }
     });
   }, []);

@@ -12,7 +12,6 @@ export default function CountRoomsByStatus() {
     axios.get(AppUrl.CountRoomsByStatus).then((response) => {
       if (response.data.status === 200) {
         setRoomsCount(response.data.roomsCount);
-        // console.log(response.data.roomsCount);
       }
     });
   }, []);

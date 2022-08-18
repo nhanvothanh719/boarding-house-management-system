@@ -13,7 +13,6 @@ export default function CountRentersByGender() {
     axios.get(AppUrl.CountRentersByGender).then((response) => {
       if (response.data.status === 200) {
         setRentersCount(response.data.rentersCount);
-        // console.log(response.data.rentersCount);
       }
     });
   }, []);

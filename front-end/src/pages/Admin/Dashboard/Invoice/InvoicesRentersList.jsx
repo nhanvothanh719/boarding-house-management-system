@@ -11,40 +11,28 @@ import AppUrl from "../../../../RestAPI/AppUrl";
 export default function InvoicesRentersList() {
   const history = useHistory();
 
+  const [details] = useState([]);
   const [loading, setLoading] = useState(true);
   const [rentersList, setRentersList] = useState([]);
   const [invoicesList, setInvoicesList] = useState([]);
+  const [invoicesListChange, setInvoicesListChange] = useState(false);
 
   useEffect(() => {
     axios.get(AppUrl.ShowRenters).then((response) => {
       if (response.data.status === 200) {
         setRentersList(response.data.allRenters);
       }
-      setLoading(false);
     });
     axios.get(AppUrl.ShowInvoices).then((response) => {
       if (response.data.status === 200) {
         setInvoicesList(response.data.allInvoices);
-        //console.log(response.data.allInvoices);
       }
     });
-  }, []);
-
-  const deleteInvoice = (e, id) => {
-    e.preventDefault();
-    const invoice = e.currentTarget;
-    invoice.innerText = "Deleting";
-    axios.delete(AppUrl.DeleteInvoice + id).then((response) => {
-      if (response.data.status === 200) {
-        swal("Success", response.data.message, "success");
-        //Delete table row
-        invoice.closest("tr").remove();
-      } else if (response.data.status === 404) {
-        swal("Fail", response.data.message, "error");
-        invoice.innerText = "Delete";
-      }
-    });
-  };
+    setLoading(false);
+    if (invoicesListChange) {
+      setInvoicesListChange(false);
+    }
+  }, [invoicesListChange]);
 
   var renters_columns = [];
   var invoices_columns = [];
@@ -142,12 +130,28 @@ export default function InvoicesRentersList() {
                 onClick: (event, invoice) =>
                   history.push(`/admin/edit-invoice/${invoice.id}`),
               },
-              {
-                icon: 'delete',
-                tooltip: 'Delete',
-                onClick: (event, invoice) => deleteInvoice(event, invoice.id),
-              },
             ]}
+            editable={{
+              onRowDelete: (thisInvoice) =>
+                new Promise((resolve, reject) => {
+                  setTimeout(() => {
+                    const selectedInvoice = [...details];
+                    const index = thisInvoice.tableData.id;
+                    selectedInvoice.splice(index, 1); //1: only one record
+                    axios
+                      .delete(AppUrl.DeleteInvoice + thisInvoice.id)
+                      .then((response) => {
+                        if (response.data.status === 200) {
+                          swal("Success", response.data.message, "success");
+                          setInvoicesListChange(true);
+                        } else if (response.data.status === 404) {
+                          swal("Error", response.data.message, "error");
+                        }
+                      });
+                    resolve();
+                  }, 1000);
+                }),
+            }}
           />
         </div>
       </Fragment>

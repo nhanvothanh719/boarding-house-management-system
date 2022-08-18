@@ -14,7 +14,6 @@ export default function GetPaidInvoicesRate() {
       if (response.data.status === 200) {
         setPaidInvoicesRate(response.data.paidInvoicesRate);
         setInvoicePaidMethodsCount(response.data.invoicePaidMethodsCount);
-        console.log(response.data.invoicePaidMethodsCount);
       }
     });
   }, []);  

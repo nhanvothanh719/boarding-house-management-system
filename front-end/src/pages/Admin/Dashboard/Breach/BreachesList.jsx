@@ -180,14 +180,14 @@ export default function BreachesList() {
                 resolve();
               }, 1000);
             }),
-          onRowDelete: (oldBreach) =>
+          onRowDelete: (thisBreach) =>
             new Promise((resolve, reject) => {
               setTimeout(() => {
-                const selectBreach = [...details];
-                const index = oldBreach.tableData.id;
-                selectBreach.splice(index, 1); //1: only one record
+                const selectedBreach = [...details];
+                const index = thisBreach.tableData.id;
+                selectedBreach.splice(index, 1); //1: only one record
                 axios
-                  .delete(AppUrl.DeleteBreach + oldBreach.id)
+                  .delete(AppUrl.DeleteBreach + thisBreach.id)
                   .then((response) => {
                     if (response.data.status === 200) {
                       swal("Success", response.data.message, "success");

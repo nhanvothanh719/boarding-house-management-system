@@ -115,14 +115,14 @@ export default function ProblemsList() {
                 resolve();
               }, 1000);
             }),
-          onRowDelete: (oldProblem) =>
+          onRowDelete: (thisProblem) =>
             new Promise((resolve, reject) => {
               setTimeout(() => {
                 const selectedProblem = [...details];
-                const index = oldProblem.tableData.id;
+                const index = thisProblem.tableData.id;
                 selectedProblem.splice(index, 1); //1: only one record
                 axios
-                  .delete(AppUrl.DeleteProblem + oldProblem.id)
+                  .delete(AppUrl.DeleteProblem + thisProblem.id)
                   .then((response) => {
                     if (response.data.status === 200) {
                       swal("Success", response.data.message, "success");

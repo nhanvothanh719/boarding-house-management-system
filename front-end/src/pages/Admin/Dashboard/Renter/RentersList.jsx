@@ -14,6 +14,7 @@ import DefaultAvatar from "../../../../assets/images/avatar.jpeg";
 export default function RentersList() {
   const history = useHistory();
 
+  const [details] = useState([]);
   const [loading, setLoading] = useState(true);
   const [rentersList, setRentersList] = useState([]);
   const [rentersListChange, setRentersListChange] = useState(false);
@@ -29,23 +30,6 @@ export default function RentersList() {
       setRentersListChange(false);
     }
   }, [rentersListChange]);
-
-  const deleteRenter = (e, id) => {
-    e.preventDefault();
-    const selectedRenter = e.currentTarget;
-    selectedRenter.innerText = "Deleting";
-    axios.delete(AppUrl.DeleteRenter + id).then((response) => {
-      if (response.data.status === 200) {
-        swal("Success", response.data.message, "success");
-        //Delete table row
-        selectedRenter.closest("tr").remove();
-        history.push('/admin/view-all-renters');
-      } else if (response.data.status === 404) {
-        swal("Fail", response.data.message, "error");
-        selectedRenter.innerText = "Delete";
-      }
-    });
-  };
 
   const lockRenterAccount = (id) => {
     axios.put(AppUrl.LockRenterAccount + id).then((response) => {
@@ -103,17 +87,33 @@ export default function RentersList() {
                 onClick: (event, renter) =>
                   history.push(`/admin/edit-renter/${renter.id}`),
               },
-              {
-                icon: 'delete',
-                tooltip: 'Delete',
-                onClick: (event, renter) => deleteRenter(event, renter.id),
-              },
               renter => ({
                 icon: renter.is_locked ? LockOpenIcon : LockOutlinedIcon,
                 tooltip: renter.is_locked ? 'Unlock account' : 'Lock account',
                 onClick: (event, renter) => lockRenterAccount(renter.id),
               }),
             ]}
+            editable={{
+              onRowDelete: (thisRenter) =>
+                new Promise((resolve, reject) => {
+                  setTimeout(() => {
+                    const selectedRenter = [...details];
+                    const index = thisRenter.tableData.id;
+                    selectedRenter.splice(index, 1); //1: only one record
+                    axios
+                      .delete(AppUrl.DeleteRenter + thisRenter.id)
+                      .then((response) => {
+                        if (response.data.status === 200) {
+                          swal("Success", response.data.message, "success");
+                          setRentersListChange(true);
+                        } else if (response.data.status === 404) {
+                          swal("Error", response.data.message, "error");
+                        }
+                      });
+                    resolve();
+                  }, 1000);
+                }),
+            }}
           />
         </div>
       </Fragment>

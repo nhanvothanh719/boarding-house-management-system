@@ -3,7 +3,6 @@ import MainDashboard from "../pages/Admin/Dashboard/MainPage/MainDashboard";
 import RenterDetails from "../pages/Admin/Dashboard/Form";
 import CreateCategory from "../pages/Admin/Dashboard/Category/CreateCategory";
 import CategoriesList from "../pages/Admin/Dashboard/Category/CategoriesList";
-import EditCategory from "../pages/Admin/Dashboard/Category/EditCategory";
 import CreateRoom from "../pages/Admin/Dashboard/Room/CreateRoom";
 import RoomsList from "../pages/Admin/Dashboard/Room/RoomsList";
 import EditRoom from "../pages/Admin/Dashboard/Room/EditRoom";
@@ -36,12 +35,11 @@ import ProblemsList from "../pages/Admin/Dashboard/Problem/ProblemsList";
 const routes = [
     { path: '/admin', exact: true, name: 'Admin' }, // '/admin/123', 'admin/weq', ...
     { path: '/admin/dashboard', exact: true, name: 'MainDashboard', component: MainDashboard },
-    //{ path: '/admin/renters', exact: true, name: 'AllRenters', component: RentersList },
+    // { path: '/admin/rentersss', exact: true, name: 'AllRenters', component: RentersList },
     { path: '/admin/renters/:renterID', exact: true, name: 'RenterDetails', component: RenterDetails },
     //Category
     { path: '/admin/create-category', exact: true, name: 'CreateCategory', component: CreateCategory },
     { path: '/admin/view-all-categories', exact: true, name: 'CategoriesList', component: CategoriesList },
-    { path: '/admin/edit-category/:categoryID', exact: true, name: 'EditCategory', component: EditCategory },
     //Room
     { path: '/admin/room/:roomID', exact: true, name: 'RoomDetails', component: RoomDetails },
     { path: '/admin/rent-room', exact: true, name: 'RentRoom', component: RentRoom },

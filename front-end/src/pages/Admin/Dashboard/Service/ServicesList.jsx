@@ -11,34 +11,22 @@ import AppUrl from "../../../../RestAPI/AppUrl";
 export default function ServicesList() {
   const history = useHistory();
 
+  const [details] = useState([]);
   const [loading, setLoading] = useState(true);
   const [servicesList, setServicesList] = useState([]);
+  const [servicesListChange, setServicesListChange] = useState([]);
 
   useEffect(() => {
     axios.get(AppUrl.ShowServices).then((response) => {
       if (response.data.status === 200) {
         setServicesList(response.data.allServices);
       }
-      setLoading(false);
     });
-  }, []);
-
-  const deleteService = (e, id) => {
-    e.preventDefault();
-    const selectedService = e.currentTarget;
-    selectedService.innerText = "Deleting";
-    axios.delete(AppUrl.DeleteService + id).then((response) => {
-      if (response.data.status === 200) {
-        swal("Success", response.data.message, "success");
-        //Delete table row
-        selectedService.closest("tr").remove();
-        history.push("/admin/view-all-services");
-      } else if (response.data.status === 404) {
-        swal("Fail", response.data.message, "error");
-        selectedService.innerText = "Delete";
-      }
-    });
-  };
+    setLoading(false);
+    if (servicesListChange) {
+      setServicesListChange(false);
+    }
+  }, [servicesListChange]);
 
   var columns = [];
   if (loading) {
@@ -94,12 +82,28 @@ export default function ServicesList() {
                 onClick: (event, service) =>
                   history.push(`/admin/edit-service/${service.id}`),
               },
-              {
-                icon: 'delete',
-                tooltip: 'Delete',
-                onClick: (event, service) => deleteService(event, service.id),
-              },
             ]}
+            editable={{
+              onRowDelete: (thisService) =>
+                new Promise((resolve, reject) => {
+                  setTimeout(() => {
+                    const selectedService = [...details];
+                    const index = thisService.tableData.id;
+                    selectedService.splice(index, 1); //1: only one record
+                    axios
+                      .delete(AppUrl.DeleteService + thisService.id)
+                      .then((response) => {
+                        if (response.data.status === 200) {
+                          swal("Success", response.data.message, "success");
+                          setServicesListChange(true);
+                        } else if (response.data.status === 404) {
+                          swal("Error", response.data.message, "error");
+                        }
+                      });
+                    resolve();
+                  }, 1000);
+                }),
+            }}
           />
         </div>
       </Fragment>

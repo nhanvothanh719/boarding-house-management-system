@@ -36,14 +36,13 @@ export default function RoomContractsList() {
   const [showEditSignaturesModal, setShowEditSignaturesModal] = useState(false);
   const [selectedRoomContractId, setSelectedRoomContractId] = useState(null);
 
-
   useEffect(() => {
     axios.get(AppUrl.ShowRoomContracts).then((response) => {
       if (response.status === 200) {
         setRoomContractsList(response.data.allRoomContracts);
       }
-      setLoading(false);
     });
+    setLoading(false);
     if (contractRoomChange) {
       setContractRoomChange(false);
     }
@@ -188,14 +187,14 @@ export default function RoomContractsList() {
                 resolve();
               }, 1000);
             }),
-          onRowDelete: (oldRoomContract) =>
+          onRowDelete: (thisRoomContract) =>
             new Promise((resolve, reject) => {
               setTimeout(() => {
-                const selectRoomContract = [...details];
-                const index = oldRoomContract.tableData.id;
-                selectRoomContract.splice(index, 1); //1: only one record
+                const selectedRoomContract = [...details];
+                const index = thisRoomContract.tableData.id;
+                selectedRoomContract.splice(index, 1); //1: only one record
                 axios
-                  .delete(AppUrl.DeleteRoomContract + oldRoomContract.id)
+                  .delete(AppUrl.DeleteRoomContract + thisRoomContract.id)
                   .then((response) => {
                     if (response.data.status === 200) {
                       swal("Success", response.data.message, "success");
