@@ -5,14 +5,13 @@ import swal from "sweetalert";
 import axios from "axios";
 
 import AppUrl from "../../../../RestAPI/AppUrl";
+import SearchCategory from "../../../../components/Search/SearchCategory";
 
 export default function CreateRoom() {
   const history = useHistory();
 
-  const [categories, setCategories] = useState([]);
   const [input, setInput] = useState({
     number: "",
-    category_id: "",
     description: "",
     area: "",
     has_conditioner: "",
@@ -21,14 +20,7 @@ export default function CreateRoom() {
   });
   const [pictures, setPictures] = useState("");
   const [errors, setErrors] = useState([]);
-
-  useEffect(() => {
-    axios.get(AppUrl.ShowCategories).then((response) => {
-      if (response.data.status === 200) {
-        setCategories(response.data.allCategories);
-      }
-    });
-  }, []);
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
   const handleInput = (e) => {
     e.persist();
@@ -38,6 +30,10 @@ export default function CreateRoom() {
   const handleImage = (e) => {
     setPictures(e.target.files);
   };
+
+  const getSelectedCategory = (category) => {
+    setSelectedCategory(category);
+  }
 
   const createRoom = (e) => {
     e.preventDefault();
@@ -50,7 +46,7 @@ export default function CreateRoom() {
         console.log(pictures[i]);
       }
     }
-    newRoom.append("category_id", input.category_id);
+    newRoom.append("category_id", selectedCategory.id);
     newRoom.append("number", input.number);
     newRoom.append("description", input.description);
     newRoom.append("area", input.area);
@@ -105,22 +101,7 @@ export default function CreateRoom() {
             <small className="text-danger">{errors.number}</small>
             <div className="formInput">
               <label>Category:</label>
-              <select
-                className="form-control"
-                name="category_id"
-                onChange={handleInput}
-                value={input.category_id}
-              >
-                <option selected>--- Select category ---</option>
-                {categories.map((category) => {
-                  return (
-                    <option value={category.id} key={category.id}>
-                      {" "}
-                      {category.name}{" "}
-                    </option>
-                  );
-                })}
-              </select>
+              <SearchCategory getSelectedCategory={getSelectedCategory} />
             </div>
             <small className="text-danger">{errors.category_id}</small>
             <div className="formInput">

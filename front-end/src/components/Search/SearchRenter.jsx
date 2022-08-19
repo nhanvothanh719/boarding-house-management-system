@@ -18,8 +18,8 @@ export default function SearchRenter(props) {
     });
   }, []);
 
-  const handleChange = (event, value) => {
-    props.getSelectedRenter(value);
+  const handleChange = (event, renter) => {
+    props.getSelectedRenter(renter);
   };
 
   return (

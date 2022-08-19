@@ -15,8 +15,8 @@ import SearchBreach from "../../Search/SearchBreach";
 export default function CreateBreachHistoryModal(props) {
   const [errors, setErrors] = useState([]);
   const [violateMoment, setViolateMoment] = useState(moment());
-  const [selectedRenterId, setSelectedRenterId] = useState(null);
-  const [selectedBreachId, setSelectedBreachId] = useState(null);
+  const [selectedRenter, setSelectedRenter] = useState(null);
+  const [selectedBreach, setSelectedBreach] = useState(null);
 
   useEffect(() => {
     if (props.isShown === true) {
@@ -39,18 +39,18 @@ export default function CreateBreachHistoryModal(props) {
   };
 
   const getSelectedRenter = (renter) => {
-    setSelectedRenterId(renter.id);
+    setSelectedRenter(renter);
   };
 
   const getSelectedBreach = (breach) => {
-    setSelectedBreachId(breach.id);
+    setSelectedBreach(breach);
   };
 
   const addBreachHistory = (e) => {
     e.preventDefault();
     const data = {
-      breach_id: selectedBreachId,
-      renter_id: selectedRenterId,
+      breach_id: selectedBreach.id,
+      renter_id: selectedRenter.id,
       violate_at: moment(violateMoment).utc().format("YYYY-MM-DD hh:mm:ss"),
     };
     axios

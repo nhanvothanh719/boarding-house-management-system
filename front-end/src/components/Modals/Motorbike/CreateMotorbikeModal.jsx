@@ -12,7 +12,7 @@ export default function CreateMotorbikeModal(props) {
   const [input, setInput] = useState({
     license_plate: "",
   });
-  const [selectedRenterId, setSelectedRenterId] = useState(null);
+  const [selectedRenter, setSelectedRenter] = useState(null);
 
   useEffect(() => {
     if (props.isShown === true) {
@@ -44,13 +44,13 @@ export default function CreateMotorbikeModal(props) {
   };
 
   const getSelectedRenter = (renter) => {
-    setSelectedRenterId(renter.id);
+    setSelectedRenter(renter);
   };
 
   const createMotorbike = (e) => {
     e.preventDefault();
     const motorbike = new FormData();
-    motorbike.append("renter_id", selectedRenterId);
+    motorbike.append("renter_id", selectedRenter.id);
     motorbike.append("license_plate", input.license_plate);
     if (motorbikeImage.motorbike_image) {
       motorbike.append("motorbike_image", motorbikeImage.motorbike_image);

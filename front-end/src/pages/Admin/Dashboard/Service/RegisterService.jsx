@@ -6,24 +6,18 @@ import MaterialTable from "material-table";
 
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
+import SearchService from "../../../../components/Search/SearchService";
+import SearchRenter from "../../../../components/Search/SearchRenter";
 
 export default function RegisterService() {
-  const [loading, setLoading] = useState(true);
-  const [services, setServices] = useState([]);
-  const [registrations, setRegistrations] = useState([]);
-  const [input, setInput] = useState({
-    user_id: "",
-    service_id: "",
-  });
   const [errors, setErrors] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [registrations, setRegistrations] = useState([]);
   const [columnNumberChange, setColumnNumberChange] = useState(false);
+  const [selectedRenter, setSelectedRenter] = useState(null);
+  const [selectedService, setSelectedService] = useState(null);
 
   useEffect(() => {
-    axios.get(AppUrl.GetOptionalServices).then((response) => {
-      if (response.data.status === 200) {
-        setServices(response.data.allOptionalServices);
-      }
-    });
     axios.get(AppUrl.ShowRegistrations).then((response) => {
       if (response.data.status === 200) {
         setRegistrations(response.data.allRegistrations);
@@ -35,16 +29,19 @@ export default function RegisterService() {
     setLoading(false);
   }, [columnNumberChange]);
 
-  const handleInput = (e) => {
-    e.persist();
-    setInput({ ...input, [e.target.name]: e.target.value });
-  };
+  const getSelectedService = (service) => {
+    setSelectedService(service);
+  }
+
+  const getSelectedRenter = (renter) => {
+    setSelectedRenter(renter);
+  }
 
   const register = (e) => {
     e.preventDefault();
     const registration = {
-      user_id: input.user_id,
-      service_id: input.service_id,
+      user_id: selectedRenter.id,
+      service_id: selectedService.id,
     };
     axios
       .post(AppUrl.RegisterService, registration)
@@ -63,24 +60,6 @@ export default function RegisterService() {
       .catch((error) => {
         console.log(error);
       });
-  };
-
-  const findUser = (e) => {
-    e.preventDefault();
-    if (input.user_id) {
-      axios
-        .get(AppUrl.FindName + input.user_id)
-        .then((response) => {
-          if (response.data.status === 200) {
-            swal("User found", response.data.name, "success");
-          } else if (response.data.status === 404) {
-            swal("No user found", response.data.message, "error");
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
   };
 
   let columns = [];
@@ -132,34 +111,12 @@ export default function RegisterService() {
           >
             <div className="formInput">
               <label>Renter ID:</label>
-              <input
-                type="text"
-                className="inputItem"
-                name="user_id"
-                onChange={handleInput}
-                value={input.user_id}
-              />
+              <SearchRenter getSelectedRenter={getSelectedRenter}/>
             </div>
             <small className="text-danger">{errors.user_id}</small>
-            <button onClick={findUser}>Find person</button>
             <div className="formInput">
               <label>Service:</label>
-              <select
-                className="form-control"
-                name="service_id"
-                onChange={handleInput}
-                value={input.service_id}
-              >
-                <option selected>--- Select service ---</option>
-                {services.map((service) => {
-                  return (
-                    <option value={service.id} key={service.id}>
-                      {" "}
-                      {service.name}{" "}
-                    </option>
-                  );
-                })}
-              </select>
+              <SearchService getSelectedService={getSelectedService}/>
             </div>
             <small className="text-danger">{errors.service_id}</small>
             <button type="submit" className="formButton">

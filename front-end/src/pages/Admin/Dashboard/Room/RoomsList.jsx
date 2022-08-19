@@ -56,9 +56,6 @@ export default function RoomsList() {
             <Link to="/admin/create-room" className="createBtn">
               Add new room
             </Link>
-            <Link to="/admin/rent-room" className="createBtn">
-              Assign renter to room
-            </Link>
           </div>
           <MaterialTable
             columns={columns}

@@ -7,19 +7,20 @@ import Autocomplete from "@mui/material/Autocomplete";
 
 import AppUrl from "../../RestAPI/AppUrl";
 
-export default function SearchBreach(props) {
-    const [breachesList, setBreachesList] = useState([]);
+export default function SearchCategoryEdit(props) {
+    const [categoriesList, setCategoriesList] = useState([]);
 
     useEffect(() => {
-      axios.get(AppUrl.ShowBreaches).then((response) => {
+      axios.get(AppUrl.ShowCategories).then((response) => {
         if (response.data.status === 200) {
-          setBreachesList(response.data.allBreaches);
+          setCategoriesList(response.data.allCategories);
+          props.getSelectedCategory(props.currentCategory);
         }
       });
-    }, []);
+    }, [props]);
   
-    const handleChange = (event, breach) => {
-      props.getSelectedBreach(breach);
+    const handleChange = (event, category) => {
+      props.getSelectedCategory(category);
     };
   
     return (
@@ -27,7 +28,8 @@ export default function SearchBreach(props) {
         <Autocomplete
           id="inputRenterId"
           sx={{ width: 300 }}
-          options={breachesList}
+          options={categoriesList}
+          value={props.currentCategory}
           autoHighlight
           getOptionLabel={(option) => option.name}
           renderOption={(props, option) => (
@@ -39,7 +41,7 @@ export default function SearchBreach(props) {
               {option.name}
             </Box>
           )}
-          renderInput={(params) => <TextField {...params} label="Choose a breach" />}
+          renderInput={(params) => <TextField {...params} label="Choose a category" />}
           onChange={handleChange}
         />
       </Fragment>

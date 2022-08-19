@@ -17,6 +17,7 @@ import ShowChartIcon from "@mui/icons-material/ShowChart";
 import BadgeIcon from "@mui/icons-material/Badge";
 import LogoutIcon from "@mui/icons-material/Logout";
 import RoomPreferencesIcon from '@mui/icons-material/RoomPreferences';
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
 
 import "../../assets/css/Dashboard/sidebar.css";
 
@@ -114,6 +115,12 @@ function SideBar() {
               <li className="customLi">
                 <NotificationsActiveIcon className="sideBarIcon" />
                 <span className="itemName"> Announcements </span>
+              </li>
+            </NavLink>
+            <NavLink exact to="/admin/rent-room" style={{ textDecoration: "none" }}>
+              <li className="customLi">
+                <GroupAddIcon className="sideBarIcon" />
+                <span className="itemName"> Rooms </span>
               </li>
             </NavLink>
             <NavLink exact to="/admin/register-service" style={{ textDecoration: "none" }}>

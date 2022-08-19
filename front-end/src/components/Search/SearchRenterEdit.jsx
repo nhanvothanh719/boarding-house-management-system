@@ -14,12 +14,13 @@ export default function SearchRenterEdit(props) {
       axios.get(AppUrl.ShowRenters).then((response) => {
         if (response.data.status === 200) {
           setRentersList(response.data.allRenters);
+          props.getSelectedRenter(props.currentRenter);
         }
       });
-    }, [props.currentRenter]);
+    }, [props]);
   
-    const handleChange = (event, value) => {
-      props.getSelectedRenter(value);
+    const handleChange = (event, renter) => {
+      props.getSelectedRenter(renter);
     };
   
     return (
@@ -29,6 +30,7 @@ export default function SearchRenterEdit(props) {
           sx={{ width: 300 }}
           options={rentersList}
           value={props.currentRenter}
+          defaultValue={props.currentRenter}
           autoHighlight
           getOptionLabel={(option) => option.name}
           renderOption={(props, option) => (

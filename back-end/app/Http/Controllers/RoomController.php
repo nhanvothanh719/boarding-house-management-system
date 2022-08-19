@@ -245,7 +245,7 @@ class RoomController extends Controller
     public function rentRoom(Request $request) {
         $validator = Validator::make($request->all(), [
             'renter_id' => 'unique:room_rents',
-            'room_number' => 'required',
+            'room_id' => 'required',
         ]);
         if($validator->fails())
         {
@@ -269,7 +269,7 @@ class RoomController extends Controller
                 'status' => 404,
             ]);
         }
-        $room_id = Room::where('number', $request->room_number)->value('id');
+        $room_id = $request->room_id;
         $room = Room::find($room_id);
         $room_status_id = $room->status_id;
         switch($room_status_id) {

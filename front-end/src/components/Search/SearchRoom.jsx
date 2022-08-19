@@ -18,8 +18,8 @@ export default function SearchRoom(props) {
         });
       }, []);
 
-      const handleChange = (event, value) => {
-        props.getSelectedRoom(value);
+      const handleChange = (event, room) => {
+        props.getSelectedRoom(room);
       };
 
   return (
@@ -36,7 +36,7 @@ export default function SearchRoom(props) {
             sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
             {...props}
           >
-            {option.number} ({option.status})
+            {option.number}
           </Box>
         )}
         renderInput={(params) => <TextField {...params} label="Choose a room" />}
