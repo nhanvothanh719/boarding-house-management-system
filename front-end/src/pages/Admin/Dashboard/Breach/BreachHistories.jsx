@@ -5,10 +5,6 @@ import axios from "axios";
 import moment from "moment";
 import { useHistory } from "react-router-dom";
 
-import TextField from "@mui/material/TextField";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import {
   XAxis,
   YAxis,
@@ -25,30 +21,21 @@ import {
 
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
+import CreateBreachHistoryModal from "../../../../components/Modals/Breach/CreateBreachHistoryModal";
 
 export default function BreachHistories() {
   const history = useHistory();
-  const [errors, setErrors] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [breachHistories, setBreachHistories] = useState([]);
-  const [input, setInput] = useState({
-    breach_id: "",
-    renter_id: "",
-  });
+
   const [details] = useState([]);
-  const [breachHistoriesChange, setBreachHistoriesChange] = useState(false);
-  const [breachesList, setBreachesList] = useState([]);
-  const [violateMoment, setViolateMoment] = useState(moment());
+  const [loading, setLoading] = useState(true);
   const [chartData, setChartData] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [breachHistories, setBreachHistories] = useState([]);
+  const [breachHistoriesChange, setBreachHistoriesChange] = useState(false);
   const [renterBreachMadeTotal, setRenterBreachMadeTotal] = useState([]);
+  const [showCreateModal, setShowCreateModal] = useState(false);
 
   useEffect(() => {
-    axios.get(AppUrl.ShowBreaches).then((response) => {
-      if (response.data.status === 200) {
-        setBreachesList(response.data.allBreaches);
-      }
-    });
     axios.get(AppUrl.GetTotalNumberBreachMade).then((response) => {
       if (response.data.status === 200) {
         setChartData(response.data.breachTotals);
@@ -71,66 +58,12 @@ export default function BreachHistories() {
     setLoading(false);
   }, [breachHistoriesChange]);
 
-  const showModal = () => {
-    var model = new window.bootstrap.Modal(
-      document.getElementById("addBreachHistoryModal")
-    );
-    model.show();
+  const setCreateModalStatus = (status) => {
+    setShowCreateModal(status);
   };
 
-  const handleInput = (e) => {
-    e.persist();
-    setInput({ ...input, [e.target.name]: e.target.value });
-  };
-
-  const addBreachHistory = (e) => {
-    e.preventDefault();
-    const data = {
-      breach_id: input.breach_id,
-      renter_id: input.renter_id,
-      violate_at: moment(violateMoment).utc().format("YYYY-MM-DD hh:mm:ss"),
-    };
-    axios
-      .post(AppUrl.StoreBreachHistory, data)
-      .then((response) => {
-        if (response.data.status === 200) {
-          setErrors([]);
-          //Delete input after submit the form
-          setInput({
-            breach_id: "",
-            renter_id: "",
-          });
-          setViolateMoment(moment());
-          swal("Success", response.data.message, "success");
-          setBreachHistoriesChange(true);
-        } else if (response.data.status === 422) {
-          setErrors(response.data.errors);
-          setTimeout(() => {
-            showModal();
-          }, 1000);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
-  const findUser = (e) => {
-    e.preventDefault();
-    if (input.renter_id) {
-      axios
-        .get(AppUrl.FindName + input.renter_id)
-        .then((response) => {
-          if (response.data.status === 200) {
-            swal("User found", response.data.name, "success");
-          } else if (response.data.status === 404) {
-            swal("No user found", response.data.message, "error");
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
+  const updateCreateModalStatus = (status) => {
+    setBreachHistoriesChange(status);
   };
 
   const renderActiveShape = (props) => {
@@ -265,103 +198,17 @@ export default function BreachHistories() {
 				/>
 			</PieChart>
 
-      <button className="btn btn-primary" onClick={showModal}>
+      <button 
+      className="btn btn-primary" 
+      onClick={(e) => setShowCreateModal(true)}
+      >
         Add new breach history
       </button>
-
-      <form
-        class="modal fade"
-        id="addBreachHistoryModal"
-        tabindex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">
-                Add new breach history
-              </h5>
-              <button
-                type="button"
-                class="close"
-                data-dismiss="modal"
-                aria-label="Close"
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <hr />
-              <form className="flexForm">
-                <div className="formInput">
-                  <label className="inputItemLabel">Renter ID:</label>
-                  <input
-                    type="text"
-                    className="inputItem"
-                    name="renter_id"
-                    onChange={handleInput}
-                    value={input.renter_id}
-                  />
-                </div>
-                <button onClick={findUser}>Find person</button>
-                <small className="text-danger">{errors.renter_id}</small>
-                <div className="formInput">
-                  <label className="inputItemLabel">Breach:</label>
-                  <select
-                    className="form-control"
-                    name="breach_id"
-                    onChange={handleInput}
-                    value={input.breach_id}
-                  >
-                    <option selected>--- Select breach ---</option>
-                    {breachesList.map((breach) => {
-                      return (
-                        <option value={breach.id} key={breach.id}>
-                          {" "}
-                          {breach.name}{" "}
-                        </option>
-                      );
-                    })}
-                  </select>
-                </div>
-                <small className="text-danger">{errors.breach_id}</small>
-                <div className="">
-                  <label className="inputItemLabel">Violate at:</label>
-                  <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    <DateTimePicker
-                      renderInput={(props) => <TextField {...props} />}
-                      // label="Violate moment"
-                      value={violateMoment}
-                      onChange={(selectMoment) => {
-                        setViolateMoment(selectMoment);
-                      }}
-                    />
-                  </LocalizationProvider>
-                </div>
-                <small className="text-danger">{errors.violate_at}</small>
-              </form>
-            </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-success"
-                data-dismiss="modal"
-                onClick={addBreachHistory}
-              >
-                Add
-              </button>
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-dismiss="modal"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      </form>
+      <CreateBreachHistoryModal
+        isShown={showCreateModal}
+        setCreateModalStatus={setCreateModalStatus}
+        updateCreateModalStatus={updateCreateModalStatus}
+      />
 
       <MaterialTable
         columns={columns}

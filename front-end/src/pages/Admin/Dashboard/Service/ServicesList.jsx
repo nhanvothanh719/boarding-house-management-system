@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import MaterialTable from "material-table";
 import swal from "sweetalert";
@@ -7,14 +7,17 @@ import axios from "axios";
 
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
+import CreateServiceModal from "../../../../components/Modals/Service/CreateServiceModal";
+import EditServiceModal from "../../../../components/Modals/Service/EditServiceModal";
 
 export default function ServicesList() {
-  const history = useHistory();
-
   const [details] = useState([]);
   const [loading, setLoading] = useState(true);
   const [servicesList, setServicesList] = useState([]);
   const [servicesListChange, setServicesListChange] = useState([]);
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [selectedServiceId, setSelectedServiceId] = useState(null);
 
   useEffect(() => {
     axios.get(AppUrl.ShowServices).then((response) => {
@@ -27,6 +30,18 @@ export default function ServicesList() {
       setServicesListChange(false);
     }
   }, [servicesListChange]);
+
+  const setCreateModalStatus = (status) => {
+    setShowCreateModal(status);
+  };
+
+  const setEditModalStatus = (status) => {
+    setShowEditModal(status);
+  };
+
+  const updateModalStatus = (status) => {
+    setServicesListChange(status);
+  };
 
   var columns = [];
   if (loading) {
@@ -53,13 +68,17 @@ export default function ServicesList() {
       <Fragment>
         <div className="customDatatable">
           <div className="datatableHeader">
-            <Link to="/admin/create-service" className="createBtn">
+          <button
+              className="btn btn-primary"
+              onClick={(e) => setShowCreateModal(true)}
+            >
               Add new service
-            </Link>
-            <br />
-            <Link to="/admin/register-service" className="createBtn">
-              Register for using service
-            </Link>
+            </button>
+            <CreateServiceModal
+              isShown={showCreateModal}
+              setCreateModalStatus={setCreateModalStatus}
+              updateModalStatus={updateModalStatus}
+            />
           </div>
           <MaterialTable
             columns={columns}
@@ -79,8 +98,10 @@ export default function ServicesList() {
               {
                 icon: 'edit',
                 tooltip: 'Edit',
-                onClick: (event, service) =>
-                  history.push(`/admin/edit-service/${service.id}`),
+                onClick: (event, service) => {
+                  setShowEditModal(true);
+                  setSelectedServiceId(service.id);
+                }
               },
             ]}
             editable={{
@@ -106,6 +127,12 @@ export default function ServicesList() {
             }}
           />
         </div>
+        <EditServiceModal
+            isShown={showEditModal}
+            serviceId={selectedServiceId}
+            setEditModalStatus={setEditModalStatus}
+            updateModalStatus={updateModalStatus}
+          />
       </Fragment>
     );
   }

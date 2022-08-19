@@ -4,10 +4,10 @@ import MaterialTable from "material-table";
 import swal from "sweetalert";
 import axios from "axios";
 
-import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
-import ReplyProblemModal from "../../../../components/Modals/ReplyProblemModal";
-import ViewReplyProblemModal from "../../../../components/Modals/ViewProblemReplyModal";
+import Loading from "../../../../components/Loading/Loading";
+import ReplyProblemModal from "../../../../components/Modals/Problem/ReplyProblemModal";
+import ViewReplyProblemModal from "../../../../components/Modals/Problem/ViewProblemReplyModal";
 
 export default function ProblemsList() {
 

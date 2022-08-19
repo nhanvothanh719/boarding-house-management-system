@@ -1,5 +1,4 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { Link, } from "react-router-dom";
 
 import axios from "axios";
 import MaterialTable from "material-table";
@@ -7,12 +6,14 @@ import swal from "sweetalert";
 
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
+import CreateCategoryModal from "../../../../components/Modals/Category/CreateCategoryModal";
 
 function CategoriesList() {
   const [details] = useState([]);
   const [loading, setLoading] = useState(true);
   const [categoriesList, setCategoryList] = useState([]);
   const [categoriesListChange, setCategoriesListChange] = useState(false);
+  const [showCreateModal, setShowCreateModal] = useState(false);
 
   useEffect(() => {
     axios.get(AppUrl.ShowCategories).then((response) => {
@@ -26,59 +27,84 @@ function CategoriesList() {
     }
   }, [categoriesListChange]);
 
+  const setCreateModalStatus = (status) => {
+    setShowCreateModal(status);
+  };
+
+  const updateCreateModalStatus = (status) => {
+    setCategoriesListChange(status);
+  };
+
   var columns = [];
   if (loading) {
     return <Loading />;
   } else {
     columns = [
-      { title: '#', render: (rowData) => rowData.tableData.id + 1 },
-      { field: "name", title: "Name",
-      validate: (rowData) => {
-        if (rowData.name === "") {
-          return "Name cannot be empty";
-        }
-        let categoryNames = [];
-        let category_id = 0;
-        categoriesList.forEach((category) => {
-          category_id = category["id"];
-          categoryNames[category_id] = category["name"];
-        });
-        let otherCategoryNames = categoryNames.filter(function (categoryName) {
-          //Return all values in array except the filtered object
-          return categoryName !== categoryNames[rowData.id]; //Condition
-        });
-        //Check unique
-        if (otherCategoryNames.includes(rowData.name)) {
-          return "Name has already taken";
-        }
-        return true;
-      }, },
+      { title: "#", render: (rowData) => rowData.tableData.id + 1 },
+      {
+        field: "name",
+        title: "Name",
+        validate: (rowData) => {
+          if (rowData.name === "") {
+            return "Name cannot be empty";
+          }
+          let categoryNames = [];
+          let category_id = 0;
+          categoriesList.forEach((category) => {
+            category_id = category["id"];
+            categoryNames[category_id] = category["name"];
+          });
+          let otherCategoryNames = categoryNames.filter(function (
+            categoryName
+          ) {
+            //Return all values in array except the filtered object
+            return categoryName !== categoryNames[rowData.id]; //Condition
+          });
+          //Check unique
+          if (otherCategoryNames.includes(rowData.name)) {
+            return "Name has already taken";
+          }
+          return true;
+        },
+      },
       {
         field: "description",
         title: "Description",
         emptyValue: () => <em>No description</em>,
       },
-      { field: "price", title: "Price", align: "center",
-      type: "numeric",
-      validate: (rowData) => {
-        if (!Number.isFinite(rowData.price)) {
-          return "Input must be float data type";
-        } else if (rowData.allowed_violate_number <= 0) {
-          return "Input number must be bigger than 0";
-        } else if (rowData.allowed_violate_number >= 1000) {
-          return "Input number must be smaller than 1000";
-        }
-        return true;
-      }, },
+      {
+        field: "price",
+        title: "Price",
+        align: "center",
+        type: "numeric",
+        validate: (rowData) => {
+          if (!Number.isFinite(rowData.price)) {
+            return "Input must be float data type";
+          } else if (rowData.allowed_violate_number <= 0) {
+            return "Input number must be bigger than 0";
+          } else if (rowData.allowed_violate_number >= 1000) {
+            return "Input number must be smaller than 1000";
+          }
+          return true;
+        },
+      },
     ];
 
     return (
       <Fragment>
         <div className="customDatatable">
           <div className="datatableHeader">
-            <Link to="/admin/create-category" className="createBtn">
+            <button
+              className="btn btn-primary"
+              onClick={(e) => setShowCreateModal(true)}
+            >
               Add new category
-            </Link>
+            </button>
+            <CreateCategoryModal
+              isShown={showCreateModal}
+              setCreateModalStatus={setCreateModalStatus}
+              updateCreateModalStatus={updateCreateModalStatus}
+            />
           </div>
           <MaterialTable
             columns={columns}

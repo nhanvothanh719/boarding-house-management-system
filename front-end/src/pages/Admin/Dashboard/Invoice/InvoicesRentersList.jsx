@@ -102,9 +102,6 @@ export default function InvoicesRentersList() {
       <Fragment>
         <div className="customDatatable">
           <div className="datatableHeader">
-            <Link to="/admin/create-renter" className="createBtn">
-              Add new renter
-            </Link>
           </div>
           <MaterialTable
             columns={renters_columns}

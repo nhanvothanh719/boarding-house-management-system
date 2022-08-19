@@ -3,7 +3,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import swal from "sweetalert";
 import axios from "axios";
 
-import AppUrl from "../../RestAPI/AppUrl";
+import AppUrl from "../../../RestAPI/AppUrl";
 
 export default function EditSignatures(props) {
   const [errors, setErrors] = useState([]);

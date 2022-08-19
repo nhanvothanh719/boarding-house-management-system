@@ -13,7 +13,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
 import SearchRenter from "../../../../components/Search/SearchRenter";
-import EditSignaturesModal from "../../../../components/Modals/EditSignaturesModal";
+import EditSignaturesModal from "../../../../components/Modals/RoomContract/EditSignaturesModal";
 
 export default function RoomContractsList() {
   const history = useHistory();

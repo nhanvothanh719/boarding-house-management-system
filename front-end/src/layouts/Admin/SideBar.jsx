@@ -16,6 +16,7 @@ import FlagIcon from "@mui/icons-material/Flag";
 import ShowChartIcon from "@mui/icons-material/ShowChart";
 import BadgeIcon from "@mui/icons-material/Badge";
 import LogoutIcon from "@mui/icons-material/Logout";
+import RoomPreferencesIcon from '@mui/icons-material/RoomPreferences';
 
 import "../../assets/css/Dashboard/sidebar.css";
 
@@ -43,6 +44,12 @@ function SideBar() {
               <li className="customLi">
                 <DashboardIcon className="sideBarIcon" />
                 <span className="itemName"> Dashboard </span>
+              </li>
+            </NavLink>
+            <NavLink exact to="/admin/view-balance-details" style={{ textDecoration: "none" }}>
+              <li className="customLi">
+                <ShowChartIcon className="sideBarIcon" />
+                <span className="itemName"> Balance </span>
               </li>
             </NavLink>
             <p className="itemGroup text-uppercase">Lists</p>
@@ -109,6 +116,12 @@ function SideBar() {
                 <span className="itemName"> Announcements </span>
               </li>
             </NavLink>
+            <NavLink exact to="/admin/register-service" style={{ textDecoration: "none" }}>
+              <li className="customLi">
+                <RoomPreferencesIcon className="sideBarIcon" />
+                <span className="itemName"> Services </span>
+              </li>
+            </NavLink>
             <NavLink exact to="/admin/view-all-renters-with-invoices" style={{ textDecoration: "none" }}>
               <li className="customLi">
                 <ReceiptIcon className="sideBarIcon" />
@@ -119,12 +132,6 @@ function SideBar() {
               <li className="customLi">
                 <FlagIcon className="sideBarIcon" />
                 <span className="itemName"> Breaches </span>
-              </li>
-            </NavLink>
-            <NavLink exact to="/admin/view-balance-details" style={{ textDecoration: "none" }}>
-              <li className="customLi">
-                <ShowChartIcon className="sideBarIcon" />
-                <span className="itemName"> Balance </span>
               </li>
             </NavLink>
             <p className="itemGroup text-uppercase">User</p>
