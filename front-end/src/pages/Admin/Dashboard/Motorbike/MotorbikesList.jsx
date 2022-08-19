@@ -1,5 +1,4 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { Link, useHistory } from "react-router-dom";
 
 import MaterialTable from "material-table";
 import swal from "sweetalert";
@@ -11,8 +10,6 @@ import CreateMotorbikeModal from "../../../../components/Modals/Motorbike/Create
 import EditMotorbikeModal from "../../../../components/Modals/Motorbike/EditMotorbikeModal";
 
 export default function MotorbikesList() {
-  const history = useHistory();
-
   const [details] = useState([]);
   const [loading, setLoading] = useState(true);
   const [motorbikesList, setMotorbikesList] = useState([]);

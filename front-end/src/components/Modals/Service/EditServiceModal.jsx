@@ -24,7 +24,7 @@ export default function EditServiceModal(props) {
       axios.get(AppUrl.EditService + props.serviceId).then((response) => {
         if (response.data.status === 200) {
           setInput(response.data.service);
-          setCheckbox(response.data.service);
+          setCheckbox(response.data.service.is_compulsory);
         } else if (response.data.status === 404) {
           swal("Error", response.data.message, "error");
         }

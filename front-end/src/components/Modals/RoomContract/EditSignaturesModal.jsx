@@ -48,7 +48,7 @@ export default function EditSignatures(props) {
   }, [props.isShown, props.roomContractId]);
 
   const closeModal = (e, value) => {
-    props.setModalStatus(false);
+    props.setEditModalStatus(false);
   };
 
   const displayModal = () => {

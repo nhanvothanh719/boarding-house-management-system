@@ -17,9 +17,8 @@ use App\Models\Service;
 use App\Models\Invoice;
 use App\Models\RoomRent;
 use App\Models\ExtraFee;
-use App\Models\PaymentHistory;
 use App\Models\InvoiceDetail;
-use App\Models\TemporaryInvoice;
+use App\Models\PaymentHistory;
 use App\Models\ServiceRegistration;
 
 use App\Mail\InvoiceSendMail;
@@ -42,59 +41,34 @@ class InvoiceController extends Controller
                 'status' => 404,
             ]);
         }
-        $registered_services = TemporaryInvoice::where('user_id', $id)->get();
-        return response([
-            'status' => 200,
-            'allServices' => $registered_services,
-        ]);
-    }
-
-    public function createTemporaryInvoice($id) {
-        $user = User::find($id);
-        if(!$user) {
-            return response([
-                'message' => 'Cannot create temporary invoice due to no user found',
-                'status' => 404,
-            ]);
+        $all_services = array();
+        $registered_services_id = ServiceRegistration::where('user_id', $id)->pluck('service_id');
+        foreach($registered_services_id as $service_id) {
+            $service = Service::find($service_id);
+            $item = new stdClass();
+            $item->id = $service_id;
+            $item->name = $service->name;
+            $item->is_compulsory = $service->is_compulsory;
+            $item->unit = $service->unit;
+            $item->unit_price = $service->unit_price;
+            $item->quantity = 0;
+            array_push($all_services, $item);
         }
-        TemporaryInvoice::where('user_id', $id)->delete();
-        $compulsory_services_id = DB::table('services')->where('is_compulsory', Service::COMPULSORY)->pluck('id');
+        $compulsory_services_id = Service::where('is_compulsory', Service::COMPULSORY)->pluck('id');
         foreach($compulsory_services_id as $service_id) {
-            DB::table('temporary_invoices')->insert([
-                'user_id' => $id,
-                'service_id' => $service_id,
-                'temporary_quantity' => 0,
-            ]);
-        }
-        $optional_services_id = DB::table('service_registrations')->where('user_id', $id)->pluck('service_id');
-        foreach($optional_services_id as $service_id) {
-            DB::table('temporary_invoices')->insert([
-                'user_id' => $id,
-                'service_id' => $service_id,
-                'temporary_quantity' => 0,
-            ]);
+            $service = Service::find($service_id);
+            $item = new stdClass();
+            $item->id = $service_id;
+            $item->name = $service->name;
+            $item->is_compulsory = $service->is_compulsory;
+            $item->unit = $service->unit;
+            $item->unit_price = $service->unit_price;
+            $item->quantity = 0;
+            array_push($all_services, $item);
         }
         return response([
-            'message' => 'Create temporary invoice successful',
             'status' => 200,
-        ]);
-    }
-
-    public function updateServiceQuantity($service_id, $value)
-    {
-        if(!is_numeric($value)) 
-        {
-            return response([
-                'message' => 'The value input is not numeric',
-                'status' => 404,
-            ]);
-        }
-        $service = TemporaryInvoice::where('id', $service_id)->first();
-        $service->temporary_quantity = $value;
-        $service->save();
-        return response([
-            'message' => 'Update value of invoice successfully',
-            'status' => 200,
+            'allServices' => $all_services,
         ]);
     }
 
@@ -140,7 +114,7 @@ class InvoiceController extends Controller
             'valid_until' => $request->valid_until,
         ]);
         //Create invoice details
-        InvoiceController::storeInvoiceDetails($id, $invoice->id);
+        InvoiceController::storeInvoiceDetails($invoice->id, $request->services);
         //Insert extra fee (if any)
         if($request->extra_fee) {
             ExtraFee::create([
@@ -154,23 +128,20 @@ class InvoiceController extends Controller
         $current_invoice = Invoice::find($invoice->id);
         $current_invoice->total = round($total, 2);
         $current_invoice->save();
-        InvoiceController::deleteTemporaryInvoice($id);
         return response([
             'message' => "Invoice created successfully",
             'status' => 200,
         ]);
     }
 
-    public function storeInvoiceDetails($id, $invoice_id) {
-        $used_services = TemporaryInvoice::where('user_id', $id)->get();
-        foreach($used_services as $service) {
+    public function storeInvoiceDetails($invoice_id, $services) {
+        foreach($services as $service) {
             $invoice_detail = new InvoiceDetail;
             $invoice_detail->invoice_id = $invoice_id;
-            $invoice_detail->service_id = $service->service_id;
-            $service_quantity = $service->temporary_quantity;
-            $invoice_detail->quantity = $service->temporary_quantity;
-            $service_unit_price = Service::where('id', $service->service_id)->value('unit_price');
-            $invoice_detail->subtotal = round($service->temporary_quantity * $service_unit_price, 2);
+            $invoice_detail->service_id = $service['id'];
+            $invoice_detail->quantity = $service['quantity'];
+            $service_unit_price = $service['unit_price'];
+            $invoice_detail->subtotal = round($service['quantity'] * $service_unit_price, 2);
             $invoice_detail->save();
         }
     }
@@ -190,10 +161,6 @@ class InvoiceController extends Controller
             $total = $total + $extra_fee_value;
         }
         return $total;
-    }
-    
-    public function deleteTemporaryInvoice($user_id) {
-        TemporaryInvoice::where('user_id', $user_id)->delete();
     }
 
     public function editInvoice($id) {

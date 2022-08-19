@@ -6,6 +6,7 @@ import swal from "sweetalert";
 import axios from "axios";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
+import FolderSharedIcon from '@mui/icons-material/FolderShared';
 
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
@@ -91,6 +92,13 @@ export default function RentersList() {
                 icon: renter.is_locked ? LockOpenIcon : LockOutlinedIcon,
                 tooltip: renter.is_locked ? 'Unlock account' : 'Lock account',
                 onClick: (event, renter) => lockRenterAccount(renter.id),
+              }),
+              ({
+                icon: FolderSharedIcon,
+                tooltip: 'Renter details',
+                onClick: (event, renter) => history.push(
+                  `/admin/view-all-invoices-of-renter/${renter.id}`
+                ),
               }),
             ]}
             editable={{

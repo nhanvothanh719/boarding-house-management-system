@@ -3,13 +3,20 @@ import { useHistory } from "react-router-dom";
 
 import swal from "sweetalert";
 import axios from "axios";
+import moment from "moment";
+import TextField from "@mui/material/TextField";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 import AppUrl from "../../../../RestAPI/AppUrl";
 
 export default function CreateInvoice({ match }) {
   const history = useHistory();
-  const [registeredServices, setRegisteredServices] = useState([]);
   const renterId = match.params.renterID;
+  var totalPrice = 0;
+
+  const [registeredServices, setRegisteredServices] = useState([]);
   const [errors, setErrors] = useState([]);
   const [input, setInput] = useState({
     effective_from: "",
@@ -19,14 +26,10 @@ export default function CreateInvoice({ match }) {
     extra_fee: "",
     description: "",
   });
-  var totalPrice = 0;
+  const [effectiveFromDate, setEffectiveFromDate] = useState(moment());
+  const [validUntilDate, setValidUntilDate] = useState(moment());
 
   useEffect(() => {
-    axios.post(AppUrl.CreateTemporaryInvoice + renterId).then((response) => {
-      if(response.data.status === 200) {
-        swal("success", response.data.message, "Success");
-      }
-    });
     axios.get(AppUrl.GetRegisteredServices + renterId).then((response) => {
       if (response.data.status === 200) {
         setRegisteredServices(response.data.allServices);
@@ -43,46 +46,35 @@ export default function CreateInvoice({ match }) {
     setRegisteredServices((registeredServices) =>
       registeredServices.map((service) =>
         service_id === service.id
-          ? { ...service, temporary_quantity: e.target.value }
+          ? { ...service, quantity: e.target.value }
           : service
       )
     );
-    updateServiceQuantity(service_id, index);
-  };
-
-  const updateServiceQuantity = (service_id, index) => {
-    var servicesAmountInput = document.getElementsByName("quantity");
-    //console.log(servicesAmountInput[index].value);
-    var input = servicesAmountInput[index].value;
-    if(input) {
-      //console.log("Update service with ID " + service_id + " with value: " + input);
-      axios.post(`/update-service-quantity/${service_id}/${input}`);
-    }
   };
 
   const createInvoice = (e) => {
     e.preventDefault();
-    const otherInput = {
+    const invoice = {
+      services: registeredServices,
       discount: input.discount,
-      effective_from: input.effective_from,
-      valid_until: input.valid_until,
+      effective_from: moment(effectiveFromDate).utc().format("YYYY-MM-DD"),
+      valid_until: moment(validUntilDate).utc().format("YYYY-MM-DD"),
       month: input.month,
       extra_fee: input.extra_fee,
       description: input.description,
     };
+    console.log(invoice);
     axios
-      .post(AppUrl.StoreInvoice + renterId, otherInput)
+      .post(AppUrl.StoreInvoice + renterId, invoice)
       .then((response) => {
         if (response.data.status === 200) {
           swal("Success", response.data.message, "success");
           history.push("/admin/view-all-renters-with-invoices");
-        }
-        else if (response.data.status === 422) {
+        } else if (response.data.status === 422) {
           swal("All fields are mandatory", "", "error");
           setErrors(response.data.errors);
-        } 
-        else if (response.data.status === 404) {
-          setInput({ ...input, errors_list: response.data.errors });
+        } else if (response.data.status === 404) {
+          swal("Error", response.data.message, "error");
         }
       })
       .catch((error) => {
@@ -97,7 +89,6 @@ export default function CreateInvoice({ match }) {
         <table class="table table-striped">
           <thead>
             <tr>
-              <th scope="col">ID</th>
               <th scope="col">Service name</th>
               <th scope="col">Compulsory/Optional</th>
               <th scope="col">Amount</th>
@@ -106,13 +97,10 @@ export default function CreateInvoice({ match }) {
           </thead>
           <tbody>
             {registeredServices.map((item, index) => {
-              totalPrice += item.service.unit_price * item.temporary_quantity
+              totalPrice += item.unit_price * item.quantity;
               return (
                 <tr key={index}>
-                  <td width="10%" className="text-center">
-                    {item.service.id}
-                  </td>
-                  <td width="20%">{item.service.name}</td>
+                  <td width="20%">{item.name}</td>
                   <td width="15%">
                     {item.is_compulsory === 1 ? "Compulsory" : "Optional"}
                   </td>
@@ -122,12 +110,14 @@ export default function CreateInvoice({ match }) {
                       className="form-control"
                       name="quantity"
                       defaultValue={0}
-                      value={item.temporary_quantity}
-                      onChange={(e) => handleServiceAmountInput(item.id, e, index)}
+                      value={item.quantity}
+                      onChange={(e) =>
+                        handleServiceAmountInput(item.id, e, index)
+                      }
                     />
                   </td>
                   <td width="20%">
-                    {(item.service.unit_price * item.temporary_quantity).toFixed(2)}
+                    {(item.unit_price * item.quantity).toFixed(2)}
                   </td>
                 </tr>
               );
@@ -135,71 +125,85 @@ export default function CreateInvoice({ match }) {
           </tbody>
         </table>
         <h3>Total: {totalPrice.toFixed(2)}</h3>
-        <br/><br/><br/>
+        <br />
+        <br />
+        <br />
         <div className="formInput">
-              <label>Discount (%):</label>
-              <input
-                type="text"
-                className="inputItem"
-                name="discount"
-                onChange={handleInput}
-                value={input.discount}
-              /> 
+          <label>Discount (%):</label>
+          <input
+            type="text"
+            className="inputItem"
+            name="discount"
+            onChange={handleInput}
+            value={input.discount}
+          />
         </div>
         <small className="text-danger">{errors.discount}</small>
         <div className="formInput">
-              <label>Month:</label>
-              <input
-                type="text"
-                className="inputItem"
-                name="month"
-                onChange={handleInput}
-                value={input.month}
-              />
+          <label>Month:</label>
+          <input
+            type="text"
+            className="inputItem"
+            name="month"
+            onChange={handleInput}
+            value={input.month}
+          />
         </div>
         <small className="text-danger">{errors.month}</small>
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
         <div className="formInput">
-              <label>Effective from:</label>
-              <input
-                type="date"
-                className="inputItem"
-                name="effective_from"
-                onChange={handleInput}
-                value={input.effective_from}
-              />
-        </div>
-        <small className="text-danger">{errors.effective_from}</small>
+          <label>Effective from:</label>
+          <DatePicker
+            views={["day", "month", "year"]}
+            label="Effective from"
+            name="effective_from"
+            value={effectiveFromDate}
+            onChange={(selectedDate) => {
+              setEffectiveFromDate(selectedDate);
+            }}
+            renderInput={(params) => (
+              <TextField {...params} helperText={null} />
+            )}
+          />
+          <small className="text-danger">{errors.effective_from}</small>
+          </div>
+          <div className="formInput">
+          <label>Can be paid until:</label>
+          <DatePicker
+            views={["day", "month", "year"]}
+            label="Effective until"
+            name="valid_until"
+            value={validUntilDate}
+            onChange={(selectedDate) => {
+              setValidUntilDate(selectedDate);
+            }}
+            renderInput={(params) => (
+              <TextField {...params} helperText={null} />
+            )}
+          />
+          <small className="text-danger">{errors.valid_until}</small>
+          </div>
+        </LocalizationProvider>
         <div className="formInput">
-              <label>Can be paid until:</label>
-              <input
-                type="date"
-                className="inputItem"
-                name="valid_until"
-                onChange={handleInput}
-                value={input.valid_until}
-              />
-        </div>
-        <small className="text-danger">{errors.valid_until}</small>
-        <div className="formInput">
-              <label>Extra fee:</label>
-              <input
-                type="text"
-                className="inputItem"
-                name="extra_fee"
-                onChange={handleInput}
-                value={input.extra_fee}
-              />
+          <label>Extra fee:</label>
+          <input
+            type="text"
+            className="inputItem"
+            name="extra_fee"
+            onChange={handleInput}
+            value={input.extra_fee}
+          />
         </div>
         <small className="text-danger">{errors.extra_fee}</small>
         <div className="formInput">
-              <label>Description for extra fee:</label>
-              <textarea
-                type="text"
-                className="inputItem"
-                name="description"
-                onChange={handleInput}
-                value={input.description}
-              />
+          <label>Description for extra fee:</label>
+          <textarea
+            type="text"
+            className="inputItem"
+            name="description"
+            onChange={handleInput}
+            value={input.description}
+          />
         </div>
         <small className="text-danger">{errors.description}</small>
         <button type="submit" className="formButton">

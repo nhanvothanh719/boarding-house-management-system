@@ -117,15 +117,6 @@ export default function InvoicesRentersList() {
             }}
             actions={[
               {
-                icon: () => (
-                  <button className="btn btn-primary">All invoices</button>
-                ),
-                onClick: (event, renter) =>
-                  history.push(
-                    `/admin/view-all-invoices-of-renter/${renter.id}`
-                  ),
-              },
-              {
                 icon: () => <button className="btn btn-success">Create</button>,
                 onClick: (event, renter) =>
                   history.push(`/admin/create-invoice/${renter.id}`),
