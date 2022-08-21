@@ -11,6 +11,7 @@ import FolderSharedIcon from '@mui/icons-material/FolderShared';
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
 import DefaultAvatar from "../../../../assets/images/avatar.jpeg";
+import "../../../../assets/css/Dashboard/datatable.css";
 
 export default function RentersList() {
   const history = useHistory();
@@ -56,13 +57,17 @@ export default function RentersList() {
       {
         field: "is_locked",
         title: "Status",
-        lookup: { 0: "Active", 1: "Locked" },
+        render: rowData => (
+          <div>
+              <span className={`${rowData.is_locked === 0 ? "statusActive" : "statusPassive"}` }>{rowData.is_locked === 0 ? "Active" : "Locked" }</span>
+          </div>
+        )
       },
     ];
     return (
       <Fragment>
         <div className="customDatatable">
-          <div className="datatableHeader">
+          <div className="customDatatableHeader">
             <Link to="/admin/create-renter" className="createBtn">
               Add new renter
             </Link>
@@ -70,7 +75,7 @@ export default function RentersList() {
           <MaterialTable
             columns={columns}
             data={rentersList}
-            title="All renters"
+            title= {<span className="customDatatableTitle">All renters</span>}
             options={{
               searchAutoFocus: false,
               searchFieldVariant: "outlined",
@@ -80,6 +85,9 @@ export default function RentersList() {
               exportButton: true,
               exportAllData: true,
               actionsColumnIndex: -1,
+              headerStyle: {
+                fontFamily: 'Anek Telugu, sans-serif',
+              }
             }}
             actions={[
               {

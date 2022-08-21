@@ -10,7 +10,6 @@ import ReplyProblemModal from "../../../../components/Modals/Problem/ReplyProble
 import ViewReplyProblemModal from "../../../../components/Modals/Problem/ViewProblemReplyModal";
 
 export default function ProblemsList() {
-
   const [details] = useState([]);
   const [loading, setLoading] = useState(true);
   const [problemsListChange, setProblemsListChange] = useState(false);
@@ -18,6 +17,8 @@ export default function ProblemsList() {
   const [showReplyModal, setShowReplyModal] = useState(false);
   const [showReplyDetailsModal, setShowReplyDetailsModal] = useState(false);
   const [selectedProblemId, setSelectedProblemId] = useState(null);
+  const status = { 1: "Pending", 2: "On-going", 3: "Solved" };
+  const statusStyle = { 1: "statusPending", 2: "statusOnGoing", 3: "statusActive"};
 
   useEffect(() => {
     axios.get(AppUrl.ShowProblems).then((response) => {
@@ -33,22 +34,22 @@ export default function ProblemsList() {
 
   const setReplyModalStatus = (status) => {
     setShowReplyModal(status);
-  }
+  };
 
   const setReplyDetailsModalStatus = (status) => {
     setShowReplyDetailsModal(status);
-  }
+  };
 
   const updateProblemReplyStatus = (status) => {
     setProblemsListChange(status);
-  }
+  };
 
   var columns = [];
   if (loading) {
     return <Loading />;
   } else {
     columns = [
-      { title: '#', render: (rowData) => rowData.tableData.id + 1 },
+      { title: "#", render: (rowData) => rowData.tableData.id + 1 },
       {
         field: "renter_id",
         title: "Renter name",
@@ -69,94 +70,113 @@ export default function ProblemsList() {
         field: "severity_level",
         title: "Severity level",
         editable: "never",
-        lookup: { 1: "High", 2: "Normal", 3: "Low" }
+        lookup: { 1: "High", 2: "Normal", 3: "Low" },
       },
       {
         field: "status",
         title: "Status",
-        lookup: { 1: "Pending", 2: "On-going", 3: "Solved" }
+        lookup: { 1: "Pending", 2: "On-going", 3: "Solved" },
+        render: (rowData) => {
+          return (
+              <span className={`${statusStyle[rowData.status]}`}>{status[rowData.status]}</span>
+          );
+        },
       },
     ];
   }
 
   return (
     <Fragment>
+      <div className="customDatatable">
         <MaterialTable
-        columns={columns}
-        data={problemsList}
-        title="Renters' problems List"
-        options={{
-          searchAutoFocus: false,
-          searchFieldVariant: "outlined",
-          filtering: false,
-          pageSizeOptions: [5, 10],
-          paginationType: "stepped",
-          exportButton: true,
-          exportAllData: true,
-          actionsColumnIndex: -1,
-        }}
-        editable={{
-          onRowUpdate: (newProblem, oldProblem) =>
-            new Promise((resolve, reject) => {
-              setTimeout(() => {
-                const data = {
-                  status: newProblem.status,
-                };
-                axios
-                  .put(AppUrl.UpdateProblemStatus + oldProblem.id, data)
-                  .then((response) => {
-                    if (response.data.status === 200) {
-                      swal("Success", response.data.message, "success");
-                      setProblemsListChange(true);
-                    } else if (response.data.status === 404) {
-                      swal("Error", response.data.message, "error");
-                    }
-                  });
-                resolve();
-              }, 1000);
-            }),
-          onRowDelete: (thisProblem) =>
-            new Promise((resolve, reject) => {
-              setTimeout(() => {
-                const selectedProblem = [...details];
-                const index = thisProblem.tableData.id;
-                selectedProblem.splice(index, 1); //1: only one record
-                axios
-                  .delete(AppUrl.DeleteProblem + thisProblem.id)
-                  .then((response) => {
-                    if (response.data.status === 200) {
-                      swal("Success", response.data.message, "success");
-                      setProblemsListChange(true);
-                    } else if (response.data.status === 404) {
-                      swal("Error", response.data.message, "error");
-                    }
-                  });
-                resolve();
-              }, 1000);
-            }),
-        }}
-        actions={[
-          {
-            icon: 'visibility',
-            tooltip: 'Details',
-            onClick: (event, problem) => {
-              setShowReplyDetailsModal(true);
-              setSelectedProblemId(problem.id);
-            }
-          },
-          rowData => ({
-            icon: 'reply',
-            tooltip: 'Reply',
-            onClick: (event, problem) => {
-              setShowReplyModal(true);
-              setSelectedProblemId(problem.id);
+          columns={columns}
+          data={problemsList}
+          title={<span className="customDatatableTitle">Renters' problems</span>}
+          options={{
+            searchAutoFocus: false,
+            searchFieldVariant: "outlined",
+            filtering: false,
+            pageSizeOptions: [5, 10],
+            paginationType: "stepped",
+            exportButton: true,
+            exportAllData: true,
+            actionsColumnIndex: -1,
+            headerStyle: {
+              fontFamily: "Anek Telugu, sans-serif",
             },
-            disabled: rowData.replied_by !== null
-          }),
-        ]}
-      />
-      <ViewReplyProblemModal isShown = {showReplyDetailsModal} setReplyDetailsModalStatus = {setReplyDetailsModalStatus} problemId = {selectedProblemId} />
-      <ReplyProblemModal isShown = {showReplyModal} setReplyModalStatus = {setReplyModalStatus} updateProblemReplyStatus = {updateProblemReplyStatus} problemId = {selectedProblemId}/>
+          }}
+          editable={{
+            onRowUpdate: (newProblem, oldProblem) =>
+              new Promise((resolve, reject) => {
+                setTimeout(() => {
+                  const data = {
+                    status: newProblem.status,
+                  };
+                  axios
+                    .put(AppUrl.UpdateProblemStatus + oldProblem.id, data)
+                    .then((response) => {
+                      if (response.data.status === 200) {
+                        swal("Success", response.data.message, "success");
+                        setProblemsListChange(true);
+                      } else if (response.data.status === 404) {
+                        swal("Error", response.data.message, "error");
+                      }
+                    });
+                  resolve();
+                }, 1000);
+              }),
+            onRowDelete: (thisProblem) =>
+              new Promise((resolve, reject) => {
+                setTimeout(() => {
+                  const selectedProblem = [...details];
+                  const index = thisProblem.tableData.id;
+                  selectedProblem.splice(index, 1); //1: only one record
+                  axios
+                    .delete(AppUrl.DeleteProblem + thisProblem.id)
+                    .then((response) => {
+                      if (response.data.status === 200) {
+                        swal("Success", response.data.message, "success");
+                        setProblemsListChange(true);
+                      } else if (response.data.status === 404) {
+                        swal("Error", response.data.message, "error");
+                      }
+                    });
+                  resolve();
+                }, 1000);
+              }),
+          }}
+          actions={[
+            {
+              icon: "visibility",
+              tooltip: "Details",
+              onClick: (event, problem) => {
+                setShowReplyDetailsModal(true);
+                setSelectedProblemId(problem.id);
+              },
+            },
+            (rowData) => ({
+              icon: "reply",
+              tooltip: "Reply",
+              onClick: (event, problem) => {
+                setShowReplyModal(true);
+                setSelectedProblemId(problem.id);
+              },
+              disabled: rowData.replied_by !== null,
+            }),
+          ]}
+        />
+        <ViewReplyProblemModal
+          isShown={showReplyDetailsModal}
+          setReplyDetailsModalStatus={setReplyDetailsModalStatus}
+          problemId={selectedProblemId}
+        />
+        <ReplyProblemModal
+          isShown={showReplyModal}
+          setReplyModalStatus={setReplyModalStatus}
+          updateProblemReplyStatus={updateProblemReplyStatus}
+          problemId={selectedProblemId}
+        />
+      </div>
     </Fragment>
   );
 }

@@ -44,15 +44,41 @@ export default function RoomsList() {
         emptyValue: () => <em>No description</em>,
       },
       { field: "area", title: "Area" },
-      { field: "has_conditioner", title: "Conditioner", lookup: {0:"No", 1:"Yes"}},
-      { field: "has_fridge", title: "Fridge", lookup: {0:"No", 1:"Yes"} },
-      { field: "has_wardrobe", title: "Wardrobe", lookup: {0:"No", 1:"Yes"} },
+      { 
+        field: "has_conditioner", 
+        title: "Conditioner", 
+        lookup: {0:"No", 1:"Yes"},
+        render: rowData => (
+          <div>
+              <span className={`${rowData.has_conditioner === 1 ? "statusActive" : "statusPassive"}` }>{rowData.has_conditioner === 1 ? "Yes" : "No" }</span>
+          </div>
+        )
+      },
+      { field: "has_fridge", 
+      title: "Fridge", 
+      lookup: {0:"No", 1:"Yes"},
+      render: rowData => (
+        <div>
+            <span className={`${rowData.has_fridge === 1 ? "statusActive" : "statusPassive"}` }>{rowData.has_fridge === 1 ? "Yes" : "No" }</span>
+        </div>
+      ) 
+    },
+      { 
+        field: "has_wardrobe", 
+        title: "Wardrobe", 
+        lookup: {0:"No", 1:"Yes"},
+        render: rowData => (
+          <div>
+              <span className={`${rowData.has_wardrobe === 1 ? "statusActive" : "statusPassive"}` }>{rowData.has_wardrobe === 1 ? "Yes" : "No" }</span>
+          </div>
+        )
+       },
     ];
     
     return (
       <Fragment>
         <div className="customDatatable">
-          <div className="datatableHeader">
+          <div className="customDatatableHeader">
             <Link to="/admin/create-room" className="createBtn">
               Add new room
             </Link>
@@ -60,7 +86,7 @@ export default function RoomsList() {
           <MaterialTable
             columns={columns}
             data={roomsList}
-            title="All rooms"
+            title={<span className="customDatatableTitle">All rooms</span>}
             options={{
               searchAutoFocus: false,
               searchFieldVariant: "outlined",
@@ -71,6 +97,9 @@ export default function RoomsList() {
               exportAllData: true,
               actionsColumnIndex: -1,
               grouping: true,
+              headerStyle: {
+                fontFamily: 'Anek Telugu, sans-serif',
+              }
             }}
             actions={[
               {

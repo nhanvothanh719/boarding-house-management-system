@@ -1,4 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react";
+import { Button } from "react-bootstrap";
 
 import MaterialTable from "material-table";
 import swal from "sweetalert";
@@ -8,31 +9,21 @@ import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
 import BalanceVariation from "../../../../components/Charts/BalanceVariation";
 import BalanceCategoryRate from "../../../../components/Charts/BalanceCategoryRate";
+import AddBalanceChange from "../../../../components/Modals/Balance/AddBalanceChange";
 
 export default function BalanceDetails() {
   var currentDate = new Date();
 
   const [loading, setLoading] = useState(true);
   const [details, setDetails] = useState([]);
-  const [input, setInput] = useState({
-    description: "",
-    is_income: "",
-    amount: "",
-    occurred_on: "",
-  });
+  const [showCreateModal, setShowCreateModal] = useState(false);
   const [balanceAmountChange, setBalanceAmountChange] = useState(false);
   const [currentBalance, setCurrentBalance] = useState("");
-
-  const handleInput = (e) => {
-    e.persist();
-    setInput({ ...input, [e.target.name]: e.target.value });
-  };
 
   useEffect(() => {
     axios.get(AppUrl.GetBalance).then((response) => {
       if (response.data.status === 200) {
         setDetails(response.data.allDetails);
-        //console.log(response.data.allDetails);
       }
       setLoading(false);
     });
@@ -46,40 +37,12 @@ export default function BalanceDetails() {
     }
   }, [balanceAmountChange]);
 
-  const showModal = (e) => {
-    var model = new window.bootstrap.Modal(
-      document.getElementById("paypalPaymentModal")
-    );
-    model.show();
+  const setCreateModalStatus = (status) => {
+    setShowCreateModal(status);
   };
 
-  const addBalanceChange = (e) => {
-    e.preventDefault();
-    const data = {
-      is_income: input.is_income,
-      amount: input.amount,
-      description: input.description,
-      occurred_on: input.occurred_on,
-    };
-    axios
-      .post(AppUrl.UpdateBalance, data)
-      .then((response) => {
-        if (response.data.status === 200) {
-          setInput({
-            description: "",
-            is_income: "",
-            amount: "",
-            occurred_on: "",
-          });
-          swal("Success", response.data.message, "success");
-          setBalanceAmountChange(true);
-        } else if (response.data.status === 404) {
-          setInput({ ...input, errors_list: response.data.errors });
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  const updateCreateModalStatus = (status) => {
+    setBalanceAmountChange(status);
   };
 
   var columns = [];
@@ -87,7 +50,7 @@ export default function BalanceDetails() {
     return <Loading />;
   } else {
     columns = [
-      { title: '#', render: (rowData) => rowData.tableData.id + 1 },
+      { title: "#", render: (rowData) => rowData.tableData.id + 1 },
       {
         field: "description",
         title: "Description",
@@ -100,6 +63,11 @@ export default function BalanceDetails() {
         field: "is_income",
         title: "Category",
         lookup: { 0: "Expenses", 1: "Earned" },
+        render: rowData => (
+          <div>
+              <span className={`${rowData.is_income === 0 ? "expense" : "earned"}` }>{rowData.is_income === 0 ? "Expenses" : "Earned" }</span>
+          </div>
+        )
       },
       {
         field: "amount",
@@ -126,178 +94,90 @@ export default function BalanceDetails() {
 
   return (
     <Fragment>
-      <div>Balance Details</div>
-      <h1>
-        Current Balance:
-        {currentBalance}
+      <h1 className="currentBalance center">
+        Current Balance: $
+        <span>{currentBalance}</span>
       </h1>
       {/* Line Chart */}
-      <BalanceVariation/>
+      <BalanceVariation />
       {/* Pie Chart */}
-      <BalanceCategoryRate/>
+      <BalanceCategoryRate />
       {/* DataTable */}
-      <MaterialTable
-        columns={columns}
-        data={details}
-        title="All changes"
-        options={{
-          searchAutoFocus: false,
-          searchFieldVariant: "outlined",
-          filtering: false,
-          pageSizeOptions: [5, 10],
-          paginationType: "stepped",
-          exportButton: true,
-          exportAllData: true,
-          actionsColumnIndex: -1,
-        }}
-        editable={{
-          onRowUpdate: (newBalanceChange, oldBalanceChange) =>
-            new Promise((resolve, reject) => {
-              setTimeout(() => {
-                const data = {
-                  amount: newBalanceChange.amount,
-                  description: newBalanceChange.description,
-                  occurred_on: newBalanceChange.occurred_on,
-                };
-                axios
-                  .put(AppUrl.UpdateBalanceChange + oldBalanceChange.id, data)
-                  .then((response) => {
-                    if (response.data.status === 200) {
-                      swal("Success", response.data.message, "success");
-                      setBalanceAmountChange(true);
-                    } else if (response.data.status === 404) {
-                      swal("Error", response.data.message, "error");
-                    }
-                  });
-                resolve();
-              }, 1000);
-            }),
-          onRowDelete: (thisBalanceChange) =>
-            new Promise((resolve, reject) => {
-              setTimeout(() => {
-                const selectedBalanceChange = [...details];
-                const index = thisBalanceChange.tableData.id;
-                selectedBalanceChange.splice(index, 1); //1: only one record
-                axios
-                  .delete(AppUrl.DeleteBalanceChange + thisBalanceChange.id)
-                  .then((response) => {
-                    if (response.data.status === 200) {
-                      swal("Success", response.data.message, "success");
-                      setBalanceAmountChange(true);
-                    } else if (response.data.status === 404) {
-                      swal("Error", response.data.message, "error");
-                    }
-                  });
-                resolve();
-              }, 1000);
-            }),
-        }}
-      />
-      <button className="btn btn-primary" onClick={showModal}>
-        Add new change
-      </button>
-      {/* Modal */}
-      <div
-        class="modal fade"
-        id="paypalPaymentModal"
-        tabindex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">
-                Add change to balance
-              </h5>
-              <button
-                type="button"
-                class="close"
-                data-dismiss="modal"
-                aria-label="Close"
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <hr />
-              <form className="flexForm" id="createCategoryForm">
-                <div className="formInput">
-                  <label className="inputItemLabel">
-                    Description (Source):
-                  </label>
-                  <input
-                    type="text"
-                    className="inputItem"
-                    name="description"
-                    onChange={handleInput}
-                    value={input.description}
-                    id="inputDescription"
-                  />
-                </div>
-                <div className="formInput">
-                  <label>Category:</label>
-                  <select
-                    class="form-control"
-                    name="is_income"
-                    onChange={handleInput}
-                    value={input.is_income}
-                  >
-                    <option selected>--- Select category ---</option>
-                    <option value="0" key="0">
-                      {" "}
-                      Expenses{" "}
-                    </option>
-                    <option value="1" key="1">
-                      {" "}
-                      Earned{" "}
-                    </option>
-                  </select>
-                </div>
-
-                <div className="formInput">
-                  <label className="inputItemLabel">Amount:</label>
-                  <input
-                    type="text"
-                    className="inputItem"
-                    name="amount"
-                    onChange={handleInput}
-                    value={input.amount}
-                    id="inputAmount"
-                  />
-                </div>
-                <div className="formInput">
-                  <label className="inputItemLabel">Occurred on:</label>
-                  <input
-                    type="date"
-                    className="inputItem"
-                    name="occurred_on"
-                    onChange={handleInput}
-                    value={input.occurred_on}
-                    id="inputOccurredDate"
-                  />
-                </div>
-              </form>
-            </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-success"
-                data-dismiss="modal"
-                onClick={addBalanceChange}
-              >
-                Create
-              </button>
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-dismiss="modal"
-              >
-                Close
-              </button>
-            </div>
-          </div>
+      <div className="customDatatable">
+        <div className="customDatatableHeader">
+          <Button
+            className="createBtn"
+            style={{ backgroundColor: "white", color: "#1C4E80" }}
+            onClick={(e) => setShowCreateModal(true)}
+          >
+            <AddBalanceChange
+              isShown={showCreateModal}
+              setCreateModalStatus={setCreateModalStatus}
+              updateCreateModalStatus={updateCreateModalStatus}
+            />
+            Add new change
+          </Button>
         </div>
+        <MaterialTable
+          columns={columns}
+          data={details}
+          title={<span className="customDatatableTitle">All balance changes</span>}
+          options={{
+            searchAutoFocus: false,
+            searchFieldVariant: "outlined",
+            filtering: false,
+            pageSizeOptions: [5, 10],
+            paginationType: "stepped",
+            exportButton: true,
+            exportAllData: true,
+            actionsColumnIndex: -1,
+            headerStyle: {
+              fontFamily: 'Anek Telugu, sans-serif',
+            }
+          }}
+          editable={{
+            onRowUpdate: (newBalanceChange, oldBalanceChange) =>
+              new Promise((resolve, reject) => {
+                setTimeout(() => {
+                  const data = {
+                    amount: newBalanceChange.amount,
+                    description: newBalanceChange.description,
+                    occurred_on: newBalanceChange.occurred_on,
+                  };
+                  axios
+                    .put(AppUrl.UpdateBalanceChange + oldBalanceChange.id, data)
+                    .then((response) => {
+                      if (response.data.status === 200) {
+                        swal("Success", response.data.message, "success");
+                        setBalanceAmountChange(true);
+                      } else if (response.data.status === 404) {
+                        swal("Error", response.data.message, "error");
+                      }
+                    });
+                  resolve();
+                }, 1000);
+              }),
+            onRowDelete: (thisBalanceChange) =>
+              new Promise((resolve, reject) => {
+                setTimeout(() => {
+                  const selectedBalanceChange = [...details];
+                  const index = thisBalanceChange.tableData.id;
+                  selectedBalanceChange.splice(index, 1); //1: only one record
+                  axios
+                    .delete(AppUrl.DeleteBalanceChange + thisBalanceChange.id)
+                    .then((response) => {
+                      if (response.data.status === 200) {
+                        swal("Success", response.data.message, "success");
+                        setBalanceAmountChange(true);
+                      } else if (response.data.status === 404) {
+                        swal("Error", response.data.message, "error");
+                      }
+                    });
+                  resolve();
+                }, 1000);
+              }),
+          }}
+        />
       </div>
     </Fragment>
   );

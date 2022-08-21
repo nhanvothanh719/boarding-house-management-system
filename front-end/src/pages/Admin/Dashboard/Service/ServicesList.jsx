@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Button } from "react-bootstrap";
 
 import MaterialTable from "material-table";
 import swal from "sweetalert";
@@ -59,21 +59,27 @@ export default function ServicesList() {
       { field: "unit_price", title: "Price per unit" },
       {
         field: "is_compulsory",
-        title: "Compulsory",
-        lookup: { 0: "No", 1: "Yes" },
+        title: "Category",
+        lookup: { 0: "Optional", 1: "Compulsory" },
+        render: rowData => (
+          <div>
+              <span className={`${rowData.is_compulsory === 0 ? "statusActive" : "statusPassive"}` }>{rowData.is_compulsory === 0 ? "Optional" : "Compulsory" }</span>
+          </div>
+        )
       },
     ];
 
     return (
       <Fragment>
         <div className="customDatatable">
-          <div className="datatableHeader">
-          <button
-              className="btn btn-primary"
+          <div className="customDatatableHeader">
+          <Button
+              className="createBtn"
+              style={{ backgroundColor: "white", color: "#1C4E80" }}
               onClick={(e) => setShowCreateModal(true)}
             >
               Add new service
-            </button>
+            </Button>
             <CreateServiceModal
               isShown={showCreateModal}
               setCreateModalStatus={setCreateModalStatus}
@@ -83,7 +89,7 @@ export default function ServicesList() {
           <MaterialTable
             columns={columns}
             data={servicesList}
-            title="All categories"
+            title={<span className="customDatatableTitle">All services</span>}
             options={{
               searchAutoFocus: false,
               searchFieldVariant: "outlined",
@@ -93,6 +99,9 @@ export default function ServicesList() {
               exportButton: true,
               exportAllData: true,
               actionsColumnIndex: -1,
+              headerStyle: {
+                fontFamily: 'Anek Telugu, sans-serif',
+              }
             }}
             actions={[
               {

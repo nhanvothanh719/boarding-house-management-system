@@ -73,17 +73,6 @@ function SideBar() {
             </NavLink>
             <NavLink
               exact
-              to="/admin/view-all-problems"
-              style={{ textDecoration: "none", color: "#f1f1f1" }}
-              activeStyle={{ textDecoration: "none", color: "#a5d8dd" }}
-            >
-              <li className="customLi">
-                <CommentIcon className="sideBarIcon" />
-                <span className="itemName"> Problems </span>
-              </li>
-            </NavLink>
-            <NavLink
-              exact
               to="/admin/view-all-rooms"
               style={{ textDecoration: "none", color: "#f1f1f1" }}
               activeStyle={{ textDecoration: "none", color: "#a5d8dd" }}
@@ -146,6 +135,17 @@ function SideBar() {
               <li className="customLi">
                 <ReportIcon className="sideBarIcon" />
                 <span className="itemName"> Breaches </span>
+              </li>
+            </NavLink>
+            <NavLink
+              exact
+              to="/admin/view-all-problems"
+              style={{ textDecoration: "none", color: "#f1f1f1" }}
+              activeStyle={{ textDecoration: "none", color: "#a5d8dd" }}
+            >
+              <li className="customLi">
+                <CommentIcon className="sideBarIcon" />
+                <span className="itemName"> Problems </span>
               </li>
             </NavLink>
             <p className="itemGroup text-uppercase">Renters management</p>
