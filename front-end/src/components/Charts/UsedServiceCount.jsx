@@ -13,8 +13,9 @@ import {
 
 import AppUrl from "../../RestAPI/AppUrl";
 
-export default function CountUsedServices() {
+export default function UsedServiceCount() {
   const [usedServicesCount, setUsedServiceCount] = useState([]);
+  const color = "#0091D5";
 
   useEffect(() => {
     axios.get(AppUrl.CountUsedServices).then((response) => {
@@ -26,14 +27,17 @@ export default function CountUsedServices() {
 
   return (
     <Fragment>
-      <BarChart width={730} height={250} data={usedServicesCount}>
+      <div className="customChartContainer">
+      <h3 className="customChartTitle">Chart title</h3>
+      <BarChart width={730} height={250} data={usedServicesCount} style={{ flex: "5"}}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="service_name" />
         <YAxis />
         <Tooltip />
         <Legend />
-        <Bar name="Total uses" dataKey="total" fill="#82ca9d" />
+        <Bar name="Total uses" dataKey="total" fill={color} />
       </BarChart>
+      </div>
     </Fragment>
   );
 }

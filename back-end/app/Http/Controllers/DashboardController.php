@@ -18,28 +18,6 @@ use App\Models\PaymentHistory;
 
 class DashboardController extends Controller
 {
-    // public function countRentersByGender() {
-    //     $genders = array();
-    //     $genders_count = array();
-    //     $genders_id = User::pluck('gender')->toArray();
-    //     $genders_id = array_unique($genders_id);
-    //     foreach($genders_id as $gender_id) {
-    //         if($gender_id == User::GENDER_MALE_ID){
-    //             array_push($genders, "Male");
-    //             array_push($genders_count, User::where('gender', $gender_id)->count());
-    //         }
-    //         if($gender_id == User::GENDER_FEMALE_ID){
-    //             array_push($genders, "Female");
-    //             array_push($genders_count, User::where('gender', $gender_id)->count());
-    //         }
-    //     }
-    //     return response([
-    //         'status' => 200,
-    //         'genders' => $genders,
-    //         'gendersCount' => $genders_count,
-    //     ]);
-    // }
-
     public function countRentersByGender() {
         $renters_count = array();
         $genders_id = User::pluck('gender')->toArray();
@@ -69,7 +47,7 @@ class DashboardController extends Controller
         foreach($statuses_id as $status_id) {
             $item = new stdClass();
             $item->status = RoomStatus::find($status_id)->name;
-            $item->total = Room::where('status', $status_id)->count();
+            $item->total = Room::where('status_id', $status_id)->count();
             array_push($rooms_count, $item);
         }
         return response([

@@ -1,11 +1,14 @@
 import React, { Fragment } from "react";
 
-import CountRentersByGender from "../../../../components/Charts/CountRentersByGender";
-import CountRoomsByStatus from "../../../../components/Charts/CountRoomsByStatus";
-import CountUsedServices from "../../../../components/Charts/CountUsedServices";
-import GetPaidInvoicesRate from "../../../../components/Charts/GetPaidInvoicesRate";
-import ReportBreaches from "../../../../components/Charts/ReportBreaches";
+import RenterGenderRate from "../../../../components/Charts/RenterGenderRate";
+import UsedServiceCount from "../../../../components/Charts/UsedServiceCount";
+import InvoicePaidRate from "../../../../components/Charts/InvoicePaidRate";
+import RoomStatusRate from "../../../../components/Charts/RoomStatusRate";
+import BreachReport from "../../../../components/Charts/BreachReport";
 import Widget from "../../../../components/Dashboard/Widget";
+
+import "../../../../assets/css/Dashboard/chart.css";
+import BalanceVariation from "../../../../components/Charts/BalanceVariation";
 
 function MainDashboard() {
   return (
@@ -16,11 +19,12 @@ function MainDashboard() {
         <Widget type="earning" />
         <Widget type="balance" />
       </div>
-      <CountRentersByGender/>
-      <CountRoomsByStatus/>
-      <CountUsedServices/>
-      <GetPaidInvoicesRate/>
-      <ReportBreaches/>
+      <BalanceVariation />
+      <InvoicePaidRate />
+      <RenterGenderRate />
+      <BreachReport />
+      <UsedServiceCount />
+      <RoomStatusRate />
     </Fragment>
   );
 }

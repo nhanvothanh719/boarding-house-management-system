@@ -97,7 +97,7 @@ export default function CreateInvoice({ match }) {
           </thead>
           <tbody>
             {registeredServices.map((item, index) => {
-              totalPrice += item.unit_price * item.quantity;
+              totalPrice += item.unit_price * Math.abs(item.quantity);
               return (
                 <tr key={index}>
                   <td width="20%">{item.name}</td>
@@ -106,9 +106,10 @@ export default function CreateInvoice({ match }) {
                   </td>
                   <td width="10%">
                     <input
-                      type="text"
+                      type="number"
                       className="form-control"
                       name="quantity"
+                      min={0}
                       defaultValue={0}
                       value={item.quantity}
                       onChange={(e) =>
@@ -116,8 +117,9 @@ export default function CreateInvoice({ match }) {
                       }
                     />
                   </td>
+                  <small className="text-danger">{errors.quantity}</small>
                   <td width="20%">
-                    {(item.unit_price * item.quantity).toFixed(2)}
+                    {(item.unit_price * Math.abs(item.quantity)).toFixed(2)}
                   </td>
                 </tr>
               );

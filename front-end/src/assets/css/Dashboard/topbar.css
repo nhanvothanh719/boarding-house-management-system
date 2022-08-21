@@ -1,11 +1,15 @@
 .topBar {
     height: 50px;
-    background-color: whitesmoke;
+    background-color: #1C4E80;
     position: sticky;
     border-bottom: 0.5px solid rgb(192, 185, 185);
     display: flex;
     align-items: center;
     font-size: 14px;
+}
+
+.language {
+    color: #f1f1f1;
 }
 
 .topBarWrapper {
@@ -26,7 +30,7 @@
     position: relative;
     cursor: pointer;
     align-items: 10px;
-    color: #555;
+    color: #f1f1f1 !important;
     display: flex;
     margin: 10px;
     font-size: 20px;
