@@ -12,9 +12,9 @@ function TopBar() {
     <Fragment>
       <div className="topBar">
         <div className="topBarWrapper">
-          <div>
+          <div className="language">
             <LanguageIcon />
-            Language: English
+            <em style={{ paddingLeft: "10px" }}>Language: English</em>
           </div>
           <div className="topRight">
             <div className="topBarIconContainer">

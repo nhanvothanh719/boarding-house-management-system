@@ -2,6 +2,11 @@ import React, { Fragment, useState, useEffect } from "react";
 
 import swal from "sweetalert";
 import axios from "axios";
+import moment from "moment";
+import TextField from "@mui/material/TextField";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 import AppUrl from "../../../../RestAPI/AppUrl";
 import { useHistory } from "react-router-dom";
@@ -15,14 +20,14 @@ export default function CreateRenter() {
     name: "",
     email: "",
     gender: "",
-    date_of_birth: "",
     id_card_number: "",
     phone_number: "",
     occupation: "",
     permanent_address: "",
     role_id: "",
   });
-  
+  const [dateOfBirth, setDateOfBirth] = useState(null);
+
   useEffect(() => {
     axios.get(AppUrl.ShowRoles).then((response) => {
       if (response.data.status === 200) {
@@ -38,7 +43,7 @@ export default function CreateRenter() {
 
   const handleRenterAvatar = (e) => {
     setAvatar({ avatar: e.target.files[0] });
-  }
+  };
 
   const createRenter = (e) => {
     e.preventDefault();
@@ -46,14 +51,17 @@ export default function CreateRenter() {
     renter.append("name", input.name);
     renter.append("email", input.email);
     renter.append("gender", input.gender);
-    renter.append("date_of_birth", input.date_of_birth);
+    renter.append(
+      "date_of_birth",
+      moment(dateOfBirth).utc().format("YYYY-MM-DD")
+    );
     renter.append("id_card_number", input.id_card_number);
     renter.append("phone_number", input.phone_number);
     renter.append("occupation", input.occupation);
     renter.append("permanent_address", input.permanent_address);
     renter.append("role_id", input.role_id);
-    if(avatar.avatar) {
-      renter.append('profile_picture', avatar.avatar);
+    if (avatar.avatar) {
+      renter.append("profile_picture", avatar.avatar);
     }
 
     axios
@@ -66,8 +74,6 @@ export default function CreateRenter() {
         } else if (response.data.status === 422) {
           swal("All fields are mandatory", "", "error");
           setErrors(response.data.errors);
-        } else if (response.data.status === 400) {
-          setInput({ ...input, errors_list: response.data.errors });
         }
       })
       .catch((error) => {
@@ -123,13 +129,16 @@ export default function CreateRenter() {
             <small className="text-danger">{errors.phone_number}</small>
             <div className="formInput">
               <label>Date of birth:</label>
-              <input
-                type="date"
-                className="inputItem"
-                name="date_of_birth"
-                onChange={handleInput}
-                value={input.date_of_birth}
-              />
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DatePicker
+                  renderInput={(props) => <TextField {...props} />}
+                  value={dateOfBirth}
+                  name="date_of_birth"
+                  onChange={(selectedDate) => {
+                    setDateOfBirth(selectedDate);
+                  }}
+                />
+              </LocalizationProvider>
             </div>
             <small className="text-danger">{errors.date_of_birth}</small>
             <div className="formInput">

@@ -4,10 +4,10 @@ import MaterialTable from "material-table";
 import swal from "sweetalert";
 import axios from "axios";
 
-import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
-import ReplyProblemModal from "../../../../components/Modals/ReplyProblemModal";
-import ViewReplyProblemModal from "../../../../components/Modals/ViewProblemReplyModal";
+import Loading from "../../../../components/Loading/Loading";
+import ReplyProblemModal from "../../../../components/Modals/Problem/ReplyProblemModal";
+import ViewReplyProblemModal from "../../../../components/Modals/Problem/ViewProblemReplyModal";
 
 export default function ProblemsList() {
 
@@ -48,7 +48,7 @@ export default function ProblemsList() {
     return <Loading />;
   } else {
     columns = [
-      { field: "id", title: "ID", align: "center", editable: "never" },
+      { title: '#', render: (rowData) => rowData.tableData.id + 1 },
       {
         field: "renter_id",
         title: "Renter name",
@@ -115,14 +115,14 @@ export default function ProblemsList() {
                 resolve();
               }, 1000);
             }),
-          onRowDelete: (oldProblem) =>
+          onRowDelete: (thisProblem) =>
             new Promise((resolve, reject) => {
               setTimeout(() => {
                 const selectedProblem = [...details];
-                const index = oldProblem.tableData.id;
+                const index = thisProblem.tableData.id;
                 selectedProblem.splice(index, 1); //1: only one record
                 axios
-                  .delete(AppUrl.DeleteProblem + oldProblem.id)
+                  .delete(AppUrl.DeleteProblem + thisProblem.id)
                   .then((response) => {
                     if (response.data.status === 200) {
                       swal("Success", response.data.message, "success");

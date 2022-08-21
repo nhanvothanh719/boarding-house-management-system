@@ -3,29 +3,17 @@ import React, { Fragment, useState, useEffect } from "react";
 import MaterialTable from "material-table";
 import swal from "sweetalert";
 import axios from "axios";
-import {
-  LineChart,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  Line,
-  Pie,
-  PieChart,
-  Cell,
-} from "recharts";
 
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
+import BalanceVariation from "../../../../components/Charts/BalanceVariation";
+import BalanceCategoryRate from "../../../../components/Charts/BalanceCategoryRate";
 
 export default function BalanceDetails() {
-  let currentDate = new Date();
+  var currentDate = new Date();
 
   const [loading, setLoading] = useState(true);
   const [details, setDetails] = useState([]);
-  const [balanceChanges, setBalanceChanges] = useState([]);
-  const [pieChartData, setPieChartData] = useState([]);
   const [input, setInput] = useState({
     description: "",
     is_income: "",
@@ -50,14 +38,7 @@ export default function BalanceDetails() {
     });
     axios.get(AppUrl.GetRecentBalanceChanges).then((response) => {
       if (response.data.status === 200) {
-        setBalanceChanges(response.data.recentBalanceChanges);
         setCurrentBalance(response.data.currentBalance);
-      }
-    });
-    axios.get(AppUrl.GetPieChartData).then((response) => {
-      if (response.data.status === 200) {
-        setPieChartData(response.data.pieData);
-        //console.log(response.data.pieData);
       }
     });
     if (balanceAmountChange) {
@@ -106,7 +87,7 @@ export default function BalanceDetails() {
     return <Loading />;
   } else {
     columns = [
-      { field: "id", title: "ID", align: "center", editable: "never" },
+      { title: '#', render: (rowData) => rowData.tableData.id + 1 },
       {
         field: "description",
         title: "Description",
@@ -143,29 +124,6 @@ export default function BalanceDetails() {
     ];
   }
 
-  //For Pie Chart
-  const COLORS = ["#8884d8", "#82ca9d"];
-  const CustomTooltip = ({ active, payload, label }) => {
-    if (active) {
-      return (
-        <div
-          className="custom-tooltip"
-          style={{
-            backgroundColor: "#ffff",
-            padding: "5px",
-            border: "1px solid #cccc",
-          }}
-        >
-          <label>{`${payload[0].name} - Total: ${payload[0].value.toFixed(
-            2
-          )}`}</label>
-        </div>
-      );
-    }
-    return null;
-  };
-  //
-
   return (
     <Fragment>
       <div>Balance Details</div>
@@ -174,38 +132,9 @@ export default function BalanceDetails() {
         {currentBalance}
       </h1>
       {/* Line Chart */}
-      <LineChart
-        width={730}
-        height={250}
-        data={balanceChanges}
-        margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-      >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="occurred_on" />
-        <YAxis />
-        <Tooltip />
-        <Legend />
-        <Line type="monotone" dataKey="amount" stroke="#8884d8" />
-      </LineChart>
+      <BalanceVariation/>
       {/* Pie Chart */}
-      <PieChart width={730} height={300}>
-        <Pie
-          data={pieChartData}
-          color="#000000"
-          dataKey="total"
-          nameKey="description"
-          cx="50%"
-          cy="50%"
-          outerRadius={120}
-          fill="#8884d8"
-        >
-          {balanceChanges.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-          ))}
-        </Pie>
-        <Tooltip content={<CustomTooltip />} />
-        <Legend />
-      </PieChart>
+      <BalanceCategoryRate/>
       {/* DataTable */}
       <MaterialTable
         columns={columns}
@@ -243,14 +172,14 @@ export default function BalanceDetails() {
                 resolve();
               }, 1000);
             }),
-          onRowDelete: (oldBalanceChange) =>
+          onRowDelete: (thisBalanceChange) =>
             new Promise((resolve, reject) => {
               setTimeout(() => {
-                const selectBalanceChange = [...details];
-                const index = oldBalanceChange.tableData.id;
-                selectBalanceChange.splice(index, 1); //1: only one record
+                const selectedBalanceChange = [...details];
+                const index = thisBalanceChange.tableData.id;
+                selectedBalanceChange.splice(index, 1); //1: only one record
                 axios
-                  .delete(AppUrl.DeleteBalanceChange + oldBalanceChange.id)
+                  .delete(AppUrl.DeleteBalanceChange + thisBalanceChange.id)
                   .then((response) => {
                     if (response.data.status === 200) {
                       swal("Success", response.data.message, "success");

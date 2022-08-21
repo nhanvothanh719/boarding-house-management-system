@@ -70,7 +70,7 @@ export default function CreateAnnouncement() {
     return <Loading />;
   } else {
     columns = [
-      { field: "id", title: "ID", align: "center", width: "5%" },
+      { title: '#', render: (rowData) => rowData.tableData.id + 1 },
       // { field: "profile_picture", title: "Avatar", export: false, width: "10%", render: rowData => <img src={rowData.profile_picture} alt="avatar" style={{width: 40, borderRadius: '50%'}}/> },
       { field: "name", title: "Name", width: "20%" },
       { field: "email", title: "Email", width: "20%" },

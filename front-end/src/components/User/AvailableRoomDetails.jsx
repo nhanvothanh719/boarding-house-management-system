@@ -88,7 +88,7 @@ function AvailableRoomDetails(props) {
                   </li>
                   <li>
                     <BeenhereIcon/>
-                    <span>Status :</span> {room.status}{" "}
+                    <span>Status :</span> {room.status.name}{" "}
                   </li>
                   <li>
                     <SquareFootIcon/>

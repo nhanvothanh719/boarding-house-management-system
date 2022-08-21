@@ -1,10 +1,11 @@
 import React, { Fragment, useState, useEffect } from "react";
 
 import axios from "axios";
-import AppUrl from "../../RestAPI/AppUrl";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
+
+import AppUrl from "../../RestAPI/AppUrl";
 
 export default function SearchRenter(props) {
   const [rentersList, setRentersList] = useState([]);
@@ -17,8 +18,8 @@ export default function SearchRenter(props) {
     });
   }, []);
 
-  const handleChange = (event, value) => {
-    props.getSelectedRenter(value);
+  const handleChange = (event, renter) => {
+    props.getSelectedRenter(renter);
   };
 
   return (

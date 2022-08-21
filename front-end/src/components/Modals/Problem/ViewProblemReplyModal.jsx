@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useState } from "react";
 
 import axios from "axios";
 
-import AppUrl from "../../RestAPI/AppUrl";
+import AppUrl from "../../../RestAPI/AppUrl";
 
 export default function ViewReplyProblemModal(props) {
   const [details, setDetails] = useState({});

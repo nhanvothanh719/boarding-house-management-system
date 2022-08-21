@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import MaterialTable from "material-table";
 import swal from "sweetalert";
@@ -7,37 +7,40 @@ import axios from "axios";
 
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
+import CreateServiceModal from "../../../../components/Modals/Service/CreateServiceModal";
+import EditServiceModal from "../../../../components/Modals/Service/EditServiceModal";
 
 export default function ServicesList() {
-  const history = useHistory();
-
+  const [details] = useState([]);
   const [loading, setLoading] = useState(true);
   const [servicesList, setServicesList] = useState([]);
+  const [servicesListChange, setServicesListChange] = useState([]);
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [selectedServiceId, setSelectedServiceId] = useState(null);
 
   useEffect(() => {
     axios.get(AppUrl.ShowServices).then((response) => {
       if (response.data.status === 200) {
         setServicesList(response.data.allServices);
       }
-      setLoading(false);
     });
-  }, []);
+    setLoading(false);
+    if (servicesListChange) {
+      setServicesListChange(false);
+    }
+  }, [servicesListChange]);
 
-  const deleteService = (e, id) => {
-    e.preventDefault();
-    const selectedService = e.currentTarget;
-    selectedService.innerText = "Deleting";
-    axios.delete(AppUrl.DeleteService + id).then((response) => {
-      if (response.data.status === 200) {
-        swal("Success", response.data.message, "success");
-        //Delete table row
-        selectedService.closest("tr").remove();
-        history.push("/admin/view-all-services");
-      } else if (response.data.status === 404) {
-        swal("Fail", response.data.message, "error");
-        selectedService.innerText = "Delete";
-      }
-    });
+  const setCreateModalStatus = (status) => {
+    setShowCreateModal(status);
+  };
+
+  const setEditModalStatus = (status) => {
+    setShowEditModal(status);
+  };
+
+  const updateModalStatus = (status) => {
+    setServicesListChange(status);
   };
 
   var columns = [];
@@ -45,7 +48,7 @@ export default function ServicesList() {
     return <Loading />;
   } else {
     columns = [
-      { field: "id", title: "ID", align: "center" },
+      { title: '#', render: (rowData) => rowData.tableData.id + 1 },
       { field: "name", title: "Name" },
       {
         field: "description",
@@ -65,13 +68,17 @@ export default function ServicesList() {
       <Fragment>
         <div className="customDatatable">
           <div className="datatableHeader">
-            <Link to="/admin/create-service" className="createBtn">
+          <button
+              className="btn btn-primary"
+              onClick={(e) => setShowCreateModal(true)}
+            >
               Add new service
-            </Link>
-            <br />
-            <Link to="/admin/register-service" className="createBtn">
-              Register for using service
-            </Link>
+            </button>
+            <CreateServiceModal
+              isShown={showCreateModal}
+              setCreateModalStatus={setCreateModalStatus}
+              updateModalStatus={updateModalStatus}
+            />
           </div>
           <MaterialTable
             columns={columns}
@@ -89,17 +96,43 @@ export default function ServicesList() {
             }}
             actions={[
               {
-                icon: () => <button className="btn btn-warning">Edit</button>,
-                onClick: (event, service) =>
-                  history.push(`/admin/edit-service/${service.id}`),
-              },
-              {
-                icon: () => <button className="btn btn-danger">Delete</button>,
-                onClick: (event, service) => deleteService(event, service.id),
+                icon: 'edit',
+                tooltip: 'Edit',
+                onClick: (event, service) => {
+                  setShowEditModal(true);
+                  setSelectedServiceId(service.id);
+                }
               },
             ]}
+            editable={{
+              onRowDelete: (thisService) =>
+                new Promise((resolve, reject) => {
+                  setTimeout(() => {
+                    const selectedService = [...details];
+                    const index = thisService.tableData.id;
+                    selectedService.splice(index, 1); //1: only one record
+                    axios
+                      .delete(AppUrl.DeleteService + thisService.id)
+                      .then((response) => {
+                        if (response.data.status === 200) {
+                          swal("Success", response.data.message, "success");
+                          setServicesListChange(true);
+                        } else if (response.data.status === 404) {
+                          swal("Error", response.data.message, "error");
+                        }
+                      });
+                    resolve();
+                  }, 1000);
+                }),
+            }}
           />
         </div>
+        <EditServiceModal
+            isShown={showEditModal}
+            serviceId={selectedServiceId}
+            setEditModalStatus={setEditModalStatus}
+            updateModalStatus={updateModalStatus}
+          />
       </Fragment>
     );
   }

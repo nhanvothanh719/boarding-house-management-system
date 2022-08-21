@@ -4,47 +4,37 @@ import { Link, useHistory } from "react-router-dom";
 import MaterialTable from "material-table";
 import swal from "sweetalert";
 import axios from "axios";
+import moment from "moment";
 
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
 
 export default function InvoicesRentersList() {
   const history = useHistory();
+  var currentDate = new Date();
 
+  const [details] = useState([]);
   const [loading, setLoading] = useState(true);
   const [rentersList, setRentersList] = useState([]);
   const [invoicesList, setInvoicesList] = useState([]);
+  const [invoicesListChange, setInvoicesListChange] = useState(false);
 
   useEffect(() => {
     axios.get(AppUrl.ShowRenters).then((response) => {
       if (response.data.status === 200) {
         setRentersList(response.data.allRenters);
       }
-      setLoading(false);
     });
     axios.get(AppUrl.ShowInvoices).then((response) => {
       if (response.data.status === 200) {
         setInvoicesList(response.data.allInvoices);
-        //console.log(response.data.allInvoices);
       }
     });
-  }, []);
-
-  const deleteInvoice = (e, id) => {
-    e.preventDefault();
-    const invoice = e.currentTarget;
-    invoice.innerText = "Deleting";
-    axios.delete(AppUrl.DeleteInvoice + id).then((response) => {
-      if (response.data.status === 200) {
-        swal("Success", response.data.message, "success");
-        //Delete table row
-        invoice.closest("tr").remove();
-      } else if (response.data.status === 404) {
-        swal("Fail", response.data.message, "error");
-        invoice.innerText = "Delete";
-      }
-    });
-  };
+    setLoading(false);
+    if (invoicesListChange) {
+      setInvoicesListChange(false);
+    }
+  }, [invoicesListChange]);
 
   var renters_columns = [];
   var invoices_columns = [];
@@ -53,7 +43,7 @@ export default function InvoicesRentersList() {
     return <Loading />;
   } else {
     renters_columns = [
-      { field: "id", title: "ID", align: "center" },
+      { title: "#", render: (rowData) => rowData.tableData.id + 1 },
       {
         field: "profile_picture",
         title: "Avatar",
@@ -70,25 +60,48 @@ export default function InvoicesRentersList() {
     ];
 
     invoices_columns = [
-      { field: "id", title: "ID", align: "center" },
+      { title: "#", render: (rowData) => rowData.tableData.id + 1 },
       {
         field: "renter_id",
         title: "User",
+        editable: "never",
         render: (rowData) => <p>{rowData.renter.name}</p>,
       },
-      { field: "total", title: "Total" },
-      { field: "month", title: "Month" },
-      { field: "effective_from", title: "Can be paid from" },
-      { field: "valid_until", title: "Can be paid until" },
-      { field: "is_paid", title: "Paid", lookup: { 0: "Not yet", 1: "Paid" } },
+      { field: "total", title: "Total", editable: "never" },
+      {
+        field: "month",
+        title: "Month",
+        type: "numeric",
+        validate: (rowData) =>
+          rowData.month < 1 || rowData.month > 12 || !Number.isInteger(rowData.month)
+            ? { isValid: false, helperText: "Inappropriate month input" }
+            : true,
+      },
+      {
+        field: "effective_from",
+        title: "Can be paid from",
+        type: "date",
+        editable: "never",
+        render: (rowData) =>
+          moment(rowData.effective_from).format("DD/MM/YYYY"),
+      },
+      {
+        field: "valid_until",
+        title: "Can be paid until",
+        type: "date",
+        editable: ( row ,rowData ) => rowData.is_paid === 0,
+        render: (rowData) => moment(rowData.valid_until).format("DD/MM/YYYY"),
+        validate: (rowData) =>
+          rowData.valid_until <= currentDate
+            ? { isValid: false, helperText: "Inappropriate value" }
+            : true,
+      },
+      { field: "is_paid", title: "Paid", editable: ( row ,rowData ) => rowData.is_paid === 0, lookup: { 0: "Not yet", 1: "Paid" } },
     ];
     return (
       <Fragment>
         <div className="customDatatable">
           <div className="datatableHeader">
-            <Link to="/admin/create-renter" className="createBtn">
-              Add new renter
-            </Link>
           </div>
           <MaterialTable
             columns={renters_columns}
@@ -103,13 +116,6 @@ export default function InvoicesRentersList() {
               actionsColumnIndex: -1,
             }}
             actions={[
-              {
-                icon: () => (
-                  <button className="btn btn-primary">All invoices</button>
-                ),
-                onClick: (event, renter) => 
-                history.push(`/admin/view-all-invoices-of-renter/${renter.id}`),
-              },
               {
                 icon: () => <button className="btn btn-success">Create</button>,
                 onClick: (event, renter) =>
@@ -131,20 +137,58 @@ export default function InvoicesRentersList() {
             }}
             actions={[
               {
-                icon: () => <button className="btn btn-warning">Edit</button>,
-                onClick: (event, invoice) =>
-                  history.push(`/admin/edit-invoice/${invoice.id}`),
-              },
-              {
-                icon: () => <button className="btn btn-info">Details</button>,
+                icon: "visibility",
+                tooltip: "Details",
                 onClick: (event, invoice) =>
                   history.push(`/admin/invoice-details/${invoice.id}`),
               },
-              {
-                icon: () => <button className="btn btn-danger">Delete</button>,
-                onClick: (event, invoice) => deleteInvoice(event, invoice.id),
-              },
             ]}
+            editable={{
+              onRowUpdate: (newInvoice, oldInvoice) =>
+                new Promise((resolve, reject) => {
+                  setTimeout(() => {
+                    const data = {
+                      effective_from: moment(newInvoice.effective_until)
+                        .utc()
+                        .format("YYYY-MM-DD"),
+                      valid_until: moment(newInvoice.valid_until)
+                        .utc()
+                        .format("YYYY-MM-DD"),
+                      month: newInvoice.month,
+                    };
+                    axios
+                      .put(AppUrl.UpdateInvoice + oldInvoice.id, data)
+                      .then((response) => {
+                        if (response.data.status === 200) {
+                          swal("Success", response.data.message, "success");
+                          setInvoicesListChange(true);
+                        } else if (response.data.status === 404) {
+                          swal("Error", response.data.message, "error");
+                        }
+                      });
+                    resolve();
+                  }, 1000);
+                }),
+              onRowDelete: (thisInvoice) =>
+                new Promise((resolve, reject) => {
+                  setTimeout(() => {
+                    const selectedInvoice = [...details];
+                    const index = thisInvoice.tableData.id;
+                    selectedInvoice.splice(index, 1); //1: only one record
+                    axios
+                      .delete(AppUrl.DeleteInvoice + thisInvoice.id)
+                      .then((response) => {
+                        if (response.data.status === 200) {
+                          swal("Success", response.data.message, "success");
+                          setInvoicesListChange(true);
+                        } else if (response.data.status === 404) {
+                          swal("Error", response.data.message, "error");
+                        }
+                      });
+                    resolve();
+                  }, 1000);
+                }),
+            }}
           />
         </div>
       </Fragment>

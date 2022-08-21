@@ -3,35 +3,20 @@ import React, { Fragment, useState, useEffect } from "react";
 import MaterialTable from "material-table";
 import moment from "moment";
 import axios from "axios";
-import {
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  Bar,
-  BarChart,
-} from "recharts";
 
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
+import RenterBreachCount from "../../../../components/Charts/RenterBreachCount";
 
 export default function RenterBreachDetails({ match }) {
   const renterId = match.params.renterID;
   const [breaches, setBreaches] = useState([]);
-  const [chartData, setChartData] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     axios.get(AppUrl.GetRenterBreaches + renterId).then((response) => {
       if (response.data.status === 200) {
         setBreaches(response.data.renterBreaches);
-      }
-    });
-    axios.get(AppUrl.CountRenterBreaches + renterId).then((response) => {
-      if (response.data.status === 200) {
-        setChartData(response.data.breachesTotal);
-        console.log(response.data.breachesTotal);
       }
     });
     setLoading(false);
@@ -51,24 +36,17 @@ export default function RenterBreachDetails({ match }) {
       {
         field: "violate_at",
         title: "Violate at",
-        render: rowData => moment(rowData.violate_at).format('hh:mm:ss - DD/MM/YYYY')
+        render: (rowData) =>
+          moment(rowData.violate_at).format("hh:mm:ss - DD/MM/YYYY"),
       },
     ];
   }
 
-
   return (
-  <Fragment>
-    <div>Renter's Breach Details {renterId}</div>
-    <BarChart width={730} height={250} data={chartData}>
-  <CartesianGrid strokeDasharray="3 3" />
-  <XAxis dataKey="breach_name" />
-  <YAxis />
-  <Tooltip />
-  <Legend />
-  <Bar dataKey="total" fill="#8884d8" />
-</BarChart>
-    <MaterialTable
+    <Fragment>
+      <div>Renter's Breach Details {renterId}</div>
+      <RenterBreachCount renterId={renterId} />
+      <MaterialTable
         columns={columns}
         data={breaches}
         title="Breach histories"
@@ -83,6 +61,6 @@ export default function RenterBreachDetails({ match }) {
           actionsColumnIndex: -1,
         }}
       />
-  </Fragment>
-);
+    </Fragment>
+  );
 }

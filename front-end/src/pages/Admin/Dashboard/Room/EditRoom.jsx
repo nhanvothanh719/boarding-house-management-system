@@ -6,16 +6,17 @@ import axios from "axios";
 
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
+import SearchCategory from "../../../../components/Search/SearchCategory";
+import SearchCategoryEdit from "../../../../components/Search/SearchCategoryEdit";
 
 export default function EditRoom({ match }) {
   const history = useHistory();
   const roomId = match.params.roomID;
 
-  const [categories, setCategories] = useState([]);
   const [input, setInput] = useState({
     number: "",
-    category_id: "",
     description: "",
+    category_id: "",
     area: "",
   });
   const [checkbox, setCheckbox] = useState([]);
@@ -23,14 +24,9 @@ export default function EditRoom({ match }) {
   const [oldImages, setOldImages] = useState([]);
   const [errors, setErrors] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
   useEffect(() => {
-    axios.get(AppUrl.ShowCategories).then((response) => {
-      if (response.data.status === 200) {
-        setCategories(response.data.allCategories);
-      }
-    });
-
     axios.get(AppUrl.EditRoom + roomId).then((response) => {
       if (response.data.status === 200) {
         setInput(response.data.room);
@@ -58,6 +54,10 @@ export default function EditRoom({ match }) {
     setPicture(e.target.files);
   };
 
+  const getSelectedCategory = (category) => {
+    setSelectedCategory(category);
+  }
+
   const updateRoom = (e) => {
     e.preventDefault();
     const room = new FormData();
@@ -67,7 +67,7 @@ export default function EditRoom({ match }) {
       room.append(`image[${i}]`, picture[i]);
       console.log(picture[i]);
     }
-    room.append("category_id", input.category_id);
+    room.append("category_id", selectedCategory.id);
     room.append("number", input.number);
     room.append("description", input.description);
     room.append("area", input.area);
@@ -137,21 +137,7 @@ export default function EditRoom({ match }) {
             <small className="text-danger">{errors.number}</small>
             <div className="formInput">
               <label>Category:</label>
-              <select
-                className="form-control"
-                name="category_id"
-                onChange={handleInput}
-                value={input.category_id}
-              >
-                {categories.map((category) => {
-                  return (
-                    <option value={category.id} key={category.id}>
-                      {" "}
-                      {category.name}{" "}
-                    </option>
-                  );
-                })}
-              </select>
+              <SearchCategoryEdit getSelectedCategory={getSelectedCategory} currentCategory={input.category} />
             </div>
             <small className="text-danger">{errors.category_id}</small>
             <div className="formInput">

@@ -1,8 +1,20 @@
 .sideBar {
-    flex: 1;
-    border-right: 0.5px solid rgb(192, 185, 185);
+    /* flex: 1; */
+    border-right: 2px solid #caced2;
     min-height: 100vh;
-    background-color: whitesmoke;
+    background-color: #1C4E80;
+    width: 250px;
+}
+
+.customLogo{
+    font-family: 'Montserrat Alternates', sans-serif;
+    font-weight: 600;
+    color: #f1f1f1 !important;
+    font-size: 20px;
+}
+
+.customLogo:hover{
+    text-decoration: none;
 }
 
 .top {
@@ -14,7 +26,7 @@
 
 .customHr {
     height: 0;
-    border: 0.5px solid rgb(192, 185, 185);
+    border: 1px solid #caced2;
     margin-top: 0;
 }
 
@@ -31,7 +43,7 @@
 .itemGroup {
     font-size: 15px;
     font-weight: bold;
-    color: rgb(43, 104, 202);
+    color: #a5d8dd;
     margin-top: 15px;
     margin-bottom: 7px;
 }
@@ -44,18 +56,17 @@
 }
 
 .customLi:hover {
-    background-color: rgb(233, 175, 134);
+    background-color: #7E909A;
 }
 
 .sideBarIcon {
-    font-size: 18px;
-    color: darkred;
+    font-size: 19px;
+    margin-left: 13px;
 }
 
 .itemName {
-    font-family: 'Montserrat Alternates', sans-serif;
+    font-family: 'Anek Telugu', sans-serif;
     font-size: 17px;
     font-weight: 600px;
-    color: rgba(159, 75, 7, 0.79);
     margin-left: 15px;
 }
