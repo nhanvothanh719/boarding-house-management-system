@@ -13,7 +13,7 @@ import ServicesList from "../pages/Admin/Dashboard/Service/ServicesList";
 import RegisterService from "../pages/Admin/Dashboard/Service/RegisterService";
 import RoomDetails from "../pages/Admin/Dashboard/Room/RoomDetails";
 import RentRoom from "../pages/Admin/Dashboard/Room/RentRoom";
-import InvoicesRentersList from "../pages/Admin/Dashboard/Invoice/InvoicesRentersList";
+import InvoicesList from "../pages/Admin/Dashboard/Invoice/InvoicesList";
 import CreateInvoice from "../pages/Admin/Dashboard/Invoice/CreateInvoice";
 import InvoiceDetails from "../pages/Admin/Dashboard/Invoice/InvoiceDetails";
 import RenterInvoicesList from "../pages/Admin/Dashboard/Invoice/RenterInvoicesList";
@@ -49,7 +49,7 @@ const routes = [
     { path: '/admin/view-all-services', exact: true, name: 'ServicesList', component: ServicesList },
     { path: '/admin/register-service', exact: true, name: 'RegisterService', component: RegisterService },
     //Invoice
-    { path: '/admin/view-all-renters-with-invoices', exact: true, name: 'InvoicesRentersList', component: InvoicesRentersList },
+    { path: '/admin/view-all-renters-with-invoices', exact: true, name: 'InvoicesList', component: InvoicesList },
     { path: '/admin/create-invoice/:renterID', exact: true, name: 'CreateInvoice', component: CreateInvoice },
     { path: '/admin/invoice-details/:invoiceID', exact: true, name: 'InvoiceDetails', component: InvoiceDetails },
     { path: '/admin/view-all-invoices-of-renter/:renterID', exact: true, name: 'RenterInvoicesList', component: RenterInvoicesList },

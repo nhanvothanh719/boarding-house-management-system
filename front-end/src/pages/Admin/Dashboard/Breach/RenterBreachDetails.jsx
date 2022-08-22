@@ -27,7 +27,7 @@ export default function RenterBreachDetails({ match }) {
     return <Loading />;
   } else {
     columns = [
-      { field: "id", title: "ID", align: "center", editable: "never" },
+      { title: '#', render: (rowData) => rowData.tableData.id + 1 },
       {
         field: "breach_id",
         title: "Breach name",
@@ -44,12 +44,12 @@ export default function RenterBreachDetails({ match }) {
 
   return (
     <Fragment>
-      <div>Renter's Breach Details {renterId}</div>
       <RenterBreachCount renterId={renterId} />
+      <div className="customDatatable">
       <MaterialTable
         columns={columns}
         data={breaches}
-        title="Breach histories"
+        title={<span className="customDatatableTitle">Renter's Breach Details</span>}
         options={{
           searchAutoFocus: false,
           searchFieldVariant: "outlined",
@@ -59,8 +59,12 @@ export default function RenterBreachDetails({ match }) {
           exportButton: true,
           exportAllData: true,
           actionsColumnIndex: -1,
+          headerStyle: {
+            fontFamily: 'Anek Telugu, sans-serif',
+          }
         }}
       />
+      </div>
     </Fragment>
   );
 }

@@ -10,7 +10,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 import AppUrl from "../../../RestAPI/AppUrl";
 
-export default function AddBalanceChange(props) {
+export default function AddBalanceChangeModal(props) {
   const [input, setInput] = useState({
     description: "",
     is_income: "",

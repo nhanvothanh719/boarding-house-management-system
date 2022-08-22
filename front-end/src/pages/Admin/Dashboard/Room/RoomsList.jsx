@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 import MaterialTable from "material-table";
 import axios from "axios";
@@ -7,6 +7,7 @@ import swal from "sweetalert";
 
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
+import { Button } from "react-bootstrap";
 
 export default function RoomsList() {
   const history = useHistory();
@@ -27,6 +28,11 @@ export default function RoomsList() {
       setRoomsListChange(false);
     }
   }, [roomsListChange]);
+
+  const redirectToAddRoomPage = (e) => {
+    e.preventDefault();
+    history.push('/admin/create-room');
+  }
 
 
   var columns = [];
@@ -79,9 +85,13 @@ export default function RoomsList() {
       <Fragment>
         <div className="customDatatable">
           <div className="customDatatableHeader">
-            <Link to="/admin/create-room" className="createBtn">
+            <Button 
+            className="createBtn" 
+            style={{ backgroundColor: "white", color: "#1C4E80" }} 
+            onClick={redirectToAddRoomPage}
+            >
               Add new room
-            </Link>
+            </Button>
           </div>
           <MaterialTable
             columns={columns}
@@ -96,7 +106,6 @@ export default function RoomsList() {
               exportButton: true,
               exportAllData: true,
               actionsColumnIndex: -1,
-              grouping: true,
               headerStyle: {
                 fontFamily: 'Anek Telugu, sans-serif',
               }

@@ -1,9 +1,12 @@
 import React, { Fragment, useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { Button } from "react-bootstrap";
+
 import MaterialTable from "material-table";
 import swal from "sweetalert";
 import axios from "axios";
 import moment from "moment";
-import { useHistory } from "react-router-dom";
+
 
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
@@ -12,19 +15,16 @@ import BreachCount from "../../../../components/Charts/BreachCount";
 import BreachRate from "../../../../components/Charts/BreachRate";
 
 export default function BreachHistories() {
-  const history = useHistory();
 
   const [details] = useState([]);
   const [loading, setLoading] = useState(true);
   const [breachHistories, setBreachHistories] = useState([]);
   const [breachHistoriesChange, setBreachHistoriesChange] = useState(false);
-  const [renterBreachMadeTotal, setRenterBreachMadeTotal] = useState([]);
   const [showCreateModal, setShowCreateModal] = useState(false);
 
   useEffect(() => {
     axios.get(AppUrl.GetRenterTotalNumberBreachMade).then((response) => {
       if (response.data.status === 200) {
-        setRenterBreachMadeTotal(response.data.renterTotal);
         console.log(response.data.renterTotal);
       }
     });
@@ -61,7 +61,7 @@ export default function BreachHistories() {
       {
         field: "renter_id",
         title: "Renter",
-        render: (rowData) => <p>{rowData.renter.name}</p>,
+        render: (rowData) => <Link className="customDashboardLink" to={`/admin/view-renter-breach-details/${rowData.renter_id}`}>{rowData.renter.name}</Link>,
       },
       {
         field: "violate_at",
@@ -71,46 +71,29 @@ export default function BreachHistories() {
     ];
   }
 
-  var summarize_columns = [];
-  if (loading) {
-    return <Loading />;
-  } else {
-    summarize_columns = [
-      {
-        field: "renter_id",
-        title: "Renter ID",
-      },
-      {
-        field: "renter_name",
-        title: "Renter name",
-      },
-      {
-        field: "total",
-        title: "Total breach made",
-      },
-    ];
-  }
-
   return (
     <Fragment>
       <BreachCount/>
       <BreachRate/>
-      <button 
-      className="btn btn-primary" 
-      onClick={(e) => setShowCreateModal(true)}
-      >
-        Add new breach history
-      </button>
-      <CreateBreachHistoryModal
+      <div className="customDatatable">
+        <div className="customDatatableHeader">
+          <Button
+            className="createBtn"
+            style={{ backgroundColor: "white", color: "#1C4E80" }}
+            onClick={(e) => setShowCreateModal(true)}
+          >
+            Create new breach history
+          </Button>
+          <CreateBreachHistoryModal
         isShown={showCreateModal}
         setCreateModalStatus={setCreateModalStatus}
         updateCreateModalStatus={updateCreateModalStatus}
       />
-
+        </div>
       <MaterialTable
         columns={columns}
         data={breachHistories}
-        title="Breach histories"
+        title={<span className="customDatatableTitle">All breach histories</span>}
         options={{
           searchAutoFocus: false,
           searchFieldVariant: "outlined",
@@ -120,6 +103,9 @@ export default function BreachHistories() {
           exportButton: true,
           exportAllData: true,
           actionsColumnIndex: -1,
+          headerStyle: {
+            fontFamily: 'Anek Telugu, sans-serif',
+          }
         }}
         editable={{
           onRowDelete: (oldBreachHistory) =>
@@ -143,30 +129,7 @@ export default function BreachHistories() {
             }),
         }}
       />
-
-      <MaterialTable
-        columns={summarize_columns}
-        data={renterBreachMadeTotal}
-        title="Total breach made by renters"
-        options={{
-          searchAutoFocus: false,
-          searchFieldVariant: "outlined",
-          filtering: false,
-          pageSizeOptions: [5, 10],
-          paginationType: "stepped",
-          exportButton: true,
-          exportAllData: true,
-          actionsColumnIndex: -1,
-        }}
-        actions={[
-          {
-            icon: 'visibility',
-            tooltip: 'Details',
-            onClick: (event, renter_total) => 
-            history.push(`/admin/view-renter-breach-details/${renter_total.renter_id}`),
-          },
-        ]}
-      />
+      </div>
     </Fragment>
   );
 }

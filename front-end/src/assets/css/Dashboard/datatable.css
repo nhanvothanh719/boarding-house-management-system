@@ -2,6 +2,7 @@
 .customDatatable {
     height: 700px;
     padding: 20px;
+    overflow: overlay;
 }
 
 .customDatatableHeader {
@@ -91,6 +92,16 @@
     font-weight: 600;
     color: #EA6A47;
     margin-left: 20px;
+}
+
+.customDashboardLink {
+    text-decoration: none;
+    color: #1C4E80;
+}
+
+.customDashboardLink:hover {
+    text-decoration: none;
+    color: #7E909A;
 }
 
 

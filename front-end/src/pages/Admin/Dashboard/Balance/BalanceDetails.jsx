@@ -9,7 +9,7 @@ import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
 import BalanceVariation from "../../../../components/Charts/BalanceVariation";
 import BalanceCategoryRate from "../../../../components/Charts/BalanceCategoryRate";
-import AddBalanceChange from "../../../../components/Modals/Balance/AddBalanceChange";
+import AddBalanceChangeModal from "../../../../components/Modals/Balance/AddBalanceChangeModal";
 
 export default function BalanceDetails() {
   var currentDate = new Date();
@@ -110,7 +110,7 @@ export default function BalanceDetails() {
             style={{ backgroundColor: "white", color: "#1C4E80" }}
             onClick={(e) => setShowCreateModal(true)}
           >
-            <AddBalanceChange
+            <AddBalanceChangeModal
               isShown={showCreateModal}
               setCreateModalStatus={setCreateModalStatus}
               updateCreateModalStatus={updateCreateModalStatus}

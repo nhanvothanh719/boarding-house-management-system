@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 import MaterialTable from "material-table";
 import swal from "sweetalert";
@@ -12,6 +12,7 @@ import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
 import DefaultAvatar from "../../../../assets/images/avatar.jpeg";
 import "../../../../assets/css/Dashboard/datatable.css";
+import { Button } from "react-bootstrap";
 
 export default function RentersList() {
   const history = useHistory();
@@ -41,6 +42,11 @@ export default function RentersList() {
       }
     });
   }
+  
+  const redirectToAddRenterPage = (e) => {
+    e.preventDefault();
+    history.push('/admin/create-renter');
+  }
 
   var columns = [];
   if (loading) {
@@ -68,9 +74,13 @@ export default function RentersList() {
       <Fragment>
         <div className="customDatatable">
           <div className="customDatatableHeader">
-            <Link to="/admin/create-renter" className="createBtn">
+          <Button
+            className="createBtn" 
+            style={{ backgroundColor: "white", color: "#1C4E80" }} 
+            onClick={redirectToAddRenterPage}
+            >
               Add new renter
-            </Link>
+            </Button>
           </div>
           <MaterialTable
             columns={columns}
