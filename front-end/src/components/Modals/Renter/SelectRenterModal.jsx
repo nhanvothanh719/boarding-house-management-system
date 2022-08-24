@@ -59,8 +59,8 @@ export default function SelectRenterModal(props) {
             <div class="modal-body">
               <hr />
               <form className="">
-                <div className="formInput">
-                  <label>Renter ID:</label>
+                <div>
+                  <label className="customModalLabel">Renter ID:</label>
                   <SearchRenter getSelectedRenter={getSelectedRenter} />
                 </div>
               </form>
@@ -68,7 +68,7 @@ export default function SelectRenterModal(props) {
             <div class="modal-footer">
               <button
                 type="button"
-                class="btn btn-success"
+                class="btn btn-primary"
                 data-dismiss="modal"
                 onClick={generateInvoiceForm}
               >

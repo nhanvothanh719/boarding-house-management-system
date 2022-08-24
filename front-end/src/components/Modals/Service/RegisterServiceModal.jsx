@@ -78,7 +78,7 @@ export default function RegisterServiceModal(props) {
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">
+              <h5 class="customModalTitle" id="exampleModalLabel">
                 Register for using optional service
               </h5>
               <button
@@ -95,13 +95,13 @@ export default function RegisterServiceModal(props) {
             <div class="modal-body">
               <hr />
               <form className="">
-                <div className="formInput">
-                  <label>Renter ID:</label>
+                <div>
+                  <label className="customModalLabel">Renter:</label>
                   <SearchRenter getSelectedRenter={getSelectedRenter} />
                 </div>
                 <small className="text-danger">{errors.user_id}</small>
-                <div className="formInput">
-                  <label>Service:</label>
+                <div>
+                  <label className="customModalLabel">Service:</label>
                   <SearchService getSelectedService={getSelectedService} />
                 </div>
                 <small className="text-danger">{errors.service_id}</small>
@@ -110,7 +110,7 @@ export default function RegisterServiceModal(props) {
             <div class="modal-footer">
               <button
                 type="button"
-                class="btn btn-success"
+                class="btn btn-primary"
                 data-dismiss="modal"
                 onClick={register}
               >

@@ -2,6 +2,7 @@ import React, { Fragment, useEffect, useState } from "react";
 
 import swal from "sweetalert";
 import axios from "axios";
+import TextField from "@mui/material/TextField";
 
 import AppUrl from "../../../RestAPI/AppUrl";
 
@@ -19,6 +20,7 @@ export default function CreateCategoryModal(props) {
         document.getElementById("createCategoryModal")
       );
       model.show();
+      
     }
   }, [props.isShown]);
 
@@ -76,7 +78,7 @@ export default function CreateCategoryModal(props) {
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Create new category</h5>
+              <h5 class="customModalTitle">Create new category</h5>
               <button
                 type="button"
                 class="close"
@@ -90,40 +92,41 @@ export default function CreateCategoryModal(props) {
             </div>
             <div class="modal-body">
               <hr />
-              <form className="flexForm">
-                <div className="form-group">
-                  <label className="inputItemLabel">Category name:</label>
-                  <input
-                    type="text"
-                    className="inputItem"
+              <form>
+                <div>
+                  <label className="customModalLabel">Category name:</label>
+                  <TextField
+                    label="Name"
                     name="name"
-                    onChange={handleInput}
                     value={input.name}
+                    onChange={handleInput}
+                    fullWidth
+                    required
                   />
                 </div>
                 <small className="text-danger">{errors.name}</small>
 
-                <div className="form-group">
-                  <label className="inputItemLabel">Price:</label>
-                  <input
-                    type="text"
-                    className="inputItem"
+                <div>
+                  <label className="customModalLabel">Price:</label>
+                  <TextField
+                    label="Price"
                     name="price"
-                    onChange={handleInput}
                     value={input.price}
-                    id="inputPrice"
+                    onChange={handleInput}
+                    fullWidth
+                    required
                   />
                 </div>
                 <small className="text-danger">{errors.price}</small>
-                <div className="form-group">
-                  <label className="inputItemLabel">Description:</label>
-                  <textarea
-                    type="text"
-                    className="inputItem"
+                <div>
+                  <label className="customModalLabel">Description:</label>
+                  <TextField
+                    label="Description"
                     name="description"
-                    onChange={handleInput}
                     value={input.description}
-                    id="inputDescription"
+                    onChange={handleInput}
+                    fullWidth
+                    required
                   />
                 </div>
                 <small className="text-danger">{errors.description}</small>
@@ -132,11 +135,11 @@ export default function CreateCategoryModal(props) {
             <div class="modal-footer">
               <button
                 type="button"
-                class="btn btn-success"
+                class="btn btn-primary"
                 data-dismiss="modal"
                 onClick={createCategory}
               >
-                Send
+                Create
               </button>
               <button
                 type="button"

@@ -105,7 +105,7 @@ export default function EditSignatures(props) {
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Edit signatures</h5>
+              <h5 class="customModalTitle">Edit signatures</h5>
               <button
                 type="button"
                 class="close"
@@ -121,7 +121,7 @@ export default function EditSignatures(props) {
               <hr />
               <form className="flexForm" enctype="multipart/form-data">
                 <div className="form-group">
-                  <label>Owner signature:</label>
+                  <label className="customModalLabel">Owner signature:</label>
                   <input
                     type="file"
                     className="form-control"
@@ -137,7 +137,7 @@ export default function EditSignatures(props) {
                   style={{ width: "60px", height: "60px", borderRadius: "50%" }}
                 />
                 <div className="form-group">
-                  <label>Renter signature:</label>
+                  <label className="customModalLabel">Renter signature:</label>
                   <input
                     type="file"
                     className="form-control"
@@ -157,7 +157,7 @@ export default function EditSignatures(props) {
             <div class="modal-footer">
               <button
                 type="button"
-                class="btn btn-success"
+                class="btn btn-primary"
                 data-dismiss="modal"
                 onClick={updateSignatures}
               >

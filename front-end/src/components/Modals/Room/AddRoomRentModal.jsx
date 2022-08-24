@@ -78,8 +78,8 @@ export default function AddRoomRentModal(props) {
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">
-                Send announcement
+              <h5 class="customModalTitle" id="exampleModalLabel">
+                Add new room rent
               </h5>
               <button
                 type="button"
@@ -95,13 +95,13 @@ export default function AddRoomRentModal(props) {
             <div class="modal-body">
               <hr />
               <form className="">
-                <div className="formInput">
-                  <label>Renter ID:</label>
+                <div>
+                  <label className="customModalLabel">Renter:</label>
                   <SearchRenter getSelectedRenter={getSelectedRenter} />
                 </div>
                 <small className="text-danger">{errors.renter_id}</small>
-                <div className="formInput">
-                  <label>Room number:</label>
+                <div>
+                  <label className="customModalLabel">Room number:</label>
                   <SearchRoom getSelectedRoom={getSelectedRoom} />
                 </div>
                 <small className="text-danger">{errors.room_number}</small>
@@ -110,7 +110,7 @@ export default function AddRoomRentModal(props) {
             <div class="modal-footer">
               <button
                 type="button"
-                class="btn btn-success"
+                class="btn btn-primary"
                 data-dismiss="modal"
                 onClick={makeNewRent}
               >

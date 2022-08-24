@@ -62,6 +62,7 @@ export default function BalanceDetails() {
       {
         field: "is_income",
         title: "Category",
+        editable: "never",
         lookup: { 0: "Expenses", 1: "Earned" },
         render: rowData => (
           <div>
@@ -110,13 +111,13 @@ export default function BalanceDetails() {
             style={{ backgroundColor: "white", color: "#1C4E80" }}
             onClick={(e) => setShowCreateModal(true)}
           >
-            <AddBalanceChangeModal
+            Add new change
+          </Button>
+          <AddBalanceChangeModal
               isShown={showCreateModal}
               setCreateModalStatus={setCreateModalStatus}
               updateCreateModalStatus={updateCreateModalStatus}
             />
-            Add new change
-          </Button>
         </div>
         <MaterialTable
           columns={columns}

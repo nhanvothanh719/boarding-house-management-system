@@ -1,13 +1,10 @@
 import MainDashboard from "../pages/Admin/Dashboard/MainPage/MainDashboard";
-//import RentersList from "../pages/Admin/Dashboard/RentersList";
-import RenterDetails from "../pages/Admin/Dashboard/Form";
 import CategoriesList from "../pages/Admin/Dashboard/Category/CategoriesList";
 import CreateRoom from "../pages/Admin/Dashboard/Room/CreateRoom";
 import RoomsList from "../pages/Admin/Dashboard/Room/RoomsList";
 import EditRoom from "../pages/Admin/Dashboard/Room/EditRoom";
-import RentersList from "../pages/Admin/Dashboard/Renter/RentersList";
-import CreateRenter from "../pages/Admin/Dashboard/Renter/CreateRenter";
-import EditRenter from "../pages/Admin/Dashboard/Renter/EditRenter";
+import UsersList from "../pages/Admin/Dashboard/User/UsersList";
+import EditUser from "../pages/Admin/Dashboard/User/EditUser";
 import MotorbikesList from "../pages/Admin/Dashboard/Motorbike/MotorbikesList";
 import ServicesList from "../pages/Admin/Dashboard/Service/ServicesList";
 import RegisterService from "../pages/Admin/Dashboard/Service/RegisterService";
@@ -25,12 +22,12 @@ import RenterBreachDetails from "../pages/Admin/Dashboard/Breach/RenterBreachDet
 import RoomContractsList from "../pages/Admin/Dashboard/RoomContract/RoomContractsList";
 import RoomContractDetails from "../pages/Admin/Dashboard/RoomContract/RoomContractDetails";
 import ProblemsList from "../pages/Admin/Dashboard/Problem/ProblemsList";
+import Test from "../pages/Admin/Dashboard/Room/Test";
 
 const routes = [
-    { path: '/admin', exact: true, name: 'Admin' }, // '/admin/123', 'admin/weq', ...
+    { path: '/admin', exact: true, name: 'Admin' },
     { path: '/admin/dashboard', exact: true, name: 'MainDashboard', component: MainDashboard },
-    // { path: '/admin/rentersss', exact: true, name: 'AllRenters', component: RentersList },
-    { path: '/admin/renters/:renterID', exact: true, name: 'RenterDetails', component: RenterDetails },
+    //{ path: '/admin/renters/:renterID', exact: true, name: 'Example', component: Example },
     //Category
     { path: '/admin/view-all-categories', exact: true, name: 'CategoriesList', component: CategoriesList },
     //Room
@@ -40,9 +37,8 @@ const routes = [
     { path: '/admin/view-all-rooms', exact: true, name: 'RoomsList', component: RoomsList },
     { path: '/admin/edit-room/:roomID', exact: true, name: 'EditRoom', component: EditRoom },
     //Renter
-    { path: '/admin/create-renter', exact: true, name: 'CreateRenter', component: CreateRenter },
-    { path: '/admin/view-all-renters', exact: true, name: 'RentersList', component: RentersList },
-    { path: '/admin/edit-renter/:renterID', exact: true, name: 'EditRenter', component: EditRenter },
+    { path: '/admin/view-all-users', exact: true, name: 'UsersList', component: UsersList },
+    { path: '/admin/edit-user/:userID', exact: true, name: 'EditUser', component: EditUser },
     //Motorbike
     { path: '/admin/view-all-motorbikes', exact: true, name: 'MotorbikesList', component: MotorbikesList },
     //Service
@@ -66,6 +62,8 @@ const routes = [
     { path: '/admin/view-room-contract-details/:roomContractID', exact: true, name: 'RoomContractDetails', component: RoomContractDetails },
     //Problem
     { path: '/admin/view-all-problems', exact: true, name: 'ProblemsList', component: ProblemsList },
+
+    { path: '/admin/example', exact: true, name: 'Test', component: Test },
 ]
 
 export default routes;

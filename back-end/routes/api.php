@@ -40,7 +40,7 @@ Route::middleware('auth:api')->group(function(){
         Route::get('/check-admin-authenticated', function() {
             return response(['message' => 'Login successfully. You are the admin', 'status' => 200]);
         });    
-        Route::get('/all-users', [UserController::class], 'index');
+        Route::get('/all-users', [UserController::class, 'index']);
 
         //Category
         Route::get('/all-categories', [CategoryController::class, 'index']);

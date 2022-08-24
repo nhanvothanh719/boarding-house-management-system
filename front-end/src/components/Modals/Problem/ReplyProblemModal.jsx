@@ -82,7 +82,7 @@ export default function ReplyProblemModal(props) {
               <hr />
               <form className="flexForm">
                 <div className="form-group">
-                  <label>Reply text :</label>
+                  <label className="customModalLabel">Reply text :</label>
                   <textarea
                     className="form-control"
                     name="reply_text"
@@ -95,7 +95,7 @@ export default function ReplyProblemModal(props) {
             <div class="modal-footer">
               <button
                 type="button"
-                class="btn btn-success"
+                class="btn btn-primary"
                 data-dismiss="modal"
                 onClick={submitReply}
               >

@@ -4,6 +4,7 @@ import swal from "sweetalert";
 import axios from "axios";
 
 import AppUrl from "../../../RestAPI/AppUrl";
+import { TextField } from "@mui/material";
 
 export default function CreateAnnouncementModal(props) {
   const [errors, setErrors] = useState([]);
@@ -75,7 +76,7 @@ export default function CreateAnnouncementModal(props) {
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">
+              <h5 class="customModalTitle" id="exampleModalLabel">
                 Send announcement
               </h5>
               <button
@@ -90,28 +91,29 @@ export default function CreateAnnouncementModal(props) {
             <div class="modal-body">
               <hr />
               <form className="flexForm">
-                <div className="formInput">
-                <label className="inputItemLabel">Title:</label>
-          <input
-            type="text"
-            className="inputItem"
-            name="title"
-            onChange={handleInput}
-            value={input.title}
-            id="inputTitle"
-          />
+                <div>
+                <label className="customModalLabel">Title:</label>
+          <TextField
+                    label="Title"
+                    name="title"
+                    value={input.title}
+                    onChange={handleInput}
+                    fullWidth
+                    required
+                  />
                 </div>
                 <small className="text-danger">{errors.title}</small>
-                <div className="formInput">
-                <label className="inputItemLabel">Content:</label>
-          <textarea
-            type="text"
-            className="inputItem"
-            name="content"
-            onChange={handleInput}
-            value={input.content}
-            id="inputContent"
-          />
+                <div>
+                <label className="customModalLabel">Content:</label>
+                <TextField
+                    label="Content"
+                    name="content"
+                    value={input.content}
+                    onChange={handleInput}
+                    fullWidth
+                    multiline
+                    required
+                  />
                 </div>
                 <small className="text-danger">{errors.content}</small>
               </form>
@@ -119,7 +121,7 @@ export default function CreateAnnouncementModal(props) {
             <div class="modal-footer">
               <button
                 type="button"
-                class="btn btn-success"
+                class="btn btn-primary"
                 data-dismiss="modal"
                 onClick={sendAnnouncement}
               >

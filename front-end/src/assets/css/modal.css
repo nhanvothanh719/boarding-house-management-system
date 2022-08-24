@@ -1,0 +1,19 @@
+.customCheckbox {
+  display: block;
+  width: 20px;
+  height: 20px;
+  border-width: 1px;
+  border-style: solid;
+}
+
+.customModalLabel{
+  font-size: 1rem;
+  font-family: 'Anek Telugu', sans-serif;
+  
+}
+
+.customModalTitle{
+  font-size: 25px;
+  font-family: "Anek Telugu", sans-serif;
+  color: #0091D5;
+}

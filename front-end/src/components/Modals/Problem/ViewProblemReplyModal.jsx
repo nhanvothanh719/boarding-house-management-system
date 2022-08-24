@@ -37,7 +37,7 @@ export default function ViewReplyProblemModal(props) {
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Reply to renter's problem</h5>
+              <h5 class="customModalTitle">Reply to renter's problem</h5>
               <button
                 type="button"
                 class="close"
@@ -53,7 +53,7 @@ export default function ViewReplyProblemModal(props) {
               <hr />
               <form className="flexForm">
                 <div className="form-group">
-                  <label>Responder :</label>
+                  <label className="customModalLabel">Responder :</label>
                   <input
                     type="text"
                     className="form-control"
@@ -62,7 +62,7 @@ export default function ViewReplyProblemModal(props) {
                   />
                 </div>
                 <div className="form-group">
-                  <label>Reply text :</label>
+                  <label className="customModalLabel">Reply text :</label>
                   <textarea 
                   className="form-control" 
                   name="reply_text"

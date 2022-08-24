@@ -8,6 +8,7 @@ import swal from "sweetalert";
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
 import { Button } from "react-bootstrap";
+import CreateRoomModal from "../../../../components/Modals/Room/CreateRoomModal";
 
 export default function RoomsList() {
   const history = useHistory();
@@ -16,6 +17,8 @@ export default function RoomsList() {
   const [loading, setLoading] = useState(true);
   const [roomsList, setRoomsList] = useState([]);
   const [roomsListChange, setRoomsListChange] = useState(false);
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const statusStyle = { "Empty": "statusOnGoing", "Occupied": "statusActive", "Full": "statusPassive"};
 
   useEffect(() => {
     axios.get(AppUrl.ShowRooms).then((response) => {
@@ -29,11 +32,13 @@ export default function RoomsList() {
     }
   }, [roomsListChange]);
 
-  const redirectToAddRoomPage = (e) => {
-    e.preventDefault();
-    history.push('/admin/create-room');
-  }
+  const setCreateModalStatus = (status) => {
+    setShowCreateModal(status);
+  };
 
+  const updateModalStatus = (status) => {
+    setRoomsListChange(status);
+  };
 
   var columns = [];
   if (loading) {
@@ -43,11 +48,14 @@ export default function RoomsList() {
       { title: '#', render: (rowData) => rowData.tableData.id + 1 },
       { field: "number", title: "Number", align: "center" },
       { field: "category_id", title: "Category", render: rowData => <p> {rowData.category.name} </p> },
-      { field: "status", title: "Status", render: rowData => <p> {rowData.status.name} </p>},
-      {
-        field: "description",
-        title: "Description",
-        emptyValue: () => <em>No description</em>,
+      { 
+        field: "status", 
+        title: "Status", 
+        render: (rowData) => {
+          return (
+              <span className={`${statusStyle[rowData.status.name]}`}>{rowData.status.name}</span>
+          );
+        }
       },
       { field: "area", title: "Area" },
       { 
@@ -85,10 +93,10 @@ export default function RoomsList() {
       <Fragment>
         <div className="customDatatable">
           <div className="customDatatableHeader">
-            <Button 
+            <Button
             className="createBtn" 
             style={{ backgroundColor: "white", color: "#1C4E80" }} 
-            onClick={redirectToAddRoomPage}
+            onClick={(e) => setShowCreateModal(true)}
             >
               Add new room
             </Button>
@@ -147,6 +155,11 @@ export default function RoomsList() {
             }}
           />
         </div>
+        <CreateRoomModal
+        isShown={showCreateModal}
+        setCreateModalStatus={setCreateModalStatus}
+        updateModalStatus={updateModalStatus}
+        />
       </Fragment>
     );
   }

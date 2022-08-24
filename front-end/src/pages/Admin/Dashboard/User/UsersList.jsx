@@ -7,27 +7,36 @@ import axios from "axios";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import FolderSharedIcon from '@mui/icons-material/FolderShared';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
 import DefaultAvatar from "../../../../assets/images/avatar.jpeg";
 import "../../../../assets/css/Dashboard/datatable.css";
 import { Button } from "react-bootstrap";
+import CreateRenterModal from "../../../../components/Modals/Renter/CreateRenterModal";
 
-export default function RentersList() {
+export default function UsersList() {
   const history = useHistory();
 
   const [details] = useState([]);
   const [loading, setLoading] = useState(true);
   const [rentersList, setRentersList] = useState([]);
   const [rentersListChange, setRentersListChange] = useState(false);
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [currentUserId, setCurrentUserId] = useState(0);
 
   useEffect(() => {
-    axios.get(AppUrl.ShowRenters).then((response) => {
+    axios.get(AppUrl.GetAllUsers).then((response) => {
       if (response.data.status === 200) {
-        setRentersList(response.data.allRenters);
+        setRentersList(response.data.allUsers);
       }
     });
+    axios.get(AppUrl.GetUserProfile).then((response) => {
+      if (response.data.status === 200) {
+        setCurrentUserId(response.data.currentUser.id);
+      }
+    })
     setLoading(false);
     if (rentersListChange) {
       setRentersListChange(false);
@@ -42,11 +51,19 @@ export default function RentersList() {
       }
     });
   }
+
+  const setCreateModalStatus = (status) => {
+    setShowCreateModal(status);
+  };
+
+  const updateModalStatus = (status) => {
+    setRentersListChange(status);
+  };
   
-  const redirectToAddRenterPage = (e) => {
-    e.preventDefault();
-    history.push('/admin/create-renter');
-  }
+  // const redirectToAddRenterPage = (e) => {
+  //   e.preventDefault();
+  //   history.push('/admin/create-renter');
+  // }
 
   var columns = [];
   if (loading) {
@@ -58,7 +75,17 @@ export default function RentersList() {
       // { field: "profile_picture", title: "Avatar", export: false, width: "10%", render: rowData => <img src={rowData.profile_picture} alt="avatar" style={{width: 40, borderRadius: '50%'}}/> },
       { field: "name", title: "Name", width: "20%" },
       { field: "email", title: "Email", width: "20%" },
-      { field: "gender", title: "Gender", lookup: { 0: "Female", 1: "Male" }, width: "10%" },
+      { 
+        field: "role_id", 
+        title: "Role", 
+        lookup: { 0: "Admin", 1: "Renter" }, 
+        width: "10%",
+        render: rowData => (
+          <div>
+              <span className={`${rowData.role_id === 0 ? "statusPending" : "statusOnGoing"}` }>{rowData.role_id === 0 ? "Admin" : "Renter" }</span>
+          </div>
+        )
+       },
       { field: "phone_number", title: "Phone number" },
       {
         field: "is_locked",
@@ -77,15 +104,15 @@ export default function RentersList() {
           <Button
             className="createBtn" 
             style={{ backgroundColor: "white", color: "#1C4E80" }} 
-            onClick={redirectToAddRenterPage}
+            onClick={(e) => setShowCreateModal(true)}
             >
-              Add new renter
+              Add new user
             </Button>
           </div>
           <MaterialTable
             columns={columns}
             data={rentersList}
-            title= {<span className="customDatatableTitle">All renters</span>}
+            title= {<span className="customDatatableTitle">All users</span>}
             options={{
               searchAutoFocus: false,
               searchFieldVariant: "outlined",
@@ -101,25 +128,28 @@ export default function RentersList() {
             }}
             actions={[
               {
-                icon: 'edit',
-                tooltip: 'Edit',
-                onClick: (event, renter) =>
-                  history.push(`/admin/edit-renter/${renter.id}`),
+                icon: AccountCircleIcon,
+                tooltip: 'View & Edit',
+                onClick: (event, user) =>
+                  history.push(`/admin/edit-user/${user.id}`),
               },
-              renter => ({
-                icon: renter.is_locked ? LockOpenIcon : LockOutlinedIcon,
-                tooltip: renter.is_locked ? 'Unlock account' : 'Lock account',
-                onClick: (event, renter) => lockRenterAccount(renter.id),
+              (user) => ({
+                icon: user.is_locked ? LockOpenIcon : LockOutlinedIcon,
+                tooltip: user.is_locked ? 'Unlock account' : 'Lock account',
+                onClick: (event, user) => lockRenterAccount(user.id),
+                disabled: user.role_id === 0,
               }),
-              ({
+              (renter) => ({
                 icon: FolderSharedIcon,
                 tooltip: 'Renter details',
                 onClick: (event, renter) => history.push(
                   `/admin/view-all-invoices-of-renter/${renter.id}`
                 ),
+                disabled: renter.role_id === 0,
               }),
             ]}
             editable={{
+              isDeletable: rowData => rowData.id !== currentUserId,
               onRowDelete: (thisRenter) =>
                 new Promise((resolve, reject) => {
                   setTimeout(() => {
@@ -142,6 +172,11 @@ export default function RentersList() {
             }}
           />
         </div>
+        <CreateRenterModal 
+        isShown={showCreateModal}
+        setCreateModalStatus={setCreateModalStatus}
+        updateModalStatus={updateModalStatus}
+        />
       </Fragment>
     );
   }

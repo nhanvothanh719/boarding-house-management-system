@@ -4,6 +4,7 @@ import swal from "sweetalert";
 import axios from "axios";
 
 import AppUrl from "../../../RestAPI/AppUrl";
+import { TextField } from "@mui/material";
 
 export default function CreateBreachModal(props) {
   const [errors, setErrors] = useState([]);
@@ -78,7 +79,7 @@ export default function CreateBreachModal(props) {
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">
+              <h5 class="customModalTitle">
                 Add new breach
               </h5>
               <button
@@ -93,32 +94,32 @@ export default function CreateBreachModal(props) {
             <div class="modal-body">
               <hr />
               <form className="flexForm">
-                <div className="formInput">
-                  <label className="inputItemLabel">Name:</label>
-                  <input
-                    type="text"
-                    className="inputItem"
+                <div>
+                  <label className="customModalLabel">Name:</label>
+                  <TextField
+                    label="Name"
                     name="name"
-                    onChange={handleInput}
                     value={input.name}
-                    id="inputName"
+                    onChange={handleInput}
+                    fullWidth
+                    required
                   />
                 </div>
                 <small className="text-danger">{errors.name}</small>
-                <div className="formInput">
-                  <label className="inputItemLabel">Description:</label>
-                  <input
-                    type="text"
-                    className="inputItem"
+                <div>
+                  <label className="customModalLabel">Description:</label>
+                  <TextField
+                    label="Description"
                     name="description"
-                    onChange={handleInput}
                     value={input.description}
-                    id="inputDescription"
+                    onChange={handleInput}
+                    fullWidth
+                    required
                   />
                 </div>
                 <small className="text-danger">{errors.description}</small>
-                <div className="formInput">
-                  <label className="inputItemLabel">Severity level:</label>
+                <div>
+                  <label className="customModalLabel">Severity level:</label>
                   <select
                     class="form-control"
                     name="severity_level"
@@ -144,17 +145,17 @@ export default function CreateBreachModal(props) {
                     </option>
                   </select>
                 </div>
-                <div className="formInput">
-                  <label className="inputItemLabel">
+                <div>
+                  <label className="customModalLabel">
                     Number of offenses allowed:
                   </label>
-                  <input
-                    type="text"
-                    className="inputItem"
+                  <TextField
+                    label="Number of offenses allowed"
                     name="allowed_violate_number"
-                    onChange={handleInput}
                     value={input.allowed_violate_number}
-                    id="inputAllowedViolateNumber"
+                    onChange={handleInput}
+                    fullWidth
+                    required
                   />
                 </div>
                 <small className="text-danger">
@@ -165,7 +166,7 @@ export default function CreateBreachModal(props) {
             <div class="modal-footer">
               <button
                 type="button"
-                class="btn btn-success"
+                class="btn btn-primary"
                 data-dismiss="modal"
                 onClick={addBreach}
               >

@@ -2,6 +2,7 @@ import React, { Fragment, useEffect, useState } from "react";
 
 import swal from "sweetalert";
 import axios from "axios";
+import TextField from "@mui/material/TextField";
 
 import AppUrl from "../../../RestAPI/AppUrl";
 
@@ -95,7 +96,7 @@ export default function EditServiceModal(props) {
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Edit new category</h5>
+              <h5 class="customModalTitle">Edit service</h5>
               <button
                 type="button"
                 class="close"
@@ -110,54 +111,59 @@ export default function EditServiceModal(props) {
             <div class="modal-body">
               <hr />
               <form className="flexForm">
-                <div className="formInput">
-                  <label className="inputItemLabel">Service name:</label>
-                  <input
-                    type="text"
-                    className="inputItem"
+                <div>
+                <label className="customModalLabel">Service name:</label>
+                  <TextField
+                    label="Service name"
                     name="name"
-                    onChange={handleInput}
                     value={input.name}
+                    onChange={handleInput}
+                    fullWidth
+                    required
                   />
                 </div>
                 <span>{errors.name}</span>
-                <div className="formInput">
-                  <label className="inputItemLabel">Description:</label>
-                  <textarea
-                    type="text"
-                    className="inputItem"
+                <div>
+                <label className="customModalLabel">Description:</label>
+                  <TextField
+                    label="Description"
                     name="description"
                     onChange={handleInput}
                     value={input.description}
+                    fullWidth
+                    required
+                    multiline
                   />
                 </div>
-                <div className="formInput">
-                  <label className="inputItemLabel">Unit:</label>
-                  <input
-                    type="text"
-                    className="inputItem"
+                <div>
+                <label className="customModalLabel">Unit:</label>
+                  <TextField
+                    label="Unit"
                     name="unit"
-                    onChange={handleInput}
                     value={input.unit}
+                    onChange={handleInput}
+                    fullWidth
+                    required
                   />
                 </div>
                 <span>{errors.unit}</span>
-                <div className="formInput">
-                  <label className="inputItemLabel">Cost per unit:</label>
-                  <input
-                    type="text"
-                    className="inputItem"
+                <div>
+                <label className="customModalLabel">Cost per unit:</label>
+                  <TextField
+                    label="Unit price"
                     name="unit_price"
-                    onChange={handleInput}
                     value={input.unit_price}
+                    onChange={handleInput}
+                    fullWidth
+                    required
                   />
                 </div>
                 <span>{errors.unit_price}</span>
-                <div className="formInput">
+                <div>
                   <label>Compulsory:</label>
                   <input
                     type="checkbox"
-                    className="inputItem"
+                    className="customCheckbox"
                     name="is_compulsory"
                     onChange={handleCheckbox}
                     defaultChecked={checkbox === 1 ? true : false}
@@ -169,7 +175,7 @@ export default function EditServiceModal(props) {
             <div class="modal-footer">
               <button
                 type="button"
-                class="btn btn-success"
+                class="btn btn-primary"
                 data-dismiss="modal"
                 onClick={updateService}
               >

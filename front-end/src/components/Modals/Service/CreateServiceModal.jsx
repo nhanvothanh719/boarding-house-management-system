@@ -4,6 +4,7 @@ import swal from "sweetalert";
 import axios from "axios";
 
 import AppUrl from "../../../RestAPI/AppUrl";
+import { TextField } from "@mui/material";
 
 export default function CreateServiceModal(props) {
   const [errors, setErrors] = useState([]);
@@ -80,7 +81,7 @@ export default function CreateServiceModal(props) {
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Create new category</h5>
+            <h5 class="customModalTitle">Create new service</h5>
               <button
                 type="button"
                 class="close"
@@ -94,55 +95,60 @@ export default function CreateServiceModal(props) {
             </div>
             <div class="modal-body">
               <hr />
-              <form className="flexForm">
-                <div className="formInput">
-                  <label className="inputItemLabel">Service name:</label>
-                  <input
-                    type="text"
-                    className="inputItem"
+              <form>
+                <div>
+                  <label className="customModalLabel">Service name:</label>
+                  <TextField
+                    label="Service name"
                     name="name"
-                    onChange={handleInput}
                     value={input.name}
+                    onChange={handleInput}
+                    fullWidth
+                    required
                   />
                 </div>
                 <span>{errors.name}</span>
-                <div className="formInput">
-                  <label className="inputItemLabel">Description:</label>
-                  <textarea
-                    type="text"
-                    className="inputItem"
+                <div>
+                  <label className="customModalLabel">Description:</label>
+                  <TextField
+                    label="Description"
                     name="description"
                     onChange={handleInput}
                     value={input.description}
+                    fullWidth
+                    required
+                    multiline
                   />
                 </div>
-                <div className="formInput">
-                  <label className="inputItemLabel">Unit:</label>
-                  <input
-                    type="text"
-                    className="inputItem"
+                <div>
+                  <label className="customModalLabel">Unit:</label>
+                  <TextField
+                    label="Unit"
                     name="unit"
-                    onChange={handleInput}
                     value={input.unit}
+                    onChange={handleInput}
+                    fullWidth
+                    required
                   />
                 </div>
                 <span>{errors.unit}</span>
-                <div className="formInput">
-                  <label className="inputItemLabel">Cost per unit:</label>
-                  <input
-                    type="text"
-                    className="inputItem"
+                <div>
+                  <label className="customModalLabel">Cost per unit:</label>
+                  <TextField
+                    label="Unit price"
                     name="unit_price"
-                    onChange={handleInput}
                     value={input.unit_price}
+                    onChange={handleInput}
+                    fullWidth
+                    required
                   />
                 </div>
                 <span>{errors.unit_price}</span>
-                <div className="formInput">
-                  <label>Compulsory:</label>
+                <div>
+                  <label className="customModalLabel">Compulsory:</label>
                   <input
                     type="checkbox"
-                    className="inputItem"
+                    className="customCheckbox"
                     name="is_compulsory"
                     onChange={handleInput}
                     defaultChecked={input.is_compulsory === 1 ? true : false}
@@ -154,11 +160,11 @@ export default function CreateServiceModal(props) {
             <div class="modal-footer">
               <button
                 type="button"
-                class="btn btn-success"
+                class="btn btn-primary"
                 data-dismiss="modal"
                 onClick={createService}
               >
-                Send
+                Create
               </button>
               <button
                 type="button"

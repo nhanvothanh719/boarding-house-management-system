@@ -27,7 +27,7 @@ export default function SearchRenterEdit(props) {
       <Fragment>
         <Autocomplete
           id="inputRenterId"
-          sx={{ width: 300 }}
+          fullWidth
           options={rentersList}
           value={props.currentRenter}
           defaultValue={props.currentRenter}
@@ -49,7 +49,7 @@ export default function SearchRenterEdit(props) {
               {option.name} ({option.phone_number}) {option.email}
             </Box>
           )}
-          renderInput={(params) => <TextField {...params} label="Choose a renter" defaultValue={props.currentRenter} variant="outlined"/>}
+          renderInput={(params) => <TextField required {...params} h label="Choose a renter" defaultValue={props.currentRenter} variant="outlined"/>}
           onChange={handleChange}
         />
       </Fragment>

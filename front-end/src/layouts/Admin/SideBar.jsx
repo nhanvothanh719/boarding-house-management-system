@@ -62,13 +62,13 @@ function SideBar() {
             <p className="itemGroup text-uppercase">Lists</p>
             <NavLink
               exact
-              to="/admin/view-all-renters"
+              to="/admin/view-all-users"
               style={{ textDecoration: "none", color: "#f1f1f1" }}
               activeStyle={{ textDecoration: "none", color: "#a5d8dd" }}
             >
               <li className="customLi">
                 <GroupIcon className="sideBarIcon" />
-                <span className="itemName"> Renters </span>
+                <span className="itemName"> Users </span>
               </li>
             </NavLink>
             <NavLink
@@ -207,7 +207,7 @@ function SideBar() {
             <p className="itemGroup text-uppercase">User</p>
             <NavLink
               exact
-              to="/admin/renters/1"
+              to="/admin/example"
               style={{ textDecoration: "none", color: "#f1f1f1" }}
               activeStyle={{ textDecoration: "none", color: "#a5d8dd" }}
             >

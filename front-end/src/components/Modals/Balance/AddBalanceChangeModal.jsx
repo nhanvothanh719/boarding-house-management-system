@@ -84,7 +84,7 @@ export default function AddBalanceChangeModal(props) {
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">
+              <h5 class="customModalTitle" id="exampleModalLabel">
                 Add change to balance
               </h5>
               <button
@@ -100,22 +100,22 @@ export default function AddBalanceChangeModal(props) {
             </div>
             <div class="modal-body">
               <hr />
-              <form className="" id="createCategoryForm">
-                <div className="">
-                  <label className="inputItemLabel">
+              <form id="createCategoryForm">
+                <div>
+                  <label className="customModalLabel">
                     Description (Source):
                   </label>
-                  <input
-                    type="text"
-                    className=""
+                  <TextField
+                    label="Description"
                     name="description"
-                    onChange={handleInput}
                     value={input.description}
-                    id="inputDescription"
+                    onChange={handleInput}
+                    fullWidth
+                    required
                   />
                 </div>
                 <div className="">
-                  <label>Category:</label>
+                  <label className="customModalLabel">Category:</label>
                   <select
                     class="form-control"
                     name="is_income"
@@ -135,19 +135,19 @@ export default function AddBalanceChangeModal(props) {
                 </div>
 
                 <div className="">
-                  <label className="inputItemLabel">Amount:</label>
-                  <input
-                    type="text"
-                    className="inputItem"
+                  <label className="customModalLabel">Amount:</label>
+                  <TextField
+                    label="Amount"
                     name="amount"
-                    onChange={handleInput}
                     value={input.amount}
-                    id="inputAmount"
+                    onChange={handleInput}
+                    fullWidth
+                    required
                   />
                 </div>
                 <small className="text-danger">{errors.amount}</small>
                 <div className="">
-                  <label className="inputItemLabel">Occurred on:</label>
+                  <label className="customModalLabel">Occurred on:</label>
                   <LocalizationProvider dateAdapter={AdapterDateFns}>
                   <DatePicker
                     views={["day", "month", "year"]}
@@ -158,7 +158,7 @@ export default function AddBalanceChangeModal(props) {
                       setOccurredDate(selectedDate);
                     }}
                     renderInput={(params) => (
-                      <TextField {...params} helperText={null} />
+                      <TextField fullWidth {...params} helperText={null} />
                     )}
                   />
                   </LocalizationProvider>
@@ -169,7 +169,7 @@ export default function AddBalanceChangeModal(props) {
             <div class="modal-footer">
               <button
                 type="button"
-                class="btn btn-success"
+                class="btn btn-primary"
                 data-dismiss="modal"
                 onClick={addBalanceChange}
               >

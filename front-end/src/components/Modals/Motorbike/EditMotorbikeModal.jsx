@@ -5,6 +5,7 @@ import axios from "axios";
 
 import AppUrl from "../../../RestAPI/AppUrl";
 import SearchRenterEdit from "../../Search/SearchRenterEdit";
+import { TextField } from "@mui/material";
 
 export default function EditMotorbikeModal(props) {
   const [errors, setErrors] = useState([]);
@@ -94,7 +95,7 @@ export default function EditMotorbikeModal(props) {
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Edit motorbike</h5>
+              <h5 class="customModalTitle">Edit motorbike</h5>
               <button
                 type="button"
                 class="close"
@@ -108,25 +109,26 @@ export default function EditMotorbikeModal(props) {
             </div>
             <div class="modal-body">
               <hr />
-              <form className="flexForm">
+              <form encType="multipart/form-data">
                 <div className="form-group">
-                  <label>Motorbike license plate:</label>
-                  <input
-                    type="text"
-                    className="inputItem"
+                  <label className="customModalLabel">Motorbike license plate:</label>
+                  <TextField
+                    label="License plate"
                     name="license_plate"
-                    onChange={handleInput}
                     value={input.license_plate}
+                    onChange={handleInput}
+                    fullWidth
+                    required
                   />
                 </div>
                 <small className="text-danger">{errors.license_plate}</small>
                 <div className="form-group">
-                  <label>Owner:</label>
+                  <label className="customModalLabel">Owner:</label>
                   <SearchRenterEdit getSelectedRenter={getSelectedRenter} currentRenter={input.renter} />
                 </div>
                 <small className="text-danger">{errors.renter_id}</small>
                 <div className="form-group">
-                  <label>Motorbike image:</label>
+                  <label className="customModalLabel">Motorbike image:</label>
                   <input
                     type="file"
                     className="form-control"
@@ -141,11 +143,11 @@ export default function EditMotorbikeModal(props) {
             <div class="modal-footer">
               <button
                 type="button"
-                class="btn btn-success"
+                class="btn btn-primary"
                 data-dismiss="modal"
                 onClick={editMotorbike}
               >
-                Send
+                Update
               </button>
               <button
                 type="button"
