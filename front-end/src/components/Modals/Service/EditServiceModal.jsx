@@ -8,10 +8,9 @@ import AppUrl from "../../../RestAPI/AppUrl";
 
 export default function EditServiceModal(props) {
   const [errors, setErrors] = useState([]);
-  const [checkbox, setCheckbox] = useState(false);
   const [input, setInput] = useState({
     name: "",
-    description: "",
+    description: "...",
     unit: "",
     unit_price: "",
   });
@@ -25,7 +24,6 @@ export default function EditServiceModal(props) {
       axios.get(AppUrl.EditService + props.serviceId).then((response) => {
         if (response.data.status === 200) {
           setInput(response.data.service);
-          setCheckbox(response.data.service.is_compulsory);
         } else if (response.data.status === 404) {
           swal("Error", response.data.message, "error");
         }
@@ -49,11 +47,6 @@ export default function EditServiceModal(props) {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
 
-  const handleCheckbox = (e) => {
-    e.persist();
-    setCheckbox(e.target.checked);
-  };
-
   const updateService = (e) => {
     e.preventDefault();
     const service = {
@@ -61,7 +54,7 @@ export default function EditServiceModal(props) {
       description: input.description,
       unit: input.unit,
       unit_price: input.unit_price,
-      is_compulsory: checkbox,
+      is_compulsory: input.is_compulsory,
     };
     axios
       .put(AppUrl.UpdateService + props.serviceId, service)
@@ -129,7 +122,7 @@ export default function EditServiceModal(props) {
                     label="Description"
                     name="description"
                     onChange={handleInput}
-                    value={input.description}
+                    value={input.description === null ? " " : input.description}
                     fullWidth
                     required
                     multiline
@@ -161,13 +154,21 @@ export default function EditServiceModal(props) {
                 <span>{errors.unit_price}</span>
                 <div>
                   <label>Compulsory:</label>
-                  <input
-                    type="checkbox"
-                    className="customCheckbox"
-                    name="is_compulsory"
-                    onChange={handleCheckbox}
-                    defaultChecked={checkbox === 1 ? true : false}
-                  />
+                  <select
+                  name="is_compulsory"
+                  onChange={handleInput}
+                  value={input.is_compulsory}
+                  className="form-control"
+                >
+                  <option value="0" key="0">
+                    {" "}
+                    No{" "}
+                  </option>
+                  <option value="1" key="1">
+                    {" "}
+                    Yes{" "}
+                  </option>
+                </select>
                 </div>
                 <span>{errors.is_compulsory}</span>
               </form>

@@ -9,6 +9,7 @@ import AppUrl from "../../../../RestAPI/AppUrl";
 import SearchCategoryEdit from "../../../../components/Search/SearchCategoryEdit";
 
 import "../../../../assets/css/Dashboard/room.css";
+import { Publish } from "@material-ui/icons";
 
 export default function EditRoom({ match }) {
   const history = useHistory();
@@ -29,7 +30,6 @@ export default function EditRoom({ match }) {
     has_fridge: "",
     has_wardrobe: "",
   });
-  const [checkbox, setCheckbox] = useState([]);
   //const [picture, setPicture] = useState("");
   const [uploadedPictures, setUploadedPictures] = useState([]);
   const [roomImages, setRoomImages] = useState([]);
@@ -43,7 +43,7 @@ export default function EditRoom({ match }) {
     axios.get(AppUrl.EditRoom + roomId).then((response) => {
       if (response.data.status === 200) {
         setInput(response.data.room);
-        setCheckbox(response.data.room);
+        setSelectedCategory(response.data.room.category);
       } else if (response.data.status === 404) {
         swal("Error", response.data.message, "error");
         history.push("/admin/view-all-rooms");
@@ -52,7 +52,6 @@ export default function EditRoom({ match }) {
     axios.get(AppUrl.GetRoomDetails + roomId).then((response) => {
       if (response.data.status === 200) {
         setRoomDetails(response.data.roomDetails);
-        console.log(response.data.roomDetails.category);
         setRenters(response.data.allRenters);
         setRoomImages(response.data.roomImages);
       }
@@ -66,11 +65,6 @@ export default function EditRoom({ match }) {
   const handleInput = (e) => {
     e.persist();
     setInput({ ...input, [e.target.name]: e.target.value });
-  };
-
-  const handleCheckbox = (e) => {
-    e.persist();
-    setCheckbox({ ...checkbox, [e.target.name]: e.target.checked });
   };
 
   const handleImages = (e) => {
@@ -90,13 +84,17 @@ export default function EditRoom({ match }) {
       room.append(`image[${i}]`, uploadedPictures[i]);
       //console.log(pictures[i]);
     }
-    room.append("category_id", selectedCategory.id);
+    if (selectedCategory.id === null) {
+      room.append("category_id", input.category.id);
+    } else {
+      room.append("category_id", selectedCategory.id);
+    }
     room.append("number", input.number);
     room.append("description", input.description);
     room.append("area", input.area);
-    room.append("has_conditioner", checkbox.has_conditioner ? "1" : "0");
-    room.append("has_fridge", checkbox.has_fridge ? "1" : "0");
-    room.append("has_wardrobe", checkbox.has_wardrobe ? "1" : "0");
+    room.append("has_conditioner", input.has_conditioner);
+    room.append("has_fridge", input.has_fridge);
+    room.append("has_wardrobe", input.has_wardrobe);
 
     axios
       .post(AppUrl.UpdateRoom + roomId, room) //Use POST (instead of PUT) when create a new instance
@@ -164,7 +162,7 @@ export default function EditRoom({ match }) {
                 <div className="roomInfoItem">
                   <span className="roomInfoKey">Category:</span>
                   <span className="roomInfoValue">
-                    {/* {roomDetails.category.name} */}
+                    {roomDetails.category.name}
                   </span>
                 </div>
                 <div className="roomInfoItem">
@@ -244,43 +242,68 @@ export default function EditRoom({ match }) {
                 <small className="text-danger">{errors.area}</small>
 
                 <label>Conditioner:</label>
-                <input
-                  type="checkbox"
+                <select
                   name="has_conditioner"
-                  onChange={handleCheckbox}
-                  defaultChecked={checkbox.has_conditioner === 1 ? true : false}
-                  id="inputHasConditioner"
-                  style={{ display: "inline" }}
-                />
+                  onChange={handleInput}
+                  value={input.has_conditioner}
+                  className="form-control"
+                >
+                  <option value="0" key="0">
+                    {" "}
+                    No{" "}
+                  </option>
+                  <option value="1" key="1">
+                    {" "}
+                    Yes{" "}
+                  </option>
+                </select>
 
                 <label>Fridge:</label>
-                <input
-                  type="checkbox"
+                <select
                   name="has_fridge"
-                  onChange={handleCheckbox}
-                  defaultChecked={checkbox.has_fridge === 1 ? true : false}
-                  id="inputHasFridge"
-                  style={{ display: "inline" }}
-                />
+                  onChange={handleInput}
+                  value={input.has_fridge}
+                  className="form-control"
+                >
+                  <option value="0" key="0">
+                    {" "}
+                    No{" "}
+                  </option>
+                  <option value="1" key="1">
+                    {" "}
+                    Yes{" "}
+                  </option>
+                </select>
 
                 <label>Wardrobe:</label>
-                <input
-                  type="checkbox"
+
+                <select
                   name="has_wardrobe"
-                  onChange={handleCheckbox}
-                  defaultChecked={checkbox.has_wardrobe === 1 ? true : false}
-                  id="inputHasWardrobe"
-                  style={{ display: "inline-block" }}
-                />
-
-                <label>Image:</label>
-                <input
-                  type="file"
-                  name="image[]"
-                  onChange={handleImages}
-                  multiple
-                />
-
+                  onChange={handleInput}
+                  value={input.has_wardrobe}
+                  className="form-control"
+                >
+                  <option value="0" key="0">
+                    {" "}
+                    No{" "}
+                  </option>
+                  <option value="1" key="1">
+                    {" "}
+                    Yes{" "}
+                  </option>
+                </select>
+                <label>Images:</label>
+                <label htmlFor="file">
+                    <Publish className="userUpdateIcon" />
+                  </label>
+                  <input
+                    type="file"
+                    id="file"
+                    name="image[]"
+                    onChange={handleImages}
+                    multiple
+                    style={{ display: "none" }}
+                  />
                 <button type="submit" className="roomButton">
                   Update
                 </button>
