@@ -9,7 +9,7 @@ import moment from "moment";
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
 import { Button } from "react-bootstrap";
-import SelectRenterModal from "../../../../components/Modals/Renter/SelectRenterModal";
+import SelectRenterModal from "../../../../components/Modals/Invoice/SelectRenterModal";
 
 export default function InvoicesList() {
   const history = useHistory();
@@ -79,7 +79,16 @@ export default function InvoicesList() {
             ? { isValid: false, helperText: "Inappropriate value" }
             : true,
       },
-      { field: "is_paid", title: "Paid", editable: ( row ,rowData ) => rowData.is_paid === 0, lookup: { 0: "Not yet", 1: "Paid" } },
+      { 
+        field: "is_paid", 
+        title: "Paid", 
+        editable: ( row ,rowData ) => rowData.is_paid === 0, lookup: { 0: "Not yet", 1: "Paid" },
+        render: rowData => (
+          <div>
+              <span className={`${rowData.is_paid === 1 ? "statusActive" : "statusPassive"}` }>{rowData.is_paid === 1 ? "Paid" : "Not yet" }</span>
+          </div>
+        )
+      },
     ];
     return (
       <Fragment>

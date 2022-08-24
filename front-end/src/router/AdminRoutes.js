@@ -63,7 +63,7 @@ const routes = [
     //Problem
     { path: '/admin/view-all-problems', exact: true, name: 'ProblemsList', component: ProblemsList },
 
-    { path: '/admin/example', exact: true, name: 'Test', component: Test },
+    { path: '/admin/example/:roomID', exact: true, name: 'Test', component: Test },
 ]
 
 export default routes;

@@ -1,15 +1,15 @@
-.product {
+.room {
     flex: 4;
     padding: 20px;
   }
   
-  .productTitleContainer {
+  .titleContainer {
     display: flex;
     align-items: center;
     justify-content: space-between;
   }
   
-  .productAddButton {
+  .roomAddButton {
     width: 80px;
     border: none;
     padding: 5px;
@@ -20,106 +20,105 @@
     cursor: pointer;
   }
   
-  .productTop {
+  .roomTop {
     display: flex;
   }
   
-  .productTopLeft,
-  .productTopRight {
+  .roomTopLeft,
+  .roomTopRight {
     flex: 1;
   }
   
-  .productTopRight {
+  .roomTopRight {
     padding: 20px;
     margin: 20px;
     -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
     box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
   }
   
-  .productInfoImg {
-    width: 40px;
-    height: 40px;
+  .renterInRoomImg {
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
     object-fit: cover;
-    margin-right: 20px;
+    margin: 15px;
   }
   
-  .productInfoTop {
+  .roomInfoTop {
     display: flex;
     align-items: center;
   }
   
-  .productName {
+  .renterName {
     font-weight: 600;
   }
   
-  .productInfoBottom {
+  .roomInfoBottom {
     margin-top: 10px;
   }
   
-  .productInfoItem {
-    width: 150px;
+  .roomInfoItem {
+    width: 350px;
     display: flex;
     justify-content: space-between;
+    padding-bottom: 10px;
   }
   
-  .productInfoValue {
+  .roomInfoValue {
     font-weight: 300;
   }
   
-  .productBottom {
+  .roomBottom {
     padding: 20px;
     margin: 20px;
     -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
     box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
   }
   
-  .productForm {
+  .roomForm {
     display: flex;
     justify-content: space-between;
   }
   
-  .productFormLeft {
+  .roomFormLeft {
     display: flex;
     flex-direction: column;
   }
   
-  .productFormLeft > label {
+  .roomFormLeft > label {
     margin-bottom: 10px;
     color: gray;
   }
   
-  .productFormLeft > input {
+  .roomFormLeft > input {
     margin-bottom: 10px;
     border: none;
     padding: 5px;
     border-bottom: 1px solid gray;
   }
   
-  .productFormLeft >select{
+  .roomFormLeft >select{
     margin-bottom: 10px;
   }
   
-  .productUploadImg{
-    width: 100px;
-    height: 100px;
+  .roomUploadImg{
+    width: 300px;
+    height: 200px;
     border-radius: 10px;
     object-fit: cover;
-    margin-right: 20px;
+    margin: 20px;
   }
   
-  .productFormRight{
-    display: flex;
+  .roomFormRight{
     flex-direction: column;
     justify-content: space-around;
   }
   
-  .productUpload{
-    display: flex;
+  .roomUpload{
     align-items: center;
   }
   
-  .productButton{
+  .roomButton{
     border: none;
     padding: 5px;
     border-radius: 5px;
@@ -127,4 +126,11 @@
     color:white;
     font-weight: 600;
     cursor: pointer;
+  }
+
+  .leftContainer {
+    margin: 20px;
+    padding: 20px;
+    -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
   }

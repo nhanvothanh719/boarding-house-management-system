@@ -207,7 +207,7 @@ function SideBar() {
             <p className="itemGroup text-uppercase">User</p>
             <NavLink
               exact
-              to="/admin/example"
+              to="/admin/example/120"
               style={{ textDecoration: "none", color: "#f1f1f1" }}
               activeStyle={{ textDecoration: "none", color: "#a5d8dd" }}
             >

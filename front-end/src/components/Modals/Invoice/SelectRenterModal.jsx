@@ -42,8 +42,8 @@ export default function SelectRenterModal(props) {
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">
-                Choose a renter
+              <h5 class="customModalTitle" id="exampleModalLabel">
+                Add new invoice
               </h5>
               <button
                 type="button"
