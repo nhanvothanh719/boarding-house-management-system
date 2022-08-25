@@ -22,8 +22,8 @@ export default function RenterUsedServiceCount(props) {
       <div className="customChartContainer">
         <h3 className="customChartTitle">Chart title</h3>
         <BarChart
-          width={730}
-          height={350}
+          width={500}
+          height={250}
           data={usedServicesList}
           margin={{ top: 30, right: 30, left: 20, bottom: 20 }}
         >
@@ -39,7 +39,7 @@ export default function RenterUsedServiceCount(props) {
             }}
           />
           <Bar dataKey="total" fill={color}>
-            <LabelList dataKey="total" position="bottom" />
+            <LabelList dataKey="total" position="top" />
           </Bar>
         </BarChart>
       </div>

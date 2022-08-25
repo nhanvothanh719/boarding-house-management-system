@@ -73,8 +73,8 @@ export default function BreachHistories() {
 
   return (
     <Fragment>
-      <BreachCount/>
-      <BreachRate/>
+      <BreachCount isDataChange={breachHistoriesChange}/>
+      <BreachRate isDataChange={breachHistoriesChange}/>
       <div className="customDatatable">
         <div className="customDatatableHeader">
           <Button
@@ -118,8 +118,9 @@ export default function BreachHistories() {
                   .delete(AppUrl.DeleteBreachHistory + oldBreachHistory.id)
                   .then((response) => {
                     if (response.data.status === 200) {
-                      swal("Success", response.data.message, "success");
+                      
                       setBreachHistoriesChange(true);
+                      swal("Success", response.data.message, "success");
                     } else if (response.data.status === 404) {
                       swal("Error", response.data.message, "error");
                     }

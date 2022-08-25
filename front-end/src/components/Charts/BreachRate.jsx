@@ -5,9 +5,10 @@ import { Pie, PieChart, Sector } from "recharts";
 
 import AppUrl from "../../RestAPI/AppUrl";
 
-export default function BreachRate() {
+export default function BreachRate(props) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [breachesTotal, setBreachesTotal] = useState([]);
+  const [refreshChart, setRefreshChart] = useState(false);
   const color = "#1C4E80";
 
   useEffect(() => {
@@ -16,7 +17,11 @@ export default function BreachRate() {
         setBreachesTotal(response.data.breachTotals);
       }
     });
-  }, []);
+    setRefreshChart(props.isDataChange);
+    if (props.isDataChange) {
+      setRefreshChart(false);
+    }
+  }, [props.isDataChange]);
 
   const renderActiveShape = (props) => {
     const RADIAN = Math.PI / 180;

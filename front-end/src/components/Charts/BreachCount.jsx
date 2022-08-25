@@ -14,8 +14,9 @@ import {
 
 import AppUrl from "../../RestAPI/AppUrl";
 
-export default function BreachCount() {
+export default function BreachCount(props) {
   const [breachesTotal, setBreachesTotal] = useState([]);
+  const [refreshChart, setRefreshChart] = useState(false);
   const color = "#0091D5";
 
   useEffect(() => {
@@ -24,7 +25,11 @@ export default function BreachCount() {
         setBreachesTotal(response.data.breachTotals);
       }
     });
-  }, []);
+    setRefreshChart(props.isDataChange);
+    if (props.isDataChange) {
+      setRefreshChart(false);
+    }
+  }, [props.isDataChange]);
 
   return (
     <Fragment>

@@ -100,9 +100,9 @@ export default function BalanceDetails() {
         <span>{currentBalance}</span>
       </h1>
       {/* Line Chart */}
-      <BalanceVariation />
+      <BalanceVariation isDataChange={balanceAmountChange}/>
       {/* Pie Chart */}
-      <BalanceCategoryRate />
+      <BalanceCategoryRate isDataChange={balanceAmountChange}/>
       {/* DataTable */}
       <div className="customDatatable">
         <div className="customDatatableHeader">

@@ -27,7 +27,7 @@ export default function RenterInvoicePaid(props) {
       <div className="customChartContainer">
         <h3 className="customChartTitle">Chart title</h3>
         <AreaChart
-          width={730}
+          width={500}
           height={250}
           data={invoicesList}
           margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
