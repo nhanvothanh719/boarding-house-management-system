@@ -50,7 +50,7 @@ export default function AddBalanceChangeModal(props) {
       is_income: input.is_income,
       amount: input.amount,
       description: input.description,
-      occurred_on: occurredDate,
+      occurred_on: moment(occurredDate).utc().format("YYYY-MM-DD hh:mm:ss"),
     };
     axios
       .post(AppUrl.UpdateBalance, data)

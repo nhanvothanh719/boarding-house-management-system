@@ -9,6 +9,9 @@ class Balance extends Model
 {
     use HasFactory;
 
+    const CATEGORY_EARNED = 1;
+    const CATEGORY_EXPENSE = 0;
+
     /**
      * The table associated with the model.
      *

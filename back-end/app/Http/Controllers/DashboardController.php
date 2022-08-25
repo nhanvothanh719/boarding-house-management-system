@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Room;
 use App\Models\Role;
+use App\Models\Balance;
 use App\Models\Invoice;
 use App\Models\Service;
 use App\Models\RoomStatus;
@@ -15,6 +16,8 @@ use App\Models\PaymentMethod;
 use App\Models\InvoiceDetail;
 use App\Models\BreachHistory;
 use App\Models\PaymentHistory;
+
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -107,6 +110,18 @@ class DashboardController extends Controller
         return response([
             'status' => 200,
             'breachesInMonthCount' => $breaches_in_month_count,
+        ]);
+    }
+
+    public function displayNumberOnWidget() {
+        $widget_counts = new stdClass();
+        $role_renter_id = Role::where('name', Role::ROLE_RENTER)->value('id');
+        $widget_counts->rentersTotal = User::where('role_id', $role_renter_id)->count();
+        $widget_counts->roomsTotal = DB::table('rooms')->count();
+        $widget_counts->earnedAmount = round(Balance::where('is_income', Balance::CATEGORY_EARNED)->sum('amount'), 2);
+        return response([
+            'status' => 200,
+            'results' => $widget_counts,
         ]);
     }
 }

@@ -148,6 +148,7 @@ Route::middleware('auth:api')->group(function(){
         Route::get('/count-used-services', [DashboardController::class, 'countUsedServices']);
         Route::get('/get-paid-invoices-rate', [DashboardController::class, 'getPaidInvoicesRate']);
         Route::get('/report-breaches', [DashboardController::class, 'reportBreaches']);
+        Route::get('/get-widgets-data', [DashboardController::class, 'displayNumberOnWidget']);
 
         //Problem
         Route::get('/all-problems', [ProblemController::class, 'index']);

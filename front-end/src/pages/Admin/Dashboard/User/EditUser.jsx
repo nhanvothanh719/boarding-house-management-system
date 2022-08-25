@@ -134,7 +134,7 @@ export default function EditUser({ match }) {
     <Fragment>
       <div className="user">
         <div className="userTitleContainer">
-          <h1 className="userTitle">View & Edit personal details</h1>
+          <h1 className="customActionTitle">View & Edit personal details</h1>
         </div>
         <div className="userContainer">
           <div className="userShow">

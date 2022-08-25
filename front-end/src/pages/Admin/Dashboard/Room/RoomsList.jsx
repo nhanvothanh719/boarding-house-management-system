@@ -120,12 +120,6 @@ export default function RoomsList() {
             }}
             actions={[
               {
-                icon: 'visibility',
-                tooltip: 'Details',
-                onClick: (event, room) =>
-                  history.push(`/admin/room/${room.id}`),
-              },
-              {
                 icon: 'edit',
                 tooltip: 'Edit',
                 onClick: (event, room) =>

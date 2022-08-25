@@ -8,7 +8,6 @@ import EditUser from "../pages/Admin/Dashboard/User/EditUser";
 import MotorbikesList from "../pages/Admin/Dashboard/Motorbike/MotorbikesList";
 import ServicesList from "../pages/Admin/Dashboard/Service/ServicesList";
 import RegisterService from "../pages/Admin/Dashboard/Service/RegisterService";
-import RoomDetails from "../pages/Admin/Dashboard/Room/RoomDetails";
 import RentRoom from "../pages/Admin/Dashboard/Room/RentRoom";
 import InvoicesList from "../pages/Admin/Dashboard/Invoice/InvoicesList";
 import CreateInvoice from "../pages/Admin/Dashboard/Invoice/CreateInvoice";
@@ -31,7 +30,6 @@ const routes = [
     //Category
     { path: '/admin/view-all-categories', exact: true, name: 'CategoriesList', component: CategoriesList },
     //Room
-    { path: '/admin/room/:roomID', exact: true, name: 'RoomDetails', component: RoomDetails },
     { path: '/admin/rent-room', exact: true, name: 'RentRoom', component: RentRoom },
     { path: '/admin/create-room', exact: true, name: 'CreateRoom', component: CreateRoom },
     { path: '/admin/view-all-rooms', exact: true, name: 'RoomsList', component: RoomsList },

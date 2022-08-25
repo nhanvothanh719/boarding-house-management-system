@@ -41,7 +41,10 @@
     height: 100px;
     border-radius: 50%;
     object-fit: cover;
-    margin: 15px;
+    margin-left: 20px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    margin-right: 50px;
   }
   
   .roomInfoTop {
@@ -49,8 +52,10 @@
     align-items: center;
   }
   
-  .renterName {
+  .customFieldTitle {
     font-weight: 600;
+    font-size: large;
+    color: #0091D5;
   }
   
   .roomInfoBottom {
@@ -58,7 +63,7 @@
   }
   
   .roomInfoItem {
-    width: 350px;
+    width: 370px;
     display: flex;
     justify-content: space-between;
     padding-bottom: 10px;

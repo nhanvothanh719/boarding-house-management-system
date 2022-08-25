@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 import swal from "sweetalert";
 import axios from "axios";
@@ -127,14 +127,22 @@ export default function EditRoom({ match }) {
 
   const all_renters = renters.map((renter) => {
     return (
-      <div className="roomInfoTop">
-        <img
-          src={`http://127.0.0.1:8000/${renter.profile_picture}`}
-          alt="renter_profile_picture"
-          className="renterInRoomImg"
-        />
-        <span className="renterName">{renter.name}</span>
-      </div>
+      <Link
+        className="customDashboardLink"
+        to={`/admin/edit-user/${renter.id}`}
+        style={{ fontWeight: "600" }}
+      >
+        <div className="roomInfoTop">
+          <span>
+            <img
+              src={`http://127.0.0.1:8000/${renter.profile_picture}`}
+              alt="renter_profile_picture"
+              className="renterInRoomImg"
+            />
+          </span>
+          <span>{renter.name}</span>
+        </div>
+      </Link>
     );
   });
 
@@ -145,13 +153,13 @@ export default function EditRoom({ match }) {
     <Fragment>
       <div className="room">
         <div className="titleContainer">
-          <h1 className="roomTitle">{roomId}</h1>
+          <h1 className="customActionTitle">View & Edit room details</h1>
         </div>
         <div className="roomTop">
           <div className="roomTopLeft">
             <div className="leftContainer">
               <div className="roomInfoTop">
-                <span className="roomName">Room Details</span>
+                <span className="customFieldTitle">Room Details</span>
               </div>
 
               <div className="roomInfoBottom">
@@ -194,7 +202,7 @@ export default function EditRoom({ match }) {
                   </span>
                 </div>
                 <div className="roomInfoTop">
-                  <span className="roomName">Renters in room</span>
+                  <span className="customFieldTitle">Renters in room</span>
                 </div>
                 {all_renters}
               </div>
@@ -294,16 +302,19 @@ export default function EditRoom({ match }) {
                 </select>
                 <label>Images:</label>
                 <label htmlFor="file">
-                    <Publish className="userUpdateIcon" />
-                  </label>
-                  <input
-                    type="file"
-                    id="file"
-                    name="image[]"
-                    onChange={handleImages}
-                    multiple
-                    style={{ display: "none" }}
+                  <Publish
+                    className="userUpdateIcon"
+                    style={{ fontSize: "35px" }}
                   />
+                </label>
+                <input
+                  type="file"
+                  id="file"
+                  name="image[]"
+                  onChange={handleImages}
+                  multiple
+                  style={{ display: "none" }}
+                />
                 <button type="submit" className="roomButton">
                   Update
                 </button>
@@ -314,11 +325,8 @@ export default function EditRoom({ match }) {
         <div className="roomBottom">
           <form>
             <div className="roomFormRight">
-              <div className="roomUpload">
-                {room_images}
-                <label for="file">{/* <Publish/> */}</label>
-                <input type="file" id="file" style={{ display: "none" }} />
-              </div>
+              <span className="customFieldTitle">Room images</span>
+              <div className="roomUpload">{room_images}</div>
             </div>
           </form>
         </div>
