@@ -1,0 +1,40 @@
+.contractMainContent {
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+.contractSectionTitle {
+    font-family:'Times New Roman', Times, serif;
+    font-weight: 600;
+    color: #1C4E80;
+}
+
+.contractContent {
+    font-family:'Times New Roman', Times, serif;
+    font-size: 18px;
+}
+
+.contractSectionSubtitle {
+    color: #0091D5;
+    font-weight: bold;
+}
+
+.customContractInput {
+    padding-left: 15px;
+    padding-right: 15px;
+    color: #5b6970f0;
+    font-size: 19px;
+    font-style: italic;
+}
+
+.customContractSignature {
+    width: 100%;
+    display: flex; 
+    justify-content: space-between;
+    padding-bottom: 10px;
+}
+
+.signatureItem {
+    align-items: center;
+    width: 300px;
+}
