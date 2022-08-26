@@ -26,7 +26,7 @@ export default function SearchRenter(props) {
     <Fragment>
       <Autocomplete
         id="inputRenterId"
-        sx={{ width: 300 }}
+        fullWidth
         options={rentersList}
         autoHighlight
         getOptionLabel={(option) => option.name}
@@ -46,7 +46,7 @@ export default function SearchRenter(props) {
             {option.name} ({option.phone_number}) {option.email}
           </Box>
         )}
-        renderInput={(params) => <TextField {...params} label="Choose a renter" />}
+        renderInput={(params) => <TextField required {...params} h label="Choose a renter" />}
         onChange={handleChange}
       />
     </Fragment>

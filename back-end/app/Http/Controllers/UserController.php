@@ -18,7 +18,10 @@ class UserController extends Controller
     }
 
     public function getUser() {
-        return Auth::user();
+        return response([
+            'status' => 200,
+            'currentUser' => Auth::user(),
+        ]);
     }
 
     public function getName($id) {

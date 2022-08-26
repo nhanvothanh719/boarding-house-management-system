@@ -105,7 +105,7 @@ export default function CreateRoomContractModal(props) {
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Add new room contract</h5>
+              <h5 class="customModalTitle">Add new room contract</h5>
               <button
                 type="button"
                 class="close"
@@ -118,10 +118,15 @@ export default function CreateRoomContractModal(props) {
             </div>
             <div class="modal-body">
               <hr />
-              <form className="flexForm" enctype="multipart/form-data">
-                <SearchRenter getSelectedRenter={getSelectedRenter} />
+              <form encType="multipart/form-data">
+              <div>
+                  <label className="customModalLabel">Renter:</label>
+                  <SearchRenter getSelectedRenter={getSelectedRenter} />
+                </div>
                 <small className="text-danger">{errors.renter_id}</small>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <div>
+                  <label className="customModalLabel">Effective from:</label>
                   <DatePicker
                     views={["day", "month", "year"]}
                     label="Effective from"
@@ -131,10 +136,13 @@ export default function CreateRoomContractModal(props) {
                       setEffectiveFromDate(selectedDate);
                     }}
                     renderInput={(params) => (
-                      <TextField {...params} helperText={null} />
+                      <TextField fullWidth {...params} helperText={null} />
                     )}
                   />
+                </div>
                   <small className="text-danger">{errors.effective_from}</small>
+                  <div>
+                  <label className="customModalLabel">Effective until:</label>
                   <DatePicker
                     views={["day", "month", "year"]}
                     label="Effective until"
@@ -144,26 +152,28 @@ export default function CreateRoomContractModal(props) {
                       setEffectiveUntilDate(selectedDate);
                     }}
                     renderInput={(params) => (
-                      <TextField {...params} helperText={null} />
+                      <TextField fullWidth {...params} helperText={null} />
                     )}
                   />
+                  </div>
                   <small className="text-danger">
                     {errors.effective_until}
                   </small>
                 </LocalizationProvider>
-                <div className="formInput">
-                  <label className="inputItemLabel">Deposit amount:</label>
-                  <input
-                    type="text"
-                    className="inputItem"
+                <div>
+                  <label className="customModalLabel">Deposit amount:</label>
+                  <TextField
+                    label="Deposit amount"
                     name="deposit_amount"
-                    onChange={handleInput}
                     value={input.deposit_amount}
+                    onChange={handleInput}
+                    fullWidth
+                    required
                   />
                 </div>
                 <small className="text-danger">{errors.deposit_amount}</small>
-                <div className="formInput form-group">
-                  <label>Owner signature:</label>
+                <div>
+                  <label className="customModalLabel">Owner signature:</label>
                   <input
                     type="file"
                     className="form-control"
@@ -173,9 +183,8 @@ export default function CreateRoomContractModal(props) {
                   />
                 </div>
                 <small className="text-danger">{errors.owner_signature}</small>
-
-                <div className="formInput form-group">
-                  <label>Renter signature:</label>
+                <div>
+                  <label className="customModalLabel">Renter signature:</label>
                   <input
                     type="file"
                     className="form-control"
@@ -190,7 +199,7 @@ export default function CreateRoomContractModal(props) {
             <div class="modal-footer">
               <button
                 type="button"
-                class="btn btn-success"
+                class="btn btn-primary"
                 data-dismiss="modal"
                 onClick={addRoomContract}
               >

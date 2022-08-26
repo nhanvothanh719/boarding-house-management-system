@@ -26,7 +26,7 @@ export default function SearchBreach(props) {
       <Fragment>
         <Autocomplete
           id="inputRenterId"
-          sx={{ width: 300 }}
+          fullWidth
           options={breachesList}
           autoHighlight
           getOptionLabel={(option) => option.name}
@@ -39,7 +39,7 @@ export default function SearchBreach(props) {
               {option.name}
             </Box>
           )}
-          renderInput={(params) => <TextField {...params} label="Choose a breach" />}
+          renderInput={(params) => <TextField required {...params} h label="Choose a breach" />}
           onChange={handleChange}
         />
       </Fragment>

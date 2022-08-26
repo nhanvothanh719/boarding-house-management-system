@@ -62,24 +62,13 @@ function SideBar() {
             <p className="itemGroup text-uppercase">Lists</p>
             <NavLink
               exact
-              to="/admin/view-all-renters"
+              to="/admin/view-all-users"
               style={{ textDecoration: "none", color: "#f1f1f1" }}
               activeStyle={{ textDecoration: "none", color: "#a5d8dd" }}
             >
               <li className="customLi">
                 <GroupIcon className="sideBarIcon" />
-                <span className="itemName"> Renters </span>
-              </li>
-            </NavLink>
-            <NavLink
-              exact
-              to="/admin/view-all-problems"
-              style={{ textDecoration: "none", color: "#f1f1f1" }}
-              activeStyle={{ textDecoration: "none", color: "#a5d8dd" }}
-            >
-              <li className="customLi">
-                <CommentIcon className="sideBarIcon" />
-                <span className="itemName"> Problems </span>
+                <span className="itemName"> Users </span>
               </li>
             </NavLink>
             <NavLink
@@ -148,6 +137,17 @@ function SideBar() {
                 <span className="itemName"> Breaches </span>
               </li>
             </NavLink>
+            <NavLink
+              exact
+              to="/admin/view-all-problems"
+              style={{ textDecoration: "none", color: "#f1f1f1" }}
+              activeStyle={{ textDecoration: "none", color: "#a5d8dd" }}
+            >
+              <li className="customLi">
+                <CommentIcon className="sideBarIcon" />
+                <span className="itemName"> Problems </span>
+              </li>
+            </NavLink>
             <p className="itemGroup text-uppercase">Renters management</p>
             <NavLink
               exact
@@ -207,7 +207,7 @@ function SideBar() {
             <p className="itemGroup text-uppercase">User</p>
             <NavLink
               exact
-              to="/admin/renters/1"
+              to="/admin/example/120"
               style={{ textDecoration: "none", color: "#f1f1f1" }}
               activeStyle={{ textDecoration: "none", color: "#a5d8dd" }}
             >

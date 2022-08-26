@@ -5,10 +5,11 @@ import { Tooltip, Legend, Pie, PieChart, Cell } from "recharts";
 
 import AppUrl from "../../RestAPI/AppUrl";
 
-export default function BalanceCategoryRate() {
+export default function BalanceCategoryRate(props) {
   const [pieChartData, setPieChartData] = useState([]);
   const [balanceChanges, setBalanceChanges] = useState([]);
   const colors = ["#1C4E80", "#0091D5"];
+  const [refreshChart, setRefreshChart] = useState(false);
 
   useEffect(() => {
     axios.get(AppUrl.GetRecentBalanceChanges).then((response) => {
@@ -21,7 +22,11 @@ export default function BalanceCategoryRate() {
         setPieChartData(response.data.pieData);
       }
     });
-  }, []);
+    setRefreshChart(props.isDataChange);
+    if (props.isDataChange) {
+      setRefreshChart(false);
+    }
+  }, [props.isDataChange]);
 
   const CustomTooltip = ({ active, payload, label }) => {
     if (active) {

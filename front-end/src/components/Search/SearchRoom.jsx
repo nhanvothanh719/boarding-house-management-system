@@ -26,7 +26,7 @@ export default function SearchRoom(props) {
     <Fragment>
       <Autocomplete
         id="inputRenterId"
-        sx={{ width: 300 }}
+        fullWidth
         options={roomsList}
         autoHighlight
         getOptionLabel={(option) => option.number}
@@ -39,7 +39,7 @@ export default function SearchRoom(props) {
             {option.number}
           </Box>
         )}
-        renderInput={(params) => <TextField {...params} label="Choose a room" />}
+        renderInput={(params) => <TextField required {...params} h label="Choose a room" />}
         onChange={handleChange}
       />
     </Fragment>

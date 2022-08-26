@@ -13,8 +13,9 @@ import {
 
 import AppUrl from "../../RestAPI/AppUrl";
 
-export default function BalanceVariation() {
+export default function BalanceVariation(props) {
     const [balanceChanges, setBalanceChanges] = useState([]);
+    const [refreshChart, setRefreshChart] = useState(false);
     const color = "#1C4E80";
 
     useEffect(() => {
@@ -23,7 +24,11 @@ export default function BalanceVariation() {
               setBalanceChanges(response.data.recentBalanceChanges);
             }
           });
-    }, []);
+          setRefreshChart(props.isDataChange);
+          if (props.isDataChange) {
+            setRefreshChart(false);
+          }
+    }, [props.isDataChange]);
   return (
     <Fragment>
         <div className="customChartContainer">

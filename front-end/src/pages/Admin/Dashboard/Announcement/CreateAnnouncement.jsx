@@ -1,4 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react";
+import { Button } from "react-bootstrap";
 
 import MaterialTable from "material-table";
 import swal from "sweetalert";
@@ -6,16 +7,14 @@ import axios from "axios";
 
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
+import CreateAnnouncementModal from "../../../../components/Modals/Announcement/CreateAnnouncementModal";
 
 export default function CreateAnnouncement() {
   const [loading, setLoading] = useState(true);
   const [rentersList, setRentersList] = useState([]);
   const [selectedRows, setSelectedRows] = useState([]);
-  const [input, setInput] = useState({
-    title: "",
-    content: "",
-  });
-  const [errors, setErrors] = useState([]);
+  const [rentersIdList, setRentersIdList] = useState([]);
+  const [showCreateModal, setShowCreateModal] = useState(false);
 
   useEffect(() => {
     axios.get(AppUrl.ShowRenters).then((response) => {
@@ -26,43 +25,23 @@ export default function CreateAnnouncement() {
     });
   }, []);
 
-  const handleInput = (e) => {
-    e.persist();
-    setInput({ ...input, [e.target.name]: e.target.value });
+  const setCreateModalStatus = (status) => {
+    setShowCreateModal(status);
   };
 
-  const sendAnnouncement = (e) => {
+  const createAnnouncement = (e) => {
     e.preventDefault();
-    var renters_id = [];
-    if (selectedRows.length === 0) {
+    let renters_id = [];
+    if (selectedRows.length < 1) {
       swal("Error", "Cannot send due to no renter selected", "error");
     }
-    selectedRows.map((row) => {
-      return renters_id.push(row.id);
-    });
-    const data = {
-      all_id: renters_id,
-      title: input.title,
-      content: input.content,
-    };
-    axios
-      .post(AppUrl.SendAnnouncement, data)
-      .then((response) => {
-        if (response.data.status === 200) {
-          //Delete input after submit the form
-          document.getElementById("inputTitle").value = "";
-          document.getElementById("inputContent").value = "";
-          swal("Success", response.data.message, "success");
-        } else if (response.data.status === 422) {
-          swal("Inappropriate values", "", "error");
-          setErrors(response.data.errors);
-        } else if (response.data.status === 404) {
-          swal("Error", response.data.message, "error");
-        }
-      })
-      .catch((error) => {
-        console.log(error);
+    else {
+      selectedRows.map((row) => {
+        return renters_id.push(row.id);
       });
+      setRentersIdList(renters_id);
+      setShowCreateModal(true);
+    }
   };
 
   var columns = [];
@@ -74,15 +53,26 @@ export default function CreateAnnouncement() {
       // { field: "profile_picture", title: "Avatar", export: false, width: "10%", render: rowData => <img src={rowData.profile_picture} alt="avatar" style={{width: 40, borderRadius: '50%'}}/> },
       { field: "name", title: "Name", width: "20%" },
       { field: "email", title: "Email", width: "20%" },
+      { field: "phone_number", title: "Phone number", width: "20%" },
     ];
   }
 
   return (
     <Fragment>
-      <MaterialTable
+      <div className="customDatatable">
+        <div className="customDatatableHeader">
+        <Button
+            className="createBtn"
+            style={{ backgroundColor: "white", color: "#1C4E80" }}
+            onClick={createAnnouncement}
+          >
+            Create new announcement
+            </Button>
+        </div>
+        <MaterialTable
         columns={columns}
         data={rentersList}
-        title="Select renters to send announcement"
+        title={<span className="customDatatableTitle">Select renters to send announcement</span>}
         onSelectionChange={(rows) => setSelectedRows(rows)}
         options={{
           searchAutoFocus: false,
@@ -90,46 +80,21 @@ export default function CreateAnnouncement() {
           filtering: false,
           pageSizeOptions: [5, 10],
           paginationType: "stepped",
-          exportButton: true,
+          exportButton: false,
           exportAllData: true,
           actionsColumnIndex: -1,
           selection: true,
+          headerStyle: {
+            fontFamily: 'Anek Telugu, sans-serif',
+          }
         }}
       />
-      <form
-        className="flexForm"
-        onSubmit={sendAnnouncement}
-        id="createCategoryForm"
-      >
-        <div className="formInput">
-          <label className="inputItemLabel">Title:</label>
-          <input
-            type="text"
-            className="inputItem"
-            name="title"
-            onChange={handleInput}
-            value={input.title}
-            id="inputTitle"
-          />
-          <small>{errors.title}</small>
         </div>
-        <div className="formInput">
-          <label className="inputItemLabel">Content:</label>
-          <textarea
-            type="text"
-            className="inputItem"
-            name="content"
-            onChange={handleInput}
-            value={input.content}
-            id="inputContent"
-          />
-          <small>{errors.content}</small>
-        </div>
-        <button className="btn btn-success" type="submit">
-          Send to renter
-        </button>
-      </form>
-      {/* <button className="btn btn-success" onClick={sendAnnouncement}>Send to renter</button> */}
+      <CreateAnnouncementModal 
+      isShown={showCreateModal}
+      rentersIdList={rentersIdList}
+      setCreateModalStatus={setCreateModalStatus}
+      />
     </Fragment>
   );
 }

@@ -14,10 +14,9 @@ export default function SearchCategoryEdit(props) {
       axios.get(AppUrl.ShowCategories).then((response) => {
         if (response.data.status === 200) {
           setCategoriesList(response.data.allCategories);
-          props.getSelectedCategory(props.currentCategory);
         }
       });
-    }, [props]);
+    }, []);
   
     const handleChange = (event, category) => {
       props.getSelectedCategory(category);
@@ -27,9 +26,10 @@ export default function SearchCategoryEdit(props) {
       <Fragment>
         <Autocomplete
           id="inputRenterId"
-          sx={{ width: 300 }}
+          fullWidth
           options={categoriesList}
           value={props.currentCategory}
+          isOptionEqualToValue={(option, value) => option.id === value.id}
           autoHighlight
           getOptionLabel={(option) => option.name}
           renderOption={(props, option) => (
@@ -41,7 +41,7 @@ export default function SearchCategoryEdit(props) {
               {option.name}
             </Box>
           )}
-          renderInput={(params) => <TextField {...params} label="Choose a category" />}
+          renderInput={(params) => <TextField required {...params} label="Choose a category" />}
           onChange={handleChange}
         />
       </Fragment>

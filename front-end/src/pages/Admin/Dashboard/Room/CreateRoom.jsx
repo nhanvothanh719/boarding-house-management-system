@@ -37,25 +37,25 @@ export default function CreateRoom() {
 
   const createRoom = (e) => {
     e.preventDefault();
-    const newRoom = new FormData();
+    const room = new FormData();
     if(pictures) {
       for (let i = 0; i < pictures.length; i++) {
         //Appends a new value onto an existing key inside a FormData object
         //or adds the key if it does not already exist.
-        newRoom.append(`image[${i}]`, pictures[i]);
+        room.append(`image[${i}]`, pictures[i]);
         console.log(pictures[i]);
       }
     }
-    newRoom.append("category_id", selectedCategory.id);
-    newRoom.append("number", input.number);
-    newRoom.append("description", input.description);
-    newRoom.append("area", input.area);
-    newRoom.append("has_conditioner", input.has_conditioner);
-    newRoom.append("has_fridge", input.has_fridge);
-    newRoom.append("has_wardrobe", input.has_wardrobe);
+    room.append("category_id", selectedCategory.id);
+    room.append("number", input.number);
+    room.append("description", input.description);
+    room.append("area", input.area);
+    room.append("has_conditioner", input.has_conditioner);
+    room.append("has_fridge", input.has_fridge);
+    room.append("has_wardrobe", input.has_wardrobe);
 
     axios
-      .post(AppUrl.StoreRoom, newRoom)
+      .post(AppUrl.StoreRoom, room)
       .then((response) => {
         if (response.data.status === 200) {
           swal("Success", response.data.message, "success");

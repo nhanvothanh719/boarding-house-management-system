@@ -106,6 +106,7 @@ class AppUrl {
   static CountUsedServices = this.BaseURL + "/count-used-services";
   static GetPaidInvoicesRate = this.BaseURL + "/get-paid-invoices-rate";
   static ReportBreaches = this.BaseURL + "/report-breaches";
+  static GetWidgetsData = this.BaseURL + "/get-widgets-data";
 
   static ShowProblems = this.BaseURL + "/all-problems";
   

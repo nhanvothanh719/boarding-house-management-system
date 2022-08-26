@@ -1,4 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react";
+import { Button } from "react-bootstrap";
 
 import axios from "axios";
 import MaterialTable from "material-table";
@@ -93,13 +94,14 @@ function CategoriesList() {
     return (
       <Fragment>
         <div className="customDatatable">
-          <div className="datatableHeader">
-            <button
-              className="btn btn-primary"
+          <div className="customDatatableHeader">
+            <Button
+              className="createBtn"
+              style={{ backgroundColor: "white", color: "#1C4E80" }}
               onClick={(e) => setShowCreateModal(true)}
             >
               Add new category
-            </button>
+            </Button>
             <CreateCategoryModal
               isShown={showCreateModal}
               setCreateModalStatus={setCreateModalStatus}
@@ -109,7 +111,7 @@ function CategoriesList() {
           <MaterialTable
             columns={columns}
             data={categoriesList}
-            title="All categories"
+            title={<span className="customDatatableTitle">All categories</span>}
             options={{
               searchAutoFocus: false,
               searchFieldVariant: "outlined",
@@ -119,6 +121,9 @@ function CategoriesList() {
               exportButton: true,
               exportAllData: true,
               actionsColumnIndex: -1,
+              headerStyle: {
+                fontFamily: 'Anek Telugu, sans-serif',
+              }
             }}
             editable={{
               onRowUpdate: (newCategory, oldCategory) =>

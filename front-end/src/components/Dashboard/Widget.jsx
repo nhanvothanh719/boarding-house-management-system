@@ -1,5 +1,6 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import CountUp from "react-countup";
 
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
 import BedIcon from "@mui/icons-material/Bed";
@@ -7,17 +8,18 @@ import AccountBalanceWalletOutlinedIcon from "@mui/icons-material/AccountBalance
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 
 import "../../assets/css/Dashboard/widget.css";
+import axios from "axios";
+import AppUrl from "../../RestAPI/AppUrl";
+import ReactVisibilitySensor from "react-visibility-sensor";
 
 function Widget(props) {
   const [type] = useState(props.type);
   let data;
-  let amount = 100;
   switch (type) {
     case "renter":
       data = {
         widgetTitle: "renters",
         isMoney: false,
-        linkDescription: "View all",
         widgetIcon: (
           <PersonAddAltIcon
             className="widgetIcon"
@@ -33,7 +35,6 @@ function Widget(props) {
       data = {
         widgetTitle: "rooms",
         isMoney: false,
-        linkDescription: "View all",
         widgetIcon: (
           <BedIcon
             className="widgetIcon"
@@ -49,7 +50,6 @@ function Widget(props) {
       data = {
         widgetTitle: "earnings",
         isMoney: true,
-        linkDescription: "View details",
         widgetIcon: (
           <AccountBalanceWalletOutlinedIcon
             className="widgetIcon"
@@ -65,7 +65,6 @@ function Widget(props) {
       data = {
         widgetTitle: "balance",
         isMoney: true,
-        linkDescription: "View details",
         widgetIcon: (
           <AttachMoneyIcon
             className="widgetIcon"
@@ -86,14 +85,11 @@ function Widget(props) {
         <div className="widgetLeft">
           <span className="widgetTitle text-uppercase">{data.widgetTitle}</span>
           <span className="widgetCounter">
-            {data.isMoney && "$"} {amount}
+            {data.isMoney && "$"} {props.amount}
           </span>
         </div>
         <div className="widgetRight">
           {data.widgetIcon}
-          <Link to="/" className="widgetLink">
-            {data.linkDescription}
-          </Link>
         </div>
       </div>
     </Fragment>

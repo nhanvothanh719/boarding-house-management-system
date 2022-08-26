@@ -1,13 +1,22 @@
-import React, { Fragment, useState, useEffect, useRef } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import * as ReactDOM from "react-dom";
 
 import swal from "sweetalert";
 import axios from "axios";
-import { useReactToPrint } from "react-to-print";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import { Visibility } from "@material-ui/icons";
+import MailIcon from "@mui/icons-material/Mail";
 
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
+import "../../../../assets/css/Dashboard/datatable.css";
+import { IconButton, Tooltip } from "@mui/material";
 
 export default function InvoiceDetails({ match }) {
   const history = useHistory();
@@ -72,6 +81,16 @@ export default function InvoiceDetails({ match }) {
       setLoading(false);
     });
   }, [invoiceId, history]);
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   //Paypal components
   const PayPalButton = window.paypal.Buttons.driver("react", {
@@ -144,7 +163,6 @@ export default function InvoiceDetails({ match }) {
                     swal("success", res.data.message, "success");
                   }
                 });
-              //alert(response.razorpay_payment_id);
             },
             prefill: {
               name: user.name,
@@ -170,13 +188,6 @@ export default function InvoiceDetails({ match }) {
       }
     }
   };
-  //
-
-  //Handle print
-  const componentRef = useRef();
-  const handlePrint = useReactToPrint({
-    content: () => componentRef.current,
-  });
   //
 
   //Send email
@@ -205,117 +216,181 @@ export default function InvoiceDetails({ match }) {
   }
   return (
     <Fragment>
-      <div ref={componentRef}>
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th scope="col">ID</th>
-              <th scope="col">Service name</th>
-              <th scope="col">Compulsory/Optional</th>
-              <th scope="col">Amount</th>
-              <th scope="col">Subtotal</th>
-            </tr>
-          </thead>
-          <tbody>
-            {usedServices.map((item, index) => {
-              return (
-                <tr key={index}>
-                  <td width="10%" className="text-center">
-                    {item.service_id}
-                  </td>
-                  <td width="20%">{serviceNames[item.service_id]}</td>
-                  <td width="15%">
-                    {item.is_compulsory === 1 ? "Compulsory" : "Optional"}
-                  </td>
-                  <td width="10%">
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="quantity"
-                      defaultValue={0}
-                      value={item.quantity}
-                    />
-                  </td>
-                  <td width="20%">{item.subtotal.toFixed(2)}</td>
+      <div className="room">
+        <div className="titleContainer">
+          <h1 className="customActionTitle">View & Edit room details</h1>
+        </div>
+        <div className="roomTop">
+          <div className="roomTopLeft">
+            <div className="leftContainer">
+              <div className="roomInfoTop">
+                <span className="customFieldTitle">Invoice Details</span>
+              </div>
+              <div className="roomInfoBottom">
+              <div className="roomInfoItem">
+                  <span className="roomInfoKey">Owner:</span>
+                  <span className="roomInfoValue">{invoice.renter.name}</span>
+                </div>
+                <div className="roomInfoItem">
+                  <span className="roomInfoKey">Discount (%):</span>
+                  <span className="roomInfoValue">{invoice.discount}</span>
+                </div>
+                <div className="roomInfoItem">
+                  <span className="roomInfoKey">Month:</span>
+                  <span className="roomInfoValue">{invoice.month}</span>
+                </div>
+                <div className="roomInfoItem">
+                  <span className="roomInfoKey">Effective from:</span>
+                  <span className="roomInfoValue">
+                    {invoice.effective_from}
+                  </span>
+                </div>
+                <div className="roomInfoItem">
+                  <span className="roomInfoKey">Can be paid until:</span>
+                  <span className="roomInfoValue">{invoice.valid_until}</span>
+                </div>
+                <div className="roomInfoItem">
+                  <span className="roomInfoKey">Extra fee:</span>
+                  <span className="roomInfoValue">{extraFee.subtotal}</span>
+                </div>
+                <div className="roomInfoItem">
+                  <span className="roomInfoKey">
+                    Description for extra fee:
+                  </span>
+                  <span className="roomInfoValue">
+                    <Tooltip title="View description">
+                      <IconButton  onClick={handleClickOpen}>
+                        <Visibility color="#7E909A" />
+                      </IconButton>
+                    </Tooltip>
+                  </span>
+                  <Dialog
+                    open={open}
+                    maxWidth="sm"
+                    onClose={handleClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                  >
+                    <DialogTitle
+                      id="alert-dialog-title"
+                      class="customModalTitle"
+                      style={{ margin: "30px" }}
+                    >
+                      {"Description for extra fee"}
+                    </DialogTitle>
+                    <DialogContent>
+                      <DialogContentText id="alert-dialog-description">
+                        {extraFee.description}
+                      </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                      <Button
+                        variant="outlined"
+                        onClick={handleClose}
+                        autoFocus
+                      >
+                        Close
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
+                </div>
+                <div className="roomInfoItem">
+                  <span className="roomInfoKey">Status:</span>
+                  <span
+                    className="roomInfoValue"
+                    style={{ color: "#0091D5", fontWeight: "bold" }}
+                  >
+                    {invoice.is_paid === 1 ? "Paid" : "Not Paid"}
+                  </span>
+                </div>
+                <div
+                  className="roomInfoItem"
+                  style={{ color: "#EA6A47", fontWeight: "bold" }}
+                >
+                  <span className="roomInfoKey">Total:</span>
+                  <span className="roomInfoValue">{invoice.total}</span>
+                </div>
+                <center>
+                <Tooltip title="Send to renter">
+                  <IconButton onClick={sendInvoice}>
+                    <MailIcon color="primary" fontSize="large"/>
+                  </IconButton>
+                </Tooltip>
+                </center>
+              </div>
+            </div>
+          </div>
+          <div className="roomTopRight">
+            <span className="customFieldTitle">Used Services</span>
+            <table class="table table-striped" style={{ marginTop: "20px" }}>
+              <thead
+                style={{
+                  backgroundColor: "#1C4E80",
+                  color: "white",
+                  textAlign: "center",
+                }}
+              >
+                <tr>
+                  <th
+                    scope="col"
+                    style={{ border: "1px solid", borderCollapse: "collapse" }}
+                  >
+                    Service name
+                  </th>
+                  <th
+                    scope="col"
+                    style={{ border: "1px solid", borderCollapse: "collapse" }}
+                  >
+                    Amount
+                  </th>
+                  <th
+                    scope="col"
+                    style={{ border: "1px solid", borderCollapse: "collapse" }}
+                  >
+                    Subtotal
+                  </th>
                 </tr>
-              );
-            })}
-          </tbody>
-        </table>
-        <h3>Total: {invoice.total}</h3>
-        <br />
-        <br />
-        <br />
-        <div className="formInput">
-          <label>Discount (%):</label>
-          <input
-            type="text"
-            className="inputItem"
-            name="discount"
-            value={invoice.discount}
-          />
-        </div>
-        <div className="formInput">
-          <label>Month:</label>
-          <input
-            type="text"
-            className="inputItem"
-            name="month"
-            value={invoice.month}
-          />
-        </div>
-        <div className="formInput">
-          <label>Effective from:</label>
-          <input
-            type="date"
-            className="inputItem"
-            name="effective_from"
-            value={invoice.effective_from}
-          />
-        </div>
-        <div className="formInput">
-          <label>Can be paid until:</label>
-          <input
-            type="date"
-            className="inputItem"
-            name="valid_until"
-            value={invoice.valid_until}
-          />
-        </div>
-        <div className="formInput">
-          <label>Extra fee:</label>
-          <input
-            type="text"
-            className="inputItem"
-            name="extra_fee"
-            value={extraFee.subtotal}
-          />
-        </div>
-        <div className="formInput">
-          <label>Description for extra fee:</label>
-          <textarea
-            type="text"
-            className="inputItem"
-            name="description"
-            value={extraFee.description}
-          />
-        </div>
-        <div className="formInput">
-          <label>Is paid:</label>
-          <textarea
-            type="text"
-            className="inputItem"
-            name="is_paid"
-            value={invoice.is_paid === 1 ? "Yes" : "No"}
-          />
+              </thead>
+              <tbody>
+                {usedServices.map((item, index) => {
+                  return (
+                    <tr key={index}>
+                      <td
+                        width="60%"
+                        style={{
+                          border: "1px solid",
+                          borderCollapse: "collapse",
+                        }}
+                      >
+                        {serviceNames[item.service_id]}
+                      </td>
+                      <td
+                        width="20%"
+                        style={{
+                          border: "1px solid",
+                          borderCollapse: "collapse",
+                        }}
+                      >
+                        {item.quantity}
+                      </td>
+                      <td
+                        width="20%"
+                        style={{
+                          border: "1px solid",
+                          borderCollapse: "collapse",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {item.subtotal.toFixed(2)}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
-      <button className="btn btn-primary" onClick={handlePrint}>
-        Print invoice
-      </button>
-      <button className="btn btn-success" onClick={sendInvoice}>
-        Send to renter
-      </button>
       <br />
       <br />
       <button

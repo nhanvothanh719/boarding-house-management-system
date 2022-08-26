@@ -85,7 +85,7 @@ export default function CreateBreachHistoryModal(props) {
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">
+              <h5 class="customModalTitle" id="exampleModalLabel">
                 Add new breach history
               </h5>
               <button
@@ -101,21 +101,21 @@ export default function CreateBreachHistoryModal(props) {
             <div class="modal-body">
               <hr />
               <form className="flexForm">
-                <div className="">
-                  <label className="inputItemLabel">Renter ID:</label>
+                <div>
+                  <label className="customModalLabel">Renter ID:</label>
                   <SearchRenter getSelectedRenter={getSelectedRenter}/>
                 </div>
                 <small className="text-danger">{errors.renter_id}</small>
-                <div className="formInput">
-                  <label className="inputItemLabel">Breach:</label>
+                <div>
+                  <label className="customModalLabel">Breach:</label>
                   <SearchBreach getSelectedBreach={getSelectedBreach}/>
                 </div>
                 <small className="text-danger">{errors.breach_id}</small>
-                <div className="">
-                  <label className="inputItemLabel">Violate at:</label>
+                <div>
+                  <label className="customModalLabel">Violate at:</label>
                   <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <DateTimePicker
-                      renderInput={(props) => <TextField {...props} />}
+                      renderInput={(props) => <TextField fullWidth {...props} />}
                       // label="Violate moment"
                       value={violateMoment}
                       onChange={(selectMoment) => {
@@ -130,7 +130,7 @@ export default function CreateBreachHistoryModal(props) {
             <div class="modal-footer">
               <button
                 type="button"
-                class="btn btn-success"
+                class="btn btn-primary"
                 data-dismiss="modal"
                 onClick={addBreachHistory}
               >

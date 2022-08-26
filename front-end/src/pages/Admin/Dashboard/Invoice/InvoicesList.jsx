@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 import MaterialTable from "material-table";
 import swal from "sweetalert";
@@ -8,23 +8,20 @@ import moment from "moment";
 
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
+import { Button } from "react-bootstrap";
+import SelectRenterModal from "../../../../components/Modals/Invoice/SelectRenterModal";
 
-export default function InvoicesRentersList() {
+export default function InvoicesList() {
   const history = useHistory();
   var currentDate = new Date();
 
   const [details] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [rentersList, setRentersList] = useState([]);
   const [invoicesList, setInvoicesList] = useState([]);
   const [invoicesListChange, setInvoicesListChange] = useState(false);
+  const [showSelectModal, setShowSelectModal] = useState(false);
 
   useEffect(() => {
-    axios.get(AppUrl.ShowRenters).then((response) => {
-      if (response.data.status === 200) {
-        setRentersList(response.data.allRenters);
-      }
-    });
     axios.get(AppUrl.ShowInvoices).then((response) => {
       if (response.data.status === 200) {
         setInvoicesList(response.data.allInvoices);
@@ -36,30 +33,16 @@ export default function InvoicesRentersList() {
     }
   }, [invoicesListChange]);
 
-  var renters_columns = [];
-  var invoices_columns = [];
+  const setSelectModalStatus = (status) => {
+    setShowSelectModal(status);
+  };
+
+  var columns = [];
 
   if (loading) {
     return <Loading />;
   } else {
-    renters_columns = [
-      { title: "#", render: (rowData) => rowData.tableData.id + 1 },
-      {
-        field: "profile_picture",
-        title: "Avatar",
-        render: (rowData) => (
-          <img
-            src={rowData.profile_picture}
-            alt="avatar"
-            style={{ width: 40, borderRadius: "50%" }}
-          />
-        ),
-      },
-      { field: "name", title: "Name" },
-      { field: "email", title: "Email" },
-    ];
-
-    invoices_columns = [
+    columns = [
       { title: "#", render: (rowData) => rowData.tableData.id + 1 },
       {
         field: "renter_id",
@@ -79,7 +62,7 @@ export default function InvoicesRentersList() {
       },
       {
         field: "effective_from",
-        title: "Can be paid from",
+        title: "Paid from",
         type: "date",
         editable: "never",
         render: (rowData) =>
@@ -87,7 +70,7 @@ export default function InvoicesRentersList() {
       },
       {
         field: "valid_until",
-        title: "Can be paid until",
+        title: "Paid until",
         type: "date",
         editable: ( row ,rowData ) => rowData.is_paid === 0,
         render: (rowData) => moment(rowData.valid_until).format("DD/MM/YYYY"),
@@ -96,35 +79,35 @@ export default function InvoicesRentersList() {
             ? { isValid: false, helperText: "Inappropriate value" }
             : true,
       },
-      { field: "is_paid", title: "Paid", editable: ( row ,rowData ) => rowData.is_paid === 0, lookup: { 0: "Not yet", 1: "Paid" } },
+      { 
+        field: "is_paid", 
+        title: "Paid", 
+        editable: ( row ,rowData ) => rowData.is_paid === 0, lookup: { 0: "Not yet", 1: "Paid" },
+        render: rowData => (
+          <div>
+              <span className={`${rowData.is_paid === 1 ? "statusActive" : "statusPassive"}` }>{rowData.is_paid === 1 ? "Paid" : "Not yet" }</span>
+          </div>
+        )
+      },
     ];
     return (
       <Fragment>
         <div className="customDatatable">
-          <div className="datatableHeader">
+          <div className="customDatatableHeader">
+          <Button
+              className="createBtn"
+              style={{ backgroundColor: "white", color: "#1C4E80" }}
+              onClick={(e) => setShowSelectModal(true)}
+            >
+              Add new invoice
+            </Button>
+            <SelectRenterModal
+        isShown={showSelectModal}
+        setCreateModalStatus={setSelectModalStatus}
+      />
           </div>
           <MaterialTable
-            columns={renters_columns}
-            data={rentersList}
-            title="All renters"
-            options={{
-              searchAutoFocus: false,
-              searchFieldVariant: "outlined",
-              filtering: false,
-              pageSizeOptions: [5, 10],
-              paginationType: "stepped",
-              actionsColumnIndex: -1,
-            }}
-            actions={[
-              {
-                icon: () => <button className="btn btn-success">Create</button>,
-                onClick: (event, renter) =>
-                  history.push(`/admin/create-invoice/${renter.id}`),
-              },
-            ]}
-          />
-          <MaterialTable
-            columns={invoices_columns}
+            columns={columns}
             data={invoicesList}
             title="All invoices"
             options={{

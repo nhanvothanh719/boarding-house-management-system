@@ -1,5 +1,6 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import { Button } from "react-bootstrap";
 
 import MaterialTable from "material-table";
 import swal from "sweetalert";
@@ -87,99 +88,107 @@ export default function RoomContractsList() {
 
   return (
     <Fragment>
-      <MaterialTable
-        columns={columns}
-        data={roomContractsList}
-        title="Room Contracts List"
-        options={{
-          searchAutoFocus: false,
-          searchFieldVariant: "outlined",
-          filtering: false,
-          pageSizeOptions: [5, 10],
-          paginationType: "stepped",
-          exportButton: true,
-          exportAllData: true,
-          actionsColumnIndex: -1,
-        }}
-        editable={{
-          onRowUpdate: (newRoomContract, oldRoomContract) =>
-            new Promise((resolve, reject) => {
-              setTimeout(() => {
-                const data = {
-                  effective_until: moment(newRoomContract.effective_until)
-                    .utc()
-                    .format("YYYY-MM-DD"),
-                  deposit_amount: newRoomContract.deposit_amount,
-                };
-                axios
-                  .put(AppUrl.UpdateRoomContract + oldRoomContract.id, data)
-                  .then((response) => {
-                    if (response.data.status === 200) {
-                      swal("Success", response.data.message, "success");
-                      roomContractsListChange(true);
-                    } else if (response.data.status === 404) {
-                      swal("Error", response.data.message, "error");
-                    }
-                  });
-                resolve();
-              }, 1000);
-            }),
-          onRowDelete: (thisRoomContract) =>
-            new Promise((resolve, reject) => {
-              setTimeout(() => {
-                const selectedRoomContract = [...details];
-                const index = thisRoomContract.tableData.id;
-                selectedRoomContract.splice(index, 1); //1: only one record
-                axios
-                  .delete(AppUrl.DeleteRoomContract + thisRoomContract.id)
-                  .then((response) => {
-                    if (response.data.status === 200) {
-                      swal("Success", response.data.message, "success");
-                      roomContractsListChange(true);
-                    } else if (response.data.status === 404) {
-                      swal("Error", response.data.message, "error");
-                    }
-                  });
-                resolve();
-              }, 1000);
-            }),
-        }}
-        actions={[
-          {
-            icon: "visibility",
-            tooltip: "Details",
-            onClick: (event, room_contract) =>
-              history.push(
-                `/admin/view-room-contract-details/${room_contract.id}`
-              ),
-          },
-          {
-            icon: "image",
-            tooltip: "Edit signatures",
-            onClick: (event, room_contract) => {
-              setShowEditSignaturesModal(true);
-              setSelectedRoomContractId(room_contract.id);
+      <div className="customDatatable">
+        <div className="customDatatableHeader">
+          <Button
+            className="createBtn"
+            style={{ backgroundColor: "white", color: "#1C4E80" }}
+            onClick={(e) => setShowCreateModal(true)}
+          >
+            Add new room contract
+          </Button>
+        </div>
+        <MaterialTable
+          columns={columns}
+          data={roomContractsList}
+          title={<span className="customDatatableTitle">All Room Contracts</span>}
+          options={{
+            searchAutoFocus: false,
+            searchFieldVariant: "outlined",
+            filtering: false,
+            pageSizeOptions: [5, 10],
+            paginationType: "stepped",
+            exportButton: true,
+            exportAllData: true,
+            actionsColumnIndex: -1,
+            headerStyle: {
+              fontFamily: 'Anek Telugu, sans-serif',
+            }
+          }}
+          editable={{
+            onRowUpdate: (newRoomContract, oldRoomContract) =>
+              new Promise((resolve, reject) => {
+                setTimeout(() => {
+                  const data = {
+                    effective_until: moment(newRoomContract.effective_until)
+                      .utc()
+                      .format("YYYY-MM-DD"),
+                    deposit_amount: newRoomContract.deposit_amount,
+                  };
+                  axios
+                    .put(AppUrl.UpdateRoomContract + oldRoomContract.id, data)
+                    .then((response) => {
+                      if (response.data.status === 200) {
+                        swal("Success", response.data.message, "success");
+                        roomContractsListChange(true);
+                      } else if (response.data.status === 404) {
+                        swal("Error", response.data.message, "error");
+                      }
+                    });
+                  resolve();
+                }, 1000);
+              }),
+            onRowDelete: (thisRoomContract) =>
+              new Promise((resolve, reject) => {
+                setTimeout(() => {
+                  const selectedRoomContract = [...details];
+                  const index = thisRoomContract.tableData.id;
+                  selectedRoomContract.splice(index, 1); //1: only one record
+                  axios
+                    .delete(AppUrl.DeleteRoomContract + thisRoomContract.id)
+                    .then((response) => {
+                      if (response.data.status === 200) {
+                        swal("Success", response.data.message, "success");
+                        roomContractsListChange(true);
+                      } else if (response.data.status === 404) {
+                        swal("Error", response.data.message, "error");
+                      }
+                    });
+                  resolve();
+                }, 1000);
+              }),
+          }}
+          actions={[
+            {
+              icon: "visibility",
+              tooltip: "Details",
+              onClick: (event, room_contract) =>
+                history.push(
+                  `/admin/view-room-contract-details/${room_contract.id}`
+                ),
             },
-          },
-        ]}
-      />
-      <button
-        className="btn btn-primary"
-        onClick={(e) => setShowCreateModal(true)}
-      >
-        Add new breach
-      </button>
-      <CreateRoomContractModal
-        isShown={showCreateModal}
-        setCreateModalStatus={setCreateModalStatus}
-        updateModalStatus={updateModalStatus}
-      />
-      <EditSignaturesModal
-        isShown={showEditSignaturesModal}
-        roomContractId={selectedRoomContractId}
-        setEditModalStatus={setEditModalStatus}
-        updateModalStatus={updateModalStatus}
-      />
+            {
+              icon: "image",
+              tooltip: "Edit signatures",
+              onClick: (event, room_contract) => {
+                setShowEditSignaturesModal(true);
+                setSelectedRoomContractId(room_contract.id);
+              },
+            },
+          ]}
+        />
+        <CreateRoomContractModal
+          isShown={showCreateModal}
+          setCreateModalStatus={setCreateModalStatus}
+          updateModalStatus={updateModalStatus}
+        />
+        <EditSignaturesModal
+          isShown={showEditSignaturesModal}
+          roomContractId={selectedRoomContractId}
+          setEditModalStatus={setEditModalStatus}
+          updateModalStatus={updateModalStatus}
+        />
+      </div>
     </Fragment>
   );
 }

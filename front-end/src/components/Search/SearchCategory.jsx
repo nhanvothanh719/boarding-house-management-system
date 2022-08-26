@@ -26,7 +26,7 @@ export default function SearchCategory(props) {
       <Fragment>
         <Autocomplete
           id="inputRenterId"
-          sx={{ width: 300 }}
+          fullWidth
           options={categoriesList}
           autoHighlight
           getOptionLabel={(option) => option.name}
@@ -39,7 +39,7 @@ export default function SearchCategory(props) {
               {option.name}
             </Box>
           )}
-          renderInput={(params) => <TextField {...params} label="Choose a category" />}
+          renderInput={(params) => <TextField required {...params} label="Choose a category" />}
           onChange={handleChange}
         />
       </Fragment>

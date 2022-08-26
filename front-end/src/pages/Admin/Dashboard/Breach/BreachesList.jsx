@@ -1,4 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react";
+import { Button } from "react-bootstrap";
 
 import MaterialTable from "material-table";
 import swal from "sweetalert";
@@ -14,6 +15,8 @@ export default function BreachesList() {
   const [breachesList, setBreachesList] = useState([]);
   const [breachesListChange, setBreachesListChange] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const severity = { 1: "Serious", 2: "Significant", 3: "Normal", 4: "Negligible", };
+  const severityStyle = { 1: "statusPassive", 2: "statusPending", 3: "statusOnGoing", 4: "statusActive"};
 
   const setCreateModalStatus = (status) => {
     setShowCreateModal(status);
@@ -79,6 +82,11 @@ export default function BreachesList() {
           3: "Normal",
           4: "Negligible",
         },
+        render: (rowData) => {
+          return (
+              <span className={`${severityStyle[rowData.severity_level]}`}>{severity[rowData.severity_level]}</span>
+          );
+        },
       },
       {
         field: "allowed_violate_number",
@@ -100,10 +108,25 @@ export default function BreachesList() {
 
   return (
     <Fragment>
-      <MaterialTable
+      <div className="customDatatable">
+          <div className="customDatatableHeader">
+            <Button
+              className="createBtn"
+              style={{ backgroundColor: "white", color: "#1C4E80" }}
+              onClick={(e) => setShowCreateModal(true)}
+            >
+              Add new breach
+            </Button>
+            <CreateBreachModal
+        isShown={showCreateModal}
+        setCreateModalStatus={setCreateModalStatus}
+        updateCreateModalStatus={updateCreateModalStatus}
+      />
+          </div>
+          <MaterialTable
         columns={columns}
         data={breachesList}
-        title="Breaches list"
+        title={<span className="customDatatableTitle">All breaches</span>}
         options={{
           searchAutoFocus: false,
           searchFieldVariant: "outlined",
@@ -113,6 +136,9 @@ export default function BreachesList() {
           exportButton: true,
           exportAllData: true,
           actionsColumnIndex: -1,
+          headerStyle: {
+            fontFamily: 'Anek Telugu, sans-serif',
+          }
         }}
         editable={{
           onRowUpdate: (newBreach, oldBreach) =>
@@ -158,17 +184,7 @@ export default function BreachesList() {
             }),
         }}
       />
-      <button
-        className="btn btn-primary"
-        onClick={(e) => setShowCreateModal(true)}
-      >
-        Add new breach
-      </button>
-      <CreateBreachModal
-        isShown={showCreateModal}
-        setCreateModalStatus={setCreateModalStatus}
-        updateCreateModalStatus={updateCreateModalStatus}
-      />
+          </div>
     </Fragment>
   );
 }

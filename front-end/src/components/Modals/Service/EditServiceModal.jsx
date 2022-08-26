@@ -2,15 +2,15 @@ import React, { Fragment, useEffect, useState } from "react";
 
 import swal from "sweetalert";
 import axios from "axios";
+import TextField from "@mui/material/TextField";
 
 import AppUrl from "../../../RestAPI/AppUrl";
 
 export default function EditServiceModal(props) {
   const [errors, setErrors] = useState([]);
-  const [checkbox, setCheckbox] = useState(false);
   const [input, setInput] = useState({
     name: "",
-    description: "",
+    description: "...",
     unit: "",
     unit_price: "",
   });
@@ -24,7 +24,6 @@ export default function EditServiceModal(props) {
       axios.get(AppUrl.EditService + props.serviceId).then((response) => {
         if (response.data.status === 200) {
           setInput(response.data.service);
-          setCheckbox(response.data.service.is_compulsory);
         } else if (response.data.status === 404) {
           swal("Error", response.data.message, "error");
         }
@@ -48,11 +47,6 @@ export default function EditServiceModal(props) {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
 
-  const handleCheckbox = (e) => {
-    e.persist();
-    setCheckbox(e.target.checked);
-  };
-
   const updateService = (e) => {
     e.preventDefault();
     const service = {
@@ -60,7 +54,7 @@ export default function EditServiceModal(props) {
       description: input.description,
       unit: input.unit,
       unit_price: input.unit_price,
-      is_compulsory: checkbox,
+      is_compulsory: input.is_compulsory,
     };
     axios
       .put(AppUrl.UpdateService + props.serviceId, service)
@@ -95,7 +89,7 @@ export default function EditServiceModal(props) {
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Edit new category</h5>
+              <h5 class="customModalTitle">Edit service</h5>
               <button
                 type="button"
                 class="close"
@@ -110,58 +104,71 @@ export default function EditServiceModal(props) {
             <div class="modal-body">
               <hr />
               <form className="flexForm">
-                <div className="formInput">
-                  <label className="inputItemLabel">Service name:</label>
-                  <input
-                    type="text"
-                    className="inputItem"
+                <div>
+                <label className="customModalLabel">Service name:</label>
+                  <TextField
+                    label="Service name"
                     name="name"
-                    onChange={handleInput}
                     value={input.name}
+                    onChange={handleInput}
+                    fullWidth
+                    required
                   />
                 </div>
                 <span>{errors.name}</span>
-                <div className="formInput">
-                  <label className="inputItemLabel">Description:</label>
-                  <textarea
-                    type="text"
-                    className="inputItem"
+                <div>
+                <label className="customModalLabel">Description:</label>
+                  <TextField
+                    label="Description"
                     name="description"
                     onChange={handleInput}
-                    value={input.description}
+                    value={input.description === null ? " " : input.description}
+                    fullWidth
+                    required
+                    multiline
                   />
                 </div>
-                <div className="formInput">
-                  <label className="inputItemLabel">Unit:</label>
-                  <input
-                    type="text"
-                    className="inputItem"
+                <div>
+                <label className="customModalLabel">Unit:</label>
+                  <TextField
+                    label="Unit"
                     name="unit"
-                    onChange={handleInput}
                     value={input.unit}
+                    onChange={handleInput}
+                    fullWidth
+                    required
                   />
                 </div>
                 <span>{errors.unit}</span>
-                <div className="formInput">
-                  <label className="inputItemLabel">Cost per unit:</label>
-                  <input
-                    type="text"
-                    className="inputItem"
+                <div>
+                <label className="customModalLabel">Cost per unit:</label>
+                  <TextField
+                    label="Unit price"
                     name="unit_price"
-                    onChange={handleInput}
                     value={input.unit_price}
+                    onChange={handleInput}
+                    fullWidth
+                    required
                   />
                 </div>
                 <span>{errors.unit_price}</span>
-                <div className="formInput">
+                <div>
                   <label>Compulsory:</label>
-                  <input
-                    type="checkbox"
-                    className="inputItem"
-                    name="is_compulsory"
-                    onChange={handleCheckbox}
-                    defaultChecked={checkbox === 1 ? true : false}
-                  />
+                  <select
+                  name="is_compulsory"
+                  onChange={handleInput}
+                  value={input.is_compulsory}
+                  className="form-control"
+                >
+                  <option value="0" key="0">
+                    {" "}
+                    No{" "}
+                  </option>
+                  <option value="1" key="1">
+                    {" "}
+                    Yes{" "}
+                  </option>
+                </select>
                 </div>
                 <span>{errors.is_compulsory}</span>
               </form>
@@ -169,7 +176,7 @@ export default function EditServiceModal(props) {
             <div class="modal-footer">
               <button
                 type="button"
-                class="btn btn-success"
+                class="btn btn-primary"
                 data-dismiss="modal"
                 onClick={updateService}
               >

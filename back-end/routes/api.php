@@ -40,7 +40,7 @@ Route::middleware('auth:api')->group(function(){
         Route::get('/check-admin-authenticated', function() {
             return response(['message' => 'Login successfully. You are the admin', 'status' => 200]);
         });    
-        Route::get('/all-users', [UserController::class], 'index');
+        Route::get('/all-users', [UserController::class, 'index']);
 
         //Category
         Route::get('/all-categories', [CategoryController::class, 'index']);
@@ -148,6 +148,7 @@ Route::middleware('auth:api')->group(function(){
         Route::get('/count-used-services', [DashboardController::class, 'countUsedServices']);
         Route::get('/get-paid-invoices-rate', [DashboardController::class, 'getPaidInvoicesRate']);
         Route::get('/report-breaches', [DashboardController::class, 'reportBreaches']);
+        Route::get('/get-widgets-data', [DashboardController::class, 'displayNumberOnWidget']);
 
         //Problem
         Route::get('/all-problems', [ProblemController::class, 'index']);

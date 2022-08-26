@@ -1,4 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react";
+import { Button } from "react-bootstrap";
 
 import MaterialTable from "material-table";
 import swal from "sweetalert";
@@ -71,13 +72,14 @@ export default function MotorbikesList() {
     return (
       <Fragment>
         <div className="customDatatable">
-          <div className="datatableHeader">
-            <button
-              className="btn btn-primary"
+          <div className="customDatatableHeader">
+          <Button
+              className="createBtn"
+              style={{ backgroundColor: "white", color: "#1C4E80" }}
               onClick={(e) => setShowCreateModal(true)}
             >
               Add new motorbike
-            </button>
+            </Button>
             <CreateMotorbikeModal
               isShown={showCreateModal}
               setCreateModalStatus={setCreateModalStatus}
@@ -87,7 +89,7 @@ export default function MotorbikesList() {
           <MaterialTable
             columns={columns}
             data={motorbikesList}
-            title="All motorbikes"
+            title={<span className="customDatatableTitle">All motorbikes</span>}
             options={{
               searchAutoFocus: false,
               searchFieldVariant: "outlined",
@@ -97,6 +99,9 @@ export default function MotorbikesList() {
               exportButton: true,
               exportAllData: true,
               actionsColumnIndex: -1,
+              headerStyle: {
+                fontFamily: 'Anek Telugu, sans-serif',
+              }
             }}
             actions={[
               {

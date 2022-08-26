@@ -1,13 +1,15 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 import swal from "sweetalert";
 import axios from "axios";
 
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
-import SearchCategory from "../../../../components/Search/SearchCategory";
 import SearchCategoryEdit from "../../../../components/Search/SearchCategoryEdit";
+
+import "../../../../assets/css/Dashboard/room.css";
+import { Publish } from "@material-ui/icons";
 
 export default function EditRoom({ match }) {
   const history = useHistory();
@@ -16,64 +18,83 @@ export default function EditRoom({ match }) {
   const [input, setInput] = useState({
     number: "",
     description: "",
-    category_id: "",
+    category: {},
     area: "",
   });
-  const [checkbox, setCheckbox] = useState([]);
-  const [picture, setPicture] = useState("");
-  const [oldImages, setOldImages] = useState([]);
+  const [roomDetails, setRoomDetails] = useState({
+    number: "",
+    description: "",
+    category: {},
+    area: "",
+    has_conditioner: "",
+    has_fridge: "",
+    has_wardrobe: "",
+  });
+  //const [picture, setPicture] = useState("");
+  const [uploadedPictures, setUploadedPictures] = useState([]);
+  const [roomImages, setRoomImages] = useState([]);
+  const [renters, setRenters] = useState([]);
   const [errors, setErrors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [roomDetailsChange, setRoomDetailsChange] = useState(false);
 
   useEffect(() => {
     axios.get(AppUrl.EditRoom + roomId).then((response) => {
       if (response.data.status === 200) {
         setInput(response.data.room);
-        setCheckbox(response.data.room);
-        setOldImages(response.data.images);
+        setSelectedCategory(response.data.room.category);
       } else if (response.data.status === 404) {
         swal("Error", response.data.message, "error");
-        history.push("/admin/view-all-services");
+        history.push("/admin/view-all-rooms");
       }
-      setLoading(false);
     });
-  }, [roomId, history]);
+    axios.get(AppUrl.GetRoomDetails + roomId).then((response) => {
+      if (response.data.status === 200) {
+        setRoomDetails(response.data.roomDetails);
+        setRenters(response.data.allRenters);
+        setRoomImages(response.data.roomImages);
+      }
+    });
+    setLoading(false);
+    if (roomDetailsChange) {
+      setRoomDetailsChange(false);
+    }
+  }, [roomId, history, roomDetailsChange]);
 
   const handleInput = (e) => {
     e.persist();
     setInput({ ...input, [e.target.name]: e.target.value });
   };
 
-  const handleCheckbox = (e) => {
-    e.persist();
-    setCheckbox({ ...checkbox, [e.target.name]: e.target.checked });
-  };
-
-  const handleImage = (e) => {
-    setPicture(e.target.files);
+  const handleImages = (e) => {
+    setUploadedPictures(e.target.files);
   };
 
   const getSelectedCategory = (category) => {
     setSelectedCategory(category);
-  }
+  };
 
   const updateRoom = (e) => {
     e.preventDefault();
     const room = new FormData();
-    for (let i = 0; i < picture.length; i++) {
+    for (let i = 0; i < uploadedPictures.length; i++) {
       //Appends a new value onto an existing key inside a FormData object
       //or adds the key if it does not already exist.
-      room.append(`image[${i}]`, picture[i]);
-      console.log(picture[i]);
+      room.append(`image[${i}]`, uploadedPictures[i]);
+      //console.log(pictures[i]);
     }
-    room.append("category_id", selectedCategory.id);
+    if (selectedCategory.id === null) {
+      room.append("category_id", input.category.id);
+    } else {
+      room.append("category_id", selectedCategory.id);
+    }
     room.append("number", input.number);
     room.append("description", input.description);
     room.append("area", input.area);
-    room.append("has_conditioner", checkbox.has_conditioner ? "1" : "0");
-    room.append("has_fridge", checkbox.has_fridge ? "1" : "0");
-    room.append("has_wardrobe", checkbox.has_wardrobe ? "1" : "0");
+    room.append("has_conditioner", input.has_conditioner);
+    room.append("has_fridge", input.has_fridge);
+    room.append("has_wardrobe", input.has_wardrobe);
 
     axios
       .post(AppUrl.UpdateRoom + roomId, room) //Use POST (instead of PUT) when create a new instance
@@ -81,7 +102,7 @@ export default function EditRoom({ match }) {
         if (response.data.status === 200) {
           swal("Success", response.data.message, "success");
           setErrors([]);
-          history.push("/admin/view-all-rooms");
+          setRoomDetailsChange(true);
         } else if (response.data.status === 422) {
           swal("All fields are mandatory", "", "error");
           setErrors(response.data.errors);
@@ -94,129 +115,218 @@ export default function EditRoom({ match }) {
       });
   };
 
-  var display_images = "";
+  const room_images = roomImages.map((img) => {
+    return (
+      <img
+        src={`http://127.0.0.1:8000/${img.image_name}`}
+        alt=""
+        className="roomUploadImg"
+      />
+    );
+  });
+
+  const all_renters = renters.map((renter) => {
+    return (
+      <Link
+        className="customDashboardLink"
+        to={`/admin/edit-user/${renter.id}`}
+        style={{ fontWeight: "600" }}
+      >
+        <div className="roomInfoTop">
+          <span>
+            <img
+              src={`http://127.0.0.1:8000/${renter.profile_picture}`}
+              alt="renter_profile_picture"
+              className="renterInRoomImg"
+            />
+          </span>
+          <span>{renter.name}</span>
+        </div>
+      </Link>
+    );
+  });
+
   if (loading) {
     return <Loading />;
-  } else {
-    display_images = oldImages.map((img) => {
-      return (
-        <img
-          src={`http://127.0.0.1:8000/${img.image_name}`}
-          alt=""
-          style={{ height: "100%" }}
-        />
-      );
-    });
   }
   return (
     <Fragment>
-      <div className="topContainer">
-        <h1>Edit room</h1>
-      </div>
-      <div className="bottomContainer">
-        <div className="bottomRightContainer">
-          {/* Use multipart/form-data when the form includes any <input type="file"> elements */}
-          <form
-            encType="multipart/form-data"
-            className="flexForm"
-            onSubmit={updateRoom}
-            id="createCategoryForm"
-          >
+      <div className="room">
+        <div className="titleContainer">
+          <h1 className="customActionTitle">View & Edit room details</h1>
+        </div>
+        <div className="roomTop">
+          <div className="roomTopLeft">
+            <div className="leftContainer">
+              <div className="roomInfoTop">
+                <span className="customFieldTitle">Room Details</span>
+              </div>
 
-            <div className="formInput">
-              <label>Room number:</label>
-              <input
-                type="text"
-                className="inputItem"
-                name="number"
-                onChange={handleInput}
-                value={input.number}
-                id="inputRoomNumber"
-              />
+              <div className="roomInfoBottom">
+                <div className="roomInfoItem">
+                  <span className="roomInfoKey">Room number:</span>
+                  <span className="roomInfoValue">{roomDetails.number}</span>
+                </div>
+                <div className="roomInfoItem">
+                  <span className="roomInfoKey">Category:</span>
+                  <span className="roomInfoValue">
+                    {roomDetails.category.name}
+                  </span>
+                </div>
+                <div className="roomInfoItem">
+                  <span className="roomInfoKey">Description:</span>
+                  <span className="roomInfoValue">
+                    {roomDetails.description}
+                  </span>
+                </div>
+                <div className="roomInfoItem">
+                  <span className="roomInfoKey">Area:</span>
+                  <span className="roomInfoValue">{roomDetails.area}</span>
+                </div>
+                <div className="roomInfoItem">
+                  <span className="roomInfoKey">Conditioner:</span>
+                  <span className="roomInfoValue">
+                    {roomDetails.has_conditioner === 1 ? "Yes" : "No"}
+                  </span>
+                </div>
+                <div className="roomInfoItem">
+                  <span className="roomInfoKey">Fridge:</span>
+                  <span className="roomInfoValue">
+                    {roomDetails.has_fridge === 1 ? "Yes" : "No"}
+                  </span>
+                </div>
+                <div className="roomInfoItem">
+                  <span className="roomInfoKey">Wardrobe:</span>
+                  <span className="roomInfoValue">
+                    {roomDetails.has_wardrobe === 1 ? "Yes" : "No"}
+                  </span>
+                </div>
+                <div className="roomInfoTop">
+                  <span className="customFieldTitle">Renters in room</span>
+                </div>
+                {all_renters}
+              </div>
             </div>
-            <small className="text-danger">{errors.number}</small>
-            <div className="formInput">
-              <label>Category:</label>
-              <SearchCategoryEdit getSelectedCategory={getSelectedCategory} currentCategory={input.category} />
-            </div>
-            <small className="text-danger">{errors.category_id}</small>
-            <div className="formInput">
-              <label>Description:</label>
-              <textarea
-                type="text"
-                className="inputItem"
-                name="description"
-                onChange={handleInput}
-                value={input.description}
-                id="inputDescription"
-              />
-            </div>
-            <small className="text-danger">{errors.description}</small>
-            <div className="formInput">
-              <label>Area:</label>
-              <input
-                type="text"
-                className="inputItem"
-                name="area"
-                onChange={handleInput}
-                value={input.area}
-                id="inputArea"
-              />
-            </div>
-            <small className="text-danger">{errors.area}</small>
-            <div className="formInput">
-              <label>Conditioner:</label>
-              <input
-                type="checkbox"
-                className="inputItem"
-                name="has_conditioner"
-                onChange={handleCheckbox}
-                defaultChecked={checkbox.has_conditioner === 1 ? true : false}
-                id="inputHasConditioner"
-              />
-            </div>
+          </div>
+          <div className="roomTopRight">
+            <form
+              encType="multipart/form-data"
+              onSubmit={updateRoom}
+              id="createCategoryForm"
+            >
+              <div className="roomFormLeft">
+                <label>Room number:</label>
+                <input
+                  type="text"
+                  name="number"
+                  onChange={handleInput}
+                  value={input.number}
+                />
+                <small className="text-danger">{errors.number}</small>
 
-            <div className="formInput">
-              <label>Fridge:</label>
-              <input
-                type="checkbox"
-                className="inputItem"
-                name="has_fridge"
-                onChange={handleCheckbox}
-                defaultChecked={checkbox.has_fridge === 1 ? true : false}
-                id="inputHasFridge"
-              />
-            </div>
+                <label>Category:</label>
+                <SearchCategoryEdit
+                  getSelectedCategory={getSelectedCategory}
+                  currentCategory={input.category}
+                />
+                <small className="text-danger">{errors.category_id}</small>
 
-            <div className="formInput">
-              <label>Wardrobe:</label>
-              <input
-                type="checkbox"
-                className="inputItem"
-                name="has_wardrobe"
-                onChange={handleCheckbox}
-                defaultChecked={checkbox.has_wardrobe === 1 ? true : false}
-                id="inputHasWardrobe"
-              />
-            </div>
+                <label>Description:</label>
+                <input
+                  type="text"
+                  name="description"
+                  onChange={handleInput}
+                  value={input.description}
+                />
+                <small className="text-danger">{errors.description}</small>
 
-            <div className="formInput form-group">
-              <label>Image:</label>
-              <input
-                type="file"
-                className="form-control"
-                name="image[]"
-                id="inputImage"
-                onChange={handleImage}
-                multiple
-              />
+                <label>Area:</label>
+                <input
+                  type="text"
+                  name="area"
+                  onChange={handleInput}
+                  value={input.area}
+                />
+                <small className="text-danger">{errors.area}</small>
+
+                <label>Conditioner:</label>
+                <select
+                  name="has_conditioner"
+                  onChange={handleInput}
+                  value={input.has_conditioner}
+                  className="form-control"
+                >
+                  <option value="0" key="0">
+                    {" "}
+                    No{" "}
+                  </option>
+                  <option value="1" key="1">
+                    {" "}
+                    Yes{" "}
+                  </option>
+                </select>
+
+                <label>Fridge:</label>
+                <select
+                  name="has_fridge"
+                  onChange={handleInput}
+                  value={input.has_fridge}
+                  className="form-control"
+                >
+                  <option value="0" key="0">
+                    {" "}
+                    No{" "}
+                  </option>
+                  <option value="1" key="1">
+                    {" "}
+                    Yes{" "}
+                  </option>
+                </select>
+
+                <label>Wardrobe:</label>
+
+                <select
+                  name="has_wardrobe"
+                  onChange={handleInput}
+                  value={input.has_wardrobe}
+                  className="form-control"
+                >
+                  <option value="0" key="0">
+                    {" "}
+                    No{" "}
+                  </option>
+                  <option value="1" key="1">
+                    {" "}
+                    Yes{" "}
+                  </option>
+                </select>
+                <label>Images:</label>
+                <label htmlFor="file">
+                  <Publish
+                    className="userUpdateIcon"
+                    style={{ fontSize: "35px" }}
+                  />
+                </label>
+                <input
+                  type="file"
+                  id="file"
+                  name="image[]"
+                  onChange={handleImages}
+                  multiple
+                  style={{ display: "none" }}
+                />
+                <button type="submit" className="roomButton">
+                  Update
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div className="roomBottom">
+            <div className="roomFormRight">
+              <span className="customFieldTitle">Room images</span>
+              <div className="roomUpload">{room_images}</div>
             </div>
-            <small className="text-danger">{errors.image}</small>
-            {display_images}
-            <button type="submit" className="formButton">
-              Update
-            </button>
-          </form>
         </div>
       </div>
     </Fragment>
