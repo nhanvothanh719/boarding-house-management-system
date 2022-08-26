@@ -323,12 +323,10 @@ export default function EditRoom({ match }) {
           </div>
         </div>
         <div className="roomBottom">
-          <form>
             <div className="roomFormRight">
               <span className="customFieldTitle">Room images</span>
               <div className="roomUpload">{room_images}</div>
             </div>
-          </form>
         </div>
       </div>
     </Fragment>

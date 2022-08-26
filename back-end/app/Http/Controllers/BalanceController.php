@@ -100,7 +100,7 @@ class BalanceController extends Controller
         return response([
             'status' => 200,
             'recentBalanceChanges' => $recent_balance_changes, 
-            'currentBalance' => last($recent_balance_changes)->amount,
+            'currentBalance' => round(last($recent_balance_changes)->amount, 2),
         ]);
     }
 

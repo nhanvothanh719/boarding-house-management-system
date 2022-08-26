@@ -139,9 +139,9 @@ class InvoiceController extends Controller
             $invoice_detail = new InvoiceDetail;
             $invoice_detail->invoice_id = $invoice_id;
             $invoice_detail->service_id = $service['id'];
-            $invoice_detail->quantity = $service['quantity'];
-            $service_unit_price = $service['unit_price'];
-            $invoice_detail->subtotal = round($service['quantity'] * $service_unit_price, 2);
+            $invoice_detail->quantity = abs($service['quantity']);
+            $service_unit_price = abs($service['unit_price']);
+            $invoice_detail->subtotal = round(abs($service['quantity']) * $service_unit_price, 2);
             $invoice_detail->save();
         }
     }
