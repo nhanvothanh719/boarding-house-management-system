@@ -23,7 +23,7 @@ class PaymentController extends Controller
         $payment->payment_id = $request->payment_id;
         $payment_method = $request->payment_method;
         $payment->payment_method_id = PaymentMethod::where('name', $payment_method)->value('id');
-        $payment->made_by_user_id = $user_id;
+        $payment->made_by = $user_id;
         $payment->made_at = date('Y-m-d H:i:s');
         $payment->save();
         //Mark the invoice as is paid
