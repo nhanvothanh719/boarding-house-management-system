@@ -42,8 +42,8 @@
         </table>
         <br>
         <p>Discount: {{ $invoice->discount }}%</p>
-        <p>Extra fee: {{ $extra_fee[0]->subtotal }}</p>
-        <p>Description for extra fee: {{ $extra_fee[0]->description }}</p>
+        <p>Extra fee: {{ $invoice->extra_fee }}</p>
+        <p>Description for extra fee: {{ $invoice->extra_fee_description }}</p>
         <p style="display: inline;">Total: <b style="color: red; display: inline;">{{ $invoice->total }}</b></p>
         <br>
         <p style="display: inline;">Invoice condition: @if($invoice->is_paid == 0) <b style="display: inline;">Not paid</b> @else <b style="display: inline;">Paid</b> @endif</p>

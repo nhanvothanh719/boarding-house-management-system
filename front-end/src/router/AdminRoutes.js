@@ -1,6 +1,5 @@
 import MainDashboard from "../pages/Admin/Dashboard/MainPage/MainDashboard";
 import CategoriesList from "../pages/Admin/Dashboard/Category/CategoriesList";
-import CreateRoom from "../pages/Admin/Dashboard/Room/CreateRoom";
 import RoomsList from "../pages/Admin/Dashboard/Room/RoomsList";
 import EditRoom from "../pages/Admin/Dashboard/Room/EditRoom";
 import UsersList from "../pages/Admin/Dashboard/User/UsersList";
@@ -31,7 +30,6 @@ const routes = [
     { path: '/admin/view-all-categories', exact: true, name: 'CategoriesList', component: CategoriesList },
     //Room
     { path: '/admin/rent-room', exact: true, name: 'RentRoom', component: RentRoom },
-    { path: '/admin/create-room', exact: true, name: 'CreateRoom', component: CreateRoom },
     { path: '/admin/view-all-rooms', exact: true, name: 'RoomsList', component: RoomsList },
     { path: '/admin/edit-room/:roomID', exact: true, name: 'EditRoom', component: EditRoom },
     //Renter
