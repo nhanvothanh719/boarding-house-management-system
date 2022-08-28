@@ -13,7 +13,7 @@ class RuleViolateMail extends Mailable
 
     protected $renter_name;
     protected $breach_name;
-    protected $violate_at;
+    protected $violated_at;
     protected $remain_allowed_number;
 
     /**
@@ -21,11 +21,11 @@ class RuleViolateMail extends Mailable
      *
      * @return void
      */
-    public function __construct($renter_name, $breach_name, $violate_at, $remain_allowed_number)
+    public function __construct($renter_name, $breach_name, $violated_at, $remain_allowed_number)
     {
         $this->renter_name = $renter_name;
         $this->breach_name = $breach_name;
-        $this->violate_at = $violate_at;
+        $this->violated_at = $violated_at;
         $this->remain_allowed_number = $remain_allowed_number;
     }
 
@@ -38,10 +38,10 @@ class RuleViolateMail extends Mailable
     {
         $renter_name = $this->renter_name;
         $breach_name = $this->breach_name;
-        $violate_at = $this->violate_at;
+        $violated_at = $this->violated_at;
         $remain_allowed_number = $this->remain_allowed_number;
         return $this->from('boarding_house_admin@gmail.com')
-        ->view('mail.ruleViolate', compact('renter_name', 'breach_name', 'violate_at', 'remain_allowed_number'))
+        ->view('mail.ruleViolate', compact('renter_name', 'breach_name', 'violated_at', 'remain_allowed_number'))
         ->subject('Rule violating alert email');
     }
 }

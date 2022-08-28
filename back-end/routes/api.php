@@ -35,6 +35,11 @@ Route::get('/available-room-details/{id}', [RoomController::class, 'getAvailable
 Route::middleware('auth:api')->group(function(){
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/get-user-profile', [UserController::class, 'getUser']);
+
+    Route::get('/check-renter-authenticated', function() {
+        return response(['message' => 'Login successfully. You are the renter', 'status' => 200]);
+    }); 
+
     //Dashboard
     Route::middleware('isAdmin')->group(function(){
         Route::get('/check-admin-authenticated', function() {

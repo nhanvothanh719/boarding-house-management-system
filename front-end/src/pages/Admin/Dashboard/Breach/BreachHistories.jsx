@@ -64,9 +64,9 @@ export default function BreachHistories() {
         render: (rowData) => <Link className="customDashboardLink" to={`/admin/view-renter-breach-details/${rowData.renter_id}`}>{rowData.renter.name}</Link>,
       },
       {
-        field: "violate_at",
+        field: "violated_at",
         title: "Violate at",
-        render: rowData => moment(rowData.violate_at).format('hh:mm:ss - DD/MM/YYYY')
+        render: rowData => moment(rowData.violated_at).format('hh:mm:ss - DD/MM/YYYY')
       },
     ];
   }

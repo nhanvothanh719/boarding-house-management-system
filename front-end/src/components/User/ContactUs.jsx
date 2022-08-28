@@ -85,9 +85,15 @@ function ContactUS() {
                       </Form.Group>
                     </Col>
                     <Col md={12}>
-                      <Button onClick={sendContactUs} className="customButton">
-                        Send Message
+                    <center>
+                      <Button
+                        onClick={sendContactUs}
+                        className="customButton"
+                        style={{ marginTop: "20px"}}
+                      >
+                        Update profile
                       </Button>
+                      </center>
                     </Col>
                   </Row>
                 </Form>

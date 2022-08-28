@@ -98,8 +98,8 @@ class DashboardController extends Controller
         $months_in_year = 12;
         $breaches_in_month_count = array();
         for($month = 1; $month <= $months_in_year; $month++) {
-            $total_breaches_in_month = BreachHistory::whereYear('violate_at', date('Y'))
-            ->whereMonth('violate_at', $month)->count();
+            $total_breaches_in_month = BreachHistory::whereYear('violated_at', date('Y'))
+            ->whereMonth('violated_at', $month)->count();
             $item = new stdClass();
             $item->month = $month;
             if($month <= $current_month) {

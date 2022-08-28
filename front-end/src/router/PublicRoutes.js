@@ -6,6 +6,7 @@ import TermsAndConditionPage from "../pages/User/TermsAndConditionPage";
 import PrivacyPolicyPage from "../pages/User/PrivacyPolicyPage";
 import AvailableRoomsPage from "../pages/User/AvailableRoomsPage";
 import AvailableRoomDetailsPage from "../pages/User/AvailableRoomDetailsPage";
+import UserProfilePage from "../pages/User/UserProfilePage";
 
 const routes = [
     { path: '/', exact: true, name: 'Home', component: HomePage },
@@ -16,6 +17,7 @@ const routes = [
     { path: '/available-room-details/:roomID/:roomNumber', exact: true, name: 'AvailableRoomDetailsPage', component: AvailableRoomDetailsPage},
     { path: '/all-terms-and-condition', exact: true, name: 'TermsAndConditionPage', component: TermsAndConditionPage },
     { path: '/privacy-policy', exact: true, name: 'PrivacyPolicyPage', component: PrivacyPolicyPage },
+    { path: '/user-profile', exact: true, name: 'UserProfilePage', component: UserProfilePage },
     { path: '*', exact: true, name: 'PageNotFound', component: HomePage },
 ];
 

@@ -51,7 +51,7 @@ export default function CreateBreachHistoryModal(props) {
     const data = {
       breach_id: selectedBreach.id,
       renter_id: selectedRenter.id,
-      violate_at: moment(violateMoment).utc().format("YYYY-MM-DD hh:mm:ss"),
+      violated_at: moment(violateMoment).utc().format("YYYY-MM-DD hh:mm:ss"),
     };
     axios
       .post(AppUrl.StoreBreachHistory, data)
@@ -124,7 +124,7 @@ export default function CreateBreachHistoryModal(props) {
                     />
                   </LocalizationProvider>
                 </div>
-                <small className="text-danger">{errors.violate_at}</small>
+                <small className="text-danger">{errors.violated_at}</small>
               </form>
             </div>
             <div class="modal-footer">
