@@ -10,7 +10,11 @@ class AppUrl {
   static AvailableRooms = this.BaseURL + "/all-available-rooms";
   static AvailableRoomDetails = this.BaseURL + "/available-room-details/";
 
+  static UpdateUserProfile = this.BaseURL + "/update-user-profile";
+  static UpdateUserAvatar = this.BaseURL + "/update-user-avatar";
+
   static CheckAdminAuthenticated = this.BaseURL + "/check-admin-authenticated";
+  static CheckRenterAuthenticated = this.BaseURL + "/check-renter-authenticated";
   static GetAllUsers = this.BaseURL + "/all-users";
 
   static StoreCategory = this.BaseURL + "/store-category";

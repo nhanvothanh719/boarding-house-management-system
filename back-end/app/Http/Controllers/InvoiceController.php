@@ -16,7 +16,6 @@ use App\Models\Balance;
 use App\Models\Service;
 use App\Models\Invoice;
 use App\Models\RoomRent;
-use App\Models\ExtraFee;
 use App\Models\InvoiceDetail;
 use App\Models\PaymentHistory;
 use App\Models\ServiceRegistration;
@@ -112,17 +111,11 @@ class InvoiceController extends Controller
             'year' => $current_year,
             'effective_from' => $request->effective_from,
             'valid_until' => $request->valid_until,
+            "extra_fee" => $request->extra_fee,
+            'extra_fee_description' => $request->extra_fee_description,
         ]);
         //Create invoice details
         InvoiceController::storeInvoiceDetails($invoice->id, $request->services);
-        //Insert extra fee (if any)
-        if($request->extra_fee) {
-            ExtraFee::create([
-                'invoice_id' => $invoice->id,
-                'subtotal' => $request->extra_fee,
-                'description' => $request->description,
-            ]);
-        }
         //Update total value
         $total = InvoiceController::updateTotal($invoice->id, $request->discount);
         $current_invoice = Invoice::find($invoice->id);
@@ -155,7 +148,7 @@ class InvoiceController extends Controller
         if($discount !== 0) {
             $total = $total * (100 - $discount) / 100;
         }
-        $extra_fee = ExtraFee::find($invoice_id);
+        $extra_fee = Invoice::find($invoice_id)->extra_fee;
         if($extra_fee) {
             $extra_fee_value = ExtraFee::where('invoice_id', $invoice_id)->pluck('subtotal');
             $total = $total + $extra_fee_value;
@@ -166,7 +159,7 @@ class InvoiceController extends Controller
     public function editInvoice($id) {
         $invoice = Invoice::find($id);
         $invoice_details = InvoiceDetail::where('invoice_id', $id)->get();
-        $extra_fee = ExtraFee::where('invoice_id', $id)->get();
+        $extra_fee = $invoice->extra_fee;
          if(!$extra_fee) {
              $extra_fee = 0;
          }
@@ -178,7 +171,6 @@ class InvoiceController extends Controller
         }
         return response([
             'invoice' => $invoice,
-            'extraFee' => $extra_fee,
             'invoiceDetails' => $invoice_details,
             'status' => 200,
         ]);
@@ -231,7 +223,6 @@ class InvoiceController extends Controller
             ]);
         }
         InvoiceDetail::where('invoice_id', $id)->delete();
-        ExtraFee::where('invoice_id', $id)->delete();
         PaymentHistory::where('invoice_id', $id)->delete();
         $invoice->delete();
         return response([
@@ -251,18 +242,13 @@ class InvoiceController extends Controller
         $room_number = Room::find($room_id)->number;
         //
         $invoice_details = InvoiceDetail::where('invoice_id', $id)->get();
-        $extra_fee = ExtraFee::where('invoice_id', $id)->get();
-        if(!$extra_fee) {
-            $extra_fee->subtotal = 0;
-            $extra_fee->description = "";
-        }
         if(!$renter) {
             return response([
                 'message' => 'No renter found',
                 'status' => 404,
             ]);
         }
-        Mail::to($renter->email)->send(new InvoiceSendMail($renter_name, $room_number, $invoice, $invoice_details, $extra_fee)); 
+        Mail::to($renter->email)->send(new InvoiceSendMail($renter_name, $room_number, $invoice, $invoice_details)); 
         return response([
             'message' => 'Successfully send invoice to the renter',
             'status' => 200,

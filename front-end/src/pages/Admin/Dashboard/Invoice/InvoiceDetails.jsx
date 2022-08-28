@@ -33,10 +33,8 @@ export default function InvoiceDetails({ match }) {
     total: "",
     year: "",
     is_paid: "",
-  });
-  const [extraFee, setExtraFee] = useState({
-    subtotal: "",
-    description: "",
+    extra_fee: "",
+    extra_fee_description: "",
   });
   const [usedServices, setUsedServices] = useState([
     {
@@ -70,10 +68,6 @@ export default function InvoiceDetails({ match }) {
       if (response.data.status === 200) {
         setInvoice(response.data.invoice);
         setUsedServices(response.data.invoiceDetails);
-        if (!response.data.extraFee[0]) {
-        } else {
-          setExtraFee(response.data.extraFee[0]);
-        }
       } else if (response.data.status === 404) {
         swal("Error", response.data.message, "error");
         history.push("/admin/view-all-renters-with-invoices");
@@ -218,7 +212,7 @@ export default function InvoiceDetails({ match }) {
     <Fragment>
       <div className="room">
         <div className="titleContainer">
-          <h1 className="customActionTitle">View & Edit room details</h1>
+          <h1 className="customActionTitle">View & Edit invoice</h1>
         </div>
         <div className="roomTop">
           <div className="roomTopLeft">
@@ -251,7 +245,7 @@ export default function InvoiceDetails({ match }) {
                 </div>
                 <div className="roomInfoItem">
                   <span className="roomInfoKey">Extra fee:</span>
-                  <span className="roomInfoValue">{extraFee.subtotal}</span>
+                  <span className="roomInfoValue">{invoice.extra_fee === null ? "" : invoice.extra_fee}</span>
                 </div>
                 <div className="roomInfoItem">
                   <span className="roomInfoKey">
@@ -280,7 +274,7 @@ export default function InvoiceDetails({ match }) {
                     </DialogTitle>
                     <DialogContent>
                       <DialogContentText id="alert-dialog-description">
-                        {extraFee.description}
+                        {invoice.extra_fee_description === null ? <em>Nothing to show</em> : invoice.extra_fee_description}
                       </DialogContentText>
                     </DialogContent>
                     <DialogActions>

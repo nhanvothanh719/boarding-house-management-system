@@ -8,6 +8,7 @@ import Error_404 from "../pages/Error/Error_404";
 import LoginPage from "../pages/Auth/LoginPage";
 import ForgetPassword from "../pages/Auth/ForgetPasswordPage";
 import ResetPasswordPage from "../pages/Auth/ResetPasswordPage";
+import RenterPrivateRoute from "./RenterPrivateRoute";
 
 function AppRouter() {
   return (
@@ -23,6 +24,8 @@ function AppRouter() {
         <Route path="/reset-password/:token">
           {localStorage.getItem('auth_token') ? <Redirect to="/" /> : <ResetPasswordPage/>}
         </Route>
+        {/* Private routes for renter */}
+        <RenterPrivateRoute  path="/renter" name="Renter" />
         {/* Private routes for admin */}
         <AdminPrivateRoute path="/admin" name="Admin" />
         {/* Errors */}

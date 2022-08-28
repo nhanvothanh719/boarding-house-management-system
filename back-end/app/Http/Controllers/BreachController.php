@@ -107,7 +107,7 @@ class BreachController extends Controller
         $validator = Validator::make($request->all(), [
             'breach_id' => 'required',
             'renter_id' => 'required',
-            'violate_at' => 'required|before_or_equal:'.$current_date_time.'|after_or_equal:'.date('Y-m-d H:i:s', strtotime(' -10 day')),
+            'violated_at' => 'required|before_or_equal:'.$current_date_time.'|after_or_equal:'.date('Y-m-d H:i:s', strtotime(' -10 day')),
         ]);
         if($validator->fails())
         {
@@ -146,9 +146,9 @@ class BreachController extends Controller
         $breach_history = BreachHistory::create([
             'breach_id' => $request->breach_id,
             'renter_id' => $request->renter_id,
-            'violate_at' => $request->violate_at,
+            'violated_at' => $request->violated_at,
         ]);
-        Mail::to($user->email)->send(new RuleViolateMail($user->name, $breach->name, $request->violate_at, $remain_allowed_number));
+        Mail::to($user->email)->send(new RuleViolateMail($user->name, $breach->name, $request->violated_at, $remain_allowed_number));
         return response([
             'status' => 200,
             'message' => 'Successfully add breach history',

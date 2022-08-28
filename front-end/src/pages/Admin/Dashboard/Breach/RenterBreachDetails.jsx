@@ -34,10 +34,10 @@ export default function RenterBreachDetails({ match }) {
         render: (rowData) => <p>{rowData.breach.name}</p>,
       },
       {
-        field: "violate_at",
+        field: "violated_at",
         title: "Violate at",
         render: (rowData) =>
-          moment(rowData.violate_at).format("hh:mm:ss - DD/MM/YYYY"),
+          moment(rowData.violated_at).format("hh:mm:ss - DD/MM/YYYY"),
       },
     ];
   }
