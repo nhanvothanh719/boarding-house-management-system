@@ -34,7 +34,9 @@ Route::get('/available-room-details/{id}', [RoomController::class, 'getAvailable
 
 Route::middleware('auth:api')->group(function(){
     Route::post('/logout', [AuthController::class, 'logout']);
-    Route::get('/get-user-profile', [UserController::class, 'getUser']);
+    Route::get('/get-user-profile', [UserController::class, 'getUserProfile']);
+    Route::put('/update-user-profile', [UserController::class, 'updateUserProfile']);
+    Route::post('/update-user-avatar', [UserController::class, 'updateUserAvatar']);
 
     Route::get('/check-renter-authenticated', function() {
         return response(['message' => 'Login successfully. You are the renter', 'status' => 200]);

@@ -149,12 +149,12 @@ class RenterController extends Controller
             }
             $renter->save();
             return response([
-                'message' => 'Successfully update room',
+                'message' => 'Successfully update renter',
                 'status' => 200,
             ]);
         } else {
             return response([
-                'message' => 'No room ID found',
+                'message' => 'No renter found',
                 'status' => 404,
             ]);
         }

@@ -13,42 +13,55 @@ import swal from "sweetalert";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleUser, faAddressCard } from "@fortawesome/free-solid-svg-icons";
 
-import RestClient from "../../RestAPI/RestClient";
 import AppUrl from "../../RestAPI/AppUrl";
 import { useState } from "react";
 import axios from "axios";
 import Loading from "../Loading/Loading";
+import { Publish } from "@material-ui/icons";
 
 export default function EditProfile() {
   const [userInfo, setUserInfo] = useState({});
   const [errors, setErrors] = useState([]);
-  const [currentAvatar, setCurrentAvatar] = useState("");
+  const [avatar, setAvatar] = useState("");
   const [loading, setLoading] = useState([]);
   const [userInfoChange, setUserInfoChange] = useState(false);
   const [role, setRole] = useState({});
 
   useEffect(() => {
-  axios.get(AppUrl.GetUserProfile).then((response) => {
-    if (response.data.status === 200) {
-      setRole(response.data.currentUser.role);
-      setUserInfo(response.data.currentUser);
-      setCurrentAvatar(response.data.currentUser.profile_picture);
+    axios.get(AppUrl.GetUserProfile).then((response) => {
+      if (response.data.status === 200) {
+        setRole(response.data.currentUser.role);
+        setUserInfo(response.data.currentUser);
+        setAvatar(response.data.currentUser.profile_picture);
+      }
+    });
+    setLoading(false);
+    if (userInfoChange) {
+      setUserInfoChange(false);
     }
-  })
-  setLoading(false);
-  }, []);
+  }, [userInfoChange]);
+
+  const handleInput = (e) => {
+    e.persist();
+    setUserInfo({ ...userInfo, [e.target.name]: e.target.value });
+  };
+
+  const handleAvatar = (e) => {
+    setAvatar({ image: e.target.files[0] });
+  };
 
   const updateDetails = (e) => {
     e.preventDefault();
-    const user = new FormData();
-    user.append("name", userInfo.name);
-    user.append("email", userInfo.email);
-    user.append("phone_number", userInfo.phone_number);
-    user.append("occupation", userInfo.occupation);
-    user.append("permanent_address", userInfo.permanent_address);
-    user.append("date_of_birth", userInfo.date_of_birth);
+    const user = {
+      name: userInfo.name,
+      email: userInfo.email,
+      phone_number: userInfo.phone_number,
+      occupation: userInfo.occupation,
+      permanent_address: userInfo.permanent_address,
+      date_of_birth: userInfo.date_of_birth,
+    };
     axios
-      .post(AppUrl.UpdateRenter + userInfo.id, user)
+      .put(AppUrl.UpdateUserProfile, user)
       .then((response) => {
         if (response.data.status === 200) {
           swal("Success", response.data.message, "success");
@@ -66,14 +79,26 @@ export default function EditProfile() {
 
   const updateAvatar = (e) => {
     e.preventDefault();
-    // user.append(
-    //   "date_of_birth",
-    //   moment(dateOfBirth).utc().format("YYYY-MM-DD")
-    // );
-    // if (avatar.image) {
-    //   user.append("profile_picture", avatar.image);
-    // }
-  }
+    const user = new FormData();
+    if (avatar.image) {
+      user.append("profile_picture", avatar.image);
+      axios
+        .post(AppUrl.UpdateUserAvatar, user)
+        .then((response) => {
+          if (response.data.status === 200) {
+            swal("Success", response.data.message, "success");
+            setErrors([]);
+            setUserInfoChange(true);
+          } else if (response.data.status === 422) {
+            swal("All fields are mandatory", "", "error");
+            setErrors(response.data.errors);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  };
 
   if (loading) {
     return <Loading />;
@@ -86,44 +111,64 @@ export default function EditProfile() {
         </h1>
         <div className="bottomLine text-center"></div>
         <br />
-        <Form id="updateUserProfile">
-          <Row>
-            <Col lg={4} md={12} sm={12}>
+        <Row>
+          <Col lg={4} md={12} sm={12}>
+            <Form id="updateUserAvatar" encType="multipart/form-data">
               <Card border="dark" className="card">
                 <Card.Header className="cardHeader">
                   <h4 className="text-center">
-                  <FontAwesomeIcon icon={faCircleUser} className="smallIcon" />
+                    <FontAwesomeIcon
+                      icon={faCircleUser}
+                      className="smallIcon"
+                    />
                     Avatar
-                    </h4>
+                  </h4>
                 </Card.Header>
                 <Card.Body className="cardBody text-center">
                   <Col md={12}>
-                    <img 
-                    src={`http://127.0.0.1:8000/${currentAvatar}`}
-                    className="imgAccountProfile rounded-circle img-thumbnail mb-2"
-                    alt=" "
-                    style={{ objectFit: "cover"}}
-                    >
-                    </img>
+                    <img
+                      src={`http://127.0.0.1:8000/${userInfo.profile_picture}`}
+                      className="imgAccountProfile rounded-circle img-thumbnail mb-2"
+                      alt=" "
+                      style={{ objectFit: "cover" }}
+                    ></img>
                     <div className="mt-3">
-                    <Button
-                      //onClick={sendContactUs}
-                      className="customButton"
-                    >
-                      Change avatar
-                    </Button>
+                      <label htmlFor="file">
+                        <Publish className="userUpdateIcon" />
+                      </label>
+                      <input
+                        type="file"
+                        id="file"
+                        style={{ display: "none" }}
+                        name="profile_picture"
+                        onChange={handleAvatar}
+                      />
+                      <Button
+                        type="submit"
+                        onClick={updateAvatar}
+                        className="customButton"
+                      >
+                        Change avatar
+                      </Button>
                     </div>
                   </Col>
+                  <small className="text-danger"> {errors.profile_picture} </small>
                 </Card.Body>
               </Card>
-            </Col>
-            <Col lg={8} md={12} sm={12}>
+            </Form>
+          </Col>
+
+          <Col lg={8} md={12} sm={12}>
+            <Form id="updateUserProfile">
               <Card border="dark" className="card">
                 <Card.Header className="cardHeader">
                   <h4 className="text-center">
-                  <FontAwesomeIcon icon={faAddressCard} className="smallIcon" />
+                    <FontAwesomeIcon
+                      icon={faAddressCard}
+                      className="smallIcon"
+                    />
                     Profile settings
-                    </h4>
+                  </h4>
                 </Card.Header>
                 <Card.Body className="cardBody">
                   <Row>
@@ -132,7 +177,9 @@ export default function EditProfile() {
                         <Form.Label for="inputName">Name:</Form.Label>
                         <Form.Control
                           type="text"
+                          name="name"
                           id="inputName"
+                          onChange={handleInput}
                           value={userInfo.name}
                           required
                         />
@@ -154,7 +201,9 @@ export default function EditProfile() {
                           </span>
                           <Form.Control
                             type="email"
+                            name="email"
                             id="inputEmail"
+                            onChange={handleInput}
                             value={userInfo.email}
                             required
                           />
@@ -164,7 +213,9 @@ export default function EditProfile() {
                         <Form.Label for="inputName">Phone number:</Form.Label>
                         <Form.Control
                           type="text"
+                          name="phone_number"
                           id="inputPhoneNumber"
+                          onChange={handleInput}
                           value={userInfo.phone_number}
                           required
                         />
@@ -173,6 +224,7 @@ export default function EditProfile() {
                         <Form.Label for="inputName">ID card number:</Form.Label>
                         <Form.Control
                           type="text"
+                          name="id_card_number"
                           id="inputIdCardNumber"
                           value={userInfo.id_card_number}
                           disabled
@@ -180,7 +232,7 @@ export default function EditProfile() {
                       </FormGroup>
                     </Col>
                     <Col lg={6} md={6} sm={6}>
-                    <FormGroup>
+                      <FormGroup>
                         <Form.Label for="inputName">Gender:</Form.Label>
                         <Form.Control
                           type="text"
@@ -193,15 +245,20 @@ export default function EditProfile() {
                         <Form.Label for="inputName">Date of birth:</Form.Label>
                         <Form.Control
                           type="date"
+                          name="date_of_birth"
                           id="inputDateOfBirth"
+                          onChange={handleInput}
                           value={userInfo.date_of_birth}
+                          required
                         />
                       </FormGroup>
-                    <FormGroup style={{ "margin-top": "1rem" }}>
+                      <FormGroup style={{ "margin-top": "1rem" }}>
                         <Form.Label for="inputName">Occupation:</Form.Label>
                         <Form.Control
                           type="text"
+                          name="occupation"
                           id="inputOccupation"
+                          onChange={handleInput}
                           value={userInfo.occupation}
                           required
                         />
@@ -210,9 +267,11 @@ export default function EditProfile() {
                         <Form.Label for="name">Permanent address:</Form.Label>
                         <Form.Control
                           as="textarea"
+                          name="permanent_address"
                           id="inputAddress"
                           rows={5}
                           cols={23}
+                          onChange={handleInput}
                           value={userInfo.permanent_address}
                           required
                         ></Form.Control>
@@ -220,21 +279,36 @@ export default function EditProfile() {
                     </Col>
                     <Col md={12}>
                       <center>
-                      <Button
-                        //onClick={sendContactUs}
-                        className="customButton"
-                        style={{ marginTop: "20px"}}
-                      >
-                        Update profile
-                      </Button>
+                        <Button
+                          type="submit"
+                          onClick={updateDetails}
+                          className="customButton"
+                          style={{ marginTop: "20px" }}
+                        >
+                          Update profile
+                        </Button>
                       </center>
                     </Col>
+                    <small className="text-danger"> {errors.name} </small>
+                    <small className="text-danger"> {errors.email} </small>
+                    <small className="text-danger">
+                      {" "}
+                      {errors.phone_number}{" "}
+                    </small>
+                    <small className="text-danger">
+                      {" "}
+                      {errors.date_of_birth}{" "}
+                    </small>
+                    <small className="text-danger">
+                      {" "}
+                      {errors.permanent_address}{" "}
+                    </small>
                   </Row>
                 </Card.Body>
               </Card>
-            </Col>
-          </Row>
-        </Form>
+            </Form>
+          </Col>
+        </Row>
       </Container>
     </Fragment>
   );
