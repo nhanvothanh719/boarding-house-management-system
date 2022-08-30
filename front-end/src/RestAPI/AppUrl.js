@@ -122,6 +122,7 @@ class AppUrl {
   static ShowRoomRentRegistrations = this.BaseURL + "/all-room-rent-registrations";
   static StoreRoomRentRegistration = this.BaseURL + "/store-room-rent-registration";
   static DeleteRoomRentRegistration = this.BaseURL + "/delete-room-rent-registration/";
+  static AcceptRegistrationRequest = this.BaseURL + "/accept-registration-request/";
 
 }
 

@@ -1,9 +1,10 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { Button } from "react-bootstrap";
 
 import MaterialTable from "material-table";
 import swal from "sweetalert";
 import axios from "axios";
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import GroupRemoveIcon from '@mui/icons-material/GroupRemove';
 
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
@@ -30,6 +31,17 @@ export default function RoomRentRegistrationsList() {
     }
   }, [roomRentRegistrationsListChange]);
 
+  const acceptRegistrationRequest = (id) => {
+    axios.put(AppUrl.AcceptRegistrationRequest + id).then((response) => {
+      if (response.data.status === 200) {
+        swal("Success", response.data.message, "success");
+        setRoomRentRegistrationsListChange(true);
+      } else if (response.data.status === 404) {
+        swal("Error", response.data.message, "error");
+      }
+    })
+  };
+
   var columns = [];
   if (loading) {
     return <Loading />;
@@ -37,6 +49,16 @@ export default function RoomRentRegistrationsList() {
     columns = [
       { title: "#", render: (rowData) => rowData.tableData.id + 1 },
       { field: "sender_name", title: "Sender's name" },
+      {
+        field: "sender_gender",
+        title: "Gender",
+        lookup: {0:"Female", 1:"Male"},
+        render: rowData => (
+          <div>
+              <span className={`${rowData.sender_gender === 1 ? "statusPending" : "statusOnGoing"}` }>{rowData.sender_gender === 1 ? "Male" : "Female" }</span>
+          </div>
+        )
+      },
       { field: "sender_email", title: "Sender's email" },
       { field: "sender_phone_number", title: "Sender's phone number" },
       {
@@ -45,6 +67,16 @@ export default function RoomRentRegistrationsList() {
         render: (rowData) => (
             roomInfos["" + rowData.registered_room_id]
           ),
+      },
+      {
+        field: "is_accepted",
+        title: "Accepted",
+        lookup: {0:"No", 1:"Yes"},
+        render: rowData => (
+          <div>
+              <span className={`${rowData.is_accepted === 1 ? "statusActive" : "statusPassive"}` }>{rowData.is_accepted === 1 ? "Yes" : "No" }</span>
+          </div>
+        )
       },
     ];
 
@@ -73,7 +105,15 @@ export default function RoomRentRegistrationsList() {
                 fontFamily: "Anek Telugu, sans-serif",
               },
             }}
+            actions={[
+              (request) => ({
+                icon: request.is_accepted ? GroupRemoveIcon : GroupAddIcon,
+                tooltip: request.is_accepted ? 'Cancel acceptance' : 'Accept',
+                onClick: (event, request) => acceptRegistrationRequest(request.id),
+              }),
+              ]}
             editable={{
+              isDeletable: rowData => !rowData.is_accepted,
               onRowDelete: (thisRequest) =>
                 new Promise((resolve, reject) => {
                   setTimeout(() => {

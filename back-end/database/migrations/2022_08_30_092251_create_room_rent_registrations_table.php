@@ -20,6 +20,7 @@ return new class extends Migration
             $table->char('sender_phone_number', 10);
             $table->bigInteger('registered_room_id')->unsigned();
             $table->foreign('registered_room_id')->references('id')->on('rooms');
+            $table->tinyInteger('is_accepted')->default(0);
             $table->timestamps();
         });
     }

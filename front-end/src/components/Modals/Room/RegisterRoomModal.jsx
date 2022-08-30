@@ -5,6 +5,7 @@ import axios from "axios";
 import TextField from "@mui/material/TextField";
 
 import AppUrl from "../../../RestAPI/AppUrl";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
 export default function RegisterRoomModal(props) {
   const [errors, setErrors] = useState([]);
@@ -13,6 +14,7 @@ export default function RegisterRoomModal(props) {
     sender_email: "",
     sender_phone_number: "",
   });
+  const [senderGender, setSenderGender] = useState(0);
 
   useEffect(() => {
     if (props.isShown === true) {
@@ -39,10 +41,15 @@ export default function RegisterRoomModal(props) {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
 
+  const handleGenderChange = (event) => {
+    setSenderGender(event.target.value);
+  };
+
   const makeNewRentRegistration = (e) => {
     e.preventDefault();
     const room_rent_registration = {
       sender_name: input.sender_name,
+      sender_gender: senderGender,
       sender_email: input.sender_email,
       sender_phone_number: input.sender_phone_number,
       registered_room_id: props.roomId,
@@ -109,6 +116,21 @@ export default function RegisterRoomModal(props) {
                   <small className="text-danger">{errors.sender_name}</small>
                 </div>
                 <div>
+                <label className="customModalLabel">Gender:</label>
+                <FormControl fullWidth>
+                  <InputLabel>Gender</InputLabel>
+                  <Select
+                    value={senderGender}
+                    label="Gender"
+                    onChange={handleGenderChange}
+                    style={{display: "block"}}
+                  >
+                    <MenuItem value={0}>Female</MenuItem>
+                    <MenuItem value={1}>Male</MenuItem>
+                  </Select>
+                </FormControl>
+                </div>
+                <div>
                   <label className="customModalLabel">Email:</label>
                   <TextField
                     label="Email"
@@ -131,7 +153,9 @@ export default function RegisterRoomModal(props) {
                     required
                   />
                 </div>
-                <small className="text-danger">{errors.sender_phone_number}</small>
+                <small className="text-danger">
+                  {errors.sender_phone_number}
+                </small>
                 <div>
                   <label className="customModalLabel">Room number:</label>
                   <TextField

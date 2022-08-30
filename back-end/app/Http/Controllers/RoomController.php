@@ -288,7 +288,7 @@ class RoomController extends Controller
                 $room->save();
                 break;
             case(CustomHelper::getRoomStatusId(RoomStatus::STATUS_OCCUPIED)):
-                if(CustomHelper::checkSameGender($user, $room_id) == false) {
+                if(CustomHelper::checkSameGender($user->gender, $room_id) == false) {
                     return response([
                         'message' => 'Cannot add this renter due to his/her gender',
                         'status' => 404,

@@ -169,6 +169,7 @@ Route::middleware('auth:api')->group(function(){
         //Room rent registration
         Route::get('/all-room-rent-registrations', [RoomRentRegistrationController::class, 'index']);
         Route::delete('delete-room-rent-registration/{id}', [RoomRentRegistrationController::class, 'deleteRoomRentRegistration']);
+        Route::put('/accept-registration-request/{id}', [RoomRentRegistrationController::class, 'acceptRegistrationRequest']);
     });
 });
 
