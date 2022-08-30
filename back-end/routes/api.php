@@ -21,6 +21,7 @@ use App\Http\Controllers\BreachController;
 use App\Http\Controllers\RoomContractController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProblemController;
+use App\Http\Controllers\RoomRentRegistrationController;
 
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/register', [AuthController::class, 'register']);
@@ -31,6 +32,7 @@ Route::post('/reset-password', [PasswordResetController::class, 'resetPassword']
                 
 Route::get('/all-available-rooms', [RoomController::class, 'displayAllAvailableRooms']);
 Route::get('/available-room-details/{id}', [RoomController::class, 'getAvailableRoomDetails']);
+Route::post('/store-room-rent-registration', [RoomRentRegistrationController::class, 'storeRoomRentRegistration']);
 
 Route::middleware('auth:api')->group(function(){
     Route::post('/logout', [AuthController::class, 'logout']);
@@ -163,6 +165,11 @@ Route::middleware('auth:api')->group(function(){
         Route::delete('/delete-problem/{id}', [ProblemController::class, 'deleteProblem']);
         Route::get('/get-problem-details/{id}', [ProblemController::class, 'getProblemDetails']);
         Route::put('/update-problem-status/{id}', [ProblemController::class, 'updateProblemStatus']);
+
+        //Room rent registration
+        Route::get('/all-room-rent-registrations', [RoomRentRegistrationController::class, 'index']);
+        Route::delete('delete-room-rent-registration/{id}', [RoomRentRegistrationController::class, 'deleteRoomRentRegistration']);
+        Route::put('/accept-registration-request/{id}', [RoomRentRegistrationController::class, 'acceptRegistrationRequest']);
     });
 });
 

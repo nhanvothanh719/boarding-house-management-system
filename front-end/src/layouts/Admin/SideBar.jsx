@@ -204,16 +204,16 @@ function SideBar() {
                 <span className="itemName"> Breaches </span>
               </li>
             </NavLink>
-            <p className="itemGroup text-uppercase">User</p>
+            <p className="itemGroup text-uppercase">Others</p>
             <NavLink
               exact
-              to="/admin/example/120"
+              to="/admin/view-all-room-rent-registrations"
               style={{ textDecoration: "none", color: "#f1f1f1" }}
               activeStyle={{ textDecoration: "none", color: "#a5d8dd" }}
             >
               <li className="customLi">
                 <BadgeIcon className="sideBarIcon" />
-                <span className="itemName"> Profile </span>
+                <span className="itemName"> Requests </span>
               </li>
             </NavLink>
             <NavLink
