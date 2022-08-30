@@ -20,7 +20,7 @@ import RenterBreachDetails from "../pages/Admin/Dashboard/Breach/RenterBreachDet
 import RoomContractsList from "../pages/Admin/Dashboard/RoomContract/RoomContractsList";
 import RoomContractDetails from "../pages/Admin/Dashboard/RoomContract/RoomContractDetails";
 import ProblemsList from "../pages/Admin/Dashboard/Problem/ProblemsList";
-import Test from "../pages/Admin/Dashboard/Room/Test";
+import RoomRentRegistrationsList from "../pages/Admin/Dashboard/RoomRentRegistration/RoomRentRegistrationsList";
 
 const routes = [
     { path: '/admin', exact: true, name: 'Admin' },
@@ -58,8 +58,9 @@ const routes = [
     { path: '/admin/view-room-contract-details/:roomContractID', exact: true, name: 'RoomContractDetails', component: RoomContractDetails },
     //Problem
     { path: '/admin/view-all-problems', exact: true, name: 'ProblemsList', component: ProblemsList },
-
-    { path: '/admin/example/:roomID', exact: true, name: 'Test', component: Test },
+    //Room rent registration
+    { path: '/admin/view-all-room-rent-registrations', exact: true, name: 'RoomRentRegistrationsList', component: RoomRentRegistrationsList },
+    
 ]
 
 export default routes;

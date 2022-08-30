@@ -5,10 +5,19 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
+use App\Models\Room;
 use App\Models\RoomRentRegistration;
 
 class RoomRentRegistrationController extends Controller
 {
+    public function index() {
+        return response([
+            'status' => 200,
+            'allRoomRentRegistrations' => RoomRentRegistration::all(),
+            'allRoomInfos' => Room::pluck('number','id'),
+        ]);
+    }
+
     public function storeRoomRentRegistration(Request $request) {
         $validator = Validator::make($request->all(), [
             'sender_name' => 'required|max:50|string',
@@ -44,7 +53,7 @@ class RoomRentRegistrationController extends Controller
         }
         $room_rent_registration->delete();
         return response([
-            'message' => 'Remove room rent registration successfully',
+            'message' => 'Delete room rent registration successfully',
             'status' => 200,
         ]);
     }

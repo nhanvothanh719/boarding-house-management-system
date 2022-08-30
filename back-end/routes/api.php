@@ -167,6 +167,7 @@ Route::middleware('auth:api')->group(function(){
         Route::put('/update-problem-status/{id}', [ProblemController::class, 'updateProblemStatus']);
 
         //Room rent registration
+        Route::get('/all-room-rent-registrations', [RoomRentRegistrationController::class, 'index']);
         Route::delete('delete-room-rent-registration/{id}', [RoomRentRegistrationController::class, 'deleteRoomRentRegistration']);
     });
 });
