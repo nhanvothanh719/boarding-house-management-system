@@ -79,6 +79,7 @@ function NavBar() {
               <NavDropdown.Item href="#action/3.1" className="customDropdownItem">Room details</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2" className="customDropdownItem">Suggestions</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.3" className="customDropdownItem">Services registration</NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.3" className="customDropdownItem">Invoices payment</NavDropdown.Item>
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>

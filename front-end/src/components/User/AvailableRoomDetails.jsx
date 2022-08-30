@@ -14,6 +14,7 @@ import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 
 import AppUrl from "../../RestAPI/AppUrl";
 import Loading from "../Loading/Loading";
+import RegisterRoomModal from "../Modals/Room/RegisterRoomModal";
 
 function AvailableRoomDetails(props) {
   const [roomID] = useState(props.roomId);
@@ -21,8 +22,8 @@ function AvailableRoomDetails(props) {
   const [category, setCategory] = useState('');
   const [price, setPrice] = useState([]);
   const [images, setImages] = useState([]);
-
   const [loading, setLoading] = useState(true);
+  const [showCreateModal, setShowCreateModal] = useState(false);
 
   useEffect(() => {
     axios.get(AppUrl.AvailableRoomDetails + roomID).then(
@@ -38,6 +39,10 @@ function AvailableRoomDetails(props) {
       }
     );
   }, [roomID]);
+
+  const setCreateModalStatus = (status) => {
+    setShowCreateModal(status);
+  };
 
   var display_images = "";
   if (loading) {
@@ -116,10 +121,19 @@ function AvailableRoomDetails(props) {
                   </li>
                 </ul>
                 <div className="price-wrap text-center">
-                  <button className="btn btn-base btn-radius customButton">
+                  <button 
+                  className="btn btn-base btn-radius customButton"
+                  onClick={(e) => setShowCreateModal(true)}
+                  >
                     RENT NOW
                   </button>
                 </div>
+                <RegisterRoomModal 
+                  isShown={showCreateModal}
+                  roomNumber = {room.number}
+                  roomId = {room.id}
+                  setCreateModalStatus={setCreateModalStatus}
+                  />
               </div>
             </div>
           </Col>

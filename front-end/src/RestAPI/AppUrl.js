@@ -118,6 +118,10 @@ class AppUrl {
   static DeleteProblem = this.BaseURL + "/delete-problem/";
   static GetProblemDetails = this.BaseURL + "/get-problem-details/";
   static UpdateProblemStatus = this.BaseURL + "/update-problem-status/";
+
+  static StoreRoomRentRegistration = this.BaseURL + "/store-room-rent-registration";
+  static DeleteRoomRentRegistration = this.BaseURL + "/delete-room-rent-registration/";
+
 }
 
 export default AppUrl;
