@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { NavLink, useHistory } from "react-router-dom";
-import { Navbar, Nav } from "react-bootstrap";
+import { Navbar, Nav, Container, NavDropdown } from "react-bootstrap";
 import axios from "axios";
 import swal from "sweetalert";
 
@@ -8,23 +8,19 @@ function NavBar() {
   const history = useHistory();
   const [navBarTitle, setNavBarTitle] = useState("brandName");
   const [navBarColor, setNavBarColor] = useState("navBar");
-  const [navBarItem, setNavBarItem] = useState("navItem");
 
   useEffect(() => {
     window.addEventListener("scroll", () => {
       if (window.scrollY < 300) {
         setNavBarTitle("brandName");
         setNavBarColor("navBar");
-        setNavBarItem("navItem");
       } else if (window.scrollY > 300) {
         setNavBarTitle("brandNameScroll");
         setNavBarColor("navBarScroll");
-        setNavBarItem("navItemScroll");
       }});
       return () => {
         setNavBarTitle(("brandName"));
         setNavBarColor("navBar");
-        setNavBarItem("navItem");
       };
   }, []);
 
@@ -43,12 +39,13 @@ function NavBar() {
   let login;
   let profile;
   let dashboard;
+  let renterActivities;
 
   if (localStorage.getItem("auth_token")) {
     login = (
       <Nav.Link>
         <NavLink
-          className={navBarItem}
+          className="navItem"
           to="/"
           onClick={logout}
           exact
@@ -64,11 +61,29 @@ function NavBar() {
           to="/user-profile"
           exact
           activeStyle={{ color: "yellow" }}
-          className={navBarItem}
+          className="navItem"
         >
           PROFILE
         </NavLink>
       </Nav.Link>
+    );
+    renterActivities = (
+      <Navbar className="customNavbar">
+      <Container fluid>
+        <Navbar.Collapse>
+          <Nav>
+            <NavDropdown
+              title="DETAILS"
+              className="navItem"
+            >
+              <NavDropdown.Item href="#action/3.1" className="customDropdownItem">Room details</NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.2" className="customDropdownItem">Suggestions</NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.3" className="customDropdownItem">Services registration</NavDropdown.Item>
+            </NavDropdown>
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
     );
     dashboard = (
       <Nav.Link>
@@ -76,7 +91,7 @@ function NavBar() {
         to="/admin/dashboard"
         exact
         activeStyle={{ color: "yellow" }}
-        className={navBarItem}
+        className="navItem"
       >
         DASHBOARD
       </NavLink>
@@ -89,7 +104,7 @@ function NavBar() {
           to="/login"
           exact
           activeStyle={{ color: "yellow" }}
-          className={navBarItem}
+          className="navItem"
         >
           LOGIN
         </NavLink>
@@ -119,7 +134,7 @@ function NavBar() {
                 to="/"
                 exact
                 activeStyle={{ color: "yellow" }}
-                className={navBarItem}
+                className="navItem"
               >
                 HOME
               </NavLink>
@@ -129,7 +144,7 @@ function NavBar() {
                 to="/features"
                 exact
                 activeStyle={{ color: "yellow" }}
-                className={navBarItem}
+                className="navItem"
               >
                 FEATURES
               </NavLink>
@@ -139,7 +154,7 @@ function NavBar() {
                 to="/why-choose-us"
                 exact
                 activeStyle={{ color: "yellow" }}
-                className={navBarItem}
+                className="navItem"
               >
                 WHY CHOOSE US?
               </NavLink>
@@ -149,7 +164,7 @@ function NavBar() {
                 to="/available-rooms"
                 exact
                 activeStyle={{ color: "yellow" }}
-                className={navBarItem}
+                className="navItem"
               >
                 AVAILABLE ROOMS
               </NavLink>
@@ -159,13 +174,14 @@ function NavBar() {
                 to="/contact-us"
                 exact
                 activeStyle={{ color: "yellow" }}
-                className={navBarItem}
+                className="navItem"
               >
                 CONTACT US
               </NavLink>
             </Nav.Link>
-            {dashboard}
             {profile}
+            {renterActivities}
+            {dashboard}
           </Nav>
           <Nav>{login}</Nav>
         </Navbar.Collapse>

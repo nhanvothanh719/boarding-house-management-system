@@ -144,14 +144,6 @@
 .navItem:hover{
     text-decoration: none !important;
     font-family: 'Montserrat Alternates', sans-serif;
-    color: yellow;
-    font-weight: 600;
-    font-size: 16px;
-}
-
-.navItemScroll{
-    text-decoration: none !important;
-    font-family: 'Montserrat Alternates', sans-serif;
     color: darkgoldenrod;
     font-weight: 600;
     font-size: 16px;
@@ -450,4 +442,27 @@ a.social:hover{
     width: 220px;
     height: 220px;
 }
+
+.customNavbar {
+    padding: 0rem;
+    
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: #ffffff;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+    color: sandybrown;
+}
+
+.customDropdownItem {
+    background-color: #ffffff;
+}
+
+.customDropdownItem:hover {
+    background-color: #e99a06;
+}
+
+
 
