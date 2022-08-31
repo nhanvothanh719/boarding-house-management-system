@@ -9,7 +9,7 @@ import Loading from "../components/Loading/Loading";
 import swal from "sweetalert";
 
 export default function RenterPrivateRoute({ ...rest }) {
-const history = useHistory();
+  const history = useHistory();
 
   const [isAuthenticated, setAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -22,7 +22,7 @@ const history = useHistory();
       setLoading(false); //Must have to set authenticated
     });
     return () => {
-      setAuthenticated(false);  //Cleanup
+      setAuthenticated(false); //Cleanup
     };
   }, []);
 
@@ -54,8 +54,8 @@ const history = useHistory();
     }
   );
 
-  if(loading) {
-    return <Loading />
+  if (loading) {
+    return <Loading />;
   }
 
   return (

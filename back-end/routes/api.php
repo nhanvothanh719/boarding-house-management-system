@@ -40,9 +40,11 @@ Route::middleware('auth:api')->group(function(){
     Route::put('/update-user-profile', [UserController::class, 'updateUserProfile']);
     Route::post('/update-user-avatar', [UserController::class, 'updateUserAvatar']);
 
-    Route::get('/check-renter-authenticated', function() {
-        return response(['message' => 'Login successfully. You are the renter', 'status' => 200]);
-    }); 
+    Route::middleware('isRenter')->group(function(){
+        Route::get('/check-renter-authenticated', function() {
+            return response(['message' => 'Login successfully. You are the renter', 'status' => 200]);
+        }); 
+    });
 
     //Dashboard
     Route::middleware('isAdmin')->group(function(){
