@@ -23,7 +23,7 @@ export default function EditProfile() {
   const [userInfo, setUserInfo] = useState({});
   const [errors, setErrors] = useState([]);
   const [avatar, setAvatar] = useState("");
-  const [loading, setLoading] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [userInfoChange, setUserInfoChange] = useState(false);
   const [role, setRole] = useState({});
 
