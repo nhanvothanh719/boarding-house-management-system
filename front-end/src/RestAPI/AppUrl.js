@@ -124,6 +124,8 @@ class AppUrl {
   static DeleteRoomRentRegistration = this.BaseURL + "/delete-room-rent-registration/";
   static AcceptRegistrationRequest = this.BaseURL + "/accept-registration-request/";
 
+  static GetRenterRoomInfo = this.BaseURL + "/get-renter-room-info";
+
 }
 
 export default AppUrl;

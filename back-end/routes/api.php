@@ -23,6 +23,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProblemController;
 use App\Http\Controllers\RoomRentRegistrationController;
 
+use App\Http\Controllers\Renter\RenterRoomController;
+
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/register', [AuthController::class, 'register']);
 
@@ -40,9 +42,12 @@ Route::middleware('auth:api')->group(function(){
     Route::put('/update-user-profile', [UserController::class, 'updateUserProfile']);
     Route::post('/update-user-avatar', [UserController::class, 'updateUserAvatar']);
 
-    Route::get('/check-renter-authenticated', function() {
-        return response(['message' => 'Login successfully. You are the renter', 'status' => 200]);
-    }); 
+    Route::middleware('isRenter')->group(function(){
+        Route::get('/check-renter-authenticated', function() {
+            return response(['message' => 'Login successfully. You are the renter', 'status' => 200]);
+        }); 
+        Route::get('/get-renter-room-info', [RenterRoomController::class, 'getRoomInfo']);
+    });
 
     //Dashboard
     Route::middleware('isAdmin')->group(function(){

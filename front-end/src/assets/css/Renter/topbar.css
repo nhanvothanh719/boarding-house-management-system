@@ -1,0 +1,10 @@
+.renterTopBar {
+    height: 50px;
+    background-color: #6AB187;
+    position: sticky;
+    border-bottom: 0.5px solid rgb(192, 185, 185);
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+}
+

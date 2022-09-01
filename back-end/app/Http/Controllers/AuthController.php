@@ -36,7 +36,8 @@ class AuthController extends Controller
                     $is_admin = true;
                 }
                 else {
-                    $auth_token = $user->createToken('auth_token')->accessToken;
+                    $auth_token = $user->createToken('auth_token',['perform-renter-work'])->accessToken;
+                    $is_admin = false;
                 }
                 return response([
                     'message' => 'Login successfully',
