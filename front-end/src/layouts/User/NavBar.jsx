@@ -79,7 +79,7 @@ function NavBar() {
               <NavDropdown.Item href="/renter/view-room-details" className="customDropdownItem">Room details</NavDropdown.Item>
               <NavDropdown.Item href="/renter/send-problem" className="customDropdownItem">Problem creating</NavDropdown.Item>
               <NavDropdown.Item href="/renter/register-optional-service" className="customDropdownItem">Services registration</NavDropdown.Item>
-              <NavDropdown.Item href="/renter/pay-invoice" className="customDropdownItem">Invoices payment</NavDropdown.Item>
+              <NavDropdown.Item href="/renter/view-all-invoices" className="customDropdownItem">Invoices payment</NavDropdown.Item>
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>

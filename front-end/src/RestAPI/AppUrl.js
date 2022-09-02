@@ -73,8 +73,6 @@ class AppUrl {
   static SendInvoice = this.BaseURL + "/send-invoice/";
   static GetRenterInvoices = this.BaseURL + "/get-renter-invoices/";
 
-  static MakeInvoicePayment = this.BaseURL + "/make-payment/";
-
   static SendAnnouncement = this.BaseURL + "/send-announcement";
 
   static GetBalance = this.BaseURL + "/get-balance";
@@ -125,6 +123,9 @@ class AppUrl {
   static AcceptRegistrationRequest = this.BaseURL + "/accept-registration-request/";
 
   static GetRenterRoomInfo = this.BaseURL + "/get-renter-room-info";
+
+  static ShowRenterInvoices = this.BaseURL + "/all-renter-invoices"
+  static MakeInvoicePayment = this.BaseURL + "/make-payment/";
 
 }
 

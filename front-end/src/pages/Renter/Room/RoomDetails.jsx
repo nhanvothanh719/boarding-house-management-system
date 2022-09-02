@@ -1,11 +1,11 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { Carousel, Col, Container, Row } from "react-bootstrap";
 
-import AppUrl from "../../RestAPI/AppUrl";
+import AppUrl from "../../../RestAPI/AppUrl";
 import axios from "axios";
 
-import "../../assets/css/Renter/details.css";
-import Loading from "../../components/Loading/Loading";
+import "../../../assets/css/Renter/details.css";
+import Loading from "../../../components/Loading/Loading";
 
 export default function RoomDetails() {
   const [loading, setLoading] = useState(true);

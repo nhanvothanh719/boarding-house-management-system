@@ -50,7 +50,7 @@ export default function SideBar() {
             <p className="renterItemGroup text-uppercase">Make</p>
             <NavLink
               exact
-              to="/renter/pay-invoice"
+              to="/renter/view-all-invoices"
               style={{ textDecoration: "none", color: "#f1f1f1" }}
               activeStyle={{ textDecoration: "none", color: "#1F3F49" }}
             >
