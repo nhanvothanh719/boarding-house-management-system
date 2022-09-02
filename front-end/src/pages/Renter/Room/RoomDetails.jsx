@@ -1,11 +1,10 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { Carousel, Col, Container, Row } from "react-bootstrap";
+import { Carousel, } from "react-bootstrap";
 
 import AppUrl from "../../../RestAPI/AppUrl";
 import axios from "axios";
-
-import "../../../assets/css/Renter/details.css";
 import Loading from "../../../components/Loading/Loading";
+import "../../../assets/css/Renter/room.css";
 
 export default function RoomDetails() {
   const [loading, setLoading] = useState(true);
@@ -69,6 +68,9 @@ export default function RoomDetails() {
       );
     });
 
+  if(loading) {
+    return <Loading/>
+  }
   return (
     <Fragment>
       <div className="container">

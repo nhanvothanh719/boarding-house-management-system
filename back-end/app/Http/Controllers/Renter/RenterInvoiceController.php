@@ -29,6 +29,22 @@ class RenterInvoiceController extends Controller
         ]);
     }
 
+    public function getInvoiceDetails($id) {
+        $invoice = Invoice::find($id);
+        if(!$invoice) {
+            return response([
+                'status' => 404,
+                'message' => 'No invoice found',
+            ]);
+        }
+        $invoice_details = InvoiceDetail::where('invoice_id', $id)->get();
+        return response([
+            'status' => 200,
+            'invoice' => $invoice,
+            'invoiceDetails' => $invoice_details,
+        ]);
+    }
+
     public function makePayment(Request $request, $id) {
         $user_id = Auth::user()->id;
         $payment = new PaymentHistory;

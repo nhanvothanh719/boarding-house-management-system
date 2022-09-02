@@ -50,6 +50,7 @@ Route::middleware('auth:api')->group(function(){
 
         Route::get('/get-renter-room-info', [RenterRoomController::class, 'getRoomInfo']);
 
+        Route::get('/get-invoice-details/{id}', [RenterInvoiceController::class, 'getInvoiceDetails']);
         Route::get('/all-renter-invoices', [RenterInvoiceController::class, 'getRenterInvoices']);
 
         Route::post('/make-payment/{id}', [PaymentController::class, 'makePayment']);

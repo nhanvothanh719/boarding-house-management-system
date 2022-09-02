@@ -126,6 +126,7 @@ class AppUrl {
 
   static ShowRenterInvoices = this.BaseURL + "/all-renter-invoices"
   static MakeInvoicePayment = this.BaseURL + "/make-payment/";
+  static GetInvoiceDetails = this.BaseURL + "/get-invoice-details/";
 
 }
 
