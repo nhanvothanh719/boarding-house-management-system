@@ -4,7 +4,7 @@ import { Carousel, } from "react-bootstrap";
 import AppUrl from "../../../RestAPI/AppUrl";
 import axios from "axios";
 import Loading from "../../../components/Loading/Loading";
-import "../../../assets/css/Renter/room.css";
+import "../../../assets/css/Renter/details.css";
 
 export default function RoomDetails() {
   const [loading, setLoading] = useState(true);

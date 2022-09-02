@@ -66,7 +66,7 @@ hr {
     padding-top: .75rem!important;
 }
 .bgc-default-tp1 {
-    background-color: #CED2CC!important;
+    background-color: #6AB187!important;
 }
 .bgc-default-l4, .bgc-h-default-l4:hover {
     background-color: #f3f8fa!important;
@@ -109,4 +109,22 @@ hr {
 }
 .align-bottom {
     vertical-align: bottom!important;
+}
+
+.razorpayBtn {
+    background-color: #1F3F49;
+}
+
+.razorpayBtn:hover {
+    color: #ffffff;
+    background-color: #1f3f49d4;
+}
+
+.payPalBtn {
+    background-color: #4CB5F5;
+}
+
+.payPalBtn:hover {
+    color: #ffffff;
+    background-color: #4cb4f5db;
 }

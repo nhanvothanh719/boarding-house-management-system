@@ -96,7 +96,7 @@ export default function InvoicesList() {
                         icon: PaymentsIcon,
                         tooltip: "Pay invoice",
                         onClick: (event, invoice) =>
-                          history.push(`/admin/invoice-details/${invoice.id}`),
+                          history.push(`/renter/view-unpaid-invoice-details/${invoice.id}`),
                       },
                     ]}
                   />
@@ -110,7 +110,7 @@ export default function InvoicesList() {
           <div class="col-lg-12 right">
             <div class="box shadow-sm rounded bg-white mb-3">
               <div class="box-title border-bottom p-3">
-                <h6 class="m-0">Unpaid invoices</h6>
+                <h6 class="m-0">Paid invoices</h6>
               </div>
               <div class="box-body p-0">
                 <div class="p-3 align-items-center bg-light border-bottom osahan-post-header">
@@ -131,7 +131,7 @@ export default function InvoicesList() {
                         icon: "visibility",
                         tooltip: "Details",
                         onClick: (event, invoice) =>
-                          history.push(`/renter/view-invoice-details/${invoice.id}`),
+                          history.push(`/renter/view-paid-invoice-details/${invoice.id}`),
                       },
                     ]}
                   />

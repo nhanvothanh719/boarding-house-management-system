@@ -9,7 +9,7 @@ import AppUrl from "../../../RestAPI/AppUrl";
 import Loading from "../../../components/Loading/Loading";
 import swal from "sweetalert";
 
-export default function InvoiceDetails({ match }) {
+export default function PaidInvoiceDetails({ match }) {
   const history = useHistory();
   const invoiceId = match.params.invoiceID;
 

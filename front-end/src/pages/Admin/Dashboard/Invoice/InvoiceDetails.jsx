@@ -1,6 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import * as ReactDOM from "react-dom";
 
 import swal from "sweetalert";
 import axios from "axios";
@@ -43,26 +42,12 @@ export default function InvoiceDetails({ match }) {
       subtotal: "",
     },
   ]);
-  const [user, setUser] = useState({
-    name: "",
-    email: "",
-    phone_number: "",
-  });
-
-  var paymentInfo = {
-    payment_method: "Paypal",
-    payment_id: "",
-  };
 
   useEffect(() => {
     axios.get(AppUrl.ShowServices).then((response) => {
       if (response.data.status === 200) {
         setServicesList(response.data.allServices);
       }
-    });
-    axios.get(AppUrl.GetUserProfile).then((response) => {
-      setUser(response.data);
-      console.log(response.data);
     });
     axios.get(AppUrl.InvoiceDetails + invoiceId).then((response) => {
       if (response.data.status === 200) {
@@ -85,104 +70,6 @@ export default function InvoiceDetails({ match }) {
   const handleClose = () => {
     setOpen(false);
   };
-
-  //Paypal components
-  const PayPalButton = window.paypal.Buttons.driver("react", {
-    React,
-    ReactDOM,
-  });
-  const createOrder = (data, actions) => {
-    return actions.order.create({
-      purchase_units: [
-        {
-          amount: {
-            value: invoice.total,
-          },
-        },
-      ],
-    });
-  };
-  //When make payment successfully
-  const onApprove = (data, actions) => {
-    return actions.order.capture().then(function (details) {
-      console.log(details);
-      paymentInfo.payment_id = details.id;
-      axios
-        .post(AppUrl.MakeInvoicePayment + invoiceId, paymentInfo)
-        .then((response) => {
-          if (response.data.status === 200) {
-            swal("Invoice is paid", response.data.message, "success");
-          }
-        });
-    });
-  };
-  //
-
-  //Handle payment
-  const makePayment = (e, payment_method) => {
-    e.preventDefault();
-    if (invoice.is_paid === 1) {
-      swal("Error", "The invoice has been paid", "error");
-    } else {
-      const payment = {
-        payment_method: payment_method,
-        month: invoice.month,
-        year: invoice.year,
-        amount: invoice.total,
-        payer_id: invoice.renter_id,
-      };
-      switch (payment_method) {
-        case "Cash":
-          axios
-            .post(AppUrl.MakeInvoicePayment + invoiceId, payment)
-            .then((response) => {
-              if (response.data.status === 200) {
-                swal("Invoice is paid", response.data.message, "success");
-              }
-            });
-          break;
-        case "Razorpay":
-          var options = {
-            key: "rzp_test_iIhF6VSIWJ0NRp", // Enter the Key ID generated from the Dashboard
-            amount: invoice.total * 100,
-            name: "BeeHouse",
-            description: "Make invoice payment",
-            image: "",
-            handler: function (response) {
-              payment.payment_id = response.razorpay_payment_id;
-              axios
-                .post(AppUrl.MakeInvoicePayment + invoiceId, payment)
-                .then((res) => {
-                  if (res.data.status === 200) {
-                    swal("success", res.data.message, "success");
-                  }
-                });
-            },
-            prefill: {
-              name: user.name,
-              email: user.email,
-              contact: user.phone_number,
-            },
-            theme: {
-              color: "#3399cc",
-            },
-          };
-          var razorpay = new window.Razorpay(options);
-          razorpay.open();
-          break;
-        case "Paypal":
-          //Show modal
-          var paypalPaymentModal = new window.bootstrap.Modal(
-            document.getElementById("paypalPaymentModal")
-          );
-          paypalPaymentModal.show();
-          break;
-        default:
-          break;
-      }
-    }
-  };
-  //
 
   //Send email
   const sendInvoice = () => {
@@ -382,63 +269,6 @@ export default function InvoiceDetails({ match }) {
                 })}
               </tbody>
             </table>
-          </div>
-        </div>
-      </div>
-      <br />
-      <br />
-      <button
-        className="btn btn-primary"
-        onClick={(e) => makePayment(e, "Razorpay")}
-      >
-        Razorpay
-      </button>
-      <br />
-      <br />
-      <button
-        className="btn btn-primary"
-        onClick={(e) => makePayment(e, "Paypal")}
-      >
-        Paypal
-      </button>
-      <div
-        class="modal fade"
-        id="paypalPaymentModal"
-        tabindex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">
-                Invoice payment
-              </h5>
-              <button
-                type="button"
-                class="close"
-                data-dismiss="modal"
-                aria-label="Close"
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <hr />
-              <PayPalButton
-                createOrder={(data, actions) => createOrder(data, actions)}
-                onApprove={(data, actions) => onApprove(data, actions)}
-              />
-            </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-dismiss="modal"
-              >
-                Close
-              </button>
-            </div>
           </div>
         </div>
       </div>
