@@ -135,6 +135,8 @@ class AppUrl {
   static GetRenterProblemDetails = this.BaseURL + "/get-renter-problem-details/";
 
   static GetRenterRegisteredServices = this.BaseURL + "/all-renter-registered-services";
+
+  static GetRenterRoomContract = this.BaseURL + "/get-renter-room-contract";
 }
 
 export default AppUrl;

@@ -49,8 +49,8 @@ export default function RoomDetails() {
       return (
         <div className="col">
               <div className="card radius-15">
-                <div className="card-body text-center">
-                  <div className="p-4 border radius-15">
+                <div className="card-body text-center"  style={{ backgroundColor: "#14213d"}}>
+                  <div className="p-4 border radius-15"  style={{ backgroundColor: "#fca311"}}>
                     <img
                       src={`http://127.0.0.1:8000/${person.profile_picture}`}
                       className="imgAccountProfile rounded-circle img-thumbnail mb-2 shadow"
