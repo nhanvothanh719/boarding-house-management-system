@@ -134,6 +134,7 @@ class AppUrl {
   static DeleteRenterProblem = this.BaseURL + "/delete-renter-problem/";
   static GetRenterProblemDetails = this.BaseURL + "/get-renter-problem-details/";
 
+  static GetRenterRegisteredServices = this.BaseURL + "/all-renter-registered-services";
 }
 
 export default AppUrl;

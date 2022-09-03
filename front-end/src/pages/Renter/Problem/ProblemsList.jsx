@@ -53,9 +53,6 @@ export default function ProblemsList() {
 
 
   var columns = [];
-  if (loading) {
-    return <Loading />;
-  } else {
     columns = [
       { title: "#", render: (rowData) => rowData.tableData.id + 1 },
       {
@@ -88,8 +85,10 @@ export default function ProblemsList() {
         },
       },
     ];
-  }
 
+  if (loading) {
+    return <Loading />;
+  }
   return (
     <Fragment>
       <div className="customDatatable">

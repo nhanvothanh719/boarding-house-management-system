@@ -26,6 +26,7 @@ use App\Http\Controllers\RoomRentRegistrationController;
 use App\Http\Controllers\Renter\RenterRoomController;
 use App\Http\Controllers\Renter\RenterInvoiceController;
 use App\Http\Controllers\Renter\RenterProblemController;
+use App\Http\Controllers\Renter\RenterServiceController;
 
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/register', [AuthController::class, 'register']);
@@ -62,6 +63,7 @@ Route::middleware('auth:api')->group(function(){
         Route::put('/update-renter-problem/{id}', [RenterProblemController::class, 'updateProblem']);
         Route::delete('/delete-renter-problem/{id}', [RenterProblemController::class, 'deleteProblem']);
 
+        Route::get('/all-renter-registered-services', [RenterServiceController::class, 'getRegisteredServices']);
     });
 
     //Dashboard

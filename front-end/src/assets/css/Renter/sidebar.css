@@ -1,5 +1,5 @@
 .renterSideBar {
-    background-color: #6AB187;
+    background-color: #14213D;
     border-right: 2px solid #caced2;
     min-height: 100vh;
     width: 250px;
@@ -8,7 +8,7 @@
 .renterItemGroup {
     font-size: 15px;
     font-weight: bold;
-    color: #1F3F49;
+    color: #e5e5e5;
     margin-top: 15px;
     margin-bottom: 7px;
 }
