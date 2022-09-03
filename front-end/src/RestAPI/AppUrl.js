@@ -128,6 +128,12 @@ class AppUrl {
   static MakeInvoicePayment = this.BaseURL + "/make-payment/";
   static GetInvoiceDetails = this.BaseURL + "/get-invoice-details/";
 
+  static ShowRenterProblems = this.BaseURL + "/all-renter-problems";
+  static StoreRenterProblem = this.BaseURL + "/store-renter-problem";
+  static UpdateRenterProblem = this.BaseURL + "/update-renter-problem/";
+  static DeleteRenterProblem = this.BaseURL + "/delete-renter-problem/";
+  static GetRenterProblemDetails = this.BaseURL + "/get-renter-problem-details/";
+
 }
 
 export default AppUrl;

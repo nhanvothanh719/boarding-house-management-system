@@ -102,7 +102,7 @@ export default function CreateBreachHistoryModal(props) {
               <hr />
               <form className="flexForm">
                 <div>
-                  <label className="customModalLabel">Renter ID:</label>
+                  <label className="customModalLabel">Renter:</label>
                   <SearchRenter getSelectedRenter={getSelectedRenter}/>
                 </div>
                 <small className="text-danger">{errors.renter_id}</small>
