@@ -1,6 +1,8 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { Carousel, } from "react-bootstrap";
 
+import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
+
 import AppUrl from "../../../RestAPI/AppUrl";
 import axios from "axios";
 import Loading from "../../../components/Loading/Loading";
@@ -48,18 +50,18 @@ export default function RoomDetails() {
     display_other_roommates = otherRoommates.map((person) => {
       return (
         <div className="col">
-              <div className="card radius-15">
-                <div className="card-body text-center"  style={{ backgroundColor: "#14213d"}}>
-                  <div className="p-4 border radius-15"  style={{ backgroundColor: "#fca311"}}>
+              <div className="card" style={{ backgroundColor: "#14213d", borderRadius: "5%"}}>
+                <div className="card-body text-center" >
+                  <div className="p-4 border radius-20"  style={{ backgroundColor: "#e5e5e5", borderRadius: "5%"}}>
                     <img
                       src={`http://127.0.0.1:8000/${person.profile_picture}`}
                       className="imgAccountProfile rounded-circle img-thumbnail mb-2 shadow"
                       alt=""
                     />
-                    <h5 className="mb-0 mt-5">{person.name}</h5>
-                    <p className="mb-3">{person.email}</p>
+                    <h5 className="mb-0 mt-3">{person.name}</h5>
+                    <p className="mb-3" style={{ fontStyle: "italic"}}>{person.email}</p>
                     <div className="list-inline contacts-social mt-3 mb-3">
-                      <p>{person.phone_number}</p>
+                      <p className="h5"><b><LocalPhoneIcon className="pr-1"/>{person.phone_number}</b></p>
                     </div>
                   </div>
                 </div>
@@ -108,13 +110,13 @@ export default function RoomDetails() {
       </div>
       <div className="container">
         <div className="project-info-box">
-          <h5>DESCRIPTION</h5>
+          <h5 className="customDetailTitle">ROOM DESCRIPTION</h5>
           <p className="mb-0">{room.description}</p>
         </div>
       </div>
       <div className="container">
         <div className="project-info-box">
-          <h5>OTHER ROOMMATES</h5>
+          <h5 className="customDetailTitle">ROOMMATES</h5>
           <div className="row row-cols-1 row-cols-lg-2 row-cols-xl-3">
             {display_other_roommates}
           </div>

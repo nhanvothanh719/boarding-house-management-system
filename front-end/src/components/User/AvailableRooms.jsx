@@ -3,43 +3,42 @@ import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 import welcomeImg from "../../assets/images/welcome.png";
-import RestClient from "../../RestAPI/RestClient";
 import AppUrl from "../../RestAPI/AppUrl";
 import Loading from "../Loading/Loading";
+import axios from "axios";
 
-function AvailableRooms(props) {
-  const [data, setData] = useState([]);
+function AvailableRooms() {
+  const [availableRoomsList, setAvailableRoomsList] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    RestClient.GetRequest(AppUrl.AvailableRooms).then((response) => {
-      setData(response);
+    axios.get(AppUrl.AvailableRooms).then((response) => {
+      if(response.data.status === 200) {
+        setAvailableRoomsList(response.data.availableRooms);
+        console.log(response.data.availableRooms);
+      }
       setLoading(false);
     });
-  }, [props.user]);
+  }, []);
 
-  if (loading) {
-    return <Loading />;
-  }
-  const AvailableRooms = data;
-  const AvailableRoomsDisplay = AvailableRooms.map((AvailableRooms) => {
+  const AvailableRoomsDisplay = availableRoomsList.map((room) => {
     return (
       <Col lg={4} md={6} sm={12}>
         <Card className="roomCard">
           <Card.Img variant="top" src={welcomeImg} />
           <Card.Body>
             <Card.Title className="cardName text-center">
-              - Room {AvailableRooms.number} -
+              - Room {room.number} -
             </Card.Title>
             <Card.Text className="cardDescription">
-              {AvailableRooms.description}
+              {room.description}
             </Card.Text>
             <Link
               to={
                 "/available-room-details/" +
-                AvailableRooms.id +
+                room.id +
                 "/" +
-                AvailableRooms.number
+                room.number
               }
             >
               <Button className="float-right customButton">
@@ -51,6 +50,10 @@ function AvailableRooms(props) {
       </Col>
     );
   });
+
+  if (loading) {
+    return <Loading />;
+  }
   return (
     <Fragment>
       <Container className="mb-5">

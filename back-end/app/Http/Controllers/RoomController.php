@@ -45,21 +45,18 @@ class RoomController extends Controller
     }
 
     public function displayAllAvailableRooms() {
-        $rooms = Room::all();
-        return $rooms;
+        $full_status_id = RoomStatus::where('name', RoomStatus::STATUS_FULL)->value('id');
+        $available_rooms = Room::where('status_id', '!=', $full_status_id)->get();
+        return response([
+            'status' => 200,
+            'availableRooms' => $available_rooms,
+        ]);
     }
 
     public function getAvailableRoomDetails($id) {
         $room_details = Room::where('id', $id)->get();
-        $room_category_id = Room::where('id', $id)->value('category_id');
-        $room_price= Category::where('id', $room_category_id)->value('price');
-        $category = Category::where('id', $room_category_id)->get('name');
-        $room_images = RoomImages::where('room_id', $id)->get();
         return response([
             'details' => $room_details,
-            'images' => $room_images,
-            'category' => $category,
-            'price' => $room_price,
             'status' => 200,
         ]);
     }

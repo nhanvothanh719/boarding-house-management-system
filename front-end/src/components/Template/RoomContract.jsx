@@ -33,7 +33,7 @@ export default function RoomContract(props) {
           </Button>
         </div>
         <div ref={componentRef}>
-          <div className="roomBottom">
+          <div className="roomBottom" style={{ backgroundColor: "white" }}>
             <div className="roomFormRight">
               <div className="contractMainContent">
                 <center

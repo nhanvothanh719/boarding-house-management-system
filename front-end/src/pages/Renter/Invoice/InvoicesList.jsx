@@ -75,14 +75,14 @@ export default function InvoicesList() {
           <div class="col-lg-12 right">
             <div class="box shadow-sm rounded bg-white mb-3">
               <div class="box-title border-bottom p-3">
-                <h6 class="m-0">Unpaid invoices</h6>
+                <h5 class="m-0 customDetailTitle">Unpaid invoices</h5> 
               </div>
               <div class="box-body p-0">
                 <div class="p-3 align-items-center bg-light border-bottom osahan-post-header">
                   <MaterialTable
                     columns={columns}
                     data={unpaidInvoicesList}
-                    title="All renters' unpaid invoices"
+                    title={<span className="customDatatableTitle">All unpaid invoices</span>}
                     options={{
                       searchAutoFocus: false,
                       searchFieldVariant: "outlined",
@@ -110,14 +110,14 @@ export default function InvoicesList() {
           <div class="col-lg-12 right">
             <div class="box shadow-sm rounded bg-white mb-3">
               <div class="box-title border-bottom p-3">
-                <h6 class="m-0">Paid invoices</h6>
+                <h5 class="m-0 customDetailTitle">Paid invoices</h5>
               </div>
               <div class="box-body p-0">
                 <div class="p-3 align-items-center bg-light border-bottom osahan-post-header">
                   <MaterialTable
                     columns={columns}
                     data={paidInvoicesList}
-                    title="All renters' unpaid invoices"
+                    title={<span className="customDatatableTitle">All paid invoices</span>}
                     options={{
                       searchAutoFocus: false,
                       searchFieldVariant: "outlined",

@@ -5,6 +5,7 @@ import swal from "sweetalert";
 import axios from "axios";
 import EmailIcon from '@mui/icons-material/Email';
 import DraftsIcon from '@mui/icons-material/Drafts';
+import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 
 import AppUrl from "../../../RestAPI/AppUrl";
 import Loading from "../../../components/Loading/Loading";
@@ -160,11 +161,11 @@ export default function ProblemsList() {
                       paddingLeft: 20,
                       paddingRingt: 25,
                       paddingTop: 10,
-                      backgroundColor: '#fffff1',
-                      color: "#0091D5"
+                      backgroundColor: '#eaeaea',
+                      color: "#14213d"
                     }}
                   >
-                    <span style={{ color: "red" }}>{">>>"} Reply from Admin: {" "}</span>
+                    <span style={{ color: "#fca311" }}><ChatBubbleIcon className="pr-1"/> Reply from Admin: {" "}</span>
                     {rowData.reply_text}
                   </div>
                 )

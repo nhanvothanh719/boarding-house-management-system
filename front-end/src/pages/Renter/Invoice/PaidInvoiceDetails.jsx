@@ -73,10 +73,9 @@ export default function PaidInvoiceDetails({ match }) {
                 </div>
                 <div className="text-grey-m2">
                   <div className="my-1">{invoice.renter.email}</div>
-                  <div className="my-1">{invoice.renter.phone_number}</div>
                   <div className="my-1">
                     <i className="fa fa-phone fa-flip-horizontal text-secondary"></i>{" "}
-                    <b className="text-600">111-111-111</b>
+                    <b className="text-600">{invoice.renter.phone_number}</b>
                   </div>
                 </div>
               </div>
@@ -104,13 +103,15 @@ export default function PaidInvoiceDetails({ match }) {
                   <div className="my-2">
                     <i className="fa fa-circle text-blue-m2 text-xs mr-1"></i>{" "}
                     <span className="text-600 text-90">Paid method:</span>{" "}
+                    <span className="badge badge-primary badge-pill px-25">
                     {invoice.payment.method.name}
+                    </span>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className="mt-4">
+            <div className="mt-4 mr-2 ml-2">
               <div className="row text-600 text-white bgc-default-tp1 py-25">
                 <div className="d-none d-sm-block col-1">#</div>
                 <div className="col-9 col-sm-5">Service name</div>
@@ -134,9 +135,9 @@ export default function PaidInvoiceDetails({ match }) {
               </div>
 
               <div className="row mt-3">
-                <div className="col-12 col-sm-7 text-grey-d2 text-95 mt-2 mt-lg-0">
-                  Extra note such as company or payment information...
-                </div>
+                <em className="col-12 col-sm-7 text-grey-d2 text-95 mt-2 mt-lg-0 border" style={{ backgroundColor: "#edf2f4", borderRadius: "20px"}}>
+                  {invoice.extra_fee_description === null ? "Extra note such as description of extra fee..." : invoice.extra_fee_description}
+                </em>
 
                 <div className="col-12 col-sm-5 text-grey text-90 order-first order-sm-last">
                   <div className="row my-2">

@@ -1,5 +1,5 @@
 body{
-    background:#f5f5f5;
+    background:#eaeaea;
 }
 /*------- portfolio -------*/
 .project {
@@ -151,5 +151,10 @@ p {
 }
 b, strong {
     font-weight: 700 !important;
+}
+
+.customDetailTitle {
+  color: #fca311;
+  font-weight: 600;
 }
 

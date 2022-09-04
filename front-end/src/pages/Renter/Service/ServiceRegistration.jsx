@@ -63,7 +63,7 @@ export default function ServiceRegistration() {
               filtering: false,
               pageSizeOptions: [5, 10],
               paginationType: "stepped",
-              exportButton: true,
+              exportButton: false,
               exportAllData: true,
               actionsColumnIndex: -1,
               headerStyle: {

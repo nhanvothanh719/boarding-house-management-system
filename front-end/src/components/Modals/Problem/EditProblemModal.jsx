@@ -145,11 +145,10 @@ export default function EditProblemModal(props) {
                         value={severityLevel}
                         label="Severity level"
                         onChange={handleSeverityLevelChange}
-                        style={{ display: "block" }}
                       >
-                        <MenuItem value={1}>High</MenuItem>
-                        <MenuItem value={2}>Normal</MenuItem>
-                        <MenuItem value={3}>Low</MenuItem>
+                        <MenuItem value={1} style={{  display: "block", padding: "5px 30px 5px" }}>High</MenuItem>
+                        <MenuItem value={2} style={{  display: "block", padding: "5px 30px 5px" }}>Normal</MenuItem>
+                        <MenuItem value={3} style={{  display: "block", padding: "5px 30px 5px" }}>Low</MenuItem>
                       </Select>
                     </FormControl>
                   </div>
