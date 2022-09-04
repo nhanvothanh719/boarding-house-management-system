@@ -123,10 +123,9 @@ export default function RegisterRoomModal(props) {
                     value={senderGender}
                     label="Gender"
                     onChange={handleGenderChange}
-                    style={{display: "block"}}
                   >
-                    <MenuItem value={0}>Female</MenuItem>
-                    <MenuItem value={1}>Male</MenuItem>
+                    <MenuItem value={0} style={{  display: "block", padding: "5px 30px 5px" }}>Female</MenuItem>
+                    <MenuItem value={1} style={{  display: "block", padding: "5px 30px 5px" }}>Male</MenuItem>
                   </Select>
                 </FormControl>
                 </div>

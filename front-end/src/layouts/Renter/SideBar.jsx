@@ -29,7 +29,7 @@ export default function SideBar() {
               exact
               to="/renter/view-room-details"
               style={{ textDecoration: "none", color: "#f1f1f1" }}
-              activeStyle={{ textDecoration: "none", color: "#1F3F49" }}
+              activeStyle={{ textDecoration: "none", color: "#fca311" }}
             >
               <li className="customLi">
                 <NightShelterIcon className="sideBarIcon" />
@@ -40,7 +40,7 @@ export default function SideBar() {
               exact
               to="/renter/view-room-contract"
               style={{ textDecoration: "none", color: "#f1f1f1" }}
-              activeStyle={{ textDecoration: "none", color: "#1F3F49" }}
+              activeStyle={{ textDecoration: "none", color: "#fca311" }}
             >
               <li className="customLi">
                 <HandshakeIcon className="sideBarIcon" />
@@ -50,9 +50,9 @@ export default function SideBar() {
             <p className="renterItemGroup text-uppercase">Make</p>
             <NavLink
               exact
-              to="/renter/pay-invoice"
+              to="/renter/view-all-invoices"
               style={{ textDecoration: "none", color: "#f1f1f1" }}
-              activeStyle={{ textDecoration: "none", color: "#1F3F49" }}
+              activeStyle={{ textDecoration: "none", color: "#fca311" }}
             >
               <li className="customLi">
                 <PaidIcon className="sideBarIcon" />
@@ -63,7 +63,7 @@ export default function SideBar() {
               exact
               to="/renter/register-optional-service"
               style={{ textDecoration: "none", color: "#f1f1f1" }}
-              activeStyle={{ textDecoration: "none", color: "#1F3F49" }}
+              activeStyle={{ textDecoration: "none", color: "#fca311" }}
             >
               <li className="customLi">
                 <LocalLaundryServiceIcon className="sideBarIcon" />
@@ -75,7 +75,7 @@ export default function SideBar() {
               exact
               to="/renter/send-problem"
               style={{ textDecoration: "none", color: "#f1f1f1" }}
-              activeStyle={{ textDecoration: "none", color: "#1F3F49" }}
+              activeStyle={{ textDecoration: "none", color: "#fca311" }}
             >
               <li className="customLi">
                 <ReportProblemIcon className="sideBarIcon" />

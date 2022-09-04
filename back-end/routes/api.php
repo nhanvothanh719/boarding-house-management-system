@@ -24,6 +24,10 @@ use App\Http\Controllers\ProblemController;
 use App\Http\Controllers\RoomRentRegistrationController;
 
 use App\Http\Controllers\Renter\RenterRoomController;
+use App\Http\Controllers\Renter\RenterInvoiceController;
+use App\Http\Controllers\Renter\RenterProblemController;
+use App\Http\Controllers\Renter\RenterServiceController;
+use App\Http\Controllers\Renter\RenterRoomContractController;
 
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/register', [AuthController::class, 'register']);
@@ -46,7 +50,23 @@ Route::middleware('auth:api')->group(function(){
         Route::get('/check-renter-authenticated', function() {
             return response(['message' => 'Login successfully. You are the renter', 'status' => 200]);
         }); 
+
         Route::get('/get-renter-room-info', [RenterRoomController::class, 'getRoomInfo']);
+
+        Route::get('/get-invoice-details/{id}', [RenterInvoiceController::class, 'getInvoiceDetails']);
+        Route::get('/all-renter-invoices', [RenterInvoiceController::class, 'getRenterInvoices']);
+
+        Route::post('/make-payment/{id}', [PaymentController::class, 'makePayment']);
+        
+        Route::get('/all-renter-problems', [RenterProblemController::class, 'getRenterProblems']);
+        Route::post('/store-renter-problem', [RenterProblemController::class, 'storeProblem']);
+        Route::get('/get-renter-problem-details/{id}', [RenterProblemController::class, 'getProblemDetails']);
+        Route::put('/update-renter-problem/{id}', [RenterProblemController::class, 'updateProblem']);
+        Route::delete('/delete-renter-problem/{id}', [RenterProblemController::class, 'deleteProblem']);
+
+        Route::get('/all-renter-registered-services', [RenterServiceController::class, 'getRegisteredServices']);
+
+        Route::get('/get-renter-room-contract', [RenterRoomContractController::class, 'getRenterRoomContract']);
     });
 
     //Dashboard
@@ -119,8 +139,6 @@ Route::middleware('auth:api')->group(function(){
         Route::post('/update-service-quantity/{service_id}/{value}',[InvoiceController::class, 'updateServiceQuantity']);
         Route::get('/send-invoice/{id}', [InvoiceController::class, 'sendInvoice']);
         Route::get('/get-renter-invoices/{id}', [InvoiceController::class, 'getRenterInvoices']);
-
-        Route::post('/make-payment/{id}', [PaymentController::class, 'makePayment']);
 
         //Announcement
         Route::post('send-announcement', [AnnouncementController::class, 'sendAnnouncement']);

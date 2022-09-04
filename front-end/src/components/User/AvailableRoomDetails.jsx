@@ -11,6 +11,8 @@ import HeatPumpIcon from '@mui/icons-material/HeatPump';
 import KitchenIcon from '@mui/icons-material/Kitchen';
 import CheckroomIcon from '@mui/icons-material/Checkroom';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
+import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
+import DangerousIcon from '@mui/icons-material/Dangerous';
 
 import AppUrl from "../../RestAPI/AppUrl";
 import Loading from "../Loading/Loading";
@@ -18,10 +20,10 @@ import RegisterRoomModal from "../Modals/Room/RegisterRoomModal";
 
 function AvailableRoomDetails(props) {
   const [roomID] = useState(props.roomId);
-  const [room, setRoom] = useState([]);
-  const [category, setCategory] = useState('');
-  const [price, setPrice] = useState([]);
-  const [images, setImages] = useState([]);
+  const [room, setRoom] = useState({
+    category: {},
+    images: [],
+  });
   const [loading, setLoading] = useState(true);
   const [showCreateModal, setShowCreateModal] = useState(false);
 
@@ -31,9 +33,6 @@ function AvailableRoomDetails(props) {
         if(response.data.status === 200) {
           console.log(response.data);
           setRoom(response.data.details[0]);
-          setCategory(response.data.category[0]);
-          setPrice(response.data.price);
-          setImages(response.data.images);
           setLoading(false);
         }
       }
@@ -48,7 +47,7 @@ function AvailableRoomDetails(props) {
   if (loading) {
     return <Loading />;
   } else {
-    display_images = images.map((img) => {
+    display_images = room.images.map((img) => {
       return(
         <Carousel.Item>
       <img
@@ -84,40 +83,36 @@ function AvailableRoomDetails(props) {
                 <h4 className="widget-title text-center">Room features</h4>
                 <ul>
                   <li>
-                    <RoomPreferencesIcon/>
+                    <RoomPreferencesIcon className="mr-3"/>
                     <span>Room number :</span> {room.number}{" "}
                   </li>
                   <li>
-                    <PeopleIcon/>
-                    <span>Renter :</span>{" "}
-                  </li>
-                  <li>
-                    <BeenhereIcon/>
+                    <BeenhereIcon className="mr-3"/>
                     <span>Status :</span> {room.status.name}{" "}
                   </li>
                   <li>
-                    <SquareFootIcon/>
+                    <SquareFootIcon className="mr-3"/>
                     <span>Area :</span> {room.area}{" "}
                   </li>
                   <li>
-                    <Label/>
-                    <span>Categories :</span> {category.name}{" "}
+                    <Label className="mr-3"/>
+                    <span>Categories :</span> {room.category.name}{" "}
                   </li>
                   <li>
-                    <HeatPumpIcon/>
-                    <span>Conditioner: </span> {room.has_conditioner}{" "}
+                    <HeatPumpIcon className="mr-3"/>
+                    <span>Conditioner: </span> {room.has_conditioner ? <AssignmentTurnedInIcon/> : <DangerousIcon/>}{" "}
                   </li>
                   <li>
-                    <KitchenIcon/>
-                    <span>Fridge: </span> {room.has_fridge}{" "}
+                    <KitchenIcon className="mr-3"/>
+                    <span>Fridge: </span> {room.has_fridge ? <AssignmentTurnedInIcon/> : <DangerousIcon/>}{" "}
                   </li>
                   <li>
-                    <CheckroomIcon/>
-                    <span>Wardrobe: </span> {room.has_wardrobe}{" "}
+                    <CheckroomIcon className="mr-3"/>
+                    <span>Wardrobe: </span> {room.has_wardrobe ? <AssignmentTurnedInIcon/> : <DangerousIcon/>}{" "}
                   </li>
                   <li>
-                    <MonetizationOnIcon/>
-                    <span>Price:</span> ${price}{" "}
+                    <MonetizationOnIcon className="mr-3"/>
+                    <span>Price:</span> ${room.category.price}{" "}
                   </li>
                 </ul>
                 <div className="price-wrap text-center">

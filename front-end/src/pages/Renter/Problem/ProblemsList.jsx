@@ -3,27 +3,33 @@ import React, { Fragment, useState, useEffect } from "react";
 import MaterialTable from "material-table";
 import swal from "sweetalert";
 import axios from "axios";
+import EmailIcon from '@mui/icons-material/Email';
+import DraftsIcon from '@mui/icons-material/Drafts';
+import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 
-import AppUrl from "../../../../RestAPI/AppUrl";
-import Loading from "../../../../components/Loading/Loading";
-import ReplyProblemModal from "../../../../components/Modals/Problem/ReplyProblemModal";
-import ViewReplyProblemModal from "../../../../components/Modals/Problem/ViewProblemReplyModal";
+import AppUrl from "../../../RestAPI/AppUrl";
+import Loading from "../../../components/Loading/Loading";
+import { Button } from "react-bootstrap";
+import CreateProblemModal from "../../../components/Modals/Problem/CreateProblemModal";
+import EditProblemModal from "../../../components/Modals/Problem/EditProblemModal";
 
 export default function ProblemsList() {
   const [details] = useState([]);
   const [loading, setLoading] = useState(true);
   const [problemsListChange, setProblemsListChange] = useState(false);
   const [problemsList, setProblemsList] = useState([]);
-  const [showReplyModal, setShowReplyModal] = useState(false);
-  const [showReplyDetailsModal, setShowReplyDetailsModal] = useState(false);
   const [selectedProblemId, setSelectedProblemId] = useState(null);
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  
+
   const status = { 1: "Pending", 2: "On-going", 3: "Solved" };
-  const statusStyle = { 1: "statusPending", 2: "statusOnGoing", 3: "statusActive"};
+  const statusStyle = { 1: "statusPending", 2: "statusOnGoing", 3: "statusActive"}; 
   const severity = { 1: "High", 2: "Normal", 3: "Low" };
   const severityStyle = { 1: "statusPassive", 2: "statusActive", 3: "statusOnGoing"};
 
   useEffect(() => {
-    axios.get(AppUrl.ShowProblems).then((response) => {
+    axios.get(AppUrl.ShowRenterProblems).then((response) => {
       if (response.data.status === 200) {
         setProblemsList(response.data.allProblems);
       }
@@ -34,44 +40,33 @@ export default function ProblemsList() {
     }
   }, [problemsListChange]);
 
-  const setReplyModalStatus = (status) => {
-    setShowReplyModal(status);
+  const setCreateModalStatus = (status) => {
+    setShowCreateModal(status);
   };
 
-  const setReplyDetailsModalStatus = (status) => {
-    setShowReplyDetailsModal(status);
+  const setEditModalStatus = (status) => {
+    setShowEditModal(status);
   };
 
-  const updateProblemReplyStatus = (status) => {
+  const updateModalStatus = (status) => {
     setProblemsListChange(status);
   };
 
+
   var columns = [];
-  if (loading) {
-    return <Loading />;
-  } else {
     columns = [
       { title: "#", render: (rowData) => rowData.tableData.id + 1 },
       {
-        field: "renter_id",
-        title: "Renter name",
-        editable: "never",
-        render: (rowData) => <p>{rowData.renter.name}</p>,
-      },
-      {
         field: "title",
         title: "Title",
-        editable: "never",
       },
       {
         field: "description",
         title: "Description",
-        editable: "never",
       },
       {
         field: "severity_level",
         title: "Severity level",
-        editable: "never",
         lookup: { 1: "High", 2: "Normal", 3: "Low" },
         render: (rowData) => {
           return (
@@ -82,6 +77,7 @@ export default function ProblemsList() {
       {
         field: "status",
         title: "Status",
+        editable: "never",
         lookup: { 1: "Pending", 2: "On-going", 3: "Solved" },
         render: (rowData) => {
           return (
@@ -90,11 +86,27 @@ export default function ProblemsList() {
         },
       },
     ];
-  }
 
+  if (loading) {
+    return <Loading />;
+  }
   return (
     <Fragment>
       <div className="customDatatable">
+      <div className="customDatatableHeader">
+          <Button
+              className="createBtn"
+              style={{ backgroundColor: "white", color: "#1C4E80" }}
+              onClick={(e) => setShowCreateModal(true)}
+            >
+              Add new problem
+            </Button>
+            <CreateProblemModal
+              isShown={showCreateModal}
+              setCreateModalStatus={setCreateModalStatus}
+              updateModalStatus={updateModalStatus}
+            />
+          </div>
         <MaterialTable
           columns={columns}
           data={problemsList}
@@ -108,30 +120,12 @@ export default function ProblemsList() {
             exportButton: true,
             exportAllData: true,
             actionsColumnIndex: -1,
+            
             headerStyle: {
               fontFamily: "Anek Telugu, sans-serif",
             },
           }}
           editable={{
-            onRowUpdate: (newProblem, oldProblem) =>
-              new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  const data = {
-                    status: newProblem.status,
-                  };
-                  axios
-                    .put(AppUrl.UpdateProblemStatus + oldProblem.id, data)
-                    .then((response) => {
-                      if (response.data.status === 200) {
-                        swal("Success", response.data.message, "success");
-                        setProblemsListChange(true);
-                      } else if (response.data.status === 404) {
-                        swal("Error", response.data.message, "error");
-                      }
-                    });
-                  resolve();
-                }, 1000);
-              }),
             onRowDelete: (thisProblem) =>
               new Promise((resolve, reject) => {
                 setTimeout(() => {
@@ -139,7 +133,7 @@ export default function ProblemsList() {
                   const index = thisProblem.tableData.id;
                   selectedProblem.splice(index, 1); //1: only one record
                   axios
-                    .delete(AppUrl.DeleteProblem + thisProblem.id)
+                    .delete(AppUrl.DeleteRenterProblem + thisProblem.id)
                     .then((response) => {
                       if (response.data.status === 200) {
                         swal("Success", response.data.message, "success");
@@ -152,38 +146,50 @@ export default function ProblemsList() {
                 }, 1000);
               }),
           }}
+          detailPanel={[
+            (rowData) => ({
+              icon: EmailIcon,
+              openIcon: DraftsIcon,
+              tooltip: 'Show reply text',
+              disabled: rowData.reply_text === null,
+              render:  rowData => {
+                return (
+                  <div
+                    style={{
+                      fontSize: 15,
+                      fontFamily: "Anek Telugu, sans-serif",
+                      paddingLeft: 20,
+                      paddingRingt: 25,
+                      paddingTop: 10,
+                      backgroundColor: '#eaeaea',
+                      color: "#14213d"
+                    }}
+                  >
+                    <span style={{ color: "#fca311" }}><ChatBubbleIcon className="pr-1"/> Reply from Admin: {" "}</span>
+                    {rowData.reply_text}
+                  </div>
+                )
+              },
+            }),
+          ]}
           actions={[
             {
-              icon: "visibility",
-              tooltip: "Details",
+              icon: "edit",
+              tooltip: "Edit",
               onClick: (event, problem) => {
-                setShowReplyDetailsModal(true);
+                setShowEditModal(true);
                 setSelectedProblemId(problem.id);
               },
             },
-            (rowData) => ({
-              icon: "reply",
-              tooltip: "Reply",
-              onClick: (event, problem) => {
-                setShowReplyModal(true);
-                setSelectedProblemId(problem.id);
-              },
-              disabled: rowData.replied_by !== null,
-            }),
           ]}
         />
-        <ViewReplyProblemModal
-          isShown={showReplyDetailsModal}
-          setReplyDetailsModalStatus={setReplyDetailsModalStatus}
-          problemId={selectedProblemId}
-        />
-        <ReplyProblemModal
-          isShown={showReplyModal}
-          setReplyModalStatus={setReplyModalStatus}
-          updateProblemReplyStatus={updateProblemReplyStatus}
-          problemId={selectedProblemId}
-        />
       </div>
+      <EditProblemModal
+            isShown={showEditModal}
+            problemId={selectedProblemId}
+            setEditModalStatus={setEditModalStatus}
+            updateModalStatus={updateModalStatus}
+          />
     </Fragment>
-  );
+  )
 }
