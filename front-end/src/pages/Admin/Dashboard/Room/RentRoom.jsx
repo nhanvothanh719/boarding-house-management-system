@@ -74,7 +74,7 @@ export default function RentRoom() {
 
   return (
     <Fragment>
-      <WebPageTitle pageTitle="Rent room" />
+      <WebPageTitle pageTitle="Room rents" />
       <div className="customDatatable">
         <div className="customDatatableHeader">
           <Button

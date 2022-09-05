@@ -75,7 +75,7 @@ export default function RegisterService() {
   }
   return (
     <Fragment>
-      <WebPageTitle pageTitle="Register service" />
+      <WebPageTitle pageTitle="Service registrations" />
       <div className="customDatatable">
         <div className="customDatatableHeader">
           <Button

@@ -152,7 +152,7 @@ export default function EditUser({ match }) {
               </div>
             </div>
             <div className="userShowBottom">
-              <span className="userShowTitle">Renter Information</span>
+              <em className="userShowTitle">Renter Information</em>
               <div className="userShowInfo">
                 <SupervisedUserCircle className="userShowIcon" />
                 <span className="userShowInfoTitle">{userInfo.id_card_number}</span>
@@ -169,7 +169,7 @@ export default function EditUser({ match }) {
                 <PermIdentity className="userShowIcon" />
                 <span className="userShowInfoTitle">{userInfo.occupation}</span>
               </div>
-              <span className="userShowTitle">Contact Details</span>
+              <em className="userShowTitle">Contact Details</em>
               <div className="userShowInfo">
                 <PhoneAndroid className="userShowIcon" />
                 <span className="userShowInfoTitle">{userInfo.phone_number}</span>
@@ -249,7 +249,7 @@ export default function EditUser({ match }) {
                   <label>Date of birth</label>
                   <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <DatePicker
-                    label="Date of birth"
+                      label=" "
                       renderInput={(props) => <TextField {...props} />}
                       value={dateOfBirth}
                       name="date_of_birth"

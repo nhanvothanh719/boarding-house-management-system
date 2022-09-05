@@ -47,7 +47,11 @@ export default function MotorbikesList() {
   var columns = [];
     columns = [
       { title: "#", render: (rowData) => rowData.tableData.id + 1 },
-      { field: "license_plate", title: "License plate" },
+      { 
+        field: "license_plate", 
+        title: "License plate",
+        render: (rowData) => <span className="licensePlate"> {rowData.license_plate} </span>
+     },
       {
         field: "motorbike_image",
         title: "Image",
