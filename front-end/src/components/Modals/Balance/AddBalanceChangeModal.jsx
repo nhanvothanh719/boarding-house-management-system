@@ -9,15 +9,16 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 import AppUrl from "../../../RestAPI/AppUrl";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
 export default function AddBalanceChangeModal(props) {
   const [input, setInput] = useState({
     description: "",
-    is_income: "",
     amount: "",
   });
   const [errors, setErrors] = useState([]);
   const [occurredDate, setOccurredDate] = useState(moment());
+  const [selectBalanceCategory, setSelectBalanceCategory] = useState(0);
 
   useEffect(() => {
     if (props.isShown === true) {
@@ -47,7 +48,7 @@ export default function AddBalanceChangeModal(props) {
   const addBalanceChange = (e) => {
     e.preventDefault();
     const data = {
-      is_income: input.is_income,
+      is_income: selectBalanceCategory,
       amount: input.amount,
       description: input.description,
       occurred_on: moment(occurredDate).utc().format("YYYY-MM-DD hh:mm:ss"),
@@ -116,22 +117,29 @@ export default function AddBalanceChangeModal(props) {
                 </div>
                 <div className="">
                   <label className="customModalLabel">Category:</label>
-                  <select
-                    class="form-control"
-                    name="is_income"
-                    onChange={handleInput}
-                    value={input.is_income}
-                  >
-                    <option selected>--- Select category ---</option>
-                    <option value="0" key="0">
-                      {" "}
-                      Expenses{" "}
-                    </option>
-                    <option value="1" key="1">
-                      {" "}
-                      Earned{" "}
-                    </option>
-                  </select>
+                  <FormControl fullWidth>
+                    <InputLabel>Category</InputLabel>
+                    <Select
+                      label="Category"
+                      //name="gender"
+                      onChange={(e) => setSelectBalanceCategory(e.target.value)}
+                      value={selectBalanceCategory}
+                      required
+                    >
+                      <MenuItem
+                        value={0}
+                        style={{ display: "block", padding: "5px 30px 5px" }}
+                      >
+                        Expenses
+                      </MenuItem>
+                      <MenuItem
+                        value={1}
+                        style={{ display: "block", padding: "5px 30px 5px" }}
+                      >
+                        Earned
+                      </MenuItem>
+                    </Select>
+                  </FormControl>
                 </div>
 
                 <div className="">

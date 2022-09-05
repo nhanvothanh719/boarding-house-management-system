@@ -8,6 +8,7 @@ function NavBar() {
   const history = useHistory();
   const [navBarTitle, setNavBarTitle] = useState("brandName");
   const [navBarColor, setNavBarColor] = useState("navBar");
+  const [navBarItemsListChange, setNavBarItemsListChange] = useState(false);
 
   useEffect(() => {
     window.addEventListener("scroll", () => {
@@ -18,28 +19,30 @@ function NavBar() {
         setNavBarTitle("brandNameScroll");
         setNavBarColor("navBarScroll");
       }});
+      if (navBarItemsListChange) {
+        setNavBarItemsListChange(false);
+      }
       return () => {
         setNavBarTitle(("brandName"));
         setNavBarColor("navBar");
       };
-  }, []);
+  }, [navBarItemsListChange]);
 
   const logout = (e) => {
     e.preventDefault();
     axios.post("/logout").then((response) => {
+      history.push("/");
       //Remove the token
-      // localStorage.removeItem('auth_token');
       localStorage.clear();
       //Remove all user data
+      setNavBarItemsListChange(true);
       swal("Success", response.data.message, "success");
-      history.push("/");
     });
   };
   
   let login;
   let profile;
-  let dashboard;
-  let renterActivities;
+  let activities;
 
   if (localStorage.getItem("auth_token")) {
     login = (
@@ -67,7 +70,23 @@ function NavBar() {
         </NavLink>
       </Nav.Link>
     );
-    renterActivities = (
+  } else {
+    login = (
+      <Nav.Link>
+        <NavLink
+          to="/login"
+          exact
+          activeStyle={{ color: "yellow" }}
+          className="navItem"
+        >
+          LOGIN
+        </NavLink>
+      </Nav.Link>
+    );
+  }
+
+  if (localStorage.getItem("user_role") === "renter") {
+    activities = (
       <Navbar className="customNavbar">
       <Container fluid>
         <Navbar.Collapse>
@@ -86,7 +105,8 @@ function NavBar() {
       </Container>
     </Navbar>
     );
-    dashboard = (
+  } else if (localStorage.getItem("user_role") === "admin") {
+    activities = (
       <Nav.Link>
       <NavLink
         to="/admin/dashboard"
@@ -97,19 +117,6 @@ function NavBar() {
         DASHBOARD
       </NavLink>
     </Nav.Link>
-    );
-  } else {
-    login = (
-      <Nav.Link>
-        <NavLink
-          to="/login"
-          exact
-          activeStyle={{ color: "yellow" }}
-          className="navItem"
-        >
-          LOGIN
-        </NavLink>
-      </Nav.Link>
     );
   }
 
@@ -181,8 +188,7 @@ function NavBar() {
               </NavLink>
             </Nav.Link>
             {profile}
-            {renterActivities}
-            {dashboard}
+            {activities}
           </Nav>
           <Nav>{login}</Nav>
         </Navbar.Collapse>

@@ -127,6 +127,8 @@ export default function InvoicesList() {
               },
             ]}
             editable={{
+              isEditable: rowData => moment(rowData.valid_until) >= moment(currentDate).add(-2, 'days'),
+              isDeletable: rowData => rowData.is_paid === 0,
               onRowUpdate: (newInvoice, oldInvoice) =>
                 new Promise((resolve, reject) => {
                   setTimeout(() => {
@@ -135,9 +137,9 @@ export default function InvoicesList() {
                         .utc()
                         .format("YYYY-MM-DD"),
                       valid_until: moment(newInvoice.valid_until)
-                        .utc()
                         .format("YYYY-MM-DD"),
                       month: newInvoice.month,
+                      is_paid: newInvoice.is_paid,
                     };
                     axios
                       .put(AppUrl.UpdateInvoice + oldInvoice.id, data)

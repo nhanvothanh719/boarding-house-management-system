@@ -15,6 +15,8 @@ export default function InvoicePaidRate() {
       if (response.data.status === 200) {
         setPaidInvoicesRate(response.data.paidInvoicesRate);
         setInvoicePaidMethodsCount(response.data.invoicePaidMethodsCount);
+        console.log(response.data.paidInvoicesRate);
+        console.log(response.data.invoicePaidMethodsCount);
       }
     });
   }, []);  
@@ -26,7 +28,7 @@ export default function InvoicePaidRate() {
         <PieChart width={300} height={300}>
           <Pie
             startAngle={90}
-            endAngle={360 * paidInvoicesRate / 100 - 90}
+            endAngle={360 * paidInvoicesRate / 100 + 90}
             data={invoicePaidMethodsCount}
             cx="50%"
             cy="50%"

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\CustomHelper;
 
 use \stdClass;
 use Carbon\Carbon;
@@ -17,6 +18,7 @@ use App\Models\Service;
 use App\Models\Invoice;
 use App\Models\RoomRent;
 use App\Models\InvoiceDetail;
+use App\Models\PaymentMethod;
 use App\Models\PaymentHistory;
 use App\Models\ServiceRegistration;
 
@@ -89,7 +91,7 @@ class InvoiceController extends Controller
             ]);
         }
         if($request->extra_fee) {
-            if(!$request->description) {
+            if(!$request->extra_fee_description) {
                 return response([
                     'message' => 'The description field is needed',
                     'status' => 404,
@@ -150,8 +152,7 @@ class InvoiceController extends Controller
         }
         $extra_fee = Invoice::find($invoice_id)->extra_fee;
         if($extra_fee) {
-            $extra_fee_value = ExtraFee::where('invoice_id', $invoice_id)->pluck('subtotal');
-            $total = $total + $extra_fee_value;
+            $total = $total + $extra_fee;
         }
         return $total;
     }
@@ -192,10 +193,22 @@ class InvoiceController extends Controller
         }
         $invoice = Invoice::find($id);
         if($invoice) {
+            if($request->is_paid == 1) {
+                $invoice->is_paid = Invoice::STATUS_PAID;
+                InvoiceController::addPaymentHistory($id);
+            }
             $invoice->effective_from = $request->effective_from;
             $invoice->valid_until = $request->valid_until;
             $invoice->month = $request->month;
             $invoice->save();
+
+            $invoice_info = new stdClass();
+            $invoice_info->month = $invoice->month;
+            $invoice_info->year = $invoice->year;
+            $invoice_info->amount = $invoice->total;
+            $invoice_info->payment_method = PaymentMethod::METHOD_CASH;
+
+            $add_balance = CustomHelper::handleAfterPayment($invoice_info, $invoice->renter_id, $id);
             return response([
                 'message' => 'Successfully update invoice',
                 'status' => 200,
@@ -207,6 +220,17 @@ class InvoiceController extends Controller
             ]);
         }
     }
+
+    public function addPaymentHistory($id) {
+        $payment = new PaymentHistory;
+        $payment->invoice_id = $id;
+        $payment->payment_id = 'pay_by_cash_for_invoice_'.$id;
+        $payment_method = PaymentMethod::METHOD_CASH;
+        $payment->payment_method_id = PaymentMethod::where('name', $payment_method)->value('id');
+        $payment->made_by = Invoice::find($id)->renter_id;
+        $payment->made_at = date('Y-m-d H:i:s');
+        $payment->save();
+    }
     
     public function deleteInvoice($id) {
         $invoice = Invoice::find($id);
@@ -216,7 +240,7 @@ class InvoiceController extends Controller
                 'status' => 404,
             ]);
         }
-        if($invoice->is_paid == STATUS_PAID) {
+        if($invoice->is_paid == Invoice::STATUS_PAID) {
             return response([
                 'message' => 'Cannot delete since this invoice is paid',
                 'status' => 404,

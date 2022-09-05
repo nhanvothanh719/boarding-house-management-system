@@ -4,7 +4,7 @@ import swal from "sweetalert";
 import axios from "axios";
 
 import AppUrl from "../../../RestAPI/AppUrl";
-import { TextField } from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 
 export default function CreateBreachModal(props) {
   const [errors, setErrors] = useState([]);
@@ -14,6 +14,7 @@ export default function CreateBreachModal(props) {
     severity_level: "",
     allowed_violate_number: "",
   });
+  const [selectSeverityLevel, setSelectSeverityLevel] = useState(1);
 
   useEffect(() => {
     if (props.isShown === true) {
@@ -45,7 +46,7 @@ export default function CreateBreachModal(props) {
     const breach = {
       name: input.name,
       description: input.description,
-      severity_level: input.severity_level,
+      severity_level: selectSeverityLevel,
       allowed_violate_number: input.allowed_violate_number,
     };
     axios
@@ -120,30 +121,41 @@ export default function CreateBreachModal(props) {
                 <small className="text-danger">{errors.description}</small>
                 <div>
                   <label className="customModalLabel">Severity level:</label>
-                  <select
-                    class="form-control"
-                    name="severity_level"
-                    onChange={handleInput}
-                    value={input.severity_level}
-                  >
-                    <option selected>--- Severity level ---</option>
-                    <option value="1" key="1">
-                      {" "}
-                      Serious{" "}
-                    </option>
-                    <option value="2" key="2">
-                      {" "}
-                      Significant{" "}
-                    </option>
-                    <option value="3" key="3">
-                      {" "}
-                      Normal{" "}
-                    </option>
-                    <option value="4" key="4">
-                      {" "}
-                      Negligible{" "}
-                    </option>
-                  </select>
+                  <FormControl fullWidth>
+                    <InputLabel>Category</InputLabel>
+                    <Select
+                      label="Category"
+                      //name="gender"
+                      onChange={(e) => setSelectSeverityLevel(e.target.value)}
+                      value={selectSeverityLevel}
+                      required
+                    >
+                      <MenuItem
+                        value={1}
+                        style={{ display: "block", padding: "5px 30px 5px" }}
+                      >
+                        Serious
+                      </MenuItem>
+                      <MenuItem
+                        value={2}
+                        style={{ display: "block", padding: "5px 30px 5px" }}
+                      >
+                        Significant
+                      </MenuItem>
+                      <MenuItem
+                        value={3}
+                        style={{ display: "block", padding: "5px 30px 5px" }}
+                      >
+                        Normal
+                      </MenuItem>
+                      <MenuItem
+                        value={4}
+                        style={{ display: "block", padding: "5px 30px 5px" }}
+                      >
+                        Negligible
+                      </MenuItem>
+                    </Select>
+                  </FormControl>
                 </div>
                 <div>
                   <label className="customModalLabel">

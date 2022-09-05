@@ -247,6 +247,7 @@ export default function EditUser({ match }) {
                   <label>Date of birth</label>
                   <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <DatePicker
+                    label="Date of birth"
                       renderInput={(props) => <TextField {...props} />}
                       value={dateOfBirth}
                       name="date_of_birth"

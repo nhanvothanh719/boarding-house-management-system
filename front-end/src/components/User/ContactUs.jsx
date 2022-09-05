@@ -91,7 +91,7 @@ function ContactUS() {
                         className="customButton"
                         style={{ marginTop: "20px"}}
                       >
-                        Update profile
+                        Submit
                       </Button>
                       </center>
                     </Col>
