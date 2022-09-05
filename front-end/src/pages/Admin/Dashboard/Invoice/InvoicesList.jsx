@@ -10,6 +10,7 @@ import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
 import { Button } from "react-bootstrap";
 import SelectRenterModal from "../../../../components/Modals/Invoice/SelectRenterModal";
+import WebPageTitle from "../../../../components/WebPageTitle/WebPageTitle";
 
 export default function InvoicesList() {
   const history = useHistory();
@@ -39,9 +40,6 @@ export default function InvoicesList() {
 
   var columns = [];
 
-  if (loading) {
-    return <Loading />;
-  } else {
     columns = [
       { title: "#", render: (rowData) => rowData.tableData.id + 1 },
       {
@@ -90,8 +88,13 @@ export default function InvoicesList() {
         )
       },
     ];
+
+    if (loading) {
+      return <Loading />;
+    }
     return (
       <Fragment>
+        <WebPageTitle pageTitle="Invoices" />
         <div className="customDatatable">
           <div className="customDatatableHeader">
           <Button
@@ -179,4 +182,3 @@ export default function InvoicesList() {
       </Fragment>
     );
   }
-}

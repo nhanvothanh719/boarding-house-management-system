@@ -8,6 +8,7 @@ import axios from "axios";
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
 import CreateBreachModal from "../../../../components/Modals/Breach/CreateBreachModal";
+import WebPageTitle from "../../../../components/WebPageTitle/WebPageTitle";
 
 export default function BreachesList() {
   const [details] = useState([]);
@@ -40,9 +41,6 @@ export default function BreachesList() {
   }, [breachesListChange]);
 
   var columns = [];
-  if (loading) {
-    return <Loading />;
-  } else {
     columns = [
       { title: "#", render: (rowData) => rowData.tableData.id + 1 },
       {
@@ -104,10 +102,13 @@ export default function BreachesList() {
         },
       },
     ];
-  }
 
+    if (loading) {
+      return <Loading />;
+    }
   return (
     <Fragment>
+      <WebPageTitle pageTitle="Breaches" />
       <div className="customDatatable">
           <div className="customDatatableHeader">
             <Button

@@ -8,6 +8,7 @@ import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
 import RenterInvoicePaid from "../../../../components/Charts/RenterInvoicePaid";
 import RenterUsedServiceCount from "../../../../components/Charts/RenterUsedServiceCount";
+import WebPageTitle from "../../../../components/WebPageTitle/WebPageTitle";
 
 export default function RenterInvoicesList({ match }) {
   const renterId = match.params.renterID;
@@ -68,6 +69,7 @@ export default function RenterInvoicesList({ match }) {
   }
   return (
     <Fragment>
+      <WebPageTitle pageTitle="Renter's invoices" />
       <RenterInvoicePaid renterId={renterId} />
       <RenterUsedServiceCount renterId={renterId} />
       <div className="customDatatable">

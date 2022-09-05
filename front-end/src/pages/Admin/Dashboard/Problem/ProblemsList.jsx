@@ -8,6 +8,7 @@ import AppUrl from "../../../../RestAPI/AppUrl";
 import Loading from "../../../../components/Loading/Loading";
 import ReplyProblemModal from "../../../../components/Modals/Problem/ReplyProblemModal";
 import ViewReplyProblemModal from "../../../../components/Modals/Problem/ViewProblemReplyModal";
+import WebPageTitle from "../../../../components/WebPageTitle/WebPageTitle";
 
 export default function ProblemsList() {
   const [details] = useState([]);
@@ -47,9 +48,6 @@ export default function ProblemsList() {
   };
 
   var columns = [];
-  if (loading) {
-    return <Loading />;
-  } else {
     columns = [
       { title: "#", render: (rowData) => rowData.tableData.id + 1 },
       {
@@ -90,10 +88,13 @@ export default function ProblemsList() {
         },
       },
     ];
-  }
 
+    if (loading) {
+      return <Loading />;
+    }
   return (
     <Fragment>
+      <WebPageTitle pageTitle="Problems" />
       <div className="customDatatable">
         <MaterialTable
           columns={columns}

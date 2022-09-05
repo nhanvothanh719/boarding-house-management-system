@@ -11,6 +11,7 @@ import "../../../../assets/css/Dashboard/chart.css";
 import BalanceVariation from "../../../../components/Charts/BalanceVariation";
 import axios from "axios";
 import AppUrl from "../../../../RestAPI/AppUrl";
+import WebPageTitle from "../../../../components/WebPageTitle/WebPageTitle";
 
 function MainDashboard() {
   const [displayData, setDisplayData] = useState({});
@@ -32,6 +33,7 @@ function MainDashboard() {
 
   return (
     <Fragment>
+      <WebPageTitle pageTitle="Dashboard" />
       <div className="widgets">
         <Widget type="renter" amount={displayData.rentersTotal}/>
         <Widget type="room" amount={displayData.roomsTotal}/>

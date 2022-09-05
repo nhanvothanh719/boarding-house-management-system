@@ -23,6 +23,7 @@ import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
 
 import "../../../../assets/css/Dashboard/user.css";
+import WebPageTitle from "../../../../components/WebPageTitle/WebPageTitle";
 
 export default function EditUser({ match }) {
   const history = useHistory();
@@ -132,6 +133,7 @@ export default function EditUser({ match }) {
   }
   return (
     <Fragment>
+      <WebPageTitle pageTitle="User details" />
       <div className="user">
         <div className="userTitleContainer">
           <h1 className="customActionTitle">View & Edit personal details</h1>

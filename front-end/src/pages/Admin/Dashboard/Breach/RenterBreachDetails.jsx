@@ -7,6 +7,7 @@ import axios from "axios";
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
 import RenterBreachCount from "../../../../components/Charts/RenterBreachCount";
+import WebPageTitle from "../../../../components/WebPageTitle/WebPageTitle";
 
 export default function RenterBreachDetails({ match }) {
   const renterId = match.params.renterID;
@@ -23,9 +24,6 @@ export default function RenterBreachDetails({ match }) {
   }, [renterId]);
 
   var columns = [];
-  if (loading) {
-    return <Loading />;
-  } else {
     columns = [
       { title: '#', render: (rowData) => rowData.tableData.id + 1 },
       {
@@ -40,10 +38,13 @@ export default function RenterBreachDetails({ match }) {
           moment(rowData.violated_at).format("hh:mm:ss - DD/MM/YYYY"),
       },
     ];
-  }
 
+    if (loading) {
+      return <Loading />;
+    }
   return (
     <Fragment>
+      <WebPageTitle pageTitle="Renter's breach histories" />
       <RenterBreachCount renterId={renterId} />
       <div className="customDatatable">
       <MaterialTable

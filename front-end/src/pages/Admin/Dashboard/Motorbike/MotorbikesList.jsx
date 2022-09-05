@@ -9,6 +9,7 @@ import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
 import CreateMotorbikeModal from "../../../../components/Modals/Motorbike/CreateMotorbikeModal";
 import EditMotorbikeModal from "../../../../components/Modals/Motorbike/EditMotorbikeModal";
+import WebPageTitle from "../../../../components/WebPageTitle/WebPageTitle";
 
 export default function MotorbikesList() {
   const [details] = useState([]);
@@ -44,9 +45,6 @@ export default function MotorbikesList() {
   };
 
   var columns = [];
-  if (loading) {
-    return <Loading />;
-  } else {
     columns = [
       { title: "#", render: (rowData) => rowData.tableData.id + 1 },
       { field: "license_plate", title: "License plate" },
@@ -69,8 +67,12 @@ export default function MotorbikesList() {
       },
     ];
 
+    if (loading) {
+      return <Loading />;
+    }
     return (
       <Fragment>
+        <WebPageTitle pageTitle="Motorbikes" />
         <div className="customDatatable">
           <div className="customDatatableHeader">
           <Button
@@ -145,4 +147,3 @@ export default function MotorbikesList() {
       </Fragment>
     );
   }
-}

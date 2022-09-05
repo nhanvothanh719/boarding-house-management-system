@@ -8,6 +8,7 @@ import GroupRemoveIcon from '@mui/icons-material/GroupRemove';
 
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
+import WebPageTitle from "../../../../components/WebPageTitle/WebPageTitle";
 
 export default function RoomRentRegistrationsList() {
   const [details] = useState([]);
@@ -43,9 +44,6 @@ export default function RoomRentRegistrationsList() {
   };
 
   var columns = [];
-  if (loading) {
-    return <Loading />;
-  } else {
     columns = [
       { title: "#", render: (rowData) => rowData.tableData.id + 1 },
       { field: "sender_name", title: "Sender's name" },
@@ -80,8 +78,12 @@ export default function RoomRentRegistrationsList() {
       },
     ];
 
+    if (loading) {
+      return <Loading />;
+    }
     return (
       <Fragment>
+        <WebPageTitle pageTitle="Room registrations" />
         <div className="customDatatable">
           <div className="customDatatableHeader"></div>
           <MaterialTable
@@ -139,4 +141,3 @@ export default function RoomRentRegistrationsList() {
       </Fragment>
     );
   }
-}

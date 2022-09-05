@@ -9,6 +9,7 @@ import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
 import CreateServiceModal from "../../../../components/Modals/Service/CreateServiceModal";
 import EditServiceModal from "../../../../components/Modals/Service/EditServiceModal";
+import WebPageTitle from "../../../../components/WebPageTitle/WebPageTitle";
 
 export default function ServicesList() {
   const [details] = useState([]);
@@ -44,9 +45,6 @@ export default function ServicesList() {
   };
 
   var columns = [];
-  if (loading) {
-    return <Loading />;
-  } else {
     columns = [
       { title: '#', render: (rowData) => rowData.tableData.id + 1 },
       { field: "name", title: "Name" },
@@ -69,8 +67,12 @@ export default function ServicesList() {
       },
     ];
 
+    if (loading) {
+      return <Loading />;
+    }
     return (
       <Fragment>
+        <WebPageTitle pageTitle="Services" />
         <div className="customDatatable">
           <div className="customDatatableHeader">
           <Button
@@ -145,4 +147,3 @@ export default function ServicesList() {
       </Fragment>
     );
   }
-}

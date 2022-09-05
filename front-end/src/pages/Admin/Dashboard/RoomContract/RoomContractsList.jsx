@@ -11,6 +11,7 @@ import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
 import EditSignaturesModal from "../../../../components/Modals/RoomContract/EditSignaturesModal";
 import CreateRoomContractModal from "../../../../components/Modals/RoomContract/CreateRoomContractModal";
+import WebPageTitle from "../../../../components/WebPageTitle/WebPageTitle";
 
 export default function RoomContractsList() {
   const history = useHistory();
@@ -49,9 +50,6 @@ export default function RoomContractsList() {
   };
 
   var columns = [];
-  if (loading) {
-    return <Loading />;
-  } else {
     columns = [
       { title: "#", render: (rowData) => rowData.tableData.id + 1 },
       {
@@ -84,10 +82,13 @@ export default function RoomContractsList() {
         title: "Deposit amount",
       },
     ];
-  }
 
+    if (loading) {
+      return <Loading />;
+    }
   return (
     <Fragment>
+      <WebPageTitle pageTitle="Room contracts" />
       <div className="customDatatable">
         <div className="customDatatableHeader">
           <Button

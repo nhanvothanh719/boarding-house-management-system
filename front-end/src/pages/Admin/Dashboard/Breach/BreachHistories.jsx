@@ -13,6 +13,7 @@ import AppUrl from "../../../../RestAPI/AppUrl";
 import CreateBreachHistoryModal from "../../../../components/Modals/Breach/CreateBreachHistoryModal";
 import BreachCount from "../../../../components/Charts/BreachCount";
 import BreachRate from "../../../../components/Charts/BreachRate";
+import WebPageTitle from "../../../../components/WebPageTitle/WebPageTitle";
 
 export default function BreachHistories() {
 
@@ -48,9 +49,6 @@ export default function BreachHistories() {
   };
 
   var columns = [];
-  if (loading) {
-    return <Loading />;
-  } else {
     columns = [
       { title: '#', render: (rowData) => rowData.tableData.id + 1 },
       {
@@ -69,10 +67,13 @@ export default function BreachHistories() {
         render: rowData => moment(rowData.violated_at).format('hh:mm:ss - DD/MM/YYYY')
       },
     ];
-  }
 
+    if (loading) {
+      return <Loading />;
+    }
   return (
     <Fragment>
+      <WebPageTitle pageTitle="Breach histories" />
       <BreachCount isDataChange={breachHistoriesChange}/>
       <BreachRate isDataChange={breachHistoriesChange}/>
       <div className="customDatatable">

@@ -8,6 +8,7 @@ import swal from "sweetalert";
 import "../../../assets/css/Renter/invoice.css";
 import AppUrl from "../../../RestAPI/AppUrl";
 import Loading from "../../../components/Loading/Loading";
+import WebPageTitle from "../../../components/WebPageTitle/WebPageTitle";
 
 export default function UnpaidInvoiceDetails({ match }) {
     const history = useHistory();
@@ -169,6 +170,7 @@ export default function UnpaidInvoiceDetails({ match }) {
   }
     return (
       <Fragment>
+         <WebPageTitle pageTitle="Unpaid invoice details" />
         <div className="page-content container">
         <div className="page-header text-blue-d2"></div>
   

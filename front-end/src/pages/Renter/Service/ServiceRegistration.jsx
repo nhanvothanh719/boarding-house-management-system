@@ -6,6 +6,7 @@ import axios from "axios";
 
 import AppUrl from "../../../RestAPI/AppUrl";
 import Loading from "../../../components/Loading/Loading";
+import WebPageTitle from "../../../components/WebPageTitle/WebPageTitle";
 
 export default function ServiceRegistration() {
   const [loading, setLoading] = useState(true);
@@ -50,6 +51,7 @@ export default function ServiceRegistration() {
 
   return (
     <Fragment>
+      <WebPageTitle pageTitle="Registered services" />
         <div className="customDatatable">
           <div className="customDatatableHeader">
           </div>

@@ -9,6 +9,7 @@ import CancelPresentationIcon from "@mui/icons-material/CancelPresentation";
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
 import AddRoomRentModal from "../../../../components/Modals/Room/AddRoomRentModal";
+import WebPageTitle from "../../../../components/WebPageTitle/WebPageTitle";
 
 export default function RentRoom() {
   const [loading, setLoading] = useState(true);
@@ -73,6 +74,7 @@ export default function RentRoom() {
 
   return (
     <Fragment>
+      <WebPageTitle pageTitle="Rent room" />
       <div className="customDatatable">
         <div className="customDatatableHeader">
           <Button

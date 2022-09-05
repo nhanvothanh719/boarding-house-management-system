@@ -10,6 +10,7 @@ import AppUrl from "../../../../RestAPI/AppUrl";
 import BalanceVariation from "../../../../components/Charts/BalanceVariation";
 import BalanceCategoryRate from "../../../../components/Charts/BalanceCategoryRate";
 import AddBalanceChangeModal from "../../../../components/Modals/Balance/AddBalanceChangeModal";
+import WebPageTitle from "../../../../components/WebPageTitle/WebPageTitle";
 
 export default function BalanceDetails() {
   var currentDate = new Date();
@@ -95,6 +96,7 @@ export default function BalanceDetails() {
 
   return (
     <Fragment>
+      <WebPageTitle pageTitle="Balance details" />
       <h1 className="currentBalance center">
         Current Balance: $
         <span>{currentBalance}</span>

@@ -16,6 +16,7 @@ import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
 import "../../../../assets/css/Dashboard/datatable.css";
 import { IconButton, Tooltip } from "@mui/material";
+import WebPageTitle from "../../../../components/WebPageTitle/WebPageTitle";
 
 export default function InvoiceDetails({ match }) {
   const history = useHistory();
@@ -97,6 +98,7 @@ export default function InvoiceDetails({ match }) {
   }
   return (
     <Fragment>
+      <WebPageTitle pageTitle="Invoice details" />
       <div className="room">
         <div className="titleContainer">
           <h1 className="customActionTitle">View & Edit invoice</h1>

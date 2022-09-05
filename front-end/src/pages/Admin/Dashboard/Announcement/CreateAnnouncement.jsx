@@ -8,6 +8,7 @@ import axios from "axios";
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
 import CreateAnnouncementModal from "../../../../components/Modals/Announcement/CreateAnnouncementModal";
+import WebPageTitle from "../../../../components/WebPageTitle/WebPageTitle";
 
 export default function CreateAnnouncement() {
   const [loading, setLoading] = useState(true);
@@ -45,9 +46,6 @@ export default function CreateAnnouncement() {
   };
 
   var columns = [];
-  if (loading) {
-    return <Loading />;
-  } else {
     columns = [
       { title: '#', render: (rowData) => rowData.tableData.id + 1 },
       // { field: "profile_picture", title: "Avatar", export: false, width: "10%", render: rowData => <img src={rowData.profile_picture} alt="avatar" style={{width: 40, borderRadius: '50%'}}/> },
@@ -55,10 +53,13 @@ export default function CreateAnnouncement() {
       { field: "email", title: "Email", width: "20%" },
       { field: "phone_number", title: "Phone number", width: "20%" },
     ];
-  }
 
+    if (loading) {
+      return <Loading />;
+    }
   return (
     <Fragment>
+      <WebPageTitle pageTitle="Annoucements" />
       <div className="customDatatable">
         <div className="customDatatableHeader">
         <Button

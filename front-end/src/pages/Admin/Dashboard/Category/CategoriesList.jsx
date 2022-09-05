@@ -8,6 +8,7 @@ import swal from "sweetalert";
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
 import CreateCategoryModal from "../../../../components/Modals/Category/CreateCategoryModal";
+import WebPageTitle from "../../../../components/WebPageTitle/WebPageTitle";
 
 function CategoriesList() {
   const [details] = useState([]);
@@ -37,9 +38,6 @@ function CategoriesList() {
   };
 
   var columns = [];
-  if (loading) {
-    return <Loading />;
-  } else {
     columns = [
       { title: "#", render: (rowData) => rowData.tableData.id + 1 },
       {
@@ -90,9 +88,13 @@ function CategoriesList() {
         },
       },
     ];
-
+    
+    if(loading) {
+      return <Loading/>
+    }
     return (
       <Fragment>
+        <WebPageTitle pageTitle="Room categories" />
         <div className="customDatatable">
           <div className="customDatatableHeader">
             <Button
@@ -172,6 +174,5 @@ function CategoriesList() {
       </Fragment>
     );
   }
-}
 
 export default CategoriesList;
