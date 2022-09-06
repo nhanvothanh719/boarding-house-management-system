@@ -42,10 +42,11 @@ export default function BreachesList() {
 
   var columns = [];
     columns = [
-      { title: "#", render: (rowData) => rowData.tableData.id + 1 },
+      { title: "#", render: (rowData) => rowData.tableData.id + 1, width: "10%", align: "center" },
       {
         field: "name",
         title: "Name",
+        width: "20%",
         validate: (rowData) => {
           if (rowData.name === "") {
             return "Name cannot be empty";
@@ -68,12 +69,25 @@ export default function BreachesList() {
         },
       },
       {
-        field: "description",
-        title: "Description",
+        field: "allowed_violate_number",
+        title: "Allowed offenses number",
+        width: "15%",
+        type: "numeric",
+        validate: (rowData) => {
+          if (!Number.isInteger(rowData.allowed_violate_number)) {
+            return "Input must be integer data type";
+          } else if (rowData.allowed_violate_number <= 0) {
+            return "Input number must be bigger than 0";
+          } else if (rowData.allowed_violate_number >= 10) {
+            return "Input number must be smaller than 10";
+          }
+          return true;
+        },
       },
       {
         field: "severity_level",
         title: "Severity level",
+        width: "15%",
         lookup: {
           1: "Serious",
           2: "Significant",
@@ -87,19 +101,9 @@ export default function BreachesList() {
         },
       },
       {
-        field: "allowed_violate_number",
-        title: "Number of offenses allowed",
-        type: "numeric",
-        validate: (rowData) => {
-          if (!Number.isInteger(rowData.allowed_violate_number)) {
-            return "Input must be integer data type";
-          } else if (rowData.allowed_violate_number <= 0) {
-            return "Input number must be bigger than 0";
-          } else if (rowData.allowed_violate_number >= 10) {
-            return "Input number must be smaller than 10";
-          }
-          return true;
-        },
+        field: "description",
+        title: "Description",
+        width: "50%",
       },
     ];
 

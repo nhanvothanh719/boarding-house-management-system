@@ -31,12 +31,13 @@ function NavBar() {
   const logout = (e) => {
     e.preventDefault();
     axios.post("/logout").then((response) => {
-      history.push("/");
       //Remove the token
       localStorage.clear();
+      localStorage.removeItem('auth_token');
       //Remove all user data
       setNavBarItemsListChange(true);
       swal("Success", response.data.message, "success");
+      history.push("/");
     });
   };
   

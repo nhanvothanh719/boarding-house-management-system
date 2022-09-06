@@ -41,17 +41,19 @@ export default function InvoicesList() {
   var columns = [];
 
     columns = [
-      { title: "#", render: (rowData) => rowData.tableData.id + 1 },
+      { title: "#", render: (rowData) => rowData.tableData.id + 1, width: "10%", align: "center" },
       {
         field: "renter_id",
         title: "User",
         editable: "never",
+        width: "10%",
         render: (rowData) => <p>{rowData.renter.name}</p>,
       },
-      { field: "total", title: "Total", editable: "never" },
+      { field: "total", title: "Total", width: "20%", editable: "never" , align: "center"},
       {
         field: "month",
         title: "Month",
+        width: "10%",
         type: "numeric",
         validate: (rowData) =>
           rowData.month < 1 || rowData.month > 12 || !Number.isInteger(rowData.month)

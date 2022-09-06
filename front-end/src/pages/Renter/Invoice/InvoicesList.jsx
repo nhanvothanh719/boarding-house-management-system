@@ -29,7 +29,7 @@ export default function InvoicesList() {
 
   var columns = [];
   columns = [
-    { title: "#", render: (rowData) => rowData.tableData.id + 1 },
+    { title: "#", render: (rowData) => rowData.tableData.id + 1, width: "10%", align: "center" },
     { field: "total", title: "Total", editable: "never" },
     {
       field: "month",

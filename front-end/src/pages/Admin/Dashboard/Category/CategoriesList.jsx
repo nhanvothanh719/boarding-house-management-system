@@ -39,10 +39,11 @@ function CategoriesList() {
 
   var columns = [];
     columns = [
-      { title: "#", render: (rowData) => rowData.tableData.id + 1 },
+      { title: "#", render: (rowData) => rowData.tableData.id + 1, width: "10%", align: "center" },
       {
         field: "name",
         title: "Name",
+        width: "20%",
         validate: (rowData) => {
           if (rowData.name === "") {
             return "Name cannot be empty";
@@ -74,6 +75,7 @@ function CategoriesList() {
       {
         field: "price",
         title: "Price",
+        width: "10%",
         align: "center",
         type: "numeric",
         validate: (rowData) => {

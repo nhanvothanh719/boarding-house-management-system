@@ -46,13 +46,8 @@ export default function ServicesList() {
 
   var columns = [];
     columns = [
-      { title: '#', render: (rowData) => rowData.tableData.id + 1 },
+      { title: "#", render: (rowData) => rowData.tableData.id + 1, width: "10%", align: "center" },
       { field: "name", title: "Name" },
-      {
-        field: "description",
-        title: "Description",
-        emptyValue: () => <em>No description</em>,
-      },
       { field: "unit", title: "Unit" },
       { field: "unit_price", title: "Price per unit" },
       {

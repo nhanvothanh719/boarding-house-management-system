@@ -63,12 +63,12 @@ export default function UsersList() {
 
   var columns = [];
   columns = [
-    { title: "#", render: (rowData) => rowData.tableData.id + 1 },
+    { title: "#", render: (rowData) => rowData.tableData.id + 1, width: "10%", align: "center" },
     {
       field: "profile_picture",
       title: "Avatar",
       export: false,
-      width: "10%",
+      width: "7%",
       render: (rowData) => (
         <img
           src={DefaultAvatar}
@@ -97,10 +97,9 @@ export default function UsersList() {
         </div>
       ),
     },
-    { field: "phone_number", title: "Phone number" },
     {
       field: "is_locked",
-      title: "Status",
+      title: "Account status",
       render: (rowData) => (
         <div>
           <span

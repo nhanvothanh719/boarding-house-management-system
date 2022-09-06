@@ -25,7 +25,7 @@ export default function RenterBreachDetails({ match }) {
 
   var columns = [];
     columns = [
-      { title: '#', render: (rowData) => rowData.tableData.id + 1 },
+      { title: "#", render: (rowData) => rowData.tableData.id + 1, width: "10%", align: "center" },
       {
         field: "breach_id",
         title: "Breach name",

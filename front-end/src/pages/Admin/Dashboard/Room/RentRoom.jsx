@@ -42,7 +42,7 @@ export default function RentRoom() {
     return <Loading />;
   } else {
     columns = [
-      { field: "id", title: "ID", align: "center" },
+      { title: "#", render: (rowData) => rowData.tableData.id + 1, width: "10%", align: "center" },
       {
         field: "room_id",
         title: "Room number",

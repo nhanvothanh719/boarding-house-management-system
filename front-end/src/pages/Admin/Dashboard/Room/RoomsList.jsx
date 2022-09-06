@@ -43,7 +43,7 @@ export default function RoomsList() {
 
   var columns = [];
     columns = [
-      { title: '#', render: (rowData) => rowData.tableData.id + 1 },
+      { title: "#", render: (rowData) => rowData.tableData.id + 1, width: "10%", align: "center" },
       { field: "number", title: "Number", align: "center" },
       { field: "category_id", title: "Category", render: rowData => <p> {rowData.category.name} </p> },
       { 

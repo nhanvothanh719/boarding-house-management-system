@@ -13,7 +13,6 @@ import "../../assets/css/Login.css";
 
 function LoginPage() {
   const [isLogin, setIsLogin] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -40,7 +39,6 @@ function LoginPage() {
             localStorage.setItem("user_role", "renter");
           }
           setIsLogin(true);
-          setIsAdmin(response.data.isAdmin);
           swal("Success", response.data.message, "success");
         }
       })
@@ -50,11 +48,7 @@ function LoginPage() {
   };
   //Redirect to Profile page if user logs in successfully
   if (isLogin) {
-    if (isAdmin === true) {
-      return <Redirect to={"/admin/dashboard"} />;
-    } else {
       return <Redirect to={"/home"} />;
-    }
   }
   return (
     <Fragment>

@@ -26,8 +26,8 @@ export default function RenterInvoicesList({ match }) {
 
   var columns = [];
   columns = [
-    { title: "#", render: (rowData) => rowData.tableData.id + 1 },
-    { field: "total", title: "Total", editable: "never" },
+    { title: "#", render: (rowData) => rowData.tableData.id + 1, width: "10%", align: "center" },
+    { field: "total", title: "Total", width: "30%", editable: "never" },
     {
       field: "month",
       title: "Month",
@@ -49,7 +49,7 @@ export default function RenterInvoicesList({ match }) {
     },
     {
       field: "is_paid",
-      title: "Paid",
+      title: "Condition",
       render: (rowData) => (
         <div>
           <span

@@ -40,7 +40,7 @@ export default function RegisterService() {
 
   let columns = [];
     columns = [
-      { field: "id", title: "ID", align: "center" },
+      { title: "#", render: (rowData) => rowData.tableData.id + 1, width: "10%", align: "center" },
       {
         field: "user_id",
         title: "Renter",

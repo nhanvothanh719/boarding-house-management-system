@@ -51,7 +51,7 @@ export default function RoomContractsList() {
 
   var columns = [];
     columns = [
-      { title: "#", render: (rowData) => rowData.tableData.id + 1 },
+      { title: "#", render: (rowData) => rowData.tableData.id + 1, width: "10%", align: "center" },
       {
         field: "renter_id",
         title: "Renter name",

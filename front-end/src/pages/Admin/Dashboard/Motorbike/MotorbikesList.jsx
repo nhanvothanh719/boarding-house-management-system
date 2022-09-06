@@ -46,7 +46,7 @@ export default function MotorbikesList() {
 
   var columns = [];
     columns = [
-      { title: "#", render: (rowData) => rowData.tableData.id + 1 },
+      { title: "#", render: (rowData) => rowData.tableData.id + 1, width: "10%", align: "center" },
       { 
         field: "license_plate", 
         title: "License plate",
