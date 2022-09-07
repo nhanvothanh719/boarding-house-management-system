@@ -4,6 +4,8 @@ import { Button } from "react-bootstrap";
 import MaterialTable from "material-table";
 import swal from "sweetalert";
 import axios from "axios";
+import { IconButton, Tooltip } from "@mui/material";
+import DescriptionIcon from "@mui/icons-material/Description";
 
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
@@ -103,7 +105,13 @@ export default function BreachesList() {
       {
         field: "description",
         title: "Description",
-        width: "50%",
+        // render: (rowData) => (
+        //   <Tooltip title="View description">
+        //     <IconButton>
+        //       <DescriptionIcon style={{ color: "black" }} />
+        //     </IconButton>
+        //   </Tooltip>
+        // ),
       },
     ];
 

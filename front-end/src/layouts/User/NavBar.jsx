@@ -38,6 +38,8 @@ function NavBar() {
       setNavBarItemsListChange(true);
       swal("Success", response.data.message, "success");
       history.push("/");
+      //Refresh page
+      window.location.reload();
     });
   };
   
@@ -97,9 +99,10 @@ function NavBar() {
               className="navItem"
             >
               <NavDropdown.Item href="/renter/view-room-details" className="customDropdownItem">Room details</NavDropdown.Item>
-              <NavDropdown.Item href="/renter/send-problem" className="customDropdownItem">Problem creating</NavDropdown.Item>
               <NavDropdown.Item href="/renter/register-optional-service" className="customDropdownItem">Services registration</NavDropdown.Item>
               <NavDropdown.Item href="/renter/view-all-invoices" className="customDropdownItem">Invoices payment</NavDropdown.Item>
+              <NavDropdown.Item href="/renter/view-all-breach-histories" className="customDropdownItem">Breach histories</NavDropdown.Item>
+              <NavDropdown.Item href="/renter/send-problem" className="customDropdownItem">Problem creating</NavDropdown.Item>
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>

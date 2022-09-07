@@ -28,6 +28,7 @@ use App\Http\Controllers\Renter\RenterInvoiceController;
 use App\Http\Controllers\Renter\RenterProblemController;
 use App\Http\Controllers\Renter\RenterServiceController;
 use App\Http\Controllers\Renter\RenterRoomContractController;
+use App\Http\Controllers\Renter\RenterBreachHistoryController;
 
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/register', [AuthController::class, 'register']);
@@ -67,6 +68,9 @@ Route::middleware('auth:api')->group(function(){
         Route::get('/all-renter-registered-services', [RenterServiceController::class, 'getRegisteredServices']);
 
         Route::get('/get-renter-room-contract', [RenterRoomContractController::class, 'getRenterRoomContract']);
+
+        Route::get('/get-all-renter-breaches', [RenterBreachHistoryController::class, 'getRenterBreaches']);
+        Route::get('/get-renter-breach-histories/{id}', [RenterBreachHistoryController::class, 'getRenterBreachHistories']);
     });
 
     //Dashboard

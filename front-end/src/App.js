@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Switch, Route, Redirect } from "react-router-dom";
 
@@ -24,6 +24,7 @@ import ResetPasswordPage from "./pages/Auth/ResetPasswordPage";
   });
 
 function App() {
+
   return (
     <Router>
       <Switch>
