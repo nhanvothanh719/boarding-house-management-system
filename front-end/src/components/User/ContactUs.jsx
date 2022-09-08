@@ -1,19 +1,27 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import { Button, Card, Col, Container, Form, FormGroup, Row, } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelopeOpen, faHome, faPhone, } from "@fortawesome/free-solid-svg-icons";
 import swal from "sweetalert";
 
-import RestClient from "../../RestAPI/RestClient";
 import AppUrl from "../../RestAPI/AppUrl";
+import axios from "axios";
 
 function ContactUS() {
-  const sendContactUs = () => {
-    let name = document.getElementById("inputName").value;
-    let email = document.getElementById("inputEmail").value;
-    let message = document.getElementById("inputMessage").value;
-    let jsonDataObject = { name: name, email: email, message: message };
-    RestClient.PostRequest(AppUrl.ContactUs, JSON.stringify(jsonDataObject))
+  const [input, setInput] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+
+  const sendContactUs = (e) => {
+    const data = {
+      name: input.name,
+      email: input.email,
+      message: input.message,
+    };
+      
+    axios.post(AppUrl.ContactUs, data)
       .then((result) => {
         //Delete input after submit the form
         document.getElementById("inputName").value = "";
@@ -30,6 +38,12 @@ function ContactUS() {
         alert(error);
       });
   };
+
+  const handleInput = (e) => {
+    e.persist();
+    setInput({ ...input, [e.target.name]: e.target.value });
+  };
+
 
   return (
     <Fragment>
@@ -52,7 +66,9 @@ function ContactUS() {
                         <Form.Control
                           type="text"
                           id="inputName"
-                          placeholder="Enter your name"
+                          name="name"
+                          value={input.name}
+                          onChange={handleInput}
                           required
                         />
                       </FormGroup>
@@ -64,8 +80,10 @@ function ContactUS() {
                           </span>
                           <Form.Control
                             type="email"
+                            name="email"
                             id="inputEmail"
-                            placeholder="Enter your email"
+                            value={input.email}
+                            onChange={handleInput}
                             required
                           />
                         </div>
@@ -76,11 +94,13 @@ function ContactUS() {
                         <Form.Label for="name">Message:</Form.Label>
                         <Form.Control
                           as="textarea"
+                          name="message"
                           id="inputMessage"
                           rows={6}
                           cols={25}
+                          value={input.message}
+                          onChange={handleInput}
                           required
-                          placeholder="Message"
                         ></Form.Control>
                       </Form.Group>
                     </Col>
