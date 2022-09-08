@@ -39,7 +39,9 @@ export default function CreateAnnouncementModal(props) {
   };
 
   const sendAnnouncement = (e) => {
-    
+    e.preventDefault();
+    props.setLoaderClass('');
+    props.setDisplayComponentsClass('d-none');
     const data = {
       all_id: props.rentersIdList,
       title: input.title,
@@ -57,6 +59,8 @@ export default function CreateAnnouncementModal(props) {
             displayModal();
           }, 1000);
         }
+        props.setLoaderClass('d-none');
+        props.setDisplayComponentsClass('');
       })
       .catch((error) => {
         console.log(error);

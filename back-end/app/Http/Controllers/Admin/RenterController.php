@@ -47,6 +47,7 @@ class RenterController extends Controller
             'occupation' => 'required|max:100',
             'permanent_address' => 'required',
             'profile_picture' => 'image',
+            'role_id' => 'required',
         ]);
         if($validator->fails()) 
         {

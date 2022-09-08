@@ -9,6 +9,7 @@ import moment from "moment";
 
 
 import Loading from "../../../../components/Loading/Loading";
+import ConfirmLoading from "../../../../components/Loading/ConfirmLoading";
 import AppUrl from "../../../../RestAPI/AppUrl";
 import CreateBreachHistoryModal from "../../../../components/Modals/Breach/CreateBreachHistoryModal";
 import BreachCount from "../../../../components/Charts/AdminCharts/BreachCount";
@@ -19,6 +20,8 @@ export default function BreachHistories() {
 
   const [details] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loaderClass, setLoaderClass] = useState("d-none");
+  const [displayComponentsClass, setDisplayComponentsClass] = useState("");
   const [breachHistories, setBreachHistories] = useState([]);
   const [breachHistoriesChange, setBreachHistoriesChange] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -74,6 +77,10 @@ export default function BreachHistories() {
   return (
     <Fragment>
       <WebPageTitle pageTitle="Breach histories" />
+      <div className={loaderClass}>
+        <ConfirmLoading />
+      </div>
+      <div className={displayComponentsClass}>
       <BreachCount isDataChange={breachHistoriesChange}/>
       <BreachRate isDataChange={breachHistoriesChange}/>
       <div className="customDatatable">
@@ -87,6 +94,8 @@ export default function BreachHistories() {
           </Button>
           <CreateBreachHistoryModal
         isShown={showCreateModal}
+        setLoaderClass={setLoaderClass}
+        setDisplayComponentsClass={setDisplayComponentsClass}
         setCreateModalStatus={setCreateModalStatus}
         updateCreateModalStatus={updateCreateModalStatus}
       />
@@ -131,6 +140,7 @@ export default function BreachHistories() {
             }),
         }}
       />
+      </div>
       </div>
     </Fragment>
   );

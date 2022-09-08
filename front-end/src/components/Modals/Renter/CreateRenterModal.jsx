@@ -26,8 +26,8 @@ export default function CreateRenterModal(props) {
     role_id: "",
   });
   const [dateOfBirth, setDateOfBirth] = useState(null);
-  const [selectGender, setSelectGender] = useState(0);
-  const [selectRole, setSelectRole] = useState(1);
+  const [selectGender, setSelectGender] = useState('');
+  const [selectRole, setSelectRole] = useState('');
 
   useEffect(() => {
     if (props.isShown === true) {
@@ -65,6 +65,8 @@ export default function CreateRenterModal(props) {
 
   const addRenter = (e) => {
     e.preventDefault();
+    props.setLoaderClass("");
+    props.setDisplayComponentsClass("d-none");
     const renter = new FormData();
     renter.append("name", input.name);
     renter.append("email", input.email);
@@ -77,13 +79,7 @@ export default function CreateRenterModal(props) {
     renter.append("phone_number", input.phone_number);
     renter.append("occupation", input.occupation);
     renter.append("permanent_address", input.permanent_address);
-    if (!selectRole) {
-      setTimeout(() => {
-        displayModal();
-      }, 1000);
-    } else {
-      renter.append("role_id", selectRole);
-    }
+    renter.append("role_id", selectRole);
     if (avatar.image) {
       renter.append("profile_picture", avatar.image);
     }
@@ -100,6 +96,8 @@ export default function CreateRenterModal(props) {
             displayModal();
           }, 1000);
         }
+        props.setDisplayComponentsClass("");
+        props.setLoaderClass("d-none");
       })
       .catch((error) => {
         console.log(error);
@@ -294,23 +292,23 @@ export default function CreateRenterModal(props) {
               </form>
             </div>
             <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-primary"
-                data-dismiss="modal"
-                onClick={addRenter}
-              >
-                Create
-              </button>
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-dismiss="modal"
-                onClick={closeModal}
-              >
-                Close
-              </button>
-            </div>
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-dismiss="modal"
+              onClick={addRenter}
+            >
+              Create
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+              onClick={closeModal}
+            >
+              Close
+            </button>
+          </div>
           </div>
         </div>
       </div>

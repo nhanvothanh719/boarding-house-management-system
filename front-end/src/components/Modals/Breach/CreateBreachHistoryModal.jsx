@@ -48,6 +48,8 @@ export default function CreateBreachHistoryModal(props) {
 
   const addBreachHistory = (e) => {
     e.preventDefault();
+    props.setLoaderClass('');
+    props.setDisplayComponentsClass('d-none');
     const data = {
       breach_id: selectedBreach.id,
       renter_id: selectedRenter.id,
@@ -66,6 +68,8 @@ export default function CreateBreachHistoryModal(props) {
               displayModal();
             }, 1000);
           }
+        props.setLoaderClass('d-none');
+        props.setDisplayComponentsClass('');
       })
       .catch((error) => {
         console.log(error);

@@ -11,6 +11,7 @@ import FolderSharedIcon from "@mui/icons-material/FolderShared";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 import Loading from "../../../../components/Loading/Loading";
+import ConfirmLoading from "../../../../components/Loading/ConfirmLoading";
 import AppUrl from "../../../../RestAPI/AppUrl";
 import DefaultAvatar from "../../../../assets/images/avatar.jpeg";
 import "../../../../assets/css/Dashboard/datatable.css";
@@ -22,6 +23,8 @@ export default function UsersList() {
 
   const [details] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loaderClass, setLoaderClass] = useState("d-none");
+  const [displayComponentsClass, setDisplayComponentsClass] = useState("");
   const [rentersList, setRentersList] = useState([]);
   const [rentersListChange, setRentersListChange] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -63,7 +66,12 @@ export default function UsersList() {
 
   var columns = [];
   columns = [
-    { title: "#", render: (rowData) => rowData.tableData.id + 1, width: "10%", align: "center" },
+    {
+      title: "#",
+      render: (rowData) => rowData.tableData.id + 1,
+      width: "10%",
+      align: "center",
+    },
     {
       field: "profile_picture",
       title: "Avatar",
@@ -120,83 +128,92 @@ export default function UsersList() {
   return (
     <Fragment>
       <WebPageTitle pageTitle="Users" />
-      <div className="customDatatable">
-        <div className="customDatatableHeader">
-          <Button
-            className="createBtn"
-            style={{ backgroundColor: "white", color: "#1C4E80" }}
-            onClick={(e) => setShowCreateModal(true)}
-          >
-            Add new user
-          </Button>
-        </div>
-        <MaterialTable
-          columns={columns}
-          data={rentersList}
-          title={<span className="customDatatableTitle">All users</span>}
-          options={{
-            searchAutoFocus: false,
-            searchFieldVariant: "outlined",
-            filtering: false,
-            pageSizeOptions: [5, 10],
-            paginationType: "stepped",
-            exportButton: true,
-            exportAllData: true,
-            actionsColumnIndex: -1,
-            headerStyle: {
-              fontFamily: "Anek Telugu, sans-serif",
-            },
-          }}
-          actions={[
-            {
-              icon: AccountCircleIcon,
-              tooltip: "View & Edit",
-              onClick: (event, user) =>
-                history.push(`/admin/edit-user/${user.id}`),
-            },
-            (user) => ({
-              icon: user.is_locked ? LockOpenIcon : LockOutlinedIcon,
-              tooltip: user.is_locked ? "Unlock account" : "Lock account",
-              onClick: (event, user) => lockRenterAccount(user.id),
-              disabled: user.role_id === 0,
-            }),
-            (renter) => ({
-              icon: FolderSharedIcon,
-              tooltip: "Renter details",
-              onClick: (event, renter) =>
-                history.push(`/admin/view-all-invoices-of-renter/${renter.id}`),
-              disabled: renter.role_id === 0,
-            }),
-          ]}
-          editable={{
-            isDeletable: (rowData) => rowData.id !== currentUserId,
-            onRowDelete: (thisRenter) =>
-              new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  const selectedRenter = [...details];
-                  const index = thisRenter.tableData.id;
-                  selectedRenter.splice(index, 1); //1: only one record
-                  axios
-                    .delete(AppUrl.DeleteRenter + thisRenter.id)
-                    .then((response) => {
-                      if (response.data.status === 200) {
-                        swal("Success", response.data.message, "success");
-                        setRentersListChange(true);
-                      } else if (response.data.status === 404) {
-                        swal("Error", response.data.message, "error");
-                      }
-                    });
-                  resolve();
-                }, 1000);
+      <div className={loaderClass}>
+        <ConfirmLoading />
+      </div>
+      <div className={displayComponentsClass}>
+        <div className="customDatatable">
+          <div className="customDatatableHeader">
+            <Button
+              className="createBtn"
+              style={{ backgroundColor: "white", color: "#1C4E80" }}
+              onClick={(e) => setShowCreateModal(true)}
+            >
+              Add new user
+            </Button>
+          </div>
+          <MaterialTable
+            columns={columns}
+            data={rentersList}
+            title={<span className="customDatatableTitle">All users</span>}
+            options={{
+              searchAutoFocus: false,
+              searchFieldVariant: "outlined",
+              filtering: false,
+              pageSizeOptions: [5, 10],
+              paginationType: "stepped",
+              exportButton: true,
+              exportAllData: true,
+              actionsColumnIndex: -1,
+              headerStyle: {
+                fontFamily: "Anek Telugu, sans-serif",
+              },
+            }}
+            actions={[
+              {
+                icon: AccountCircleIcon,
+                tooltip: "View & Edit",
+                onClick: (event, user) =>
+                  history.push(`/admin/edit-user/${user.id}`),
+              },
+              (user) => ({
+                icon: user.is_locked ? LockOpenIcon : LockOutlinedIcon,
+                tooltip: user.is_locked ? "Unlock account" : "Lock account",
+                onClick: (event, user) => lockRenterAccount(user.id),
+                disabled: user.role_id === 0,
               }),
-          }}
+              (renter) => ({
+                icon: FolderSharedIcon,
+                tooltip: "Renter details",
+                onClick: (event, renter) =>
+                  history.push(
+                    `/admin/view-all-invoices-of-renter/${renter.id}`
+                  ),
+                disabled: renter.role_id === 0,
+              }),
+            ]}
+            editable={{
+              isDeletable: (rowData) => rowData.id !== currentUserId,
+              onRowDelete: (thisRenter) =>
+                new Promise((resolve, reject) => {
+                  setTimeout(() => {
+                    const selectedRenter = [...details];
+                    const index = thisRenter.tableData.id;
+                    selectedRenter.splice(index, 1); //1: only one record
+                    axios
+                      .delete(AppUrl.DeleteRenter + thisRenter.id)
+                      .then((response) => {
+                        if (response.data.status === 200) {
+                          swal("Success", response.data.message, "success");
+                          setRentersListChange(true);
+                        } else if (response.data.status === 404) {
+                          swal("Error", response.data.message, "error");
+                        }
+                      });
+                    resolve();
+                  }, 1000);
+                }),
+            }}
+          />
+        </div>
+        <CreateRenterModal
+          isShown={showCreateModal}
+          setLoaderClass={setLoaderClass}
+          setDisplayComponentsClass={setDisplayComponentsClass}
+          setCreateModalStatus={setCreateModalStatus}
+          updateModalStatus={updateModalStatus}
         />
       </div>
-      <CreateRenterModal
-        isShown={showCreateModal}
-        setCreateModalStatus={setCreateModalStatus}
-        updateModalStatus={updateModalStatus}
-      />
     </Fragment>
   );
 }

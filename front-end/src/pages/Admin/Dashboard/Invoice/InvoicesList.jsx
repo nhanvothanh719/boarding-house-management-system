@@ -7,6 +7,7 @@ import axios from "axios";
 import moment from "moment";
 
 import Loading from "../../../../components/Loading/Loading";
+import ConfirmLoading from "../../../../components/Loading/ConfirmLoading";
 import AppUrl from "../../../../RestAPI/AppUrl";
 import { Button } from "react-bootstrap";
 import SelectRenterModal from "../../../../components/Modals/Invoice/SelectRenterModal";
@@ -18,6 +19,8 @@ export default function InvoicesList() {
 
   const [details] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loaderClass, setLoaderClass] = useState("d-none");
+  const [displayComponentsClass, setDisplayComponentsClass] = useState("");
   const [invoicesList, setInvoicesList] = useState([]);
   const [invoicesListChange, setInvoicesListChange] = useState(false);
   const [showSelectModal, setShowSelectModal] = useState(false);
@@ -97,6 +100,8 @@ export default function InvoicesList() {
     return (
       <Fragment>
         <WebPageTitle pageTitle="Invoices" />
+        <div className={loaderClass}><ConfirmLoading/></div>
+        <div className={displayComponentsClass}>
         <div className="customDatatable">
           <div className="customDatatableHeader">
           <Button
@@ -137,6 +142,8 @@ export default function InvoicesList() {
               onRowUpdate: (newInvoice, oldInvoice) =>
                 new Promise((resolve, reject) => {
                   setTimeout(() => {
+                    setLoaderClass('');
+                    setDisplayComponentsClass('d-none');
                     const data = {
                       effective_from: moment(newInvoice.effective_until)
                         .utc()
@@ -155,6 +162,8 @@ export default function InvoicesList() {
                         } else if (response.data.status === 404) {
                           swal("Error", response.data.message, "error");
                         }
+                        setLoaderClass('d-none');
+                        setDisplayComponentsClass('');
                       });
                     resolve();
                   }, 1000);
@@ -180,6 +189,7 @@ export default function InvoicesList() {
                 }),
             }}
           />
+        </div>
         </div>
       </Fragment>
     );
