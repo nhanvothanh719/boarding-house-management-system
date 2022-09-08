@@ -12,7 +12,7 @@ import {
   Legend,
 } from "recharts";
 
-import AppUrl from "../../RestAPI/AppUrl";
+import AppUrl from "../../../RestAPI/AppUrl";
 
 export default function BreachReport() {
   const [breachesInMonthCount, setBreachesInMonthCount] = useState([]);

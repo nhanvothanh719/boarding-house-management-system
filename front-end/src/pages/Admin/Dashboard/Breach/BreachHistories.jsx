@@ -11,8 +11,8 @@ import moment from "moment";
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
 import CreateBreachHistoryModal from "../../../../components/Modals/Breach/CreateBreachHistoryModal";
-import BreachCount from "../../../../components/Charts/BreachCount";
-import BreachRate from "../../../../components/Charts/BreachRate";
+import BreachCount from "../../../../components/Charts/AdminCharts/BreachCount";
+import BreachRate from "../../../../components/Charts/AdminCharts/BreachRate";
 import WebPageTitle from "../../../../components/WebPageTitle/WebPageTitle";
 
 export default function BreachHistories() {

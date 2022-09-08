@@ -8,8 +8,8 @@ import moment from "moment";
 
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
-import BalanceVariation from "../../../../components/Charts/BalanceVariation";
-import BalanceCategoryRate from "../../../../components/Charts/BalanceCategoryRate";
+import BalanceVariation from "../../../../components/Charts/AdminCharts/BalanceVariation";
+import BalanceCategoryRate from "../../../../components/Charts/AdminCharts/BalanceCategoryRate";
 import AddBalanceChangeModal from "../../../../components/Modals/Balance/AddBalanceChangeModal";
 import WebPageTitle from "../../../../components/WebPageTitle/WebPageTitle";
 

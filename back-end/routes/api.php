@@ -6,22 +6,24 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\ContactUsController;
-use App\Http\Controllers\RoomController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\RenterController;
-use App\Http\Controllers\RoleController;
-use App\Http\Controllers\MotorbikeController;
-use App\Http\Controllers\ServiceController;
-use App\Http\Controllers\ServiceRegistrationController;
-use App\Http\Controllers\InvoiceController;
-use App\Http\Controllers\PaymentController;
-use App\Http\Controllers\AnnouncementController;
-use App\Http\Controllers\BalanceController;
-use App\Http\Controllers\BreachController;
-use App\Http\Controllers\RoomContractController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\ProblemController;
+use App\Http\Controllers\AvailableRoomController;
 use App\Http\Controllers\RoomRentRegistrationController;
+
+use App\Http\Controllers\Admin\RoomController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\RenterController;
+use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\MotorbikeController;
+use App\Http\Controllers\Admin\ServiceController;
+use App\Http\Controllers\Admin\ServiceRegistrationController;
+use App\Http\Controllers\Admin\InvoiceController;
+use App\Http\Controllers\Admin\AnnouncementController;
+use App\Http\Controllers\Admin\BalanceController;
+use App\Http\Controllers\Admin\BreachController;
+use App\Http\Controllers\Admin\RoomContractController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ProblemController;
+
 
 use App\Http\Controllers\Renter\RenterRoomController;
 use App\Http\Controllers\Renter\RenterInvoiceController;
@@ -37,8 +39,9 @@ Route::post('/contact-us', [ContactUsController::class, 'sendContactUsMessage'])
 Route::post('/forget-password', [PasswordResetController::class, 'sendEmailToResetPassword']);
 Route::post('/reset-password', [PasswordResetController::class, 'resetPassword']);  
                 
-Route::get('/all-available-rooms', [RoomController::class, 'displayAllAvailableRooms']);
-Route::get('/available-room-details/{id}', [RoomController::class, 'getAvailableRoomDetails']);
+Route::get('/all-available-rooms', [AvailableRoomController::class, 'displayAllAvailableRooms']);
+Route::get('/available-room-details/{id}', [AvailableRoomController::class, 'getAvailableRoomDetails']);
+
 Route::post('/store-room-rent-registration', [RoomRentRegistrationController::class, 'storeRoomRentRegistration']);
 
 Route::middleware('auth:api')->group(function(){
@@ -57,7 +60,7 @@ Route::middleware('auth:api')->group(function(){
         Route::get('/get-invoice-details/{id}', [RenterInvoiceController::class, 'getInvoiceDetails']);
         Route::get('/all-renter-invoices', [RenterInvoiceController::class, 'getRenterInvoices']);
 
-        Route::post('/make-payment/{id}', [PaymentController::class, 'makePayment']);
+        Route::post('/make-payment/{id}', [RenterInvoiceController::class, 'makePayment']);
         
         Route::get('/all-renter-problems', [RenterProblemController::class, 'getRenterProblems']);
         Route::post('/store-renter-problem', [RenterProblemController::class, 'storeProblem']);

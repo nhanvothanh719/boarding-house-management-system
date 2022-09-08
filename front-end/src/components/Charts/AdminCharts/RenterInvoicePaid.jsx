@@ -10,7 +10,7 @@ import {
   Tooltip,
 } from "recharts";
 
-import AppUrl from "../../RestAPI/AppUrl";
+import AppUrl from "../../../RestAPI/AppUrl";
 
 export default function RenterInvoicePaid(props) {
   const [invoicesList, setInvoicesList] = useState([]);

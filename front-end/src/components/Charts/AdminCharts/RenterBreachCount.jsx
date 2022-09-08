@@ -11,7 +11,7 @@ import {
   BarChart,
 } from "recharts";
 
-import AppUrl from "../../RestAPI/AppUrl";
+import AppUrl from "../../../RestAPI/AppUrl";
 
 export default function RenterBreachCount(props) {
   const [breachesTotal, setBreachesTotal] = useState([]);

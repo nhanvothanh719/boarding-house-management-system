@@ -3,7 +3,7 @@ import React, { Fragment, useEffect, useState } from "react";
 
 import { Pie, PieChart, Sector } from "recharts";
 
-import AppUrl from "../../RestAPI/AppUrl";
+import AppUrl from "../../../RestAPI/AppUrl";
 
 export default function BreachRate(props) {
   const [activeIndex, setActiveIndex] = useState(0);

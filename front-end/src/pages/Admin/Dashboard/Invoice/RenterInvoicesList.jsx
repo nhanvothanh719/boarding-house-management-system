@@ -6,8 +6,8 @@ import MaterialTable from "material-table";
 
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
-import RenterInvoicePaid from "../../../../components/Charts/RenterInvoicePaid";
-import RenterUsedServiceCount from "../../../../components/Charts/RenterUsedServiceCount";
+import RenterInvoicePaid from "../../../../components/Charts/AdminCharts/RenterInvoicePaid";
+import RenterUsedServiceCount from "../../../../components/Charts/AdminCharts/RenterUsedServiceCount";
 import WebPageTitle from "../../../../components/WebPageTitle/WebPageTitle";
 
 export default function RenterInvoicesList({ match }) {

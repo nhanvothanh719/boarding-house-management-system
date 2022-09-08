@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
 
 use App\Helpers\CustomHelper;
 
@@ -41,23 +43,6 @@ class RoomController extends Controller
         return response([
             'status' => 200,
             'allStatuses' => $all_statuses,
-        ]);
-    }
-
-    public function displayAllAvailableRooms() {
-        $full_status_id = RoomStatus::where('name', RoomStatus::STATUS_FULL)->value('id');
-        $available_rooms = Room::where('status_id', '!=', $full_status_id)->get();
-        return response([
-            'status' => 200,
-            'availableRooms' => $available_rooms,
-        ]);
-    }
-
-    public function getAvailableRoomDetails($id) {
-        $room_details = Room::where('id', $id)->get();
-        return response([
-            'details' => $room_details,
-            'status' => 200,
         ]);
     }
 

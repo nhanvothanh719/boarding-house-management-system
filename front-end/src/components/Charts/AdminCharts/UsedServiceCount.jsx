@@ -11,7 +11,7 @@ import {
   YAxis,
 } from "recharts";
 
-import AppUrl from "../../RestAPI/AppUrl";
+import AppUrl from "../../../RestAPI/AppUrl";
 
 export default function UsedServiceCount() {
   const [usedServicesCount, setUsedServiceCount] = useState([]);

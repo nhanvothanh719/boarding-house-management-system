@@ -3,7 +3,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import axios from "axios";
 import { XAxis, YAxis, LabelList, BarChart, Bar } from "recharts";
 
-import AppUrl from "../../RestAPI/AppUrl";
+import AppUrl from "../../../RestAPI/AppUrl";
 
 export default function RenterUsedServiceCount(props) {
   const [usedServicesList, setUsedServicesList] = useState([]);

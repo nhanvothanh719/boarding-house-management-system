@@ -3,7 +3,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import axios from "axios";
 import { Tooltip, Legend, Pie, PieChart, Cell } from "recharts";
 
-import AppUrl from "../../RestAPI/AppUrl";
+import AppUrl from "../../../RestAPI/AppUrl";
 
 export default function BalanceCategoryRate(props) {
   const [pieChartData, setPieChartData] = useState([]);

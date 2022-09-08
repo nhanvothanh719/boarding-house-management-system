@@ -3,7 +3,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import axios from "axios";
 import { Legend, Pie, PieChart, Tooltip, Cell } from "recharts";
 
-import AppUrl from "../../RestAPI/AppUrl";
+import AppUrl from "../../../RestAPI/AppUrl";
 
 export default function RenterGenderRate() {
   const [rentersCount, setRentersCount] = useState([]);

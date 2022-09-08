@@ -3,7 +3,7 @@ import { PieChart, Pie, Tooltip, Legend, Cell } from 'recharts';
 
 import axios from "axios";
 
-import AppUrl from "../../RestAPI/AppUrl";
+import AppUrl from "../../../RestAPI/AppUrl";
 
 export default function InvoicePaidRate() {
   const [paidInvoicesRate, setPaidInvoicesRate] = useState("");

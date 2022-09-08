@@ -12,7 +12,7 @@ import {
   LabelList,
 } from "recharts";
 
-import AppUrl from "../../RestAPI/AppUrl";
+import AppUrl from "../../../RestAPI/AppUrl";
 
 export default function BreachCount(props) {
   const [breachesTotal, setBreachesTotal] = useState([]);

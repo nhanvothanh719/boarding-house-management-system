@@ -6,7 +6,7 @@ import axios from "axios";
 
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
-import RenterBreachCount from "../../../../components/Charts/RenterBreachCount";
+import RenterBreachCount from "../../../../components/Charts/AdminCharts/RenterBreachCount";
 import WebPageTitle from "../../../../components/WebPageTitle/WebPageTitle";
 
 export default function RenterBreachDetails({ match }) {
