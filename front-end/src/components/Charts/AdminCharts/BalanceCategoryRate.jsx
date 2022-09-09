@@ -10,6 +10,7 @@ export default function BalanceCategoryRate(props) {
   const [balanceChanges, setBalanceChanges] = useState([]);
   const colors = ["#1C4E80", "#0091D5"];
   const [refreshChart, setRefreshChart] = useState(false);
+  const chartTitle = "Income rate";
 
   useEffect(() => {
     axios.get(AppUrl.GetRecentBalanceChanges).then((response) => {
@@ -51,7 +52,7 @@ export default function BalanceCategoryRate(props) {
   return (
     <Fragment>
       <div className="customChartContainer">
-      <h3 className="customChartTitle">Chart title</h3>
+      <h3 className="customChartTitle">{chartTitle}</h3>
         <PieChart width={300} height={300}>
           <Pie
             data={pieChartData}

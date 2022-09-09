@@ -16,7 +16,8 @@ import AppUrl from "../../../RestAPI/AppUrl";
 
 export default function BreachReport() {
   const [breachesInMonthCount, setBreachesInMonthCount] = useState([]);
-  const color = "#f5f5f5"
+  const color = "#f5f5f5";
+  const chartTitle = "Number of breaches in year";
 
   useEffect(() => {
     axios.get(AppUrl.ReportBreaches).then((response) => {
@@ -29,7 +30,7 @@ export default function BreachReport() {
   return (
     <Fragment>
       <div className="customChartContainer">
-      <h3 className="customChartTitle">Chart title</h3>
+      <h3 className="customChartTitle">{chartTitle}</h3>
       <ComposedChart
         width={620}
         height={350}

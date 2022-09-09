@@ -18,6 +18,7 @@ export default function BreachCount(props) {
   const [breachesTotal, setBreachesTotal] = useState([]);
   const [refreshChart, setRefreshChart] = useState(false);
   const color = "#0091D5";
+  const chartTitle = "Total number of breaches";
 
   useEffect(() => {
     axios.get(AppUrl.GetTotalNumberBreachMade).then((response) => {
@@ -34,7 +35,7 @@ export default function BreachCount(props) {
   return (
     <Fragment>
       <div className="customChartContainer">
-        <h3 className="customChartTitle">Chart title</h3>
+        <h3 className="customChartTitle">{chartTitle}</h3>
         <BarChart
           width={500}
           height={300}

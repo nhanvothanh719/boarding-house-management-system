@@ -17,6 +17,7 @@ export default function BalanceVariation(props) {
     const [balanceChanges, setBalanceChanges] = useState([]);
     const [refreshChart, setRefreshChart] = useState(false);
     const color = "#1C4E80";
+    const chartTitle = "Recent balance changes";
 
     useEffect(() => {
         axios.get(AppUrl.GetRecentBalanceChanges).then((response) => {
@@ -32,7 +33,7 @@ export default function BalanceVariation(props) {
   return (
     <Fragment>
         <div className="customChartContainer">
-        <h3 className="customChartTitle">Chart title</h3>
+        <h3 className="customChartTitle">{chartTitle}</h3>
         <LineChart
         width={670}
         height={300}

@@ -8,6 +8,7 @@ import AppUrl from "../../../RestAPI/AppUrl";
 export default function RoomStatusRate() {
   const [roomsCount, setRoomsCount] = useState([]);
   const colors = ["#EA6A47", "#1C4E80", "#7E909A"];
+  const chartTitle = "Room status rates";
   
   useEffect(() => {
     axios.get(AppUrl.CountRoomsByStatus).then((response) => {
@@ -20,7 +21,7 @@ export default function RoomStatusRate() {
   return (
     <Fragment>
       <div className="customChartContainer">
-      <h3 className="customChartTitle">Chart title</h3>
+      <h3 className="customChartTitle">{chartTitle}</h3>
       <PieChart width={250} height={250}>
         <Pie
           data={roomsCount}

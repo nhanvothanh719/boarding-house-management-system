@@ -15,6 +15,8 @@ import AppUrl from "../../../RestAPI/AppUrl";
 export default function RenterInvoicePaid(props) {
   const [invoicesList, setInvoicesList] = useState([]);
   const color = "#202020";
+  const chartTitle = "Total paid amount for invoice in year";
+
   useEffect(() => {
     axios.get(AppUrl.GetRenterInvoices + props.renterId).then((response) => {
       if (response.data.status === 200) {
@@ -25,7 +27,7 @@ export default function RenterInvoicePaid(props) {
   return (
     <Fragment>
       <div className="customChartContainer">
-        <h3 className="customChartTitle">Chart title</h3>
+        <h3 className="customChartTitle">{chartTitle}</h3>
         <AreaChart
           width={500}
           height={250}

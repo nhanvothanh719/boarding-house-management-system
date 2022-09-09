@@ -10,6 +10,7 @@ export default function BreachRate(props) {
   const [breachesTotal, setBreachesTotal] = useState([]);
   const [refreshChart, setRefreshChart] = useState(false);
   const color = "#1C4E80";
+  const chartTitle = "Breach rates";
 
   useEffect(() => {
     axios.get(AppUrl.GetTotalNumberBreachMade).then((response) => {
@@ -103,7 +104,7 @@ export default function BreachRate(props) {
   return (
     <Fragment>
       <div className="customChartContainer">
-      <h3 className="customChartTitle">Chart title</h3>
+      <h3 className="customChartTitle">{chartTitle}</h3>
         <PieChart
           width={450}
           height={300}

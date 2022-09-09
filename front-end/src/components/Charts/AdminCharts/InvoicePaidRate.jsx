@@ -9,6 +9,7 @@ export default function InvoicePaidRate() {
   const [paidInvoicesRate, setPaidInvoicesRate] = useState("");
   const [invoicePaidMethodsCount, setInvoicePaidMethodsCount] = useState([]);
   const colors = ["#EA6A47", "#1C4E80", "#A5D8DD"];
+  const chartTitle = "Proportion of bills paid";
   
   useEffect(() => {
     axios.get(AppUrl.GetPaidInvoicesRate).then((response) => {
@@ -24,7 +25,7 @@ export default function InvoicePaidRate() {
   return (
     <Fragment>
       <div className="customChartContainer">
-      <h3 className="customChartTitle">Chart title</h3>
+      <h3 className="customChartTitle">{chartTitle}</h3>
         <PieChart width={300} height={300}>
           <Pie
             startAngle={90}

@@ -8,6 +8,7 @@ import AppUrl from "../../../RestAPI/AppUrl";
 export default function RenterGenderRate() {
   const [rentersCount, setRentersCount] = useState([]);
   const colors = ["#1C4E80", "#0091D5"];
+  const chartTitle = "Gender rates";
 
   useEffect(() => {
     axios.get(AppUrl.CountRentersByGender).then((response) => {
@@ -20,7 +21,7 @@ export default function RenterGenderRate() {
   return (
     <Fragment>
       <div className="customChartContainer">
-      <h3 className="customChartTitle">Gender rates</h3>
+      <h3 className="customChartTitle">{chartTitle}</h3>
         <PieChart width={350} height={350}>
           <Pie
             data={rentersCount}

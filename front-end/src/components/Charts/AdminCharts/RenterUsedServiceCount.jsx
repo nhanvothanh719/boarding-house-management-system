@@ -8,6 +8,7 @@ import AppUrl from "../../../RestAPI/AppUrl";
 export default function RenterUsedServiceCount(props) {
   const [usedServicesList, setUsedServicesList] = useState([]);
   const color = "#0091D5";
+  const chartTitle = "Total usage of services";
 
   useEffect(() => {
     axios.get(AppUrl.GetRenterInvoices + props.renterId).then((response) => {
@@ -20,7 +21,7 @@ export default function RenterUsedServiceCount(props) {
   return (
     <Fragment>
       <div className="customChartContainer">
-        <h3 className="customChartTitle">Chart title</h3>
+        <h3 className="customChartTitle">{chartTitle}</h3>
         <BarChart
           width={500}
           height={250}
