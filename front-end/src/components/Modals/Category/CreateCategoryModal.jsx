@@ -53,7 +53,7 @@ export default function CreateCategoryModal(props) {
         if (response.data.status === 200) {
           setErrors([]);
           swal("Success", response.data.message, "success");
-          props.updateCreateModalStatus(true);
+          props.updateModalStatus(true);
         } else if (response.data.status === 422) {
           setErrors(response.data.errors);
           setTimeout(() => {

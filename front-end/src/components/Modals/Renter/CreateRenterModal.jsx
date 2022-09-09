@@ -9,6 +9,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 import AppUrl from "../../../RestAPI/AppUrl";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
 export default function CreateRenterModal(props) {
   const [rolesList, setRolesList] = useState([]);
@@ -25,7 +26,8 @@ export default function CreateRenterModal(props) {
     role_id: "",
   });
   const [dateOfBirth, setDateOfBirth] = useState(null);
-  const [customValidation, setCustomValidation] = useState("");
+  const [selectGender, setSelectGender] = useState('');
+  const [selectRole, setSelectRole] = useState('');
 
   useEffect(() => {
     if (props.isShown === true) {
@@ -63,6 +65,8 @@ export default function CreateRenterModal(props) {
 
   const addRenter = (e) => {
     e.preventDefault();
+    props.setLoaderClass("");
+    props.setDisplayComponentsClass("d-none");
     const renter = new FormData();
     renter.append("name", input.name);
     renter.append("email", input.email);
@@ -70,20 +74,12 @@ export default function CreateRenterModal(props) {
       "date_of_birth",
       moment(dateOfBirth).utc().format("YYYY-MM-DD")
     );
-    renter.append("gender", input.gender);
+    renter.append("gender", selectGender);
     renter.append("id_card_number", input.id_card_number);
     renter.append("phone_number", input.phone_number);
     renter.append("occupation", input.occupation);
     renter.append("permanent_address", input.permanent_address);
-    if(!input.role_id) {
-        setCustomValidation("Role cannot be null");
-        setTimeout(() => {
-            displayModal();
-          }, 1000);
-    }
-    else {
-        renter.append("role_id", input.role_id);
-    }
+    renter.append("role_id", selectRole);
     if (avatar.image) {
       renter.append("profile_picture", avatar.image);
     }
@@ -100,6 +96,8 @@ export default function CreateRenterModal(props) {
             displayModal();
           }, 1000);
         }
+        props.setDisplayComponentsClass("");
+        props.setLoaderClass("d-none");
       })
       .catch((error) => {
         console.log(error);
@@ -173,6 +171,7 @@ export default function CreateRenterModal(props) {
                   <label className="customModalLabel">Date of birth:</label>
                   <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <DatePicker
+                      label="Date of birth"
                       renderInput={(props) => (
                         <TextField fullWidth required {...props} />
                       )}
@@ -224,7 +223,7 @@ export default function CreateRenterModal(props) {
                 <small className="text-danger">
                   {errors.permanent_address}
                 </small>
-                <div className="formInput form-group">
+                <div className="formInput">
                   <label className="customModalLabel">Profile picture:</label>
                   <input
                     type="file"
@@ -235,65 +234,81 @@ export default function CreateRenterModal(props) {
                 </div>
                 <small className="text-danger">{errors.profile_picture}</small>
                 <div>
+                  <label className="customModalLabel">Gender:</label>
+                  <FormControl fullWidth>
+                    <InputLabel>Gender</InputLabel>
+                    <Select
+                      label="Gender"
+                      //name="gender"
+                      onChange={(e) => setSelectGender(e.target.value)}
+                      value={selectGender}
+                      required
+                    >
+                      <MenuItem
+                        value={0}
+                        style={{ display: "block", padding: "5px 30px 5px" }}
+                      >
+                        Female
+                      </MenuItem>
+                      <MenuItem
+                        value={1}
+                        style={{ display: "block", padding: "5px 30px 5px" }}
+                      >
+                        Male
+                      </MenuItem>
+                    </Select>
+                  </FormControl>
+                </div>
+                <small className="text-danger">{errors.gender}</small>
+                <div>
                   <label className="customModalLabel">Role:</label>
-                  <select
-                    className="form-control"
-                    name="role_id"
-                    onChange={handleInput}
-                    value={input.role_id}
-                  >
-                    <option selected>--- Select role ---</option>
-                    {rolesList.map((role) => {
-                      return (
-                        <option value={role.id} key={role.id}>
-                          {" "}
-                          {role.name}{" "}
-                        </option>
-                      );
-                    })}
-                  </select>
+                  <FormControl fullWidth>
+                    <InputLabel>Role</InputLabel>
+                    <Select
+                      label="Role"
+                      //name="role_id"
+                      onChange={(e) => setSelectRole(e.target.value)}
+                      value={selectRole}
+                      required
+                    >
+                      {rolesList.map((role) => {
+                        return (
+                          <MenuItem
+                            value={role.id}
+                            key={role.id}
+                            style={{
+                              display: "block",
+                              padding: "5px 30px 5px",
+                            }}
+                          >
+                            {role.name}
+                          </MenuItem>
+                        );
+                      })}
+                    </Select>
+                  </FormControl>
                 </div>
                 <small className="text-danger">{errors.role_id}</small>
-                <div>
-                  <label className="customModalLabel">Gender:</label>
-                  <select
-                    class="form-control"
-                    name="gender"
-                    onChange={handleInput}
-                    value={input.gender}
-                  >
-                    <option selected>--- Select gender ---</option>
-                    <option value="0" key="0">
-                      {" "}
-                      Female{" "}
-                    </option>
-                    <option value="1" key="1">
-                      {" "}
-                      Male{" "}
-                    </option>
-                  </select>
-                </div>
-                <small className="text-danger">{customValidation}</small>
               </form>
             </div>
             <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-primary"
-                data-dismiss="modal"
-                onClick={addRenter}
-              >
-                Create
-              </button>
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-dismiss="modal"
-                onClick={closeModal}
-              >
-                Close
-              </button>
-            </div>
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-dismiss="modal"
+              onClick={addRenter}
+            >
+              Create
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+              onClick={closeModal}
+            >
+              Close
+            </button>
+          </div>
           </div>
         </div>
       </div>

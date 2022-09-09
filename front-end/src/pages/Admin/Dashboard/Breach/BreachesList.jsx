@@ -4,10 +4,14 @@ import { Button } from "react-bootstrap";
 import MaterialTable from "material-table";
 import swal from "sweetalert";
 import axios from "axios";
+import { IconButton, Tooltip } from "@mui/material";
+import DescriptionIcon from "@mui/icons-material/Description";
 
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
 import CreateBreachModal from "../../../../components/Modals/Breach/CreateBreachModal";
+import WebPageTitle from "../../../../components/WebPageTitle/WebPageTitle";
+import EditBreachModal from "../../../../components/Modals/Breach/EditBreachModal";
 
 export default function BreachesList() {
   const [details] = useState([]);
@@ -15,16 +19,10 @@ export default function BreachesList() {
   const [breachesList, setBreachesList] = useState([]);
   const [breachesListChange, setBreachesListChange] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [selectedBreachId, setSelectedBreachId] = useState(null);
   const severity = { 1: "Serious", 2: "Significant", 3: "Normal", 4: "Negligible", };
   const severityStyle = { 1: "statusPassive", 2: "statusPending", 3: "statusOnGoing", 4: "statusActive"};
-
-  const setCreateModalStatus = (status) => {
-    setShowCreateModal(status);
-  };
-
-  const updateCreateModalStatus = (status) => {
-    setBreachesListChange(status);
-  };
 
   useEffect(() => {
     axios.get(AppUrl.ShowBreaches).then((response) => {
@@ -39,15 +37,25 @@ export default function BreachesList() {
     setLoading(false);
   }, [breachesListChange]);
 
+  const setCreateModalStatus = (status) => {
+    setShowCreateModal(status);
+  };
+
+  const setEditModalStatus = (status) => {
+    setShowEditModal(status);
+  };
+
+  const updateModalStatus = (status) => {
+    setBreachesListChange(status);
+  };
+
   var columns = [];
-  if (loading) {
-    return <Loading />;
-  } else {
     columns = [
-      { title: "#", render: (rowData) => rowData.tableData.id + 1 },
+      { title: "#", render: (rowData) => rowData.tableData.id + 1, width: "10%", align: "center" },
       {
         field: "name",
         title: "Name",
+        width: "20%",
         validate: (rowData) => {
           if (rowData.name === "") {
             return "Name cannot be empty";
@@ -70,27 +78,9 @@ export default function BreachesList() {
         },
       },
       {
-        field: "description",
-        title: "Description",
-      },
-      {
-        field: "severity_level",
-        title: "Severity level",
-        lookup: {
-          1: "Serious",
-          2: "Significant",
-          3: "Normal",
-          4: "Negligible",
-        },
-        render: (rowData) => {
-          return (
-              <span className={`${severityStyle[rowData.severity_level]}`}>{severity[rowData.severity_level]}</span>
-          );
-        },
-      },
-      {
         field: "allowed_violate_number",
-        title: "Number of offenses allowed",
+        title: "Allowed offenses number",
+        width: "15%",
         type: "numeric",
         validate: (rowData) => {
           if (!Number.isInteger(rowData.allowed_violate_number)) {
@@ -103,11 +93,42 @@ export default function BreachesList() {
           return true;
         },
       },
+      {
+        field: "severity_level",
+        title: "Severity level",
+        width: "15%",
+        lookup: {
+          1: "Serious",
+          2: "Significant",
+          3: "Normal",
+          4: "Negligible",
+        },
+        render: (rowData) => {
+          return (
+              <span className={`${severityStyle[rowData.severity_level]}`}>{severity[rowData.severity_level]}</span>
+          );
+        },
+      },
+      // {
+      //   field: "description",
+      //   title: "Description",
+      //   //editable: "never",
+      //   render: (rowData) => (
+      //     <Tooltip title="View description">
+      //       <IconButton>
+      //         <DescriptionIcon style={{ color: "black" }} />
+      //       </IconButton>
+      //     </Tooltip>
+      //   ),
+      // },
     ];
-  }
 
+    if (loading) {
+      return <Loading />;
+    }
   return (
     <Fragment>
+      <WebPageTitle pageTitle="Breaches" />
       <div className="customDatatable">
           <div className="customDatatableHeader">
             <Button
@@ -120,7 +141,7 @@ export default function BreachesList() {
             <CreateBreachModal
         isShown={showCreateModal}
         setCreateModalStatus={setCreateModalStatus}
-        updateCreateModalStatus={updateCreateModalStatus}
+        updateModalStatus={updateModalStatus}
       />
           </div>
           <MaterialTable
@@ -140,29 +161,17 @@ export default function BreachesList() {
             fontFamily: 'Anek Telugu, sans-serif',
           }
         }}
+        actions={[
+          {
+            icon: "edit",
+            tooltip: "Edit",
+            onClick: (event, breach) => {
+              setShowEditModal(true);
+              setSelectedBreachId(breach.id);
+            },
+          },
+        ]}
         editable={{
-          onRowUpdate: (newBreach, oldBreach) =>
-            new Promise((resolve, reject) => {
-              setTimeout(() => {
-                const data = {
-                  name: newBreach.name,
-                  description: newBreach.description,
-                  severity_level: newBreach.severity_level,
-                  allowed_violate_number: newBreach.allowed_violate_number,
-                };
-                axios
-                  .put(AppUrl.UpdateBreach + oldBreach.id, data)
-                  .then((response) => {
-                    if (response.data.status === 200) {
-                      swal("Success", response.data.message, "success");
-                      setBreachesListChange(true);
-                    } else if (response.data.status === 404) {
-                      swal("Error", response.data.message, "error");
-                    }
-                  });
-                resolve();
-              }, 1000);
-            }),
           onRowDelete: (thisBreach) =>
             new Promise((resolve, reject) => {
               setTimeout(() => {
@@ -184,6 +193,12 @@ export default function BreachesList() {
             }),
         }}
       />
+      <EditBreachModal
+            isShown={showEditModal}
+            breachId={selectedBreachId}
+            setEditModalStatus={setEditModalStatus}
+            updateModalStatus={updateModalStatus}
+          />
           </div>
     </Fragment>
   );

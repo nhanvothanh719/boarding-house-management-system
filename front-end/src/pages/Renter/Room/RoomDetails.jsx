@@ -5,7 +5,9 @@ import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 
 import AppUrl from "../../../RestAPI/AppUrl";
 import axios from "axios";
+
 import Loading from "../../../components/Loading/Loading";
+import WebPageTitle from "../../../components/WebPageTitle/WebPageTitle";
 import "../../../assets/css/Renter/details.css";
 
 export default function RoomDetails() {
@@ -52,7 +54,7 @@ export default function RoomDetails() {
         <div className="col">
               <div className="card" style={{ backgroundColor: "#14213d", borderRadius: "5%"}}>
                 <div className="card-body text-center" >
-                  <div className="p-4 border radius-20"  style={{ backgroundColor: "#e5e5e5", borderRadius: "5%"}}>
+                  <div className="p-4 border radius-20"  style={{ backgroundColor: "#fafafa", borderRadius: "5%"}}>
                     <img
                       src={`http://127.0.0.1:8000/${person.profile_picture}`}
                       className="imgAccountProfile rounded-circle img-thumbnail mb-2 shadow"
@@ -75,30 +77,31 @@ export default function RoomDetails() {
   }
   return (
     <Fragment>
+      <WebPageTitle pageTitle="Room details" />
       <div className="container">
         <div className="row">
           <div className="col-md-5">
             <div className="project-info-box">
-              <p>
+              <p className="spaceDisplay">
                 <b>Number:</b> {room.number}
               </p>
-              <p>
+              <p className="spaceDisplay">
                 <b>Area:</b> {room.area}
               </p>
-              <p>
+              <p className="spaceDisplay">
                 <b>Conditioner:</b> {room.has_conditioner === 1 ? "Yes" : "No"}
               </p>
-              <p>
+              <p className="spaceDisplay">
                 <b>Fridge:</b> {room.has_fridge === 1 ? "Yes" : "No"}
               </p>
-              <p>
+              <p className="spaceDisplay">
                 <b>Wardrobe:</b> {room.has_wardrobe === 1 ? "Yes" : "No"}
               </p>
             </div>
 
             <div className="project-info-box mt-0 mb-0">
-              <p><b>Categories:</b> <span>{room.category.name}</span></p>
-              <p className="mb-0">
+              <p className="spaceDisplay"><b>Categories:</b> <span>{room.category.name}</span></p>
+              <p className="mb-0 spaceDisplay">
                 <b>Price:</b> <span>${room.category.price}</span>
               </p>
             </div>

@@ -9,15 +9,19 @@ import moment from "moment";
 
 
 import Loading from "../../../../components/Loading/Loading";
+import ConfirmLoading from "../../../../components/Loading/ConfirmLoading";
 import AppUrl from "../../../../RestAPI/AppUrl";
 import CreateBreachHistoryModal from "../../../../components/Modals/Breach/CreateBreachHistoryModal";
-import BreachCount from "../../../../components/Charts/BreachCount";
-import BreachRate from "../../../../components/Charts/BreachRate";
+import BreachCount from "../../../../components/Charts/AdminCharts/BreachCount";
+import BreachRate from "../../../../components/Charts/AdminCharts/BreachRate";
+import WebPageTitle from "../../../../components/WebPageTitle/WebPageTitle";
 
 export default function BreachHistories() {
 
   const [details] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loaderClass, setLoaderClass] = useState("d-none");
+  const [displayComponentsClass, setDisplayComponentsClass] = useState("");
   const [breachHistories, setBreachHistories] = useState([]);
   const [breachHistoriesChange, setBreachHistoriesChange] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -48,11 +52,8 @@ export default function BreachHistories() {
   };
 
   var columns = [];
-  if (loading) {
-    return <Loading />;
-  } else {
     columns = [
-      { title: '#', render: (rowData) => rowData.tableData.id + 1 },
+      { title: "#", render: (rowData) => rowData.tableData.id + 1, width: "10%", align: "center" },
       {
         field: "breach_id",
         title: "Breach name",
@@ -69,10 +70,17 @@ export default function BreachHistories() {
         render: rowData => moment(rowData.violated_at).format('hh:mm:ss - DD/MM/YYYY')
       },
     ];
-  }
 
+    if (loading) {
+      return <Loading />;
+    }
   return (
     <Fragment>
+      <WebPageTitle pageTitle="Breach histories" />
+      <div className={loaderClass}>
+        <ConfirmLoading />
+      </div>
+      <div className={displayComponentsClass}>
       <BreachCount isDataChange={breachHistoriesChange}/>
       <BreachRate isDataChange={breachHistoriesChange}/>
       <div className="customDatatable">
@@ -86,6 +94,8 @@ export default function BreachHistories() {
           </Button>
           <CreateBreachHistoryModal
         isShown={showCreateModal}
+        setLoaderClass={setLoaderClass}
+        setDisplayComponentsClass={setDisplayComponentsClass}
         setCreateModalStatus={setCreateModalStatus}
         updateCreateModalStatus={updateCreateModalStatus}
       />
@@ -130,6 +140,7 @@ export default function BreachHistories() {
             }),
         }}
       />
+      </div>
       </div>
     </Fragment>
   );

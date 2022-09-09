@@ -8,6 +8,8 @@ import swal from "sweetalert";
 import "../../../assets/css/Renter/invoice.css";
 import AppUrl from "../../../RestAPI/AppUrl";
 import Loading from "../../../components/Loading/Loading";
+import ConfirmLoading from "../../../components/Loading/ConfirmLoading";
+import WebPageTitle from "../../../components/WebPageTitle/WebPageTitle";
 
 export default function UnpaidInvoiceDetails({ match }) {
     const history = useHistory();
@@ -45,6 +47,8 @@ export default function UnpaidInvoiceDetails({ match }) {
       email: "",
       phone_number: "",
     });
+  const [loaderClass, setLoaderClass] = useState('d-none');
+  const [displayComponentsClass, setDisplayComponentsClass] = useState('');
 
     var paypalPaymentInfo = {
       payment_method: "Paypal",
@@ -91,16 +95,19 @@ export default function UnpaidInvoiceDetails({ match }) {
   //When make payment successfully
   const onApprove = (data, actions) => {
     return actions.order.capture().then(function (details) {
-      console.log(details);
+      setLoaderClass('');
+      setDisplayComponentsClass('d-none');
       paypalPaymentInfo.payment_id = details.id;
       paypalPaymentInfo.amount = invoice.total;
       axios
         .post(AppUrl.MakeInvoicePayment + invoiceId, paypalPaymentInfo)
         .then((response) => {
           if (response.data.status === 200) {
-            swal("Invoice is paid", response.data.message, "success");
+            swal("Success", response.data.message, "success");
             setUpdatePage(true);
           }
+          setDisplayComponentsClass('');
+          setLoaderClass('d-none');
         });
     });
   };
@@ -128,6 +135,8 @@ export default function UnpaidInvoiceDetails({ match }) {
             description: "Make invoice payment",
             image: "",
             handler: function (response) {
+              setLoaderClass('');
+              setDisplayComponentsClass('d-none');
               payment.payment_id = response.razorpay_payment_id;
               axios
                 .post(AppUrl.MakeInvoicePayment + invoiceId, payment)
@@ -136,6 +145,8 @@ export default function UnpaidInvoiceDetails({ match }) {
                     swal("success", res.data.message, "success");
                     setUpdatePage(true);
                   }
+                  setDisplayComponentsClass('');
+                  setLoaderClass('d-none');
                 });
             },
             prefill: {
@@ -169,6 +180,7 @@ export default function UnpaidInvoiceDetails({ match }) {
   }
     return (
       <Fragment>
+         <WebPageTitle pageTitle="Unpaid invoice details" />
         <div className="page-content container">
         <div className="page-header text-blue-d2"></div>
   
@@ -222,6 +234,8 @@ export default function UnpaidInvoiceDetails({ match }) {
                   <div className="col-2">Amount</div>
                 </div>
   
+                <div className={loaderClass}><ConfirmLoading /></div>
+                <div className={displayComponentsClass}>
                 <div className="text-95 text-secondary-d3">
                   {usedServices.map((item, index) => {
                     return (
@@ -234,6 +248,7 @@ export default function UnpaidInvoiceDetails({ match }) {
                       </div>
                     );
                   })}
+                </div>
                 </div>
   
                 <div className="row mt-3">

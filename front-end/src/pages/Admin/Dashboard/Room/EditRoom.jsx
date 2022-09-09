@@ -10,6 +10,7 @@ import SearchCategoryEdit from "../../../../components/Search/SearchCategoryEdit
 
 import "../../../../assets/css/Dashboard/room.css";
 import { Publish } from "@material-ui/icons";
+import WebPageTitle from "../../../../components/WebPageTitle/WebPageTitle";
 
 export default function EditRoom({ match }) {
   const history = useHistory();
@@ -30,7 +31,6 @@ export default function EditRoom({ match }) {
     has_fridge: "",
     has_wardrobe: "",
   });
-  //const [picture, setPicture] = useState("");
   const [uploadedPictures, setUploadedPictures] = useState([]);
   const [roomImages, setRoomImages] = useState([]);
   const [renters, setRenters] = useState([]);
@@ -151,6 +151,7 @@ export default function EditRoom({ match }) {
   }
   return (
     <Fragment>
+      <WebPageTitle pageTitle="Room details" />
       <div className="room">
         <div className="titleContainer">
           <h1 className="customActionTitle">View & Edit room details</h1>

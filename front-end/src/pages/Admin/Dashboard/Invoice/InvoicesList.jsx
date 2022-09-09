@@ -7,9 +7,11 @@ import axios from "axios";
 import moment from "moment";
 
 import Loading from "../../../../components/Loading/Loading";
+import ConfirmLoading from "../../../../components/Loading/ConfirmLoading";
 import AppUrl from "../../../../RestAPI/AppUrl";
 import { Button } from "react-bootstrap";
 import SelectRenterModal from "../../../../components/Modals/Invoice/SelectRenterModal";
+import WebPageTitle from "../../../../components/WebPageTitle/WebPageTitle";
 
 export default function InvoicesList() {
   const history = useHistory();
@@ -17,6 +19,8 @@ export default function InvoicesList() {
 
   const [details] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loaderClass, setLoaderClass] = useState("d-none");
+  const [displayComponentsClass, setDisplayComponentsClass] = useState("");
   const [invoicesList, setInvoicesList] = useState([]);
   const [invoicesListChange, setInvoicesListChange] = useState(false);
   const [showSelectModal, setShowSelectModal] = useState(false);
@@ -39,21 +43,20 @@ export default function InvoicesList() {
 
   var columns = [];
 
-  if (loading) {
-    return <Loading />;
-  } else {
     columns = [
-      { title: "#", render: (rowData) => rowData.tableData.id + 1 },
+      { title: "#", render: (rowData) => rowData.tableData.id + 1, width: "10%", align: "center" },
       {
         field: "renter_id",
         title: "User",
         editable: "never",
+        width: "10%",
         render: (rowData) => <p>{rowData.renter.name}</p>,
       },
-      { field: "total", title: "Total", editable: "never" },
+      { field: "total", title: "Total", width: "20%", editable: "never" , align: "center"},
       {
         field: "month",
         title: "Month",
+        width: "10%",
         type: "numeric",
         validate: (rowData) =>
           rowData.month < 1 || rowData.month > 12 || !Number.isInteger(rowData.month)
@@ -90,8 +93,15 @@ export default function InvoicesList() {
         )
       },
     ];
+
+    if (loading) {
+      return <Loading />;
+    }
     return (
       <Fragment>
+        <WebPageTitle pageTitle="Invoices" />
+        <div className={loaderClass}><ConfirmLoading/></div>
+        <div className={displayComponentsClass}>
         <div className="customDatatable">
           <div className="customDatatableHeader">
           <Button
@@ -127,17 +137,21 @@ export default function InvoicesList() {
               },
             ]}
             editable={{
+              isEditable: rowData => moment(rowData.valid_until) >= moment(currentDate).add(-2, 'days'),
+              isDeletable: rowData => rowData.is_paid === 0,
               onRowUpdate: (newInvoice, oldInvoice) =>
                 new Promise((resolve, reject) => {
                   setTimeout(() => {
+                    setLoaderClass('');
+                    setDisplayComponentsClass('d-none');
                     const data = {
                       effective_from: moment(newInvoice.effective_until)
                         .utc()
                         .format("YYYY-MM-DD"),
                       valid_until: moment(newInvoice.valid_until)
-                        .utc()
                         .format("YYYY-MM-DD"),
                       month: newInvoice.month,
+                      is_paid: newInvoice.is_paid,
                     };
                     axios
                       .put(AppUrl.UpdateInvoice + oldInvoice.id, data)
@@ -148,6 +162,8 @@ export default function InvoicesList() {
                         } else if (response.data.status === 404) {
                           swal("Error", response.data.message, "error");
                         }
+                        setLoaderClass('d-none');
+                        setDisplayComponentsClass('');
                       });
                     resolve();
                   }, 1000);
@@ -174,7 +190,7 @@ export default function InvoicesList() {
             }}
           />
         </div>
+        </div>
       </Fragment>
     );
   }
-}

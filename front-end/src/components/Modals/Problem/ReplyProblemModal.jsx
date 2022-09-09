@@ -31,6 +31,8 @@ export default function ReplyProblemModal(props) {
     
       const submitReply = (e) => {
         e.preventDefault();
+        props.setLoaderClass('');
+    props.setDisplayComponentsClass('d-none');
         const text = {
             reply_text: replyText,
           };
@@ -48,6 +50,8 @@ export default function ReplyProblemModal(props) {
                 displayModal();
               }, 1000);
             }
+            props.setLoaderClass('d-none');
+            props.setDisplayComponentsClass('');
           })
           .catch((error) => {
             console.log(error);

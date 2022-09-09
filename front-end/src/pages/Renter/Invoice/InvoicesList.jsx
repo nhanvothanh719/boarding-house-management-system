@@ -8,6 +8,7 @@ import PaymentsIcon from '@mui/icons-material/Payments';
 
 import AppUrl from "../../../RestAPI/AppUrl";
 import Loading from "../../../components/Loading/Loading";
+import WebPageTitle from "../../../components/WebPageTitle/WebPageTitle";
 
 export default function InvoicesList() {
   const history = useHistory();
@@ -28,7 +29,7 @@ export default function InvoicesList() {
 
   var columns = [];
   columns = [
-    { title: "#", render: (rowData) => rowData.tableData.id + 1 },
+    { title: "#", render: (rowData) => rowData.tableData.id + 1, width: "10%", align: "center" },
     { field: "total", title: "Total", editable: "never" },
     {
       field: "month",
@@ -70,6 +71,7 @@ export default function InvoicesList() {
   }
   return (
     <Fragment>
+      <WebPageTitle pageTitle="Invoices" />
       <div class="container">
         <div class="row mt-3">
           <div class="col-lg-12 right">

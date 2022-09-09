@@ -6,8 +6,9 @@ import MaterialTable from "material-table";
 
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
-import RenterInvoicePaid from "../../../../components/Charts/RenterInvoicePaid";
-import RenterUsedServiceCount from "../../../../components/Charts/RenterUsedServiceCount";
+import RenterInvoicePaid from "../../../../components/Charts/AdminCharts/RenterInvoicePaid";
+import RenterUsedServiceCount from "../../../../components/Charts/AdminCharts/RenterUsedServiceCount";
+import WebPageTitle from "../../../../components/WebPageTitle/WebPageTitle";
 
 export default function RenterInvoicesList({ match }) {
   const renterId = match.params.renterID;
@@ -25,8 +26,8 @@ export default function RenterInvoicesList({ match }) {
 
   var columns = [];
   columns = [
-    { title: "#", render: (rowData) => rowData.tableData.id + 1 },
-    { field: "total", title: "Total", editable: "never" },
+    { title: "#", render: (rowData) => rowData.tableData.id + 1, width: "10%", align: "center" },
+    { field: "total", title: "Total", width: "30%", editable: "never" },
     {
       field: "month",
       title: "Month",
@@ -48,7 +49,7 @@ export default function RenterInvoicesList({ match }) {
     },
     {
       field: "is_paid",
-      title: "Paid",
+      title: "Condition",
       render: (rowData) => (
         <div>
           <span
@@ -68,6 +69,7 @@ export default function RenterInvoicesList({ match }) {
   }
   return (
     <Fragment>
+      <WebPageTitle pageTitle="Renter's invoices" />
       <RenterInvoicePaid renterId={renterId} />
       <RenterUsedServiceCount renterId={renterId} />
       <div className="customDatatable">

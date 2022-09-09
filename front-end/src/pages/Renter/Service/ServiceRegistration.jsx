@@ -1,11 +1,11 @@
 import React, { Fragment, useState, useEffect } from "react";
 
 import MaterialTable from "material-table";
-import swal from "sweetalert";
 import axios from "axios";
 
 import AppUrl from "../../../RestAPI/AppUrl";
 import Loading from "../../../components/Loading/Loading";
+import WebPageTitle from "../../../components/WebPageTitle/WebPageTitle";
 
 export default function ServiceRegistration() {
   const [loading, setLoading] = useState(true);
@@ -23,7 +23,7 @@ export default function ServiceRegistration() {
 
   var columns = [];
     columns = [
-      { title: "#", render: (rowData) => rowData.tableData.id + 1 },
+      { title: "#", render: (rowData) => rowData.tableData.id + 1, width: "10%", align: "center" },
       {
         field: "name",
         title: "Service name",
@@ -48,8 +48,12 @@ export default function ServiceRegistration() {
       },
     ];
 
+    if (loading) {
+      return <Loading />;
+    }
   return (
     <Fragment>
+      <WebPageTitle pageTitle="Registered services" />
         <div className="customDatatable">
           <div className="customDatatableHeader">
           </div>

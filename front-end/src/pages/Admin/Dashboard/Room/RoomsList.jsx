@@ -9,6 +9,7 @@ import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
 import { Button } from "react-bootstrap";
 import CreateRoomModal from "../../../../components/Modals/Room/CreateRoomModal";
+import WebPageTitle from "../../../../components/WebPageTitle/WebPageTitle";
 
 export default function RoomsList() {
   const history = useHistory();
@@ -41,11 +42,8 @@ export default function RoomsList() {
   };
 
   var columns = [];
-  if (loading) {
-    return <Loading />;
-  } else {
     columns = [
-      { title: '#', render: (rowData) => rowData.tableData.id + 1 },
+      { title: "#", render: (rowData) => rowData.tableData.id + 1, width: "10%", align: "center" },
       { field: "number", title: "Number", align: "center" },
       { field: "category_id", title: "Category", render: rowData => <p> {rowData.category.name} </p> },
       { 
@@ -88,9 +86,13 @@ export default function RoomsList() {
         )
        },
     ];
-    
+
+    if (loading) {
+    return <Loading />;
+  }
     return (
       <Fragment>
+        <WebPageTitle pageTitle="Rooms" />
         <div className="customDatatable">
           <div className="customDatatableHeader">
             <Button
@@ -156,6 +158,5 @@ export default function RoomsList() {
         />
       </Fragment>
     );
-  }
 }
 

@@ -1,12 +1,12 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 
-import moment from "moment";
 import axios from "axios";
 
 import "../../../assets/css/Renter/invoice.css";
 import AppUrl from "../../../RestAPI/AppUrl";
 import Loading from "../../../components/Loading/Loading";
+import WebPageTitle from "../../../components/WebPageTitle/WebPageTitle";
 import swal from "sweetalert";
 
 export default function PaidInvoiceDetails({ match }) {
@@ -54,8 +54,13 @@ export default function PaidInvoiceDetails({ match }) {
     });
   }, [invoiceId, history]);
 
+  if(loading) {
+    return <Loading />
+  }
   return (
-    <div className="page-content container">
+    <Fragment>
+      <WebPageTitle pageTitle="Paid invoice details" />
+      <div className="page-content container">
       <div className="page-header text-blue-d2"></div>
 
       <div className="container px-0">
@@ -180,5 +185,6 @@ export default function PaidInvoiceDetails({ match }) {
         </div>
       </div>
     </div>
+    </Fragment>
   );
 }

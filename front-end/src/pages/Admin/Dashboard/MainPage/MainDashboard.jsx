@@ -1,16 +1,17 @@
 import React, { Fragment, useEffect, useState } from "react";
 
-import RenterGenderRate from "../../../../components/Charts/RenterGenderRate";
-import UsedServiceCount from "../../../../components/Charts/UsedServiceCount";
-import InvoicePaidRate from "../../../../components/Charts/InvoicePaidRate";
-import RoomStatusRate from "../../../../components/Charts/RoomStatusRate";
-import BreachReport from "../../../../components/Charts/BreachReport";
-import Widget from "../../../../components/Dashboard/Widget";
-
-import "../../../../assets/css/Dashboard/chart.css";
-import BalanceVariation from "../../../../components/Charts/BalanceVariation";
 import axios from "axios";
+
+import RenterGenderRate from "../../../../components/Charts/AdminCharts/RenterGenderRate";
+import UsedServiceCount from "../../../../components/Charts/AdminCharts/UsedServiceCount";
+import InvoicePaidRate from "../../../../components/Charts/AdminCharts/InvoicePaidRate";
+import RoomStatusRate from "../../../../components/Charts/AdminCharts/RoomStatusRate";
+import BreachReport from "../../../../components/Charts/AdminCharts/BreachReport";
+import BalanceVariation from "../../../../components/Charts/AdminCharts/BalanceVariation";
+import Widget from "../../../../components/Dashboard/Widget";
+import "../../../../assets/css/Dashboard/chart.css";
 import AppUrl from "../../../../RestAPI/AppUrl";
+import WebPageTitle from "../../../../components/WebPageTitle/WebPageTitle";
 
 function MainDashboard() {
   const [displayData, setDisplayData] = useState({});
@@ -32,6 +33,7 @@ function MainDashboard() {
 
   return (
     <Fragment>
+      <WebPageTitle pageTitle="Dashboard" />
       <div className="widgets">
         <Widget type="renter" amount={displayData.rentersTotal}/>
         <Widget type="room" amount={displayData.roomsTotal}/>

@@ -11,6 +11,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 import AppUrl from "../../../../RestAPI/AppUrl";
 import { Button } from "react-bootstrap";
+import WebPageTitle from "../../../../components/WebPageTitle/WebPageTitle";
 
 export default function CreateInvoice({ match }) {
   const history = useHistory();
@@ -85,6 +86,7 @@ export default function CreateInvoice({ match }) {
 
   return (
     <Fragment>
+      <WebPageTitle pageTitle="Create invoice" />
       <div className="room">
         <div className="titleContainer">
           <h1 className="customActionTitle">Create invoice</h1>

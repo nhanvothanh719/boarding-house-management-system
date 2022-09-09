@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import { useHistory } from "react-router-dom";
 
 import swal from "sweetalert";
@@ -7,6 +7,7 @@ import axios from "axios";
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
 import RoomContract from "../../../../components/Template/RoomContract";
+import WebPageTitle from "../../../../components/WebPageTitle/WebPageTitle";
 
 export default function RoomContractDetails({ match }) {
   const history = useHistory();
@@ -33,6 +34,9 @@ export default function RoomContractDetails({ match }) {
     return <Loading />;
   }
   return (
+    <Fragment>
+      <WebPageTitle pageTitle="Room contract details" />
     <RoomContract roomContract={details}/>
+    </Fragment>
   );
 }

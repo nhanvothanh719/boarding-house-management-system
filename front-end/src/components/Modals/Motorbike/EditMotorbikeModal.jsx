@@ -56,7 +56,7 @@ export default function EditMotorbikeModal(props) {
     setSelectedRenter(renter);
   };
 
-  const editMotorbike = (e) => {
+  const updateMotorbike = (e) => {
     e.preventDefault();
     const motorbike = new FormData();
     motorbike.append("renter_id", selectedRenter.id);
@@ -145,7 +145,7 @@ export default function EditMotorbikeModal(props) {
                 type="button"
                 class="btn btn-primary"
                 data-dismiss="modal"
-                onClick={editMotorbike}
+                onClick={updateMotorbike}
               >
                 Update
               </button>

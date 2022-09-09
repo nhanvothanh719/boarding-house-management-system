@@ -23,6 +23,7 @@ import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
 
 import "../../../../assets/css/Dashboard/user.css";
+import WebPageTitle from "../../../../components/WebPageTitle/WebPageTitle";
 
 export default function EditUser({ match }) {
   const history = useHistory();
@@ -132,6 +133,7 @@ export default function EditUser({ match }) {
   }
   return (
     <Fragment>
+      <WebPageTitle pageTitle="User details" />
       <div className="user">
         <div className="userTitleContainer">
           <h1 className="customActionTitle">View & Edit personal details</h1>
@@ -150,7 +152,7 @@ export default function EditUser({ match }) {
               </div>
             </div>
             <div className="userShowBottom">
-              <span className="userShowTitle">Renter Information</span>
+              <em className="userShowTitle">Renter Information</em>
               <div className="userShowInfo">
                 <SupervisedUserCircle className="userShowIcon" />
                 <span className="userShowInfoTitle">{userInfo.id_card_number}</span>
@@ -167,7 +169,7 @@ export default function EditUser({ match }) {
                 <PermIdentity className="userShowIcon" />
                 <span className="userShowInfoTitle">{userInfo.occupation}</span>
               </div>
-              <span className="userShowTitle">Contact Details</span>
+              <em className="userShowTitle">Contact Details</em>
               <div className="userShowInfo">
                 <PhoneAndroid className="userShowIcon" />
                 <span className="userShowInfoTitle">{userInfo.phone_number}</span>
@@ -247,6 +249,7 @@ export default function EditUser({ match }) {
                   <label>Date of birth</label>
                   <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <DatePicker
+                      label=" "
                       renderInput={(props) => <TextField {...props} />}
                       value={dateOfBirth}
                       name="date_of_birth"

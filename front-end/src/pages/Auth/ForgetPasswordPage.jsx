@@ -5,6 +5,8 @@ import { Col, Container, Row } from "react-bootstrap";
 import axios from "axios";
 
 import WebPageTitle from "../../components/WebPageTitle/WebPageTitle";
+import NavBar from "../../layouts/User/NavBar";
+import Footer from "../../layouts/User/Footer";
 
 function ForgetPasswordPage(props) {
   const [email, setEmail] = useState("");
@@ -44,6 +46,7 @@ function ForgetPasswordPage(props) {
   }
   return (
     <Fragment>
+      <NavBar/>
       <WebPageTitle pageTitle="Forget password" />
       <Container
         fluid={true}
@@ -96,6 +99,7 @@ function ForgetPasswordPage(props) {
           <Col lg={4} md={2} sm={2}></Col>
         </Row>
       </Container>
+      <Footer/>
     </Fragment>
   );
 }

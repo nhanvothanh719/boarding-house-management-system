@@ -14,11 +14,11 @@ import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import ReceiptIcon from "@mui/icons-material/Receipt";
 import FlagIcon from "@mui/icons-material/Flag";
 import ShowChartIcon from "@mui/icons-material/ShowChart";
-import BadgeIcon from "@mui/icons-material/Badge";
 import LogoutIcon from "@mui/icons-material/Logout";
-import RoomPreferencesIcon from "@mui/icons-material/RoomPreferences";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import ApartmentIcon from "@mui/icons-material/Apartment";
+import AddToQueueIcon from '@mui/icons-material/AddToQueue';
+import LocalLaundryServiceIcon from '@mui/icons-material/LocalLaundryService';
 
 import "../../assets/css/Dashboard/sidebar.css";
 
@@ -178,7 +178,7 @@ function SideBar() {
               activeStyle={{ textDecoration: "none", color: "#a5d8dd" }}
             >
               <li className="customLi">
-                <RoomPreferencesIcon className="sideBarIcon" />
+                <LocalLaundryServiceIcon className="sideBarIcon" />
                 <span className="itemName"> Services </span>
               </li>
             </NavLink>
@@ -212,7 +212,7 @@ function SideBar() {
               activeStyle={{ textDecoration: "none", color: "#a5d8dd" }}
             >
               <li className="customLi">
-                <BadgeIcon className="sideBarIcon" />
+                <AddToQueueIcon className="sideBarIcon" />
                 <span className="itemName"> Requests </span>
               </li>
             </NavLink>

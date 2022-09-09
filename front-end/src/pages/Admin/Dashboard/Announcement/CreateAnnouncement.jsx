@@ -6,11 +6,15 @@ import swal from "sweetalert";
 import axios from "axios";
 
 import Loading from "../../../../components/Loading/Loading";
+import ConfirmLoading from "../../../../components/Loading/ConfirmLoading";
 import AppUrl from "../../../../RestAPI/AppUrl";
 import CreateAnnouncementModal from "../../../../components/Modals/Announcement/CreateAnnouncementModal";
+import WebPageTitle from "../../../../components/WebPageTitle/WebPageTitle";
 
 export default function CreateAnnouncement() {
   const [loading, setLoading] = useState(true);
+  const [loaderClass, setLoaderClass] = useState('d-none');
+  const [displayComponentsClass, setDisplayComponentsClass] = useState('');
   const [rentersList, setRentersList] = useState([]);
   const [selectedRows, setSelectedRows] = useState([]);
   const [rentersIdList, setRentersIdList] = useState([]);
@@ -35,6 +39,9 @@ export default function CreateAnnouncement() {
     if (selectedRows.length < 1) {
       swal("Error", "Cannot send due to no renter selected", "error");
     }
+    else if (selectedRows.length > 5) {
+      swal("Error", "The maximum number of renters selected is 5", "error");
+    }
     else {
       selectedRows.map((row) => {
         return renters_id.push(row.id);
@@ -45,9 +52,6 @@ export default function CreateAnnouncement() {
   };
 
   var columns = [];
-  if (loading) {
-    return <Loading />;
-  } else {
     columns = [
       { title: '#', render: (rowData) => rowData.tableData.id + 1 },
       // { field: "profile_picture", title: "Avatar", export: false, width: "10%", render: rowData => <img src={rowData.profile_picture} alt="avatar" style={{width: 40, borderRadius: '50%'}}/> },
@@ -55,10 +59,15 @@ export default function CreateAnnouncement() {
       { field: "email", title: "Email", width: "20%" },
       { field: "phone_number", title: "Phone number", width: "20%" },
     ];
-  }
 
+    if (loading) {
+      return <Loading />;
+    }
   return (
     <Fragment>
+      <WebPageTitle pageTitle="Annoucements" />
+      <div className={loaderClass}><ConfirmLoading/></div>
+      <div className={displayComponentsClass}>
       <div className="customDatatable">
         <div className="customDatatableHeader">
         <Button
@@ -68,6 +77,13 @@ export default function CreateAnnouncement() {
           >
             Create new announcement
             </Button>
+            <CreateAnnouncementModal 
+      isShown={showCreateModal}
+      setLoaderClass={setLoaderClass}
+      setDisplayComponentsClass={setDisplayComponentsClass}
+      rentersIdList={rentersIdList}
+      setCreateModalStatus={setCreateModalStatus}
+      />
         </div>
         <MaterialTable
         columns={columns}
@@ -90,11 +106,7 @@ export default function CreateAnnouncement() {
         }}
       />
         </div>
-      <CreateAnnouncementModal 
-      isShown={showCreateModal}
-      rentersIdList={rentersIdList}
-      setCreateModalStatus={setCreateModalStatus}
-      />
+      </div>
     </Fragment>
   );
 }

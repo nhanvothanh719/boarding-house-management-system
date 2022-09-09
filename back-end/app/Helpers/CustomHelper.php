@@ -2,11 +2,15 @@
 namespace App\Helpers;
 
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Mail;
 
 use App\Models\RoomStatus;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\RoomRent;
+use App\Models\Balance;
+
+use App\Mail\InvoicePaidMail;
 
 class CustomHelper{
 
@@ -60,6 +64,25 @@ class CustomHelper{
         $room_partner_id = RoomRent::where('room_id', $room_id)->value('renter_id');
         $room_partner_gender = User::find($room_partner_id)->gender;
         return $renter_gender == $room_partner_gender ? true : false;
+    }
+
+    public static function handleAfterPayment($invoice_info, $user_id, $invoice_id) {
+        //Automatically add income
+        $balance = Balance::create([
+            'description' => 'Income from invoice with ID: '.$invoice_id,
+            'is_income' => 1,
+            'amount' => $invoice_info->amount,
+            'occurred_on' => date('Y-m-d', strtotime(' +0 day')),
+        ]);
+        //Send email confirmation
+        $renter_email = User::find($user_id)->email;
+        Mail::to($renter_email)->send(new InvoicePaidMail(
+            $invoice_info->month,
+            $invoice_info->year,
+            $invoice_info->amount,
+            $invoice_info->payment_method
+        ));
+        return $balance;
     }
 }
 

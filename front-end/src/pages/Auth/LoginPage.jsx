@@ -13,7 +13,6 @@ import "../../assets/css/Login.css";
 
 function LoginPage() {
   const [isLogin, setIsLogin] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -33,9 +32,13 @@ function LoginPage() {
       .then((response) => {
         if (response.data.status === 200) {
           localStorage.setItem("auth_token", response.data.token);
-          console.log(response.data);
+          if(response.data.isAdmin) {
+            localStorage.setItem("user_role", "admin");
+          }
+          else {
+            localStorage.setItem("user_role", "renter");
+          }
           setIsLogin(true);
-          setIsAdmin(response.data.isAdmin);
           swal("Success", response.data.message, "success");
         }
       })
@@ -45,11 +48,7 @@ function LoginPage() {
   };
   //Redirect to Profile page if user logs in successfully
   if (isLogin) {
-    if (isAdmin === true) {
-      return <Redirect to={"/admin/dashboard"} />;
-    } else {
       return <Redirect to={"/home"} />;
-    }
   }
   return (
     <Fragment>
@@ -67,30 +66,6 @@ function LoginPage() {
                 >
                   - Sign in -
                 </h1>
-
-                <Row>
-                  <Col>
-                    <button className="btn facebook-btn social-btn" type="button">
-                      <span className="font-weight-bolder">
-                        <i className="fab fa-facebook-f"></i> Login with Facebook
-                      </span>{" "}
-                    </button>
-                  </Col>
-                  <Col>
-                    <button className="btn google-btn social-btn" type="button">
-                      <span className="font-weight-bolder">
-                        <i className="fab fa-google-plus-g"></i> Login with Google
-                      </span>{" "}
-                    </button>
-                  </Col>
-                </Row>
-                <p
-                  style={{ "textAlign": "center", margin: "5px" }}
-                  className="loginText"
-                >
-                  {" "}
-                  --- OR ---{" "}
-                </p>
                 <input
                   type="email"
                   name="email"
@@ -120,19 +95,6 @@ function LoginPage() {
                 <Link to="/forget-password" className="customLink">
                   Forgot password?
                 </Link>
-                <hr />
-                <button
-                  className="btn btn-primary btn-block loginFormButton"
-                  type="button"
-                  id="btn-signup"
-                >
-                  <Link
-                    to="/register"
-                    style={{ textDecoration: "none", color: "white" }}
-                  >
-                    <i className="fas fa-user-plus"></i> Sign up
-                  </Link>
-                </button>
               </form>
               <br />
             </div>

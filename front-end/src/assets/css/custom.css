@@ -464,5 +464,9 @@ a.social:hover{
     background-color: #e99a06;
 }
 
+.spaceDisplay {
+    display: flex;
+      justify-content: space-between;
+}
 
 

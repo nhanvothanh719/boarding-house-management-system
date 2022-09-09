@@ -8,6 +8,7 @@ function NavBar() {
   const history = useHistory();
   const [navBarTitle, setNavBarTitle] = useState("brandName");
   const [navBarColor, setNavBarColor] = useState("navBar");
+  const [navBarItemsListChange, setNavBarItemsListChange] = useState(false);
 
   useEffect(() => {
     window.addEventListener("scroll", () => {
@@ -18,28 +19,33 @@ function NavBar() {
         setNavBarTitle("brandNameScroll");
         setNavBarColor("navBarScroll");
       }});
+      if (navBarItemsListChange) {
+        setNavBarItemsListChange(false);
+      }
       return () => {
         setNavBarTitle(("brandName"));
         setNavBarColor("navBar");
       };
-  }, []);
+  }, [navBarItemsListChange]);
 
   const logout = (e) => {
     e.preventDefault();
     axios.post("/logout").then((response) => {
       //Remove the token
-      // localStorage.removeItem('auth_token');
       localStorage.clear();
+      localStorage.removeItem('auth_token');
       //Remove all user data
+      setNavBarItemsListChange(true);
       swal("Success", response.data.message, "success");
       history.push("/");
+      //Refresh page
+      window.location.reload();
     });
   };
   
   let login;
   let profile;
-  let dashboard;
-  let renterActivities;
+  let activities;
 
   if (localStorage.getItem("auth_token")) {
     login = (
@@ -67,37 +73,6 @@ function NavBar() {
         </NavLink>
       </Nav.Link>
     );
-    renterActivities = (
-      <Navbar className="customNavbar">
-      <Container fluid>
-        <Navbar.Collapse>
-          <Nav>
-            <NavDropdown
-              title="DETAILS"
-              className="navItem"
-            >
-              <NavDropdown.Item href="/renter/view-room-details" className="customDropdownItem">Room details</NavDropdown.Item>
-              <NavDropdown.Item href="/renter/send-problem" className="customDropdownItem">Problem creating</NavDropdown.Item>
-              <NavDropdown.Item href="/renter/register-optional-service" className="customDropdownItem">Services registration</NavDropdown.Item>
-              <NavDropdown.Item href="/renter/view-all-invoices" className="customDropdownItem">Invoices payment</NavDropdown.Item>
-            </NavDropdown>
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
-    );
-    dashboard = (
-      <Nav.Link>
-      <NavLink
-        to="/admin/dashboard"
-        exact
-        activeStyle={{ color: "yellow" }}
-        className="navItem"
-      >
-        DASHBOARD
-      </NavLink>
-    </Nav.Link>
-    );
   } else {
     login = (
       <Nav.Link>
@@ -110,6 +85,42 @@ function NavBar() {
           LOGIN
         </NavLink>
       </Nav.Link>
+    );
+  }
+
+  if (localStorage.getItem("user_role") === "renter") {
+    activities = (
+      <Navbar className="customNavbar">
+      <Container fluid>
+        <Navbar.Collapse>
+          <Nav>
+            <NavDropdown
+              title="DETAILS"
+              className="navItem"
+            >
+              <NavDropdown.Item href="/renter/view-room-details" className="customDropdownItem">Room details</NavDropdown.Item>
+              <NavDropdown.Item href="/renter/register-optional-service" className="customDropdownItem">Services registration</NavDropdown.Item>
+              <NavDropdown.Item href="/renter/view-all-invoices" className="customDropdownItem">Invoices payment</NavDropdown.Item>
+              <NavDropdown.Item href="/renter/view-all-breach-histories" className="customDropdownItem">Breach histories</NavDropdown.Item>
+              <NavDropdown.Item href="/renter/send-problem" className="customDropdownItem">Problem creating</NavDropdown.Item>
+            </NavDropdown>
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
+    );
+  } else if (localStorage.getItem("user_role") === "admin") {
+    activities = (
+      <Nav.Link>
+      <NavLink
+        to="/admin/dashboard"
+        exact
+        activeStyle={{ color: "yellow" }}
+        className="navItem"
+      >
+        DASHBOARD
+      </NavLink>
+    </Nav.Link>
     );
   }
 
@@ -181,8 +192,7 @@ function NavBar() {
               </NavLink>
             </Nav.Link>
             {profile}
-            {renterActivities}
-            {dashboard}
+            {activities}
           </Nav>
           <Nav>{login}</Nav>
         </Navbar.Collapse>

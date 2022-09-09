@@ -9,6 +9,7 @@ import CancelPresentationIcon from "@mui/icons-material/CancelPresentation";
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
 import RegisterServiceModal from "../../../../components/Modals/Service/RegisterServiceModal";
+import WebPageTitle from "../../../../components/WebPageTitle/WebPageTitle";
 
 export default function RegisterService() {
   const [loading, setLoading] = useState(true);
@@ -38,11 +39,8 @@ export default function RegisterService() {
   };
 
   let columns = [];
-  if (loading) {
-    return <Loading />;
-  } else {
     columns = [
-      { field: "id", title: "ID", align: "center" },
+      { title: "#", render: (rowData) => rowData.tableData.id + 1, width: "10%", align: "center" },
       {
         field: "user_id",
         title: "Renter",
@@ -54,7 +52,6 @@ export default function RegisterService() {
         render: (rowData) => <p> {rowData.service.name} </p>,
       },
     ];
-  }
 
   const unregisterService = (e, id) => {
     e.preventDefault();
@@ -73,8 +70,12 @@ export default function RegisterService() {
     });
   };
 
+  if (loading) {
+    return <Loading />;
+  }
   return (
     <Fragment>
+      <WebPageTitle pageTitle="Service registrations" />
       <div className="customDatatable">
         <div className="customDatatableHeader">
           <Button

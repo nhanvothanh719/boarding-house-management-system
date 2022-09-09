@@ -1,6 +1,7 @@
 import React, { Fragment, useState, useEffect } from "react";
 
 import MaterialTable from "material-table";
+import { Button } from "react-bootstrap";
 import swal from "sweetalert";
 import axios from "axios";
 import EmailIcon from '@mui/icons-material/Email';
@@ -9,7 +10,7 @@ import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 
 import AppUrl from "../../../RestAPI/AppUrl";
 import Loading from "../../../components/Loading/Loading";
-import { Button } from "react-bootstrap";
+import WebPageTitle from "../../../components/WebPageTitle/WebPageTitle";
 import CreateProblemModal from "../../../components/Modals/Problem/CreateProblemModal";
 import EditProblemModal from "../../../components/Modals/Problem/EditProblemModal";
 
@@ -55,14 +56,10 @@ export default function ProblemsList() {
 
   var columns = [];
     columns = [
-      { title: "#", render: (rowData) => rowData.tableData.id + 1 },
+      { title: "#", render: (rowData) => rowData.tableData.id + 1, width: "10%", align: "center" },
       {
         field: "title",
         title: "Title",
-      },
-      {
-        field: "description",
-        title: "Description",
       },
       {
         field: "severity_level",
@@ -92,6 +89,7 @@ export default function ProblemsList() {
   }
   return (
     <Fragment>
+      <WebPageTitle pageTitle="Problems" />
       <div className="customDatatable">
       <div className="customDatatableHeader">
           <Button
@@ -173,14 +171,15 @@ export default function ProblemsList() {
             }),
           ]}
           actions={[
-            {
+            (problem) => ({
               icon: "edit",
               tooltip: "Edit",
               onClick: (event, problem) => {
                 setShowEditModal(true);
                 setSelectedProblemId(problem.id);
               },
-            },
+              disabled: problem.replied_by != null,
+            }),
           ]}
         />
       </div>

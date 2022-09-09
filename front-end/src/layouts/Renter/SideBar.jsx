@@ -6,7 +6,8 @@ import NightShelterIcon from '@mui/icons-material/NightShelter';
 import HandshakeIcon from '@mui/icons-material/Handshake';
 import PaidIcon from '@mui/icons-material/Paid';
 import LocalLaundryServiceIcon from '@mui/icons-material/LocalLaundryService';
-import ReportProblemIcon from '@mui/icons-material/ReportProblem';
+import ControlCameraIcon from '@mui/icons-material/ControlCamera';
+import ErrorIcon from '@mui/icons-material/Error';
 
 import "../../assets/css/Renter/sidebar.css";
 
@@ -47,6 +48,28 @@ export default function SideBar() {
                 <span className="itemName"> Room contract </span>
               </li>
             </NavLink>
+            <NavLink
+              exact
+              to="/renter/register-optional-service"
+              style={{ textDecoration: "none", color: "#f1f1f1" }}
+              activeStyle={{ textDecoration: "none", color: "#fca311" }}
+            >
+              <li className="customLi">
+                <LocalLaundryServiceIcon className="sideBarIcon" />
+                <span className="itemName"> Service registration </span>
+              </li>
+            </NavLink>
+            <NavLink
+              exact
+              to="/renter/view-all-breach-histories"
+              style={{ textDecoration: "none", color: "#f1f1f1" }}
+              activeStyle={{ textDecoration: "none", color: "#fca311" }}
+            >
+              <li className="customLi">
+                <ControlCameraIcon className="sideBarIcon" />
+                <span className="itemName"> Breach histories </span>
+              </li>
+            </NavLink>
             <p className="renterItemGroup text-uppercase">Make</p>
             <NavLink
               exact
@@ -59,17 +82,7 @@ export default function SideBar() {
                 <span className="itemName"> Invoice payment </span>
               </li>
             </NavLink>
-            <NavLink
-              exact
-              to="/renter/register-optional-service"
-              style={{ textDecoration: "none", color: "#f1f1f1" }}
-              activeStyle={{ textDecoration: "none", color: "#fca311" }}
-            >
-              <li className="customLi">
-                <LocalLaundryServiceIcon className="sideBarIcon" />
-                <span className="itemName"> Service registration </span>
-              </li>
-            </NavLink>
+            
             <p className="renterItemGroup text-uppercase">Send</p>
             <NavLink
               exact
@@ -78,7 +91,7 @@ export default function SideBar() {
               activeStyle={{ textDecoration: "none", color: "#fca311" }}
             >
               <li className="customLi">
-                <ReportProblemIcon className="sideBarIcon" />
+                <ErrorIcon className="sideBarIcon" />
                 <span className="itemName"> Problems </span>
               </li>
             </NavLink>            

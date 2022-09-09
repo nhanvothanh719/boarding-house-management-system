@@ -14,7 +14,7 @@ export default function RegisterRoomModal(props) {
     sender_email: "",
     sender_phone_number: "",
   });
-  const [senderGender, setSenderGender] = useState(0);
+  const [senderGender, setSenderGender] = useState('');
 
   useEffect(() => {
     if (props.isShown === true) {
@@ -116,18 +116,28 @@ export default function RegisterRoomModal(props) {
                   <small className="text-danger">{errors.sender_name}</small>
                 </div>
                 <div>
-                <label className="customModalLabel">Gender:</label>
-                <FormControl fullWidth>
-                  <InputLabel>Gender</InputLabel>
-                  <Select
-                    value={senderGender}
-                    label="Gender"
-                    onChange={handleGenderChange}
-                  >
-                    <MenuItem value={0} style={{  display: "block", padding: "5px 30px 5px" }}>Female</MenuItem>
-                    <MenuItem value={1} style={{  display: "block", padding: "5px 30px 5px" }}>Male</MenuItem>
-                  </Select>
-                </FormControl>
+                  <label className="customModalLabel">Gender:</label>
+                  <FormControl fullWidth>
+                    <InputLabel>Gender</InputLabel>
+                    <Select
+                      value={senderGender}
+                      label="Gender"
+                      onChange={handleGenderChange}
+                    >
+                      <MenuItem
+                        value={0}
+                        style={{ display: "block", padding: "5px 30px 5px" }}
+                      >
+                        Female
+                      </MenuItem>
+                      <MenuItem
+                        value={1}
+                        style={{ display: "block", padding: "5px 30px 5px" }}
+                      >
+                        Male
+                      </MenuItem>
+                    </Select>
+                  </FormControl>
                 </div>
                 <div>
                   <label className="customModalLabel">Email:</label>
@@ -167,24 +177,24 @@ export default function RegisterRoomModal(props) {
                 </div>
               </form>
             </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-primary"
-                data-dismiss="modal"
-                onClick={makeNewRentRegistration}
-              >
-                Submit
-              </button>
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-dismiss="modal"
-                onClick={closeModal}
-              >
-                Close
-              </button>
-            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-dismiss="modal"
+              onClick={makeNewRentRegistration}
+            >
+              Submit
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+              onClick={closeModal}
+            >
+              Close
+            </button>
           </div>
         </div>
       </div>

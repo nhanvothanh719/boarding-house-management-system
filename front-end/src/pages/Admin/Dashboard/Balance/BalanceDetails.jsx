@@ -4,12 +4,14 @@ import { Button } from "react-bootstrap";
 import MaterialTable from "material-table";
 import swal from "sweetalert";
 import axios from "axios";
+import moment from "moment";
 
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
-import BalanceVariation from "../../../../components/Charts/BalanceVariation";
-import BalanceCategoryRate from "../../../../components/Charts/BalanceCategoryRate";
+import BalanceVariation from "../../../../components/Charts/AdminCharts/BalanceVariation";
+import BalanceCategoryRate from "../../../../components/Charts/AdminCharts/BalanceCategoryRate";
 import AddBalanceChangeModal from "../../../../components/Modals/Balance/AddBalanceChangeModal";
+import WebPageTitle from "../../../../components/WebPageTitle/WebPageTitle";
 
 export default function BalanceDetails() {
   var currentDate = new Date();
@@ -46,11 +48,20 @@ export default function BalanceDetails() {
   };
 
   var columns = [];
-  if (loading) {
-    return <Loading />;
-  } else {
     columns = [
-      { title: "#", render: (rowData) => rowData.tableData.id + 1 },
+      { title: "#", render: (rowData) => rowData.tableData.id + 1, width: "10%", align: "center" },
+      {
+        field: "is_income",
+        title: "Category",
+        editable: "never",
+        width: "20%",
+        lookup: { 0: "Expenses", 1: "Earned" },
+        render: rowData => (
+          <div>
+              <span className={`${rowData.is_income === 0 ? "expense" : "earned"}` }>{rowData.is_income === 0 ? "Expenses" : "Earned" }</span>
+          </div>
+        )
+      },
       {
         field: "description",
         title: "Description",
@@ -60,20 +71,10 @@ export default function BalanceDetails() {
             : true,
       },
       {
-        field: "is_income",
-        title: "Category",
-        editable: "never",
-        lookup: { 0: "Expenses", 1: "Earned" },
-        render: rowData => (
-          <div>
-              <span className={`${rowData.is_income === 0 ? "expense" : "earned"}` }>{rowData.is_income === 0 ? "Expenses" : "Earned" }</span>
-          </div>
-        )
-      },
-      {
         field: "amount",
         title: "Amount",
         type: "numeric",
+        width: "15%",
         validate: (rowData) =>
           rowData.amount <= 0
             ? { isValid: false, helperText: "Amount must bigger than 0" }
@@ -83,6 +84,8 @@ export default function BalanceDetails() {
         field: "occurred_on",
         title: "Occurred on",
         type: "date",
+        width: "20%",
+        render: rowData => moment(rowData.occurred_on).format('DD/MM/YYYY'),
         validate: (rowData) =>
           rowData.occurred_on >= currentDate ||
           rowData.occurred_on <
@@ -91,10 +94,13 @@ export default function BalanceDetails() {
             : true,
       },
     ];
-  }
 
+    if (loading) {
+      return <Loading />;
+    }
   return (
     <Fragment>
+      <WebPageTitle pageTitle="Balance details" />
       <h1 className="currentBalance center">
         Current Balance: $
         <span>{currentBalance}</span>

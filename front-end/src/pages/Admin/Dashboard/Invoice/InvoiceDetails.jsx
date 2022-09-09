@@ -13,15 +13,19 @@ import { Visibility } from "@material-ui/icons";
 import MailIcon from "@mui/icons-material/Mail";
 
 import Loading from "../../../../components/Loading/Loading";
+import ConfirmLoading from "../../../../components/Loading/ConfirmLoading";
 import AppUrl from "../../../../RestAPI/AppUrl";
 import "../../../../assets/css/Dashboard/datatable.css";
 import { IconButton, Tooltip } from "@mui/material";
+import WebPageTitle from "../../../../components/WebPageTitle/WebPageTitle";
 
 export default function InvoiceDetails({ match }) {
   const history = useHistory();
   const invoiceId = match.params.invoiceID;
 
   const [loading, setLoading] = useState(true);
+  const [loaderClass, setLoaderClass] = useState('d-none');
+  const [displayComponentsClass, setDisplayComponentsClass] = useState('');
   const [servicesList, setServicesList] = useState([]);
   const [invoice, setInvoice] = useState({
     month: "",
@@ -72,7 +76,10 @@ export default function InvoiceDetails({ match }) {
   };
 
   //Send email
-  const sendInvoice = () => {
+  const sendInvoice = (e) => {
+    e.preventDefault();
+    setLoaderClass('');
+    setDisplayComponentsClass('d-none');
     axios.get(AppUrl.SendInvoice + invoiceId).then((response) => {
       if (response.data.status === 200) {
         swal("Invoice has been sent", response.data.message, "success");
@@ -81,6 +88,8 @@ export default function InvoiceDetails({ match }) {
         swal("Error", response.data.message, "error");
         history.push("/admin/view-all-renters-with-invoices");
       }
+      setLoaderClass('d-none');
+      setDisplayComponentsClass('');
     });
   };
   //
@@ -97,10 +106,13 @@ export default function InvoiceDetails({ match }) {
   }
   return (
     <Fragment>
+      <WebPageTitle pageTitle="Invoice details" />
       <div className="room">
         <div className="titleContainer">
           <h1 className="customActionTitle">View & Edit invoice</h1>
         </div>
+        <div className={loaderClass}><ConfirmLoading/></div>
+        <div className={displayComponentsClass}>
         <div className="roomTop">
           <div className="roomTopLeft">
             <div className="leftContainer">
@@ -270,6 +282,7 @@ export default function InvoiceDetails({ match }) {
               </tbody>
             </table>
           </div>
+        </div>
         </div>
       </div>
     </Fragment>

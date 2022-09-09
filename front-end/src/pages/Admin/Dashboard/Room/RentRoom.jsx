@@ -9,6 +9,7 @@ import CancelPresentationIcon from "@mui/icons-material/CancelPresentation";
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
 import AddRoomRentModal from "../../../../components/Modals/Room/AddRoomRentModal";
+import WebPageTitle from "../../../../components/WebPageTitle/WebPageTitle";
 
 export default function RentRoom() {
   const [loading, setLoading] = useState(true);
@@ -41,7 +42,7 @@ export default function RentRoom() {
     return <Loading />;
   } else {
     columns = [
-      { field: "id", title: "ID", align: "center" },
+      { title: "#", render: (rowData) => rowData.tableData.id + 1, width: "10%", align: "center" },
       {
         field: "room_id",
         title: "Room number",
@@ -73,6 +74,7 @@ export default function RentRoom() {
 
   return (
     <Fragment>
+      <WebPageTitle pageTitle="Room rents" />
       <div className="customDatatable">
         <div className="customDatatableHeader">
           <Button

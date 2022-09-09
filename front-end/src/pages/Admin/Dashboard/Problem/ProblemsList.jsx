@@ -6,12 +6,16 @@ import axios from "axios";
 
 import AppUrl from "../../../../RestAPI/AppUrl";
 import Loading from "../../../../components/Loading/Loading";
+import ConfirmLoading from "../../../../components/Loading/ConfirmLoading";
 import ReplyProblemModal from "../../../../components/Modals/Problem/ReplyProblemModal";
 import ViewReplyProblemModal from "../../../../components/Modals/Problem/ViewProblemReplyModal";
+import WebPageTitle from "../../../../components/WebPageTitle/WebPageTitle";
 
 export default function ProblemsList() {
   const [details] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loaderClass, setLoaderClass] = useState("d-none");
+  const [displayComponentsClass, setDisplayComponentsClass] = useState("");
   const [problemsListChange, setProblemsListChange] = useState(false);
   const [problemsList, setProblemsList] = useState([]);
   const [showReplyModal, setShowReplyModal] = useState(false);
@@ -47,11 +51,8 @@ export default function ProblemsList() {
   };
 
   var columns = [];
-  if (loading) {
-    return <Loading />;
-  } else {
     columns = [
-      { title: "#", render: (rowData) => rowData.tableData.id + 1 },
+      { title: "#", render: (rowData) => rowData.tableData.id + 1, width: "10%", align: "center" },
       {
         field: "renter_id",
         title: "Renter name",
@@ -61,11 +62,6 @@ export default function ProblemsList() {
       {
         field: "title",
         title: "Title",
-        editable: "never",
-      },
-      {
-        field: "description",
-        title: "Description",
         editable: "never",
       },
       {
@@ -90,11 +86,16 @@ export default function ProblemsList() {
         },
       },
     ];
-  }
 
+    if (loading) {
+      return <Loading />;
+    }
   return (
     <Fragment>
-      <div className="customDatatable">
+      <WebPageTitle pageTitle="Problems" />
+      <div className={loaderClass}><ConfirmLoading/></div>
+        <div className={displayComponentsClass}>
+        <div className="customDatatable">
         <MaterialTable
           columns={columns}
           data={problemsList}
@@ -179,11 +180,14 @@ export default function ProblemsList() {
         />
         <ReplyProblemModal
           isShown={showReplyModal}
+          setLoaderClass={setLoaderClass}
+          setDisplayComponentsClass={setDisplayComponentsClass}
           setReplyModalStatus={setReplyModalStatus}
           updateProblemReplyStatus={updateProblemReplyStatus}
           problemId={selectedProblemId}
         />
       </div>
+        </div>
     </Fragment>
   );
 }

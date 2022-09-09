@@ -8,6 +8,7 @@ import GroupRemoveIcon from '@mui/icons-material/GroupRemove';
 
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
+import WebPageTitle from "../../../../components/WebPageTitle/WebPageTitle";
 
 export default function RoomRentRegistrationsList() {
   const [details] = useState([]);
@@ -43,12 +44,9 @@ export default function RoomRentRegistrationsList() {
   };
 
   var columns = [];
-  if (loading) {
-    return <Loading />;
-  } else {
     columns = [
-      { title: "#", render: (rowData) => rowData.tableData.id + 1 },
-      { field: "sender_name", title: "Sender's name" },
+      { title: "#", render: (rowData) => rowData.tableData.id + 1, width: "10%", align: "center" },
+      { field: "sender_name", title: "Name", width: "20%", },
       {
         field: "sender_gender",
         title: "Gender",
@@ -59,11 +57,12 @@ export default function RoomRentRegistrationsList() {
           </div>
         )
       },
-      { field: "sender_email", title: "Sender's email" },
-      { field: "sender_phone_number", title: "Sender's phone number" },
+      { field: "sender_email", title: "Email" },
+      { field: "sender_phone_number", title: "Phone number" },
       {
         field: "registered_room_id",
         title: "Registered room",
+        width: "10%",
         render: (rowData) => (
             roomInfos["" + rowData.registered_room_id]
           ),
@@ -71,6 +70,7 @@ export default function RoomRentRegistrationsList() {
       {
         field: "is_accepted",
         title: "Accepted",
+        width: "10%",
         lookup: {0:"No", 1:"Yes"},
         render: rowData => (
           <div>
@@ -80,8 +80,12 @@ export default function RoomRentRegistrationsList() {
       },
     ];
 
+    if (loading) {
+      return <Loading />;
+    }
     return (
       <Fragment>
+        <WebPageTitle pageTitle="Room registrations" />
         <div className="customDatatable">
           <div className="customDatatableHeader"></div>
           <MaterialTable
@@ -139,4 +143,3 @@ export default function RoomRentRegistrationsList() {
       </Fragment>
     );
   }
-}
