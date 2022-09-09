@@ -53,12 +53,38 @@ class BreachController extends Controller
         ]);
     }
 
+    public function editBreach($id) {
+        $breach = Breach::find($id);
+        if(!$breach) {
+            return response([
+                'message' => 'No breach found',
+                'status' => 404,
+            ]);
+        }
+        return response([
+            'status' => 200,
+            'breach' => $breach,
+        ]);
+    }
+
     public function updateBreach(Request $request, $id) {
         $breach = Breach::find($id);
         if(!$breach) {
             return response([
-                'message' => 'No balance change found',
+                'message' => 'No breach found',
                 'status' => 404,
+            ]);
+        }
+        $validator = Validator::make($request->all(), [
+            'name' => ['required','unique:breaches,name,'.$id],
+            'allowed_violate_number' => 'required|numeric|min:1|max:10|integer',
+            'severity_level' => 'required',
+        ]);
+        if($validator->fails())
+        {
+            return response([
+                'errors' => $validator->messages(),
+                'status' => 422,
             ]);
         }
         $breach->name = $request->name;

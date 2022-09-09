@@ -22,6 +22,20 @@ class RenterBreachHistoryController extends Controller
         ]);
     }
 
+    public function getBreachDetails($id) {
+        $breach = Breach::find($id);
+        if(!$breach) {
+            return response([
+                'message' => 'No breach found',
+                'status' => 404,
+            ]);
+        }
+        return response([
+            'status' => 200,
+            'breach' => $breach,
+        ]);
+    }
+
     public function getRenterBreaches() {
         $user = Auth::user();
         $breaches_id = Breach::pluck('id')->toArray();

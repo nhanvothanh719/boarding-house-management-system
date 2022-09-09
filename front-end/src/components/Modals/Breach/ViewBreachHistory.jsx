@@ -24,7 +24,7 @@ export default function ViewBreachHistory(props) {
   }, [props.isShown, props.breachId]);
 
   const closeModal = (e, value) => {
-    props.setModalStatus(false);
+    props.setShowHistoriesModalStatus(false);
   };
 
   var columns = [];

@@ -5,7 +5,14 @@ import axios from "axios";
 import AppUrl from "../../../RestAPI/AppUrl";
 
 export default function ViewReplyProblemModal(props) {
-  const [details, setDetails] = useState({});
+  const [details, setDetails] = useState({
+    title: "",
+    description: "",
+    reply_text: "",
+    responder: {
+      name: "",
+    },
+  });
 
   useEffect(() => {
     if (props.isShown === true) {
@@ -51,14 +58,33 @@ export default function ViewReplyProblemModal(props) {
             </div>
             <div class="modal-body">
               <hr />
-              <form className="flexForm">
+              <form className="">
+              <div className="form-group">
+                  <label className="customModalLabel">Title :</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="replied_by"
+                    value={details.title}
+                  />
+                </div>
+                <div className="form-group">
+                  <label className="customModalLabel">Content :</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="replied_by"
+                    value={details.description}
+                    multiple
+                  />
+                </div>
                 <div className="form-group">
                   <label className="customModalLabel">Responder :</label>
                   <input
                     type="text"
                     className="form-control"
                     name="replied_by"
-                    value={details.replied_by === null ? "" : details.replied_by}
+                    value={details.responder === null ? "" : details.responder.name}
                   />
                 </div>
                 <div className="form-group">
@@ -67,6 +93,7 @@ export default function ViewReplyProblemModal(props) {
                   className="form-control" 
                   name="reply_text"
                   value={details.reply_text === null ? "" : details.reply_text}
+                  multiple
                   />
                 </div>
               </form>

@@ -4,9 +4,15 @@ import swal from "sweetalert";
 import axios from "axios";
 
 import AppUrl from "../../../RestAPI/AppUrl";
-import { FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material";
 
-export default function CreateBreachModal(props) {
+export default function EditBreachModal(props) {
   const [errors, setErrors] = useState([]);
   const [input, setInput] = useState({
     name: "",
@@ -14,26 +20,34 @@ export default function CreateBreachModal(props) {
     severity_level: "",
     allowed_violate_number: "",
   });
-  const [selectSeverityLevel, setSelectSeverityLevel] = useState(1);
+  const [selectSeverityLevel, setSelectSeverityLevel] = useState('');
 
   useEffect(() => {
     if (props.isShown === true) {
       var model = new window.bootstrap.Modal(
-        document.getElementById("addBreachModal")
+        document.getElementById("updateBreachModal")
       );
       model.show();
+      axios.get(AppUrl.EditBreach + props.breachId).then((response) => {
+        if (response.data.status === 200) {
+          setInput(response.data.breach);
+          setSelectSeverityLevel(response.data.breach.severity_level);
+        } else if (response.data.status === 404) {
+          swal("Error", response.data.message, "error");
+        }
+      });
     }
-  }, [props.isShown]);
+  }, [props.isShown, props.breachId]);
 
   const displayModal = () => {
     var model = new window.bootstrap.Modal(
-      document.getElementById("addBreachModal")
+      document.getElementById("updateBreachModal")
     );
     model.show();
   };
 
   const closeModal = (e, value) => {
-    props.setCreateModalStatus(false);
+    props.setEditModalStatus(false);
   };
 
   const handleInput = (e) => {
@@ -41,7 +55,7 @@ export default function CreateBreachModal(props) {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
 
-  const addBreach = (e) => {
+  const updateBreach = (e) => {
     e.preventDefault();
     const breach = {
       name: input.name,
@@ -50,7 +64,7 @@ export default function CreateBreachModal(props) {
       allowed_violate_number: input.allowed_violate_number,
     };
     axios
-      .post(AppUrl.StoreBreach, breach)
+      .put(AppUrl.UpdateBreach + props.breachId, breach)
       .then((response) => {
         if (response.data.status === 200) {
           setErrors([]);
@@ -71,7 +85,7 @@ export default function CreateBreachModal(props) {
     <Fragment>
       <form
         class="modal fade"
-        id="addBreachModal"
+        id="updateBreachModal"
         tabindex="-1"
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
@@ -80,16 +94,16 @@ export default function CreateBreachModal(props) {
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="customModalTitle">
-                Add new breach
-              </h5>
+              <h5 class="customModalTitle">Update breach</h5>
               <button
                 type="button"
                 class="close"
                 data-dismiss="modal"
                 aria-label="Close"
               >
-                <span aria-hidden="true" onClick={closeModal}>&times;</span>
+                <span aria-hidden="true" onClick={closeModal}>
+                  &times;
+                </span>
               </button>
             </div>
             <div class="modal-body">
@@ -116,6 +130,7 @@ export default function CreateBreachModal(props) {
                     onChange={handleInput}
                     fullWidth
                     required
+                    multiline
                   />
                 </div>
                 <small className="text-danger">{errors.description}</small>
@@ -125,7 +140,6 @@ export default function CreateBreachModal(props) {
                     <InputLabel>Category</InputLabel>
                     <Select
                       label="Category"
-                      //name="gender"
                       onChange={(e) => setSelectSeverityLevel(e.target.value)}
                       value={selectSeverityLevel}
                       required
@@ -180,9 +194,9 @@ export default function CreateBreachModal(props) {
                 type="button"
                 class="btn btn-primary"
                 data-dismiss="modal"
-                onClick={addBreach}
+                onClick={updateBreach}
               >
-                Create
+                Update
               </button>
               <button
                 type="button"
@@ -199,4 +213,3 @@ export default function CreateBreachModal(props) {
     </Fragment>
   );
 }
-

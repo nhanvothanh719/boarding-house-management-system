@@ -6,7 +6,7 @@ import TextField from "@mui/material/TextField";
 
 import AppUrl from "../../../RestAPI/AppUrl";
 
-export default function CreateCategoryModal(props) {
+export default function EditCategoryModal(props) {
   const [errors, setErrors] = useState([]);
   const [input, setInput] = useState({
     name: "",
@@ -17,22 +17,28 @@ export default function CreateCategoryModal(props) {
   useEffect(() => {
     if (props.isShown === true) {
       var model = new window.bootstrap.Modal(
-        document.getElementById("createCategoryModal")
+        document.getElementById("updateCategoryModal")
       );
       model.show();
-      
+      axios.get(AppUrl.EditCategory + props.categoryId).then((response) => {
+        if (response.data.status === 200) {
+          setInput(response.data.category);
+        } else if (response.data.status === 404) {
+          swal("Error", response.data.message, "error");
+        }
+      });
     }
-  }, [props.isShown]);
+  }, [props.isShown, props.categoryId]);
 
   const displayModal = () => {
     var model = new window.bootstrap.Modal(
-      document.getElementById("createCategoryModal")
+      document.getElementById("updateCategoryModal")
     );
     model.show();
   };
 
   const closeModal = (e, value) => {
-    props.setCreateModalStatus(false);
+    props.setEditModalStatus(false);
   };
 
   const handleInput = (e) => {
@@ -40,37 +46,37 @@ export default function CreateCategoryModal(props) {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
 
-  const createCategory = (e) => {
+  const updateCategory = (e) => {
     e.preventDefault();
-    const data = {
+    const category = {
       name: input.name,
       price: input.price,
       description: input.description,
     };
     axios
-      .post(AppUrl.StoreCategory, data)
-      .then((response) => {
-        if (response.data.status === 200) {
-          setErrors([]);
-          swal("Success", response.data.message, "success");
-          props.updateModalStatus(true);
-        } else if (response.data.status === 422) {
-          setErrors(response.data.errors);
-          setTimeout(() => {
-            displayModal();
-          }, 1000);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    .put(AppUrl.UpdateCategory + props.categoryId, category)
+    .then((response) => {
+      if (response.data.status === 200) {
+        setErrors([]);
+        swal("Success", response.data.message, "success");
+        props.updateModalStatus(true);
+      } else if (response.data.status === 422) {
+        setErrors(response.data.errors);
+        setTimeout(() => {
+          displayModal();
+        }, 1000);
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   };
 
   return (
     <Fragment>
       <div
         class="modal fade"
-        id="createCategoryModal"
+        id="updateCategoryModal"
         tabindex="-1"
         aria-hidden="true"
         onClick={closeModal}
@@ -127,6 +133,7 @@ export default function CreateCategoryModal(props) {
                     onChange={handleInput}
                     fullWidth
                     required
+                    multiline
                   />
                 </div>
                 <small className="text-danger">{errors.description}</small>
@@ -137,9 +144,9 @@ export default function CreateCategoryModal(props) {
                 type="button"
                 class="btn btn-primary"
                 data-dismiss="modal"
-                onClick={createCategory}
+                onClick={updateCategory}
               >
-                Create
+                Update
               </button>
               <button
                 type="button"

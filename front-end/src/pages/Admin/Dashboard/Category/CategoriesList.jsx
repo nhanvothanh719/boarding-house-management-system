@@ -9,6 +9,7 @@ import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
 import CreateCategoryModal from "../../../../components/Modals/Category/CreateCategoryModal";
 import WebPageTitle from "../../../../components/WebPageTitle/WebPageTitle";
+import EditCategoryModal from "../../../../components/Modals/Category/EditCategoryModal";
 
 function CategoriesList() {
   const [details] = useState([]);
@@ -16,6 +17,8 @@ function CategoriesList() {
   const [categoriesList, setCategoryList] = useState([]);
   const [categoriesListChange, setCategoriesListChange] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [selectedCategoryId, setSelectedCategoryId] = useState(null);
 
   useEffect(() => {
     axios.get(AppUrl.ShowCategories).then((response) => {
@@ -33,7 +36,11 @@ function CategoriesList() {
     setShowCreateModal(status);
   };
 
-  const updateCreateModalStatus = (status) => {
+  const setEditModalStatus = (status) => {
+    setShowEditModal(status);
+  };
+
+  const updateModalStatus = (status) => {
     setCategoriesListChange(status);
   };
 
@@ -109,7 +116,7 @@ function CategoriesList() {
             <CreateCategoryModal
               isShown={showCreateModal}
               setCreateModalStatus={setCreateModalStatus}
-              updateCreateModalStatus={updateCreateModalStatus}
+              updateModalStatus={updateModalStatus}
             />
           </div>
           <MaterialTable
@@ -129,28 +136,17 @@ function CategoriesList() {
                 fontFamily: 'Anek Telugu, sans-serif',
               }
             }}
+            actions={[
+              {
+                icon: "edit",
+                tooltip: "Edit",
+                onClick: (event, category) => {
+                  setShowEditModal(true);
+                  setSelectedCategoryId(category.id);
+                },
+              },
+            ]}
             editable={{
-              onRowUpdate: (newCategory, oldCategory) =>
-                new Promise((resolve, reject) => {
-                  setTimeout(() => {
-                    const data = {
-                      name: newCategory.name,
-                      description: newCategory.description,
-                      price: newCategory.price,
-                    };
-                    axios
-                      .put(AppUrl.UpdateCategory + oldCategory.id, data)
-                      .then((response) => {
-                        if (response.data.status === 200) {
-                          swal("Success", response.data.message, "success");
-                          setCategoriesListChange(true);
-                        } else if (response.data.status === 404) {
-                          swal("Error", response.data.message, "error");
-                        }
-                      });
-                    resolve();
-                  }, 1000);
-                }),
               onRowDelete: (thisCategory) =>
                 new Promise((resolve, reject) => {
                   setTimeout(() => {
@@ -173,6 +169,12 @@ function CategoriesList() {
             }}
           />
         </div>
+        <EditCategoryModal
+            isShown={showEditModal}
+            categoryId={selectedCategoryId}
+            setEditModalStatus={setEditModalStatus}
+            updateModalStatus={updateModalStatus}
+          />
       </Fragment>
     );
   }

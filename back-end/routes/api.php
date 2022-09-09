@@ -73,6 +73,7 @@ Route::middleware('auth:api')->group(function(){
         Route::get('/get-renter-room-contract', [RenterRoomContractController::class, 'getRenterRoomContract']);
 
         Route::get('/get-all-renter-breaches', [RenterBreachHistoryController::class, 'getRenterBreaches']);
+        Route::get('/get-breach-details/{id}', [RenterBreachHistoryController::class, 'getBreachDetails']);
         Route::get('/get-renter-breach-histories/{id}', [RenterBreachHistoryController::class, 'getRenterBreachHistories']);
     });
 
@@ -161,6 +162,7 @@ Route::middleware('auth:api')->group(function(){
         //Breach
         Route::get('/all-breaches', [BreachController::class, 'index']);
         Route::post('/store-breach', [BreachController::class, 'storeBreach']);
+        Route::get('/edit-breach/{id}', [BreachController::class, 'editBreach']);
         Route::put('/update-breach/{id}', [BreachController::class, 'updateBreach']);
         Route::delete('/delete-breach/{id}', [BreachController::class, 'deleteBreach']);
 

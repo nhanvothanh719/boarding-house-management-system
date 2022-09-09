@@ -10,11 +10,13 @@ import { IconButton, Tooltip } from "@mui/material";
 import DescriptionIcon from "@mui/icons-material/Description";
 import RenterBreachCount from "../../../components/Charts/RenterCharts/RenterBreachCount";
 import ViewBreachHistory from "../../../components/Modals/Breach/ViewBreachHistory";
+import ViewBreachDetailsModal from "../../../components/Modals/Breach/ViewBreachDetailsModal";
 
 export default function BreachHistoriesList() {
   const [breachesList, setBreachesList] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [showViewDetailsModal, setShowViewDetailsModal] = useState(false);
+  const [showBreachHistoriesModal, setShowBreachHistoriesModal] = useState(false);
+  const [showBreachDetailsModal, setShowBreachDetailsModal] = useState(false);
   const [selectBreachId, setSelectBreachId] = useState("");
 
   const severity = {
@@ -40,9 +42,13 @@ export default function BreachHistoriesList() {
     setLoading(false);
   }, []);
 
-  const setModalStatus = (status) => {
-    setShowViewDetailsModal(status);
+  const setShowHistoriesModalStatus = (status) => {
+    setShowBreachHistoriesModal(status);
   };
+
+  const setShowDetailsModalStatus = (status) => {
+    setShowBreachDetailsModal(status);
+  }
 
   var breachesColumns = [];
   breachesColumns = [
@@ -97,7 +103,12 @@ export default function BreachHistoriesList() {
       title: "Description",
       render: (rowData) => (
         <Tooltip title="View description">
-          <IconButton>
+          <IconButton
+          onClick={(event) => {
+            setShowBreachDetailsModal(true);
+            setSelectBreachId(rowData.id);
+          }}
+          >
             <DescriptionIcon style={{ color: "black" }} />
           </IconButton>
         </Tooltip>
@@ -137,7 +148,7 @@ export default function BreachHistoriesList() {
               icon: "visibility",
               tooltip: "Details",
               onClick: (event, breach) => {
-                setShowViewDetailsModal(true);
+                setShowBreachHistoriesModal(true);
                 setSelectBreachId(breach.id);
               },
               disabled: breach.total === 0,
@@ -146,9 +157,14 @@ export default function BreachHistoriesList() {
         />
       </div>
       <ViewBreachHistory
-      isShown={showViewDetailsModal}
+      isShown={showBreachHistoriesModal}
       breachId={selectBreachId}
-      setModalStatus={setModalStatus}
+      setShowHistoriesModalStatus={setShowHistoriesModalStatus}
+      />
+      <ViewBreachDetailsModal
+      isShown={showBreachDetailsModal}
+      breachId={selectBreachId}
+      setShowDetailsModalStatus={setShowDetailsModalStatus}
       />
     </Fragment>
   );

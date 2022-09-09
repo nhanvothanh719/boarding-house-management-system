@@ -62,10 +62,6 @@ export default function ProblemsList() {
         title: "Title",
       },
       {
-        field: "description",
-        title: "Description",
-      },
-      {
         field: "severity_level",
         title: "Severity level",
         lookup: { 1: "High", 2: "Normal", 3: "Low" },
@@ -175,14 +171,15 @@ export default function ProblemsList() {
             }),
           ]}
           actions={[
-            {
+            (problem) => ({
               icon: "edit",
               tooltip: "Edit",
               onClick: (event, problem) => {
                 setShowEditModal(true);
                 setSelectedProblemId(problem.id);
               },
-            },
+              disabled: problem.replied_by != null,
+            }),
           ]}
         />
       </div>

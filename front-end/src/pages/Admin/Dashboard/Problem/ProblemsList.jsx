@@ -65,11 +65,6 @@ export default function ProblemsList() {
         editable: "never",
       },
       {
-        field: "description",
-        title: "Description",
-        editable: "never",
-      },
-      {
         field: "severity_level",
         title: "Severity level",
         editable: "never",

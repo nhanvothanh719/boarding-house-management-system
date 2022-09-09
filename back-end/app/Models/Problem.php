@@ -9,7 +9,7 @@ class Problem extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
-    protected $with = ['renter', 'admin'];
+    protected $with = ['renter', 'responder'];
 
     const SEVERITY_HIGH = 1;
     const SEVERITY_NORMAL = 2;
@@ -23,7 +23,7 @@ class Problem extends Model
         return $this->belongsTo(User::class,'renter_id','id');
     }
 
-    public function admin() {
+    public function responder() {
         return $this->belongsTo(User::class,'replied_by','id');
     }
 }
