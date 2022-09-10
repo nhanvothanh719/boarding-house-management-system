@@ -139,7 +139,7 @@ export default function EditServiceModal(props) {
                     required
                   />
                 </div>
-                <span>{errors.unit}</span>
+                <small className="text-danger customSmallError">{errors.unit}</small>
                 <div>
                 <label className="customModalLabel">Cost per unit:</label>
                   <TextField
@@ -151,7 +151,7 @@ export default function EditServiceModal(props) {
                     required
                   />
                 </div>
-                <span>{errors.unit_price}</span>
+                <small className="text-danger customSmallError">{errors.unit_price}</small>
                 <div>
                   <label>Compulsory:</label>
                   <select
@@ -170,7 +170,7 @@ export default function EditServiceModal(props) {
                   </option>
                 </select>
                 </div>
-                <span>{errors.is_compulsory}</span>
+                <small className="text-danger customSmallError">{errors.is_compulsory}</small>
               </form>
             </div>
             <div class="modal-footer">

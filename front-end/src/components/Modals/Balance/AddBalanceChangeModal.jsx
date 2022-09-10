@@ -115,6 +115,7 @@ export default function AddBalanceChangeModal(props) {
                     required
                   />
                 </div>
+                <small className="text-danger customSmallError" >{errors.description}</small>
                 <div className="">
                   <label className="customModalLabel">Category:</label>
                   <FormControl fullWidth>
@@ -141,7 +142,7 @@ export default function AddBalanceChangeModal(props) {
                     </Select>
                   </FormControl>
                 </div>
-
+                <small className="text-danger customSmallError" >{errors.is_income}</small>
                 <div className="">
                   <label className="customModalLabel">Amount:</label>
                   <TextField
@@ -153,7 +154,7 @@ export default function AddBalanceChangeModal(props) {
                     required
                   />
                 </div>
-                <small className="text-danger">{errors.amount}</small>
+                <small className="text-danger customSmallError" >{errors.amount}</small>
                 <div className="">
                   <label className="customModalLabel">Occurred on:</label>
                   <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -171,7 +172,7 @@ export default function AddBalanceChangeModal(props) {
                   />
                   </LocalizationProvider>
                 </div>
-                <small className="text-danger">{errors.occurred_on}</small>
+                <small className="text-danger customSmallError" >{errors.occurred_on}</small>
               </form>
             </div>
             <div class="modal-footer">

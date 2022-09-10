@@ -22,14 +22,14 @@ class CategoryController extends Controller
 
     public function storeCategory(Request $request) {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:categories',
-            'price' => 'required|numeric',
+            'name' => 'required|unique:categories|alpha_num',
+            'price' => 'required|numeric|min:100|max:1000',
         ]);
         if($validator->fails())
         {
             return response([
                 'errors' => $validator->messages(),
-                'status' => 404,
+                'status' => 422,
             ]);
         }
         try {
@@ -70,8 +70,8 @@ class CategoryController extends Controller
 
     public function updateCategory(Request $request, $id) {
         $validator = Validator::make($request->all(), [
-            'name' => ['required','unique:categories,name,'.$id],
-            'price' => 'required|numeric',
+            'name' => ['required','unique:categories,name,'.$id, 'alpha_num'],
+            'price' => 'required|numeric|min:100|max:1000',
         ]);
         if($validator->fails())
         {

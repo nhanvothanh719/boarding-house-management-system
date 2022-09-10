@@ -89,7 +89,7 @@ export default function BalanceDetails() {
         validate: (rowData) =>
           rowData.occurred_on >= currentDate ||
           rowData.occurred_on <
-            currentDate.setFullYear(currentDate.getFullYear() - 1)
+            currentDate.setMonth(currentDate.getMonth() - 3)
             ? { isValid: false, helperText: "Inappropriate value" }
             : true,
       },

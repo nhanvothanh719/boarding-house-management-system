@@ -59,7 +59,11 @@ export default function EditMotorbikeModal(props) {
   const updateMotorbike = (e) => {
     e.preventDefault();
     const motorbike = new FormData();
-    motorbike.append("renter_id", selectedRenter.id);
+    if (selectedRenter === null) {
+      motorbike.append("renter_id", input.renter_id);
+    } else {
+      motorbike.append("renter_id", selectedRenter.id);
+    }
     motorbike.append("license_plate", input.license_plate);
     if (motorbikeImage.motorbike_image) {
       motorbike.append("motorbike_image", motorbikeImage.motorbike_image);
@@ -121,12 +125,12 @@ export default function EditMotorbikeModal(props) {
                     required
                   />
                 </div>
-                <small className="text-danger">{errors.license_plate}</small>
+                <small className="text-danger customSmallError">{errors.license_plate}</small>
                 <div className="form-group">
                   <label className="customModalLabel">Owner:</label>
                   <SearchRenterEdit getSelectedRenter={getSelectedRenter} currentRenter={input.renter} />
                 </div>
-                <small className="text-danger">{errors.renter_id}</small>
+                <small className="text-danger customSmallError">{errors.renter_id}</small>
                 <div className="form-group">
                   <label className="customModalLabel">Motorbike image:</label>
                   <input
@@ -134,9 +138,10 @@ export default function EditMotorbikeModal(props) {
                     className="form-control"
                     name="motorbike_image"
                     onChange={handleMotorbikeImage}
+                    accept="image/*"
                   />
                 </div>
-                <small className="text-danger">{errors.motorbike_image}</small>
+                <small className="text-danger customSmallError">{errors.motorbike_image}</small>
               </form>
               <img src={`http://127.0.0.1:8000/${input.motorbike_image}`} alt= "" style={{width: "60px", height: "60px", borderRadius: "50%"}}/>
             </div>

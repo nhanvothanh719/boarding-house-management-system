@@ -81,8 +81,8 @@ class InvoiceController extends Controller
         $validator = Validator::make($request->all(), [
             'effective_from' => 'required|date|after_or_equal:'.$appropriate_date,
             'valid_until' => ['required', 'date', 'before_or_equal:'.date("Y-m-d", strtotime($appropriate_date."+15 day")), 'after_or_equal:'.date("Y-m-d", strtotime($appropriate_date."+1 day"))],
-            'discount' => 'required|min:0|max:100',
-            'month' => 'required|min:1|max:12',
+            'discount' => 'required|min:0|max:100|numeric',
+            'month' => 'required|min:1|max:12|integer',
             'extra_fee' => 'numeric|nullable',
         ]);
         if($validator->fails()) 
@@ -184,7 +184,7 @@ class InvoiceController extends Controller
         $validator = Validator::make($request->all(), [
             'effective_from' => 'required|date|after_or_equal:'.$appropriate_time,
             'valid_until' => ['required', 'date', 'before_or_equal:'.date("Y-m-d", strtotime($appropriate_time."+15 day")), 'after_or_equal:'.date("Y-m-d", strtotime($appropriate_time."+1 day"))],
-            'month' => 'required|min:1|max:12',
+            'month' => 'required|min:1|max:12|integer',
         ]);
         if($validator->fails()) 
         {

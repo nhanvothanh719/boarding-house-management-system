@@ -48,9 +48,9 @@ class RoomController extends Controller
 
     public function storeRoom(Request $request) {
         $validator = Validator::make($request->all(), [
-            'number' => 'required|unique:rooms',
-            'category_id' => 'required',
-            'area' => 'required|digits_between:2,4',
+            'number' => 'required|unique:rooms|alpha_num',
+            'category_id' => 'required|exists:categories,id',
+            'area' => 'required|digits_between:2,4|min:100|integer',
             'description' => 'required',
         ]);
         if($validator->fails()) 
@@ -126,8 +126,8 @@ class RoomController extends Controller
     public function updateRoom(Request $request, $id) {
         $validator = Validator::make($request->all(), [
             'number' => 'required|unique:rooms,number,'.$id,
-            'category_id' => 'required',
-            'area' => 'required|digits_between:2,4',
+            'category_id' => 'required|exists:categories,id',
+            'area' => 'required|digits_between:2,4|min:100|integer',
             'description' => 'required',
         ]);
         if($validator->fails())
@@ -226,8 +226,8 @@ class RoomController extends Controller
 
     public function rentRoom(Request $request) {
         $validator = Validator::make($request->all(), [
-            'renter_id' => 'unique:room_rents',
-            'room_id' => 'required',
+            'renter_id' => 'unique:room_rents|exists:users,id',
+            'room_id' => 'required|exists:rooms,id',
         ]);
         if($validator->fails())
         {

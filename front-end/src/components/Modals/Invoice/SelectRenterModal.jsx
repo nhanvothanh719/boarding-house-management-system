@@ -5,6 +5,7 @@ import SearchRenter from "../../Search/SearchRenter";
 
 export default function SelectRenterModal(props) {
     const history = useHistory();
+    const [errors, setErrors] = useState([]);
     const [selectedRenter, setSelectedRenter] = useState(null);
 
     useEffect(() => {
@@ -15,6 +16,13 @@ export default function SelectRenterModal(props) {
           model.show();
         }
       }, [props.isShown]);
+
+      const displayModal = () => {
+        var model = new window.bootstrap.Modal(
+          document.getElementById("selectRenterModal")
+        );
+        model.show();
+      };
     
       const closeModal = (e, value) => {
         props.setCreateModalStatus(false);
@@ -26,6 +34,12 @@ export default function SelectRenterModal(props) {
 
       const generateInvoiceForm = (e) => {
         e.preventDefault();
+        if(selectedRenter === null) {
+          setErrors({ renter_id: "The renter field is required." });
+              setTimeout(() => {
+                displayModal();
+              }, 1000);
+        }
         history.push(`/admin/create-invoice/${selectedRenter.id}`);
       }
       
@@ -63,6 +77,7 @@ export default function SelectRenterModal(props) {
                   <label className="customModalLabel">Renter ID:</label>
                   <SearchRenter getSelectedRenter={getSelectedRenter} />
                 </div>
+                <small className="text-danger customSmallError">{errors.renter_id}</small>
               </form>
             </div>
             <div class="modal-footer">

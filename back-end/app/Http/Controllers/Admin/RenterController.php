@@ -38,16 +38,16 @@ class RenterController extends Controller
         $before_appropriate_time = date('Y-m-d', strtotime(' -18 year'));
         $after_appropriate_time = date('Y-m-d', strtotime(' -40 year'));
         $validator = Validator::make($request->all(), [
-            'name' => 'required|max:50',
-            'email' => 'required|unique:users|max:50',
+            'name' => 'required|max:50|alpha',
+            'email' => 'required|unique:users|max:50|email',
             'gender' => 'required',
             'date_of_birth' => ['required','date', 'before_or_equal:'.$before_appropriate_time, 'after_or_equal:'.$after_appropriate_time],
             'id_card_number' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|size:10|unique:users',
             'phone_number' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|size:10|unique:users',
-            'occupation' => 'required|max:100',
+            'occupation' => 'required|max:100|regex:/^[a-zA-Z ]+$/',
             'permanent_address' => 'required',
             'profile_picture' => 'image',
-            'role_id' => 'required',
+            'role_id' => 'required|exists:roles,id',
         ]);
         if($validator->fails()) 
         {
@@ -116,15 +116,16 @@ class RenterController extends Controller
         $before_appropriate_time = date('Y-m-d', strtotime(' -18 year'));
         $after_appropriate_time = date('Y-m-d', strtotime(' -40 year'));
         $validator = Validator::make($request->all(), [
-            'name' => 'required|max:50|string',
-            'email' => 'required|max:50|string|unique:users,email,'.$id,
+            'name' => 'required|max:50|string|alpha',
+            'email' => 'required|max:50|string|email|unique:users,email,'.$id,
             'gender' => 'required',
             'date_of_birth' => ['required','date', 'before_or_equal:'.$before_appropriate_time, 'after_or_equal:'.$after_appropriate_time],
             'id_card_number' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|size:10|unique:users,id_card_number,'.$id,
             'phone_number' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|size:10|unique:users,phone_number,'.$id,
-            'occupation' => 'required|max:100|string',
+            'occupation' => 'required|max:100|string|alpha',
             'permanent_address' => 'required',
             'profile_picture' => 'image',
+            'role_id' => 'required|exists:roles,id',
         ]);
         if($validator->fails())
         {

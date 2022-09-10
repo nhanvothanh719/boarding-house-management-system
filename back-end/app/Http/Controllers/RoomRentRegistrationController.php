@@ -23,10 +23,11 @@ class RoomRentRegistrationController extends Controller
 
     public function storeRoomRentRegistration(Request $request) {
         $validator = Validator::make($request->all(), [
-            'sender_name' => 'required|max:50|string',
-            'sender_gender' => 'required',
-            'sender_email' => 'required|max:50|string',
+            'sender_name' => 'required|max:50|string|regex:/^[a-zA-Z ]+$/',
+            'sender_gender' => 'required|integer',
+            'sender_email' => 'required|max:50|string|email',
             'sender_phone_number' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|size:10',
+            'registered_room_id' => 'required||exists:rooms,id'
         ]);
         if($validator->fails())
         {

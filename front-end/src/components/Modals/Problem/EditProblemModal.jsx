@@ -123,7 +123,7 @@ export default function EditProblemModal(props) {
                       required
                     />
                   </div>
-                  <small className="text-danger">{errors.title}</small>
+                  <small className="text-danger customSmallError">{errors.title}</small>
                   <div>
                     <label className="customModalLabel">Description:</label>
                     <TextField
@@ -136,7 +136,7 @@ export default function EditProblemModal(props) {
                       required
                     />
                   </div>
-                  <small className="text-danger">{errors.description}</small>
+                  <small className="text-danger customSmallError">{errors.description}</small>
                   <div>
                     <label className="customModalLabel">Severity level:</label>
                     <FormControl fullWidth>
@@ -152,7 +152,7 @@ export default function EditProblemModal(props) {
                       </Select>
                     </FormControl>
                   </div>
-                  <small className="text-danger">{errors.severity_level}</small>
+                  <small className="text-danger customSmallError">{errors.severity_level}</small>
                 </form>
               </div>
               <div class="modal-footer">

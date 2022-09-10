@@ -16,6 +16,7 @@ export default function CreateRoomModal(props) {
     has_conditioner: "",
     has_fridge: "",
     has_wardrobe: "",
+    category_id: ""
   });
   const [pictures, setPictures] = useState("");
   const [errors, setErrors] = useState([]);
@@ -64,6 +65,12 @@ export default function CreateRoomModal(props) {
         room.append(`image[${i}]`, pictures[i]);
         console.log(pictures[i]);
       }
+    }
+    if(selectedCategory === null) {
+      setErrors({ category_id: "The category field is required." });
+          setTimeout(() => {
+            displayModal();
+          }, 1000);
     }
     room.append("category_id", selectedCategory.id);
     room.append("number", input.number);
@@ -135,12 +142,12 @@ export default function CreateRoomModal(props) {
                     required
                   />
                 </div>
-                <small className="text-danger">{errors.number}</small>
+                <small className="text-danger customSmallError">{errors.number}</small>
                 <div>
                   <label className="customModalLabel">Category:</label>
                   <SearchCategory getSelectedCategory={getSelectedCategory} />
                 </div>
-                <small className="text-danger">{errors.category_id}</small>
+                <small className="text-danger customSmallError">{errors.category_id}</small>
                 <div>
                   <label className="customModalLabel">Description:</label>
                   <TextField
@@ -153,7 +160,7 @@ export default function CreateRoomModal(props) {
                     multiline
                   />
                 </div>
-                <small className="text-danger">{errors.description}</small>
+                <small className="text-danger customSmallError">{errors.description}</small>
                 <div>
                   <label className="customModalLabel">Area:</label>
                   <TextField
@@ -165,7 +172,7 @@ export default function CreateRoomModal(props) {
                     required
                   />
                 </div>
-                <small className="text-danger">{errors.area}</small>
+                <small className="text-danger customSmallError">{errors.area}</small>
                 <div>
                   <label className="customModalLabel">Conditioner:</label>
                   <input
@@ -210,6 +217,7 @@ export default function CreateRoomModal(props) {
                     name="image[]"
                     id="inputImage"
                     onChange={handleImage}
+                    accept="image/*"
                     multiple
                   />
                 </div>

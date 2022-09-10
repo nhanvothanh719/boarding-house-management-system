@@ -142,6 +142,7 @@ export default function EditProfile() {
                         style={{ display: "none" }}
                         name="profile_picture"
                         onChange={handleAvatar}
+                        accept="image/*"
                       />
                       <Button
                         type="submit"
@@ -184,6 +185,7 @@ export default function EditProfile() {
                           required
                         />
                       </FormGroup>
+                      <small className="text-danger"> {errors.name} </small>
                       <FormGroup style={{ "margin-top": "1rem" }}>
                         <Form.Label for="inputName">Role as:</Form.Label>
                         <Form.Control
@@ -209,6 +211,7 @@ export default function EditProfile() {
                           />
                         </div>
                       </Form.Group>
+                      <small className="text-danger"> {errors.email} </small>
                       <FormGroup style={{ "margin-top": "1rem" }}>
                         <Form.Label for="inputName">Phone number:</Form.Label>
                         <Form.Control
@@ -220,6 +223,7 @@ export default function EditProfile() {
                           required
                         />
                       </FormGroup>
+                      <small className="text-danger">{errors.phone_number}</small>
                       <FormGroup style={{ "margin-top": "1rem" }}>
                         <Form.Label for="inputName">ID card number:</Form.Label>
                         <Form.Control
@@ -252,6 +256,7 @@ export default function EditProfile() {
                           required
                         />
                       </FormGroup>
+                      <small className="text-danger">{errors.date_of_birth}</small>
                       <FormGroup style={{ "margin-top": "1rem" }}>
                         <Form.Label for="inputName">Occupation:</Form.Label>
                         <Form.Control
@@ -263,6 +268,7 @@ export default function EditProfile() {
                           required
                         />
                       </FormGroup>
+                      <small className="text-danger">{errors.occupation}</small>
                       <Form.Group style={{ "margin-top": "1rem" }}>
                         <Form.Label for="name">Permanent address:</Form.Label>
                         <Form.Control
@@ -276,6 +282,7 @@ export default function EditProfile() {
                           required
                         ></Form.Control>
                       </Form.Group>
+                      <small className="text-danger">{errors.permanent_address}</small>
                     </Col>
                     <Col md={12}>
                       <center>
@@ -289,20 +296,6 @@ export default function EditProfile() {
                         </Button>
                       </center>
                     </Col>
-                    <small className="text-danger"> {errors.name} </small>
-                    <small className="text-danger"> {errors.email} </small>
-                    <small className="text-danger">
-                      {" "}
-                      {errors.phone_number}{" "}
-                    </small>
-                    <small className="text-danger">
-                      {" "}
-                      {errors.date_of_birth}{" "}
-                    </small>
-                    <small className="text-danger">
-                      {" "}
-                      {errors.permanent_address}{" "}
-                    </small>
                   </Row>
                 </Card.Body>
               </Card>

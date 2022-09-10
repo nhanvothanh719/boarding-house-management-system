@@ -107,7 +107,7 @@ export default function CreateServiceModal(props) {
                     required
                   />
                 </div>
-                <span>{errors.name}</span>
+                <small className="text-danger customSmallError" >{errors.name}</small>
                 <div>
                   <label className="customModalLabel">Description:</label>
                   <TextField
@@ -131,7 +131,7 @@ export default function CreateServiceModal(props) {
                     required
                   />
                 </div>
-                <span>{errors.unit}</span>
+                <small className="text-danger customSmallError" >{errors.unit}</small>
                 <div>
                   <label className="customModalLabel">Cost per unit:</label>
                   <TextField
@@ -143,7 +143,7 @@ export default function CreateServiceModal(props) {
                     required
                   />
                 </div>
-                <span>{errors.unit_price}</span>
+                <small className="text-danger customSmallError" >{errors.unit_price}</small>
                 <div>
                   <label className="customModalLabel">Compulsory:</label>
                   <input
@@ -154,7 +154,6 @@ export default function CreateServiceModal(props) {
                     defaultChecked={input.is_compulsory === 1 ? true : false}
                   />
                 </div>
-                <span>{errors.is_compulsory}</span>
               </form>
             </div>
             <div class="modal-footer">

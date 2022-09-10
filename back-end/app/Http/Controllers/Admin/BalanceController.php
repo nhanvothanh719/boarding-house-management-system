@@ -23,11 +23,13 @@ class BalanceController extends Controller
     }
 
     public function updateBalance(Request $request) {
+        $before_appropriate_time = date('Y-m-d');
+        $after_appropriate_time = date('Y-m-d', strtotime(' -3 month'));
         $validator = Validator::make($request->all(), [
             'description' => 'required',
             'is_income' => 'required',
-            'amount' => 'required|numeric',
-            'occurred_on' => 'required|date',
+            'amount' => 'required|numeric|gt:0', //gt: greater than
+            'occurred_on' => ['required','date', 'before_or_equal:'.$before_appropriate_time, 'after_or_equal:'.$after_appropriate_time],
         ]);
         if($validator->fails())
         {
@@ -123,6 +125,13 @@ class BalanceController extends Controller
     }
 
     public function updateBalanceChange(Request $request, $id) {
+        $before_appropriate_time = date('Y-m-d');
+        $after_appropriate_time = date('Y-m-d', strtotime(' -3 month'));
+        $validator = Validator::make($request->all(), [
+            'description' => 'required',
+            'amount' => 'required|numeric|gt:0', //gt: greater than
+            'occurred_on' => ['required','date', 'before_or_equal:'.$before_appropriate_time, 'after_or_equal:'.$after_appropriate_time],
+        ]);
         $balance_change = Balance::find($id);
         if(!$balance_change) {
             return response([

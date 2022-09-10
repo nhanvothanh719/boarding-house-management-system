@@ -24,6 +24,8 @@ export default function RoomContractsList() {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showEditSignaturesModal, setShowEditSignaturesModal] = useState(false);
   const [selectedRoomContractId, setSelectedRoomContractId] = useState(null);
+  const status = ["Ongoing", "Nearly expired", "Expired"];
+  const statusStyle = ["statusActive", "statusOnGoing", "statusPassive"];
 
   useEffect(() => {
     axios.get(AppUrl.ShowRoomContracts).then((response) => {
@@ -73,9 +75,26 @@ export default function RoomContractsList() {
         render: (rowData) =>
           moment(rowData.effective_until).format("DD/MM/YYYY"),
         validate: (rowData) =>
-          rowData.effective_until <= currentDate
+          rowData.effective_until <= currentDate || rowData.effective_until > currentDate.setFullYear(currentDate.getFullYear() + 3)
             ? { isValid: false, helperText: "Inappropriate value" }
             : true,
+      },
+      {
+        field: "effective_until",
+        title: "Condition",
+        editable: "never",
+        render: (rowData) =>
+        {
+          if(moment(rowData.effective_until).format("DD/MM/YYYY") >= moment(currentDate).add(7, 'd').format("DD/MM/YYYY")) {
+             return <span className={`${statusStyle[0]}`}>{status[0]}</span>
+          }
+          else if(moment(rowData.effective_until) >= moment(currentDate) && moment(rowData.effective_until) < moment(currentDate).add(7, 'd')) {
+             return <span className={`${statusStyle[1]}`}>{status[1]}</span>
+          }
+          else if(moment(rowData.effective_until) < moment(currentDate)) {
+            return <span className={`${statusStyle[2]}`}>{status[2]}</span>
+          }
+        }
       },
       {
         field: "deposit_amount",
@@ -94,7 +113,8 @@ export default function RoomContractsList() {
           <Button
             className="createBtn"
             style={{ backgroundColor: "white", color: "#1C4E80" }}
-            onClick={(e) => setShowCreateModal(true)}
+            //onClick={(e) => setShowCreateModal(true)}
+            onClick={(e) => alert(moment(currentDate).add(1, 'd'))}
           >
             Add new room contract
           </Button>

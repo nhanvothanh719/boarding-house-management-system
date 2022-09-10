@@ -60,6 +60,12 @@ export default function CreateRoomContractModal(props) {
 
   const addRoomContract = (e) => {
     e.preventDefault();
+    if(selectedRenter === null) {
+      setErrors({ renter_id: "The renter field is required." });
+          setTimeout(() => {
+            displayModal();
+          }, 1000);
+    }
     const roomContract = new FormData();
     roomContract.append("renter_id", selectedRenter.id);
     roomContract.append("deposit_amount", input.deposit_amount);
@@ -123,7 +129,7 @@ export default function CreateRoomContractModal(props) {
                   <label className="customModalLabel">Renter:</label>
                   <SearchRenter getSelectedRenter={getSelectedRenter} />
                 </div>
-                <small className="text-danger">{errors.renter_id}</small>
+                <small className="text-danger customSmallError">{errors.renter_id}</small>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <div>
                   <label className="customModalLabel">Effective from:</label>
@@ -140,7 +146,7 @@ export default function CreateRoomContractModal(props) {
                     )}
                   />
                 </div>
-                  <small className="text-danger">{errors.effective_from}</small>
+                  <small className="text-danger customSmallError">{errors.effective_from}</small>
                   <div>
                   <label className="customModalLabel">Effective until:</label>
                   <DatePicker
@@ -156,7 +162,7 @@ export default function CreateRoomContractModal(props) {
                     )}
                   />
                   </div>
-                  <small className="text-danger">
+                  <small className="text-danger customSmallError">
                     {errors.effective_until}
                   </small>
                 </LocalizationProvider>
@@ -171,7 +177,7 @@ export default function CreateRoomContractModal(props) {
                     required
                   />
                 </div>
-                <small className="text-danger">{errors.deposit_amount}</small>
+                <small className="text-danger customSmallError">{errors.deposit_amount}</small>
                 <div>
                   <label className="customModalLabel">Owner signature:</label>
                   <input
@@ -180,9 +186,10 @@ export default function CreateRoomContractModal(props) {
                     name="owner_signature"
                     onChange={handleImageInput}
                     id="inputOwnerSignature"
+                    accept="image/*"
                   />
                 </div>
-                <small className="text-danger">{errors.owner_signature}</small>
+                <small className="text-danger customSmallError">{errors.owner_signature}</small>
                 <div>
                   <label className="customModalLabel">Renter signature:</label>
                   <input
@@ -191,9 +198,10 @@ export default function CreateRoomContractModal(props) {
                     name="renter_signature"
                     onChange={handleImageInput}
                     id="inputRenterSignature"
+                    accept="image/*"
                   />
                 </div>
-                <small className="text-danger">{errors.renter_signature}</small>
+                <small className="text-danger customSmallError">{errors.renter_signature}</small>
               </form>
             </div>
             <div class="modal-footer">
