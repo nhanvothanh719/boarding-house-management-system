@@ -1,5 +1,6 @@
 import React, { Fragment } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
+import Fade from 'react-reveal/Fade';
 
 import "../../assets/css/custom.css";
 
@@ -8,7 +9,8 @@ function TopBanner() {
     <Fragment>
       <Container fluid={true} className="topBanner p-0">
         <div className="topBannerCover">
-          <Container className="topBannerContent">
+        <Fade bottom>
+        <Container className="topBannerContent">
             <Row>
               <Col className="text-center">
                 <h1 className="topBannerTitle">WELCOME TO BEEHOUSE</h1>
@@ -20,6 +22,7 @@ function TopBanner() {
               </Col>
             </Row>
           </Container>
+        </Fade>
         </div>
       </Container>
     </Fragment>

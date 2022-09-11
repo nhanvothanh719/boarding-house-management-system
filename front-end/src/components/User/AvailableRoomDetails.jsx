@@ -1,7 +1,8 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { Carousel, Col, Container, Row } from "react-bootstrap";
-import axios from "axios";
+import Fade from 'react-reveal/Fade';
 
+import axios from "axios";
 import RoomPreferencesIcon from "@mui/icons-material/RoomPreferences";
 import BeenhereIcon from "@mui/icons-material/Beenhere";
 import SquareFootIcon from "@mui/icons-material/SquareFoot";
@@ -66,6 +67,7 @@ function AvailableRoomDetails(props) {
           Details of room number {room["number"]}{" "}
         </h1>
         <div className="bottomLine"></div>
+        <Fade top>
         <Row className="mb-3">
           <Col lg={8} md={12} sm={12} className="mb-3">
             <div className="about-thumb-wrap after-shape">
@@ -172,6 +174,7 @@ function AvailableRoomDetails(props) {
           </Col>
           <Col lg={1} md={2} sm={1}></Col>
         </Row>
+        </Fade>
       </Container>
     </Fragment>
   );

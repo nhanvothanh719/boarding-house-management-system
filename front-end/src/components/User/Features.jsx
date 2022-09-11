@@ -1,5 +1,6 @@
 import React, { Fragment } from "react";
 import { Col, Container, Row } from "react-bootstrap";
+import Zoom from 'react-reveal/Zoom';
 
 import contractManagement from "../../assets/images/contract_management.png";
 import tenantManagement from "../../assets/images/tenant_management.png";
@@ -14,6 +15,7 @@ function Features() {
       <Container className="text-center">
         <h1 className="mainTitle"> OUTSTANDING FEATURES</h1>
         <div className="bottomLine"></div>
+        <Zoom>
         <Row>
           <Col lg={4} md={6} sm={12}>
             <div className="featureCard">
@@ -78,6 +80,7 @@ function Features() {
             </div>
           </Col>
         </Row>
+        </Zoom>
       </Container>
     </Fragment>
   );

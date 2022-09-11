@@ -1,4 +1,5 @@
 import React, { Fragment, useState } from "react";
+import Zoom from 'react-reveal/Zoom';
 
 import axios from "axios";
 import swal from "sweetalert";
@@ -76,6 +77,7 @@ function ContactUS() {
         <h1 className="mainTitle text-center">CONTACT US</h1>
         <div className="bottomLine text-center"></div>
         <br />
+        <Zoom top>
         <Row>
           <Col lg={8} md={12} sm={12}>
             <Card border="dark" className="card">
@@ -184,6 +186,7 @@ function ContactUS() {
             </Card>
           </Col>
         </Row>
+        </Zoom>
       </Container>
     </Fragment>
   );
