@@ -13,7 +13,7 @@ class RenterRoomContractController extends Controller
 {
     public function getRenterRoomContract() {
         $current_renter_id = Auth::user()->id;
-        $room_contract = RoomContract::where('renter_id', $current_renter_id)->firstOrFail();
+        $room_contract = RoomContract::where('renter_id', $current_renter_id)->first();
         if(!$room_contract) {
             return response([
                 'status' => 404,
