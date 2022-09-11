@@ -124,14 +124,35 @@ class BalanceController extends Controller
         ]);
     }
 
+    public function editBalanceChange($id) {
+        $balance_change = Balance::find($id);
+        if(!$balance_change) {
+            return response([
+                'message' => 'No balance change found',
+                'status' => 404,
+            ]);
+        }
+        return response([
+            'status' => 200,
+            'balanceChange' => $balance_change,
+        ]);
+    }
+
     public function updateBalanceChange(Request $request, $id) {
         $before_appropriate_time = date('Y-m-d');
-        $after_appropriate_time = date('Y-m-d', strtotime(' -3 month'));
+        $after_appropriate_time = date('Y-m-d', strtotime(' -3 months'));
         $validator = Validator::make($request->all(), [
             'description' => 'required',
             'amount' => 'required|numeric|gt:0', //gt: greater than
             'occurred_on' => ['required','date', 'before_or_equal:'.$before_appropriate_time, 'after_or_equal:'.$after_appropriate_time],
         ]);
+        if($validator->fails())
+        {
+            return response([
+                'errors' => $validator->messages(),
+                'status' => 422,
+            ]);
+        }
         $balance_change = Balance::find($id);
         if(!$balance_change) {
             return response([
@@ -146,6 +167,9 @@ class BalanceController extends Controller
         return response([
             'status' => 200,
             'message' => 'Successfully update balance change',
+            'from' => $after_appropriate_time,
+            'to' => $before_appropriate_time,
+            'result' => $request->occurred_on,
         ]);
     }
 

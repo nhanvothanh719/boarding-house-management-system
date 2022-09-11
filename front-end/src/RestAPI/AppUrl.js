@@ -76,9 +76,10 @@ class AppUrl {
   static SendAnnouncement = this.BaseURL + "/send-announcement";
 
   static GetBalance = this.BaseURL + "/get-balance";
-  static UpdateBalance = this.BaseURL + "/update-balance";
+  static UpdateBalance = this.BaseURL + "/update-balance/";
   static GetRecentBalanceChanges = this.BaseURL + "/recent-balance-changes";
   static GetPieChartData = this.BaseURL + "/get-pie-chart-data";
+  static EditBalanceChange = this.BaseURL + "/edit-balance-change/";
   static UpdateBalanceChange = this.BaseURL + "/update-balance-change/";
   static DeleteBalanceChange = this.BaseURL + "/delete-balance-change/";
 

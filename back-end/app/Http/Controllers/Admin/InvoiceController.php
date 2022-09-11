@@ -92,6 +92,12 @@ class InvoiceController extends Controller
                 'status' => 422,
             ]);
         }
+        if(Invoice::where('renter_id', $id)->where('month', $request->month)->count() > 0) {
+            return response([
+                'message' => 'Renter has already had invoice for the chosen month',
+                'status' => 404,
+            ]);
+        }
         if($request->extra_fee) {
             if(!$request->extra_fee_description) {
                 return response([

@@ -9,25 +9,31 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 import AppUrl from "../../../RestAPI/AppUrl";
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
-export default function AddBalanceChangeModal(props) {
+export default function EditBalanceChangeModal(props) {
   const [input, setInput] = useState({
     description: "",
     amount: "",
   });
   const [errors, setErrors] = useState([]);
   const [occurredDate, setOccurredDate] = useState(moment());
-  const [selectBalanceCategory, setSelectBalanceCategory] = useState(0);
 
   useEffect(() => {
     if (props.isShown === true) {
       var model = new window.bootstrap.Modal(
-        document.getElementById("addBalanceChangeModal")
+        document.getElementById("editBalanceChangeModal")
       );
       model.show();
+      axios.get(AppUrl.EditBalanceChange + props.balanceChangeId).then((response) => {
+        if (response.data.status === 200) {
+          setInput(response.data.balanceChange);
+          setOccurredDate(response.data.balanceChange.occurred_on);
+        } else if (response.data.status === 404) {
+          swal("Error", response.data.message, "error");
+        }
+      });
     }
-  }, [props.isShown]);
+  }, [props.isShown, props.balanceChangeId]);
 
   const handleInput = (e) => {
     e.persist();
@@ -36,25 +42,24 @@ export default function AddBalanceChangeModal(props) {
 
   const displayModal = () => {
     var model = new window.bootstrap.Modal(
-      document.getElementById("addBalanceChangeModal")
+      document.getElementById("editBalanceChangeModal")
     );
     model.show();
   };
 
   const closeModal = (e, value) => {
-    props.setCreateModalStatus(false);
+    props.setEditModalStatus(false);
   };
 
-  const addBalanceChange = (e) => {
+  const editBalanceChange = (e) => {
     e.preventDefault();
     const data = {
-      is_income: selectBalanceCategory,
       amount: input.amount,
       description: input.description,
       occurred_on: moment(occurredDate).utc().format("YYYY-MM-DD hh:mm:ss"),
     };
     axios
-      .post(AppUrl.UpdateBalance, data)
+      .put(AppUrl.UpdateBalanceChange + props.balanceChangeId, data)
       .then((response) => {
         if (response.data.status === 200) {
           setErrors([]);
@@ -76,7 +81,7 @@ export default function AddBalanceChangeModal(props) {
     <Fragment>
       <div
         class="modal fade"
-        id="addBalanceChangeModal"
+        id="editBalanceChangeModal"
         tabindex="-1"
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
@@ -86,7 +91,7 @@ export default function AddBalanceChangeModal(props) {
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="customModalTitle" id="exampleModalLabel">
-                Add change to balance
+                Edit balance change
               </h5>
               <button
                 type="button"
@@ -115,34 +120,9 @@ export default function AddBalanceChangeModal(props) {
                     required
                   />
                 </div>
-                <small className="text-danger customSmallError" >{errors.description}</small>
-                <div className="">
-                  <label className="customModalLabel">Category:</label>
-                  <FormControl fullWidth>
-                    <InputLabel>Category</InputLabel>
-                    <Select
-                      label="Category"
-                      //name="gender"
-                      onChange={(e) => setSelectBalanceCategory(e.target.value)}
-                      value={selectBalanceCategory}
-                      required
-                    >
-                      <MenuItem
-                        value={0}
-                        style={{ display: "block", padding: "5px 30px 5px" }}
-                      >
-                        Expenses
-                      </MenuItem>
-                      <MenuItem
-                        value={1}
-                        style={{ display: "block", padding: "5px 30px 5px" }}
-                      >
-                        Earned
-                      </MenuItem>
-                    </Select>
-                  </FormControl>
-                </div>
-                <small className="text-danger customSmallError" >{errors.is_income}</small>
+                <small className="text-danger customSmallError">
+                  {errors.description}
+                </small>
                 <div className="">
                   <label className="customModalLabel">Amount:</label>
                   <TextField
@@ -154,25 +134,29 @@ export default function AddBalanceChangeModal(props) {
                     required
                   />
                 </div>
-                <small className="text-danger customSmallError" >{errors.amount}</small>
+                <small className="text-danger customSmallError">
+                  {errors.amount}
+                </small>
                 <div className="">
                   <label className="customModalLabel">Occurred on:</label>
                   <LocalizationProvider dateAdapter={AdapterDateFns}>
-                  <DatePicker
-                    views={["day", "month", "year"]}
-                    label="Occurred on"
-                    name="occurred_on"
-                    value={occurredDate}
-                    onChange={(selectedDate) => {
-                      setOccurredDate(selectedDate);
-                    }}
-                    renderInput={(params) => (
-                      <TextField fullWidth {...params} helperText={null} />
-                    )}
-                  />
+                    <DatePicker
+                      views={["day", "month", "year"]}
+                      label="Occurred on"
+                      name="occurred_on"
+                      value={occurredDate}
+                      onChange={(selectedDate) => {
+                        setOccurredDate(selectedDate);
+                      }}
+                      renderInput={(params) => (
+                        <TextField fullWidth {...params} helperText={null} />
+                      )}
+                    />
                   </LocalizationProvider>
                 </div>
-                <small className="text-danger customSmallError" >{errors.occurred_on}</small>
+                <small className="text-danger customSmallError">
+                  {errors.occurred_on}
+                </small>
               </form>
             </div>
             <div class="modal-footer">
@@ -180,9 +164,9 @@ export default function AddBalanceChangeModal(props) {
                 type="button"
                 class="btn btn-primary"
                 data-dismiss="modal"
-                onClick={addBalanceChange}
+                onClick={editBalanceChange}
               >
-                Create
+                Update
               </button>
               <button
                 type="button"
