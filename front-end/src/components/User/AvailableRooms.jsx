@@ -1,6 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import Zoom from 'react-reveal/Zoom';
 
 import welcomeImg from "../../assets/images/welcome.png";
 import AppUrl from "../../RestAPI/AppUrl";
@@ -24,6 +25,7 @@ function AvailableRooms() {
   const AvailableRoomsDisplay = availableRoomsList.map((room) => {
     return (
       <Col lg={4} md={6} sm={12}>
+        <Zoom>
         <Card className="roomCard">
           <Card.Img variant="top" src={welcomeImg} />
           <Card.Body>
@@ -47,6 +49,7 @@ function AvailableRooms() {
             </Link>
           </Card.Body>
         </Card>
+        </Zoom>
       </Col>
     );
   });

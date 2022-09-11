@@ -1,10 +1,12 @@
 import React, { Fragment } from "react";
 import { Col, Container, Row } from "react-bootstrap";
+import Zoom from 'react-reveal/Zoom';
 
 function TermsAndCondition() {
     return (
       <Fragment>
         <Container>
+          <Zoom>
           <Row>
             <Col lg={12} md={12} sm={12}>
               <h1 className="mainTitle text-center text-uppercase">
@@ -70,6 +72,7 @@ function TermsAndCondition() {
               </Container>
             </Col>
           </Row>
+          </Zoom>
         </Container>
       </Fragment>
     );

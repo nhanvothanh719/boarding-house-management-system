@@ -1,4 +1,5 @@
 import React, { Fragment, useEffect } from "react";
+import Slide from 'react-reveal/Slide';
 
 import {
   Button,
@@ -111,6 +112,7 @@ export default function EditProfile() {
         </h1>
         <div className="bottomLine text-center"></div>
         <br />
+        <Slide left>
         <Row>
           <Col lg={4} md={12} sm={12}>
             <Form id="updateUserAvatar" encType="multipart/form-data">
@@ -302,6 +304,7 @@ export default function EditProfile() {
             </Form>
           </Col>
         </Row>
+        </Slide>
       </Container>
     </Fragment>
   );

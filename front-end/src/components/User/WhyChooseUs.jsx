@@ -1,5 +1,7 @@
 import React, { Fragment, useState } from "react";
+import Fade from 'react-reveal/Fade';
 import { Container, Row, Col } from "react-bootstrap";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComputer, faSmile, faWifi } from "@fortawesome/free-solid-svg-icons";
 import CountUp from "react-countup";
@@ -29,6 +31,7 @@ function WhyChooseUs() {
           <br />
           <h1 className="mainBottomTitle"> WHY CHOOSE US?</h1>
           <div className="bottomBottomLine text-center"></div>
+          <Fade top>
           <Row>
             <Col lg={8} md={12} sm={12}>
               <Row className="bottomBannerItem">
@@ -97,6 +100,7 @@ function WhyChooseUs() {
               </Row>
             </Col>
           </Row>
+          </Fade>
         </div>
       </Container>
     </Fragment>
