@@ -34,11 +34,11 @@ class UserController extends Controller
         $before_appropriate_time = date('Y-m-d', strtotime(' -18 year'));
         $after_appropriate_time = date('Y-m-d', strtotime(' -40 year'));
         $validator = Validator::make($request->all(), [
-            'name' => 'required|max:50|string',
-            'email' => 'required|max:50|string|unique:users,email,'.$user->id,
+            'name' => 'required|max:50|string|regex:/^[a-zA-Z ]+$/',
+            'email' => 'required|max:50|string|email|unique:users,email,'.$user->id,
             'date_of_birth' => ['required','date', 'before_or_equal:'.$before_appropriate_time, 'after_or_equal:'.$after_appropriate_time],
             'phone_number' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|size:10|unique:users,phone_number,'.$user->id,
-            'occupation' => 'required|max:100|string',
+            'occupation' => 'required|max:100|string|regex:/^[a-zA-Z ]+$/',
             'permanent_address' => 'required',
         ]);
         if($validator->fails())

@@ -23,8 +23,8 @@ class ServiceRegistrationController extends Controller
 
     public function registerService(Request $request) {
         $validator = Validator::make($request->all(), [
-            'user_id' => 'required',
-            'service_id' => 'required',
+            'user_id' => 'required|exists:users,id',
+            'service_id' => 'required|exists:services,id',
         ]);
         if($validator->fails())
         {

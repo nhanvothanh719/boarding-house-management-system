@@ -12,6 +12,7 @@ import BalanceVariation from "../../../../components/Charts/AdminCharts/BalanceV
 import BalanceCategoryRate from "../../../../components/Charts/AdminCharts/BalanceCategoryRate";
 import AddBalanceChangeModal from "../../../../components/Modals/Balance/AddBalanceChangeModal";
 import WebPageTitle from "../../../../components/WebPageTitle/WebPageTitle";
+import EditBalanceChangeModal from "../../../../components/Modals/Balance/EditBalanceChangeModal";
 
 export default function BalanceDetails() {
   var currentDate = new Date();
@@ -19,8 +20,10 @@ export default function BalanceDetails() {
   const [loading, setLoading] = useState(true);
   const [details, setDetails] = useState([]);
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const [balanceAmountChange, setBalanceAmountChange] = useState(false);
   const [currentBalance, setCurrentBalance] = useState("");
+  const [selectedBalanceChangeId, setSelectedBalanceChangeId] = useState(null);
 
   useEffect(() => {
     axios.get(AppUrl.GetBalance).then((response) => {
@@ -43,7 +46,11 @@ export default function BalanceDetails() {
     setShowCreateModal(status);
   };
 
-  const updateCreateModalStatus = (status) => {
+  const setEditModalStatus = (status) => {
+    setShowEditModal(status);
+  };
+
+  const updateModalStatus = (status) => {
     setBalanceAmountChange(status);
   };
 
@@ -89,7 +96,7 @@ export default function BalanceDetails() {
         validate: (rowData) =>
           rowData.occurred_on >= currentDate ||
           rowData.occurred_on <
-            currentDate.setFullYear(currentDate.getFullYear() - 1)
+            currentDate.setMonth(currentDate.getMonth() - 3)
             ? { isValid: false, helperText: "Inappropriate value" }
             : true,
       },
@@ -122,7 +129,7 @@ export default function BalanceDetails() {
           <AddBalanceChangeModal
               isShown={showCreateModal}
               setCreateModalStatus={setCreateModalStatus}
-              updateCreateModalStatus={updateCreateModalStatus}
+              updateCreateModalStatus={updateModalStatus}
             />
         </div>
         <MaterialTable
@@ -142,28 +149,18 @@ export default function BalanceDetails() {
               fontFamily: 'Anek Telugu, sans-serif',
             }
           }}
+          actions={[
+            (balanceChange) => ({
+              icon: "edit",
+              tooltip: "Edit",
+              onClick: (event, balanceChange) => {
+                setShowEditModal(true);
+                setSelectedBalanceChangeId(balanceChange.id);
+              },
+              disabled: moment(balanceChange.occurred_on).add(3, "M") <= moment()
+            }),
+          ]}
           editable={{
-            onRowUpdate: (newBalanceChange, oldBalanceChange) =>
-              new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  const data = {
-                    amount: newBalanceChange.amount,
-                    description: newBalanceChange.description,
-                    occurred_on: newBalanceChange.occurred_on,
-                  };
-                  axios
-                    .put(AppUrl.UpdateBalanceChange + oldBalanceChange.id, data)
-                    .then((response) => {
-                      if (response.data.status === 200) {
-                        swal("Success", response.data.message, "success");
-                        setBalanceAmountChange(true);
-                      } else if (response.data.status === 404) {
-                        swal("Error", response.data.message, "error");
-                      }
-                    });
-                  resolve();
-                }, 1000);
-              }),
             onRowDelete: (thisBalanceChange) =>
               new Promise((resolve, reject) => {
                 setTimeout(() => {
@@ -186,6 +183,12 @@ export default function BalanceDetails() {
           }}
         />
       </div>
+      <EditBalanceChangeModal
+      isShown={showEditModal}
+      balanceChangeId={selectedBalanceChangeId}
+      setEditModalStatus={setEditModalStatus}
+      updateModalStatus={updateModalStatus}
+      />
     </Fragment>
   );
 }

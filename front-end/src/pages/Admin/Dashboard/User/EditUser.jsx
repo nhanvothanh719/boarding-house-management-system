@@ -330,6 +330,7 @@ export default function EditUser({ match }) {
                     style={{ display: "none" }}
                     name="profile_picture"
                     onChange={handleRenterAvatar}
+                    accept="image/*"
                   />
                 </div>
                 <small className="text-danger">{errors.profile_picture}</small>

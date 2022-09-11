@@ -31,7 +31,7 @@ class RoomContractController extends Controller
         $min_effective_until = date('Y-m-d', strtotime(' +1 month'));
         $max_effective_until = date('Y-m-d', strtotime(' +3 year'));
         $validator = Validator::make($request->all(), [
-            'renter_id' => 'required|unique:room_contracts',
+            'renter_id' => 'required|unique:room_contracts|exists:users,id',
             'deposit_amount' => 'required|numeric|min:50|max:200',
             'effective_from' => ['required','date', 'before_or_equal:'.$max_effective_from, 'after_or_equal:'.$min_effective_from],
             'effective_until' => ['required','date', 'before_or_equal:'.$max_effective_until, 'after_or_equal:'.$min_effective_until],
@@ -78,6 +78,19 @@ class RoomContractController extends Controller
     }
 
     public function updateRoomContract(Request $request, $id) {
+        $min_effective_until = date('Y-m-d', strtotime(' +1 month'));
+        $max_effective_until = date('Y-m-d', strtotime(' +3 year'));
+        $validator = Validator::make($request->all(), [
+            'deposit_amount' => 'required|numeric|min:50|max:200',
+            'effective_until' => ['required','date', 'before_or_equal:'.$max_effective_until, 'after_or_equal:'.$min_effective_until],
+        ]);
+        if($validator->fails()) 
+        {
+            return response([
+                'errors' => $validator->messages(),
+                'status' => 422,
+            ]);
+        }
         $room_contract = RoomContract::find($id);
         if(!$room_contract) {
             return response([

@@ -142,7 +142,7 @@ export default function CreateRenterModal(props) {
                     required
                   />
                 </div>
-                <small className="text-danger">{errors.name}</small>
+                <small className="text-danger customSmallError">{errors.name}</small>
                 <div>
                   <label className="customModalLabel">Email:</label>
                   <TextField
@@ -154,7 +154,7 @@ export default function CreateRenterModal(props) {
                     required
                   />
                 </div>
-                <small className="text-danger">{errors.email}</small>
+                <small className="text-danger customSmallError">{errors.email}</small>
                 <div>
                   <label className="customModalLabel">Phone number:</label>
                   <TextField
@@ -166,7 +166,7 @@ export default function CreateRenterModal(props) {
                     required
                   />
                 </div>
-                <small className="text-danger">{errors.phone_number}</small>
+                <small className="text-danger customSmallError">{errors.phone_number}</small>
                 <div>
                   <label className="customModalLabel">Date of birth:</label>
                   <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -183,7 +183,7 @@ export default function CreateRenterModal(props) {
                     />
                   </LocalizationProvider>
                 </div>
-                <small className="text-danger">{errors.date_of_birth}</small>
+                <small className="text-danger customSmallError">{errors.date_of_birth}</small>
                 <div>
                   <label className="customModalLabel">Occupation:</label>
                   <TextField
@@ -195,7 +195,7 @@ export default function CreateRenterModal(props) {
                     required
                   />
                 </div>
-                <small className="text-danger">{errors.occupation}</small>
+                <small className="text-danger customSmallError">{errors.occupation}</small>
                 <div>
                   <label className="customModalLabel">ID card number:</label>
                   <TextField
@@ -207,7 +207,7 @@ export default function CreateRenterModal(props) {
                     required
                   />
                 </div>
-                <small className="text-danger">{errors.id_card_number}</small>
+                <small className="text-danger customSmallError">{errors.id_card_number}</small>
                 <div>
                   <label className="customModalLabel">Permanent address:</label>
                   <TextField
@@ -220,7 +220,7 @@ export default function CreateRenterModal(props) {
                     multiline
                   />
                 </div>
-                <small className="text-danger">
+                <small className="text-danger customSmallError">
                   {errors.permanent_address}
                 </small>
                 <div className="formInput">
@@ -230,9 +230,10 @@ export default function CreateRenterModal(props) {
                     className="form-control"
                     name="profile_picture"
                     onChange={handleRenterAvatar}
+                    accept="image/*"
                   />
                 </div>
-                <small className="text-danger">{errors.profile_picture}</small>
+                <small className="text-danger customSmallError">{errors.profile_picture}</small>
                 <div>
                   <label className="customModalLabel">Gender:</label>
                   <FormControl fullWidth>
@@ -259,7 +260,7 @@ export default function CreateRenterModal(props) {
                     </Select>
                   </FormControl>
                 </div>
-                <small className="text-danger">{errors.gender}</small>
+                <small className="text-danger customSmallError">{errors.gender}</small>
                 <div>
                   <label className="customModalLabel">Role:</label>
                   <FormControl fullWidth>
@@ -288,7 +289,7 @@ export default function CreateRenterModal(props) {
                     </Select>
                   </FormControl>
                 </div>
-                <small className="text-danger">{errors.role_id}</small>
+                <small className="text-danger customSmallError">{errors.role_id}</small>
               </form>
             </div>
             <div class="modal-footer">

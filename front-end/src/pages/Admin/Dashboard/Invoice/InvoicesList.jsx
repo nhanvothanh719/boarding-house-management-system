@@ -5,6 +5,7 @@ import MaterialTable from "material-table";
 import swal from "sweetalert";
 import axios from "axios";
 import moment from "moment";
+import MoreTimeIcon from '@mui/icons-material/MoreTime';
 
 import Loading from "../../../../components/Loading/Loading";
 import ConfirmLoading from "../../../../components/Loading/ConfirmLoading";
@@ -12,10 +13,10 @@ import AppUrl from "../../../../RestAPI/AppUrl";
 import { Button } from "react-bootstrap";
 import SelectRenterModal from "../../../../components/Modals/Invoice/SelectRenterModal";
 import WebPageTitle from "../../../../components/WebPageTitle/WebPageTitle";
+import EditInvoiceModal from "../../../../components/Modals/Invoice/EditInvoiceModal";
 
 export default function InvoicesList() {
   const history = useHistory();
-  var currentDate = new Date();
 
   const [details] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -24,6 +25,8 @@ export default function InvoicesList() {
   const [invoicesList, setInvoicesList] = useState([]);
   const [invoicesListChange, setInvoicesListChange] = useState(false);
   const [showSelectModal, setShowSelectModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [selectedInvoiceId, setSelectedInvoiceId] = useState(null);
 
   useEffect(() => {
     axios.get(AppUrl.ShowInvoices).then((response) => {
@@ -39,6 +42,14 @@ export default function InvoicesList() {
 
   const setSelectModalStatus = (status) => {
     setShowSelectModal(status);
+  };
+
+  const setEditModalStatus = (status) => {
+    setShowEditModal(status);
+  };
+
+  const updateModalStatus = (status) => {
+    setInvoicesListChange(status);
   };
 
   var columns = [];
@@ -58,6 +69,7 @@ export default function InvoicesList() {
         title: "Month",
         width: "10%",
         type: "numeric",
+        editable: "never",
         validate: (rowData) =>
           rowData.month < 1 || rowData.month > 12 || !Number.isInteger(rowData.month)
             ? { isValid: false, helperText: "Inappropriate month input" }
@@ -68,24 +80,20 @@ export default function InvoicesList() {
         title: "Paid from",
         type: "date",
         editable: "never",
-        render: (rowData) =>
-          moment(rowData.effective_from).format("DD/MM/YYYY"),
+        render: (rowData) => moment(rowData.effective_from).format("DD/MM/YYYY"),
       },
       {
         field: "valid_until",
         title: "Paid until",
         type: "date",
-        editable: ( row ,rowData ) => rowData.is_paid === 0,
+        editable: "never",
         render: (rowData) => moment(rowData.valid_until).format("DD/MM/YYYY"),
-        validate: (rowData) =>
-          rowData.valid_until <= currentDate
-            ? { isValid: false, helperText: "Inappropriate value" }
-            : true,
       },
       { 
         field: "is_paid", 
         title: "Paid", 
-        editable: ( row ,rowData ) => rowData.is_paid === 0, lookup: { 0: "Not yet", 1: "Paid" },
+        editable: ( row ,rowData ) => rowData.is_paid === 0, 
+        lookup: { 0: "Not yet", 1: "Paid" },
         render: rowData => (
           <div>
               <span className={`${rowData.is_paid === 1 ? "statusActive" : "statusPassive"}` }>{rowData.is_paid === 1 ? "Paid" : "Not yet" }</span>
@@ -135,9 +143,18 @@ export default function InvoicesList() {
                 onClick: (event, invoice) =>
                   history.push(`/admin/invoice-details/${invoice.id}`),
               },
+              (invoice) => ({
+                icon: MoreTimeIcon,
+                tooltip: "Add days for invoice payment",
+                onClick: (event, invoice) => {
+                  setShowEditModal(true);
+                  setSelectedInvoiceId(invoice.id);
+                },
+                disabled: invoice.is_paid !== 0,
+              }),
             ]}
             editable={{
-              isEditable: rowData => moment(rowData.valid_until) >= moment(currentDate).add(-2, 'days'),
+              isEditable: rowData => moment(rowData.valid_until) >= moment(),
               isDeletable: rowData => rowData.is_paid === 0,
               onRowUpdate: (newInvoice, oldInvoice) =>
                 new Promise((resolve, reject) => {
@@ -146,7 +163,6 @@ export default function InvoicesList() {
                     setDisplayComponentsClass('d-none');
                     const data = {
                       effective_from: moment(newInvoice.effective_until)
-                        .utc()
                         .format("YYYY-MM-DD"),
                       valid_until: moment(newInvoice.valid_until)
                         .format("YYYY-MM-DD"),
@@ -190,6 +206,14 @@ export default function InvoicesList() {
             }}
           />
         </div>
+        <EditInvoiceModal
+            isShown={showEditModal}
+            invoiceId={selectedInvoiceId}
+            setLoaderClass={setLoaderClass}
+            setDisplayComponentsClass={setDisplayComponentsClass}
+            setEditModalStatus={setEditModalStatus}
+            updateModalStatus={updateModalStatus}
+          />
         </div>
       </Fragment>
     );

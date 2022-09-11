@@ -81,8 +81,8 @@ class InvoiceController extends Controller
         $validator = Validator::make($request->all(), [
             'effective_from' => 'required|date|after_or_equal:'.$appropriate_date,
             'valid_until' => ['required', 'date', 'before_or_equal:'.date("Y-m-d", strtotime($appropriate_date."+15 day")), 'after_or_equal:'.date("Y-m-d", strtotime($appropriate_date."+1 day"))],
-            'discount' => 'required|min:0|max:100',
-            'month' => 'required|min:1|max:12',
+            'discount' => 'required|min:0|max:100|numeric',
+            'month' => 'required|min:1|max:12|integer',
             'extra_fee' => 'numeric|nullable',
         ]);
         if($validator->fails()) 
@@ -90,6 +90,12 @@ class InvoiceController extends Controller
             return response([
                 'errors' => $validator->messages(),
                 'status' => 422,
+            ]);
+        }
+        if(Invoice::where('renter_id', $id)->where('month', $request->month)->count() > 0) {
+            return response([
+                'message' => 'Renter has already had invoice for the chosen month',
+                'status' => 404,
             ]);
         }
         if($request->extra_fee) {
@@ -184,7 +190,7 @@ class InvoiceController extends Controller
         $validator = Validator::make($request->all(), [
             'effective_from' => 'required|date|after_or_equal:'.$appropriate_time,
             'valid_until' => ['required', 'date', 'before_or_equal:'.date("Y-m-d", strtotime($appropriate_time."+15 day")), 'after_or_equal:'.date("Y-m-d", strtotime($appropriate_time."+1 day"))],
-            'month' => 'required|min:1|max:12',
+            'month' => 'required|min:1|max:12|integer',
         ]);
         if($validator->fails()) 
         {
@@ -289,8 +295,7 @@ class InvoiceController extends Controller
                 'status' => 404,
             ]);
         }
-        $all_invoices = Invoice::where('renter_id', $id)->get();
-        
+        $all_invoices = Invoice::where('renter_id', $id)->orderBy('month', 'asc')->get();
         return response([
             'status' => 200,
             'allInvoices' => $all_invoices,

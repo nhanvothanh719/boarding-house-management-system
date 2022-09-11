@@ -23,9 +23,9 @@ class ServiceController extends Controller
 
     public function storeService(Request $request) {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:services|max:100|string',
+            'name' => 'required|unique:services|max:100|string|alpha_num',
             'unit' => 'required|max:50',
-            'unit_price' => 'required|numeric|min:0.1',
+            'unit_price' => 'required|numeric|min:0.5|max:50',
         ]);
         if($validator->fails())
         {
@@ -82,9 +82,9 @@ class ServiceController extends Controller
 
     public function updateService(Request $request, $id) {
         $validator = Validator::make($request->all(), [
-            'name' => ['required','unique:services,name,'.$id],
+            'name' => ['required','alpha_num','unique:services,name,'.$id],
             'unit' => 'required|max:50',
-            'unit_price' => 'required|numeric',
+            'unit_price' => 'required|numeric|max:50|min:0.5',
         ]);
         if($validator->fails())
         {

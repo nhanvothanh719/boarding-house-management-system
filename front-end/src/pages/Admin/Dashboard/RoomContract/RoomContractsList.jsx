@@ -12,18 +12,22 @@ import AppUrl from "../../../../RestAPI/AppUrl";
 import EditSignaturesModal from "../../../../components/Modals/RoomContract/EditSignaturesModal";
 import CreateRoomContractModal from "../../../../components/Modals/RoomContract/CreateRoomContractModal";
 import WebPageTitle from "../../../../components/WebPageTitle/WebPageTitle";
+import EditRoomContractModal from "../../../../components/Modals/RoomContract/EditRoomContractModal";
 
 export default function RoomContractsList() {
   const history = useHistory();
-  var currentDate = new Date();
+  var currentDate = moment();
 
   const [details] = useState([]);
   const [loading, setLoading] = useState(true);
   const [roomContractsList, setRoomContractsList] = useState([]);
   const [roomContractsListChange, setRoomContractsListChange] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const [showEditSignaturesModal, setShowEditSignaturesModal] = useState(false);
   const [selectedRoomContractId, setSelectedRoomContractId] = useState(null);
+  const status = ["Ongoing", "Nearly expired", "Expired"];
+  const statusStyle = ["statusActive", "statusOnGoing", "statusPassive"];
 
   useEffect(() => {
     axios.get(AppUrl.ShowRoomContracts).then((response) => {
@@ -41,8 +45,12 @@ export default function RoomContractsList() {
     setShowCreateModal(status);
   };
 
-  const setEditModalStatus = (status) => {
+  const setEditSignaturesModalStatus = (status) => {
     setShowEditSignaturesModal(status);
+  };
+
+  const setEditModalStatus = (status) => {
+    setShowEditModal(status);
   };
 
   const updateModalStatus = (status) => {
@@ -73,9 +81,26 @@ export default function RoomContractsList() {
         render: (rowData) =>
           moment(rowData.effective_until).format("DD/MM/YYYY"),
         validate: (rowData) =>
-          rowData.effective_until <= currentDate
+          moment(rowData.effective_until) <= currentDate || moment(rowData.effective_until) > currentDate.add(3, 'Y')
             ? { isValid: false, helperText: "Inappropriate value" }
             : true,
+      },
+      {
+        field: "effective_until",
+        title: "Condition",
+        editable: "never",
+        render: (rowData) =>
+        {
+          if(moment(rowData.effective_until) >= moment(currentDate).add(7, 'd')) {
+             return <span className={`${statusStyle[0]}`}>{status[0]}</span>
+          }
+          else if(moment(rowData.effective_until) >= moment(currentDate) && moment(rowData.effective_until) < moment(currentDate).add(7, 'd')) {
+             return <span className={`${statusStyle[1]}`}>{status[1]}</span>
+          }
+          else if(moment(rowData.effective_until) < moment(currentDate)) {
+            return <span className={`${statusStyle[2]}`}>{status[2]}</span>
+          }
+        }
       },
       {
         field: "deposit_amount",
@@ -94,7 +119,8 @@ export default function RoomContractsList() {
           <Button
             className="createBtn"
             style={{ backgroundColor: "white", color: "#1C4E80" }}
-            onClick={(e) => setShowCreateModal(true)}
+            //onClick={(e) => setShowCreateModal(true)}
+            onClick={(e) => alert(moment(currentDate).add(7, 'M') > moment(currentDate).add(17, 'd'))}
           >
             Add new room contract
           </Button>
@@ -116,29 +142,8 @@ export default function RoomContractsList() {
               fontFamily: 'Anek Telugu, sans-serif',
             }
           }}
+
           editable={{
-            onRowUpdate: (newRoomContract, oldRoomContract) =>
-              new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  const data = {
-                    effective_until: moment(newRoomContract.effective_until)
-                      .utc()
-                      .format("YYYY-MM-DD"),
-                    deposit_amount: newRoomContract.deposit_amount,
-                  };
-                  axios
-                    .put(AppUrl.UpdateRoomContract + oldRoomContract.id, data)
-                    .then((response) => {
-                      if (response.data.status === 200) {
-                        swal("Success", response.data.message, "success");
-                        roomContractsListChange(true);
-                      } else if (response.data.status === 404) {
-                        swal("Error", response.data.message, "error");
-                      }
-                    });
-                  resolve();
-                }, 1000);
-              }),
             onRowDelete: (thisRoomContract) =>
               new Promise((resolve, reject) => {
                 setTimeout(() => {
@@ -176,6 +181,14 @@ export default function RoomContractsList() {
                 setSelectedRoomContractId(room_contract.id);
               },
             },
+            {
+              icon: "edit",
+              tooltip: "Edit",
+              onClick: (event, room_contract) => {
+                setShowEditModal(true);
+                setSelectedRoomContractId(room_contract.id);
+              },
+            },
           ]}
         />
         <CreateRoomContractModal
@@ -186,9 +199,15 @@ export default function RoomContractsList() {
         <EditSignaturesModal
           isShown={showEditSignaturesModal}
           roomContractId={selectedRoomContractId}
-          setEditModalStatus={setEditModalStatus}
+          setEditSignaturesModalStatus={setEditSignaturesModalStatus}
           updateModalStatus={updateModalStatus}
         />
+        <EditRoomContractModal
+            isShown={showEditModal}
+            roomContractId={selectedRoomContractId}
+            setEditModalStatus={setEditModalStatus}
+            updateModalStatus={updateModalStatus}
+          />
       </div>
     </Fragment>
   );

@@ -106,7 +106,7 @@ export default function CreateBreachModal(props) {
                     required
                   />
                 </div>
-                <small className="text-danger">{errors.name}</small>
+                <small className="text-danger customSmallError">{errors.name}</small>
                 <div>
                   <label className="customModalLabel">Description:</label>
                   <TextField
@@ -118,7 +118,7 @@ export default function CreateBreachModal(props) {
                     required
                   />
                 </div>
-                <small className="text-danger">{errors.description}</small>
+                <small className="text-danger customSmallError">{errors.description}</small>
                 <div>
                   <label className="customModalLabel">Severity level:</label>
                   <FormControl fullWidth>
@@ -170,7 +170,7 @@ export default function CreateBreachModal(props) {
                     required
                   />
                 </div>
-                <small className="text-danger">
+                <small className="text-danger customSmallError">
                   {errors.allowed_violate_number}
                 </small>
               </form>

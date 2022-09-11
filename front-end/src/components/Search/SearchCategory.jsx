@@ -41,6 +41,7 @@ export default function SearchCategory(props) {
           )}
           renderInput={(params) => <TextField required {...params} label="Choose a category" />}
           onChange={handleChange}
+          required
         />
       </Fragment>
     );

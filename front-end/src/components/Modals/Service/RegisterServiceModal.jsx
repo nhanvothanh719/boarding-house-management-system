@@ -42,6 +42,18 @@ export default function RegisterServiceModal(props) {
 
   const register = (e) => {
     e.preventDefault();
+    if(selectedRenter === null) {
+      setErrors({ user_id: "The user field is required." });
+          setTimeout(() => {
+            displayModal();
+          }, 1000);
+    }
+    if(selectedService === null) {
+      setErrors({ service_id: "The service field is required." });
+          setTimeout(() => {
+            displayModal();
+          }, 1000);
+    }
     const registration = {
       user_id: selectedRenter.id,
       service_id: selectedService.id,
@@ -96,15 +108,15 @@ export default function RegisterServiceModal(props) {
               <hr />
               <form className="">
                 <div>
-                  <label className="customModalLabel">Renter:</label>
+                  <label className="customModalLabel">User:</label>
                   <SearchRenter getSelectedRenter={getSelectedRenter} />
                 </div>
-                <small className="text-danger">{errors.user_id}</small>
+                <small className="text-danger customSmallError">{errors.user_id}</small>
                 <div>
                   <label className="customModalLabel">Service:</label>
                   <SearchService getSelectedService={getSelectedService} />
                 </div>
-                <small className="text-danger">{errors.service_id}</small>
+                <small className="text-danger customSmallError">{errors.service_id}</small>
               </form>
             </div>
             <div class="modal-footer">

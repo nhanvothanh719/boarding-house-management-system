@@ -106,7 +106,7 @@ export default function CreateAnnouncementModal(props) {
                     required
                   />
                 </div>
-                <small className="text-danger">{errors.title}</small>
+                <small className="text-danger customSmallError">{errors.title}</small>
                 <div>
                 <label className="customModalLabel">Content:</label>
                 <TextField
@@ -119,7 +119,7 @@ export default function CreateAnnouncementModal(props) {
                     required
                   />
                 </div>
-                <small className="text-danger">{errors.content}</small>
+                <small className="text-danger customSmallError">{errors.content}</small>
               </form>
             </div>
             <div class="modal-footer">

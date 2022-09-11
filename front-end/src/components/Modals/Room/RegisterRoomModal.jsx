@@ -113,7 +113,7 @@ export default function RegisterRoomModal(props) {
                     fullWidth
                     required
                   />
-                  <small className="text-danger">{errors.sender_name}</small>
+                  <small className="text-danger customSmallError">{errors.sender_name}</small>
                 </div>
                 <div>
                   <label className="customModalLabel">Gender:</label>
@@ -150,7 +150,7 @@ export default function RegisterRoomModal(props) {
                     required
                   />
                 </div>
-                <small className="text-danger">{errors.sender_email}</small>
+                <small className="text-danger customSmallError">{errors.sender_email}</small>
                 <div>
                   <label className="customModalLabel">Phone number:</label>
                   <TextField
@@ -162,7 +162,7 @@ export default function RegisterRoomModal(props) {
                     required
                   />
                 </div>
-                <small className="text-danger">
+                <small className="text-danger customSmallError">
                   {errors.sender_phone_number}
                 </small>
                 <div>
@@ -177,8 +177,7 @@ export default function RegisterRoomModal(props) {
                 </div>
               </form>
             </div>
-          </div>
-          <div class="modal-footer">
+            <div class="modal-footer">
             <button
               type="button"
               class="btn btn-primary"
@@ -195,6 +194,7 @@ export default function RegisterRoomModal(props) {
             >
               Close
             </button>
+          </div>
           </div>
         </div>
       </div>

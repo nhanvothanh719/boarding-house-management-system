@@ -84,7 +84,7 @@ export default function EditRoom({ match }) {
       room.append(`image[${i}]`, uploadedPictures[i]);
       //console.log(pictures[i]);
     }
-    if (selectedCategory.id === null) {
+    if (selectedCategory === null) {
       room.append("category_id", input.category.id);
     } else {
       room.append("category_id", selectedCategory.id);
@@ -313,6 +313,7 @@ export default function EditRoom({ match }) {
                   id="file"
                   name="image[]"
                   onChange={handleImages}
+                  accept="image/*"
                   multiple
                   style={{ display: "none" }}
                 />

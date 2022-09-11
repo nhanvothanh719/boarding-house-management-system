@@ -42,7 +42,7 @@ class ProblemController extends Controller
 
     public function updateProblemStatus(Request $request, $id) {
         $validator = Validator::make($request->all(), [
-            'status' => 'required',
+            'status' => 'required|integer',
         ]);
         if($validator->fails()) 
         {

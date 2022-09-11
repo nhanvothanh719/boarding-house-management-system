@@ -93,7 +93,7 @@ export default function ReplyProblemModal(props) {
                     onChange={(e) => setReplyText(e.target.value)}
                   />
                 </div>
-                <small className="text-danger">{errors.reply_text}</small>
+                <small className="text-danger customSmallError">{errors.reply_text}</small>
               </form>
             </div>
             <div class="modal-footer">

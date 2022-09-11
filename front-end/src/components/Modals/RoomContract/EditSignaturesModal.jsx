@@ -48,7 +48,7 @@ export default function EditSignatures(props) {
   }, [props.isShown, props.roomContractId]);
 
   const closeModal = (e, value) => {
-    props.setEditModalStatus(false);
+    props.setEditSignaturesModalStatus(false);
   };
 
   const displayModal = () => {
@@ -128,9 +128,10 @@ export default function EditSignatures(props) {
                     name="owner_signature"
                     onChange={handleOwnerSignature}
                     id="inputOwnerSignature"
+                    accept="image/*"
                   />
                 </div>
-                <small className="text-danger">{errors.owner_signature}</small>
+                <small className="text-danger customSmallError">{errors.owner_signature}</small>
                 <img
                   src={`http://127.0.0.1:8000/${previousSignatures.owner_signature}`}
                   alt=""
@@ -144,9 +145,10 @@ export default function EditSignatures(props) {
                     name="renter_signature"
                     onChange={handleRenterSignature}
                     id="inputRenterSignature"
+                    accept="image/*"
                   />
                 </div>
-                <small className="text-danger">{errors.renter_signature}</small>
+                <small className="text-danger customSmallError">{errors.renter_signature}</small>
                 <img
                   src={`http://127.0.0.1:8000/${previousSignatures.renter_signature}`}
                   alt=""

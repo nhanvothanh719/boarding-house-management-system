@@ -50,6 +50,12 @@ export default function CreateMotorbikeModal(props) {
 
   const createMotorbike = (e) => {
     e.preventDefault();
+    if(selectedRenter === null) {
+      setErrors({ renter_id: "The owner field is required." });
+          setTimeout(() => {
+            displayModal();
+          }, 1000);
+    }
     const motorbike = new FormData();
     motorbike.append("renter_id", selectedRenter.id);
     motorbike.append("license_plate", input.license_plate);
@@ -113,12 +119,12 @@ export default function CreateMotorbikeModal(props) {
                     required
                   />
                 </div>
-                <small className="text-danger">{errors.license_plate}</small>
+                <small className="text-danger customSmallError" >{errors.license_plate}</small>
                 <div className="form-group">
                   <label className="customModalLabel">Owner:</label>
                   <SearchRenter getSelectedRenter={getSelectedRenter}/>
                 </div>
-                <small className="text-danger">{errors.renter_id}</small>
+                <small className="text-danger customSmallError" >{errors.renter_id}</small>
                 <div className="form-group">
                   <label className="customModalLabel">Motorbike image:</label>
                   <input
@@ -126,9 +132,10 @@ export default function CreateMotorbikeModal(props) {
                     className="form-control"
                     name="motorbike_image"
                     onChange={handleMotorbikeImage}
+                    accept="image/*"
                   />
                 </div>
-                <small className="text-danger">{errors.motorbike_image}</small>
+                <small className="text-danger customSmallError" >{errors.motorbike_image}</small>
               </form>
             </div>
             <div class="modal-footer">

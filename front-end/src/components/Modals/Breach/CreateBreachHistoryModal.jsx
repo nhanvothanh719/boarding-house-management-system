@@ -48,7 +48,20 @@ export default function CreateBreachHistoryModal(props) {
 
   const addBreachHistory = (e) => {
     e.preventDefault();
-    props.setLoaderClass('');
+    if(selectedRenter === null) {
+      setErrors({ renter_id: "The renter field is required." });
+          setTimeout(() => {
+            displayModal();
+          }, 1000);
+    }
+    else if(selectedBreach === null) {
+      setErrors({ breach_id: "The breach field is required." });
+          setTimeout(() => {
+            displayModal();
+          }, 1000);
+    }
+    else {
+      props.setLoaderClass('');
     props.setDisplayComponentsClass('d-none');
     const data = {
       breach_id: selectedBreach.id,
@@ -74,6 +87,7 @@ export default function CreateBreachHistoryModal(props) {
       .catch((error) => {
         console.log(error);
       });
+    }
   };
 
   return (
@@ -109,12 +123,12 @@ export default function CreateBreachHistoryModal(props) {
                   <label className="customModalLabel">Renter:</label>
                   <SearchRenter getSelectedRenter={getSelectedRenter}/>
                 </div>
-                <small className="text-danger">{errors.renter_id}</small>
+                <small className="text-danger customSmallError">{errors.renter_id}</small>
                 <div>
                   <label className="customModalLabel">Breach:</label>
                   <SearchBreach getSelectedBreach={getSelectedBreach}/>
                 </div>
-                <small className="text-danger">{errors.breach_id}</small>
+                <small className="text-danger customSmallError">{errors.breach_id}</small>
                 <div>
                   <label className="customModalLabel">Violate at:</label>
                   <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -128,7 +142,7 @@ export default function CreateBreachHistoryModal(props) {
                     />
                   </LocalizationProvider>
                 </div>
-                <small className="text-danger">{errors.violated_at}</small>
+                <small className="text-danger customSmallError">{errors.violated_at}</small>
               </form>
             </div>
             <div class="modal-footer">

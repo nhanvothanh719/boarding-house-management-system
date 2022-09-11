@@ -30,9 +30,9 @@ class BreachController extends Controller
 
     public function storeBreach(Request $request) {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:breaches',
-            'allowed_violate_number' => 'required|numeric|min:1|max:10|integer',
-            'severity_level' => 'required',
+            'name' => 'required|unique:breaches|alpha',
+            'allowed_violate_number' => 'required|min:1|max:10|integer',
+            'severity_level' => 'required|integer',
         ]);
         if($validator->fails())
         {
@@ -76,9 +76,9 @@ class BreachController extends Controller
             ]);
         }
         $validator = Validator::make($request->all(), [
-            'name' => ['required','unique:breaches,name,'.$id],
-            'allowed_violate_number' => 'required|numeric|min:1|max:10|integer',
-            'severity_level' => 'required',
+            'name' => ['required','alpha','unique:breaches,name,'.$id],
+            'allowed_violate_number' => 'required|min:1|max:10|integer',
+            'severity_level' => 'required|integer',
         ]);
         if($validator->fails())
         {
@@ -133,8 +133,8 @@ class BreachController extends Controller
     public function storeBreachHistory(Request $request) {
         $current_date_time = date('Y-m-d H:i:s');
         $validator = Validator::make($request->all(), [
-            'breach_id' => 'required',
-            'renter_id' => 'required',
+            'breach_id' => 'required|exists:breaches,id',
+            'renter_id' => 'required|exists:users,id',
             'violated_at' => 'required|before_or_equal:'.$current_date_time.'|after_or_equal:'.date('Y-m-d H:i:s', strtotime(' -10 day')),
         ]);
         if($validator->fails())

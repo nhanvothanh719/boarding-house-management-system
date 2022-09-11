@@ -42,6 +42,18 @@ export default function AddRoomRentModal(props) {
 
   const makeNewRent = (e) => {
     e.preventDefault();
+    if(selectedRenter === null) {
+      setErrors({ renter_id: "The renter field is required." });
+          setTimeout(() => {
+            displayModal();
+          }, 1000);
+    }
+    if(selectedRoom === null) {
+      setErrors({ room_id: "The room field is required." });
+          setTimeout(() => {
+            displayModal();
+          }, 1000);
+    }
     const rent = {
       renter_id: selectedRenter.id,
       room_id: selectedRoom.id,
@@ -99,12 +111,12 @@ export default function AddRoomRentModal(props) {
                   <label className="customModalLabel">Renter:</label>
                   <SearchRenter getSelectedRenter={getSelectedRenter} />
                 </div>
-                <small className="text-danger">{errors.renter_id}</small>
+                <small className="text-danger customSmallError">{errors.renter_id}</small>
                 <div>
                   <label className="customModalLabel">Room number:</label>
                   <SearchRoom getSelectedRoom={getSelectedRoom} />
                 </div>
-                <small className="text-danger">{errors.room_number}</small>
+                <small className="text-danger customSmallError">{errors.room_id}</small>
               </form>
             </div>
             <div class="modal-footer">

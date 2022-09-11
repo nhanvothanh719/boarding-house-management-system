@@ -104,7 +104,7 @@ export default function CreateCategoryModal(props) {
                     required
                   />
                 </div>
-                <small className="text-danger">{errors.name}</small>
+                <small className="text-danger customSmallError" >{errors.name}</small>
 
                 <div>
                   <label className="customModalLabel">Price:</label>
@@ -117,7 +117,7 @@ export default function CreateCategoryModal(props) {
                     required
                   />
                 </div>
-                <small className="text-danger">{errors.price}</small>
+                <small className="text-danger customSmallError" >{errors.price}</small>
                 <div>
                   <label className="customModalLabel">Description:</label>
                   <TextField
@@ -129,7 +129,7 @@ export default function CreateCategoryModal(props) {
                     required
                   />
                 </div>
-                <small className="text-danger">{errors.description}</small>
+                <small className="text-danger customSmallError" >{errors.description}</small>
               </form>
             </div>
             <div class="modal-footer">

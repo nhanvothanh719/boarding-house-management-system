@@ -23,7 +23,7 @@ class RenterProblemController extends Controller
 
     public function storeProblem(Request $request) {
         $validator = Validator::make($request->all(), [
-            'title' => 'required',
+            'title' => 'required|alpha',
             'description' => 'required',
             'severity_level' => 'required',
         ]);
@@ -63,7 +63,7 @@ class RenterProblemController extends Controller
 
     public function updateProblem(Request $request, $id) {
         $validator = Validator::make($request->all(), [
-            'title' => 'required',
+            'title' => 'required|alpha',
             'description' => 'required',
             'severity_level' => 'required',
         ]);
