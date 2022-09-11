@@ -108,7 +108,7 @@ class BalanceController extends Controller
         ]);
     }
 
-    public function getDataForPieChart() {
+    public function getExpenseRate() {
         $pie_data = array();
         $expenses = new stdClass();
         $expenses->description = "Expenses";

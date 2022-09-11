@@ -17,7 +17,6 @@ import EditInvoiceModal from "../../../../components/Modals/Invoice/EditInvoiceM
 
 export default function InvoicesList() {
   const history = useHistory();
-  var currentDate = new Date();
 
   const [details] = useState([]);
   const [loading, setLoading] = useState(true);

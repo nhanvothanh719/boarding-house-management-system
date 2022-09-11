@@ -295,8 +295,7 @@ class InvoiceController extends Controller
                 'status' => 404,
             ]);
         }
-        $all_invoices = Invoice::where('renter_id', $id)->get();
-        
+        $all_invoices = Invoice::where('renter_id', $id)->orderBy('month', 'asc')->get();
         return response([
             'status' => 200,
             'allInvoices' => $all_invoices,
