@@ -17,6 +17,7 @@ import DangerousIcon from "@mui/icons-material/Dangerous";
 import AppUrl from "../../RestAPI/AppUrl";
 import Loading from "../Loading/Loading";
 import RegisterRoomModal from "../Modals/Room/RegisterRoomModal";
+import noImage from "../../assets/images/no_image.jpeg";
 
 function AvailableRoomDetails(props) {
   const [roomID] = useState(props.roomId);
@@ -30,7 +31,7 @@ function AvailableRoomDetails(props) {
   useEffect(() => {
     axios.get(AppUrl.AvailableRoomDetails + roomID).then((response) => {
       if (response.data.status === 200) {
-        console.log(response.data);
+        console.log(response.data.details[0]);
         setRoom(response.data.details[0]);
         setLoading(false);
       }
@@ -42,8 +43,11 @@ function AvailableRoomDetails(props) {
   };
 
   var display_images = "";
-  if (loading) {
-    return <Loading />;
+  if (room.images.length === 0) {
+    display_images = 
+    <Carousel.Item>
+      <img className="img-fluid customImage d-block" src={noImage} alt="room_image" />
+    </Carousel.Item>
   } else {
     display_images = room.images.map((img) => {
       return (
@@ -59,6 +63,9 @@ function AvailableRoomDetails(props) {
     });
   }
 
+  if (loading) {
+    return <Loading />;
+  }
   return (
     <Fragment>
       <Container className="mb-5">

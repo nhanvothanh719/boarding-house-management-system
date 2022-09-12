@@ -66,6 +66,7 @@ export default function RoomContractsList() {
         editable: "never",
         render: (rowData) => <p>{rowData.renter.name}</p>,
       },
+      
       {
         field: "effective_from",
         title: "Effective from",

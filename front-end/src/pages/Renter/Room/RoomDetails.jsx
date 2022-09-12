@@ -8,6 +8,7 @@ import axios from "axios";
 
 import Loading from "../../../components/Loading/Loading";
 import WebPageTitle from "../../../components/WebPageTitle/WebPageTitle";
+import noImage from "../../../assets/images/no_image.jpeg";
 import "../../../assets/css/Renter/details.css";
 
 export default function RoomDetails() {
@@ -35,6 +36,12 @@ export default function RoomDetails() {
   }, []);
 
   var display_images = "";
+  if (room.images.length === 0) {
+    display_images = 
+    <Carousel.Item>
+      <img className="img-fluid customImage d-block" src={noImage} alt="room_image" />
+    </Carousel.Item>
+  } else {
     display_images = room.images.map((img) => {
       return (
         <Carousel.Item>
@@ -47,6 +54,7 @@ export default function RoomDetails() {
         </Carousel.Item>
       );
     });
+  }
 
     var display_other_roommates = "";
     display_other_roommates = otherRoommates.map((person) => {

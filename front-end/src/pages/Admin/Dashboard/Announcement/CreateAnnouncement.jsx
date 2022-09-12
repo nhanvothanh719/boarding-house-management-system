@@ -10,6 +10,7 @@ import ConfirmLoading from "../../../../components/Loading/ConfirmLoading";
 import AppUrl from "../../../../RestAPI/AppUrl";
 import CreateAnnouncementModal from "../../../../components/Modals/Announcement/CreateAnnouncementModal";
 import WebPageTitle from "../../../../components/WebPageTitle/WebPageTitle";
+import DefaultAvatar from "../../../../assets/images/default_avatar.png";
 
 export default function CreateAnnouncement() {
   const [loading, setLoading] = useState(true);
@@ -54,7 +55,21 @@ export default function CreateAnnouncement() {
   var columns = [];
     columns = [
       { title: '#', render: (rowData) => rowData.tableData.id + 1 },
-      // { field: "profile_picture", title: "Avatar", export: false, width: "10%", render: rowData => <img src={rowData.profile_picture} alt="avatar" style={{width: 40, borderRadius: '50%'}}/> },
+      {
+        field: "profile_picture",
+        title: "Avatar",
+        export: false,
+        width: "7%",
+        render: (rowData) => (
+          <img
+            src={
+              rowData.profile_picture !== null ? `http://127.0.0.1:8000/${rowData.profile_picture}` : DefaultAvatar
+            }
+            alt="avatar"
+            className="topAvatar"
+          />
+        ),
+      },
       { field: "name", title: "Name", width: "20%" },
       { field: "email", title: "Email", width: "20%" },
       { field: "phone_number", title: "Phone number", width: "20%" },
