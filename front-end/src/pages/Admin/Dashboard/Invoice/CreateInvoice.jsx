@@ -77,6 +77,8 @@ export default function CreateInvoice({ match }) {
           setErrors(response.data.errors);
         } else if (response.data.status === 404) {
           swal("Error", response.data.message, "error");
+        } else if (response.data.status === 403) {
+          swal("Warning", response.data.message, "warning");
         }
       })
       .catch((error) => {

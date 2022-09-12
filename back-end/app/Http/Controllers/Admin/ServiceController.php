@@ -23,7 +23,7 @@ class ServiceController extends Controller
 
     public function storeService(Request $request) {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:services|max:100|string|alpha_num',
+            'name' => 'required|unique:services|max:100|string|regex:/(^[a-zA-Z][a-zA-Z\s]{0,20}[a-zA-Z]$)/',
             'unit' => 'required|max:50',
             'unit_price' => 'required|numeric|min:0.5|max:50',
         ]);
@@ -82,7 +82,7 @@ class ServiceController extends Controller
 
     public function updateService(Request $request, $id) {
         $validator = Validator::make($request->all(), [
-            'name' => ['required','alpha_num','unique:services,name,'.$id],
+            'name' => ['required','regex:/(^[a-zA-Z][a-zA-Z\s]{0,20}[a-zA-Z]$)/','unique:services,name,'.$id],
             'unit' => 'required|max:50',
             'unit_price' => 'required|numeric|max:50|min:0.5',
         ]);
@@ -101,7 +101,7 @@ class ServiceController extends Controller
                 if($check_use_service > 0){
                     return response([
                         'message' => 'Cannot update this service to compulsory since it is used',
-                        'status' => 404,
+                        'status' => 403,
                     ]);
                 }
             }
@@ -134,14 +134,14 @@ class ServiceController extends Controller
         if($service->is_compulsory == 1) {
             return response([
                 'message' => 'Cannot delete compulsory service, change to optional service first',
-                'status' => 404,
+                'status' => 403,
             ]);
         }
         $check_use_service = ServiceRegistration::where('service_id', $id)->count();
         if($check_use_service > 0) {
             return response([
                 'message' => 'Cannot delete this service since it is used',
-                'status' => 404,
+                'status' => 403,
             ]);
         }
         else {

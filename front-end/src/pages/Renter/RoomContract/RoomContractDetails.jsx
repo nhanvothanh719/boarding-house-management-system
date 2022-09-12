@@ -11,7 +11,6 @@ import WebPageTitle from "../../../components/WebPageTitle/WebPageTitle";
 import Error from "../Error/Error";
 
 export default function RoomContractDetails() {
-  const history = useHistory();
   const errorMessage =
     "Oops. Your room contract has not been created. Please contact with the admin.";
 
@@ -43,7 +42,8 @@ export default function RoomContractDetails() {
     return (
       <Fragment>
         <WebPageTitle pageTitle="Room contract details" />
-        <RoomContract roomContract={details} />
+        {/* <RoomContract roomContract={details} /> */}
+        <Error errorMessage={errorMessage} />
       </Fragment>
     );
   }

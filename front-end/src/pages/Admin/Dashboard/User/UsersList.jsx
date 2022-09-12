@@ -52,6 +52,8 @@ export default function UsersList() {
       if (response.data.status === 200) {
         swal("Success", response.data.message, "success");
         setRentersListChange(true);
+      } else if (response.data.status === 403) {
+        swal("Warning", response.data.message, "warning");
       }
     });
   };

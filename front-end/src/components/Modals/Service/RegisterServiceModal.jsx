@@ -70,6 +70,8 @@ export default function RegisterServiceModal(props) {
           setTimeout(() => {
             displayModal();
           }, 1000);
+        } else if (response.data.status === 403) {
+          swal("Warning", response.data.message, "warning");
         }
       })
       .catch((error) => {

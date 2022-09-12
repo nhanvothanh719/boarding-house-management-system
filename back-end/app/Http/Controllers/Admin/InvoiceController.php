@@ -40,7 +40,7 @@ class InvoiceController extends Controller
         $user = User::find($id);
         if(!$user) {
             return response([
-                'message' => 'Cannot create temporary invoice due to no user found',
+                'message' => 'No user found',
                 'status' => 404,
             ]);
         }
@@ -95,7 +95,7 @@ class InvoiceController extends Controller
         if(Invoice::where('renter_id', $id)->where('month', $request->month)->count() > 0) {
             return response([
                 'message' => 'Renter has already had invoice for the chosen month',
-                'status' => 404,
+                'status' => 403,
             ]);
         }
         if($request->extra_fee) {
@@ -251,7 +251,7 @@ class InvoiceController extends Controller
         if($invoice->is_paid == Invoice::STATUS_PAID) {
             return response([
                 'message' => 'Cannot delete since this invoice is paid',
-                'status' => 404,
+                'status' => 403,
             ]);
         }
         InvoiceDetail::where('invoice_id', $id)->delete();
