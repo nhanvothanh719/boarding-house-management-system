@@ -52,6 +52,10 @@ export default function CreateAnnouncementModal(props) {
       .then((response) => {
         if (response.data.status === 200) {
           setErrors([]);
+          setInput({
+            title: "",
+            content: "",
+          });
           swal("Success", response.data.message, "success");
         } else if (response.data.status === 422) {
           setErrors(response.data.errors);

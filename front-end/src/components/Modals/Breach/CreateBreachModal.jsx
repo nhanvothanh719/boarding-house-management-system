@@ -54,6 +54,13 @@ export default function CreateBreachModal(props) {
       .then((response) => {
         if (response.data.status === 200) {
           setErrors([]);
+          setInput({
+            name: "",
+            description: "",
+            severity_level: "",
+            allowed_violate_number: "",
+          });
+          setSelectSeverityLevel(1);
           swal("Success", response.data.message, "success");
           props.updateModalStatus(true);
         } else if (response.data.status === 422) {

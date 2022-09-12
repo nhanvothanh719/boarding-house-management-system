@@ -59,6 +59,12 @@ export default function RegisterRoomModal(props) {
       .then((response) => {
         if (response.data.status === 200) {
           setErrors([]);
+          setInput({
+            sender_name: "",
+            sender_email: "",
+            sender_phone_number: "",
+          });
+          setSenderGender('');
           swal("Success", response.data.message, "success");
           props.updateCreateModalStatus(true);
         } else if (response.data.status === 422) {

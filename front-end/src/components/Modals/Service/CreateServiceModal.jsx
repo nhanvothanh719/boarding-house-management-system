@@ -55,6 +55,13 @@ export default function CreateServiceModal(props) {
       .then((response) => {
         if (response.data.status === 200) {
           setErrors([]);
+          setInput({
+            name: "",
+            description: "",
+            unit: "",
+            unit_price: "",
+            is_compulsory: "",
+          });
           swal("Success", response.data.message, "success");
           props.updateModalStatus(true);
         } else if (response.data.status === 422) {
@@ -81,7 +88,7 @@ export default function CreateServiceModal(props) {
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-            <h5 class="customModalTitle">Create new service</h5>
+              <h5 class="customModalTitle">Create new service</h5>
               <button
                 type="button"
                 class="close"
@@ -107,7 +114,9 @@ export default function CreateServiceModal(props) {
                     required
                   />
                 </div>
-                <small className="text-danger customSmallError" >{errors.name}</small>
+                <small className="text-danger customSmallError">
+                  {errors.name}
+                </small>
                 <div>
                   <label className="customModalLabel">Description:</label>
                   <TextField
@@ -131,7 +140,9 @@ export default function CreateServiceModal(props) {
                     required
                   />
                 </div>
-                <small className="text-danger customSmallError" >{errors.unit}</small>
+                <small className="text-danger customSmallError">
+                  {errors.unit}
+                </small>
                 <div>
                   <label className="customModalLabel">Cost per unit:</label>
                   <TextField
@@ -143,7 +154,9 @@ export default function CreateServiceModal(props) {
                     required
                   />
                 </div>
-                <small className="text-danger customSmallError" >{errors.unit_price}</small>
+                <small className="text-danger customSmallError">
+                  {errors.unit_price}
+                </small>
                 <div>
                   <label className="customModalLabel">Compulsory:</label>
                   <input

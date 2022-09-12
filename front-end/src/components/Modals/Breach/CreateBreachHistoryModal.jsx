@@ -73,6 +73,9 @@ export default function CreateBreachHistoryModal(props) {
       .then((response) => {
         if (response.data.status === 200) {
             setErrors([]);
+            setViolateMoment(moment());
+            setSelectedRenter(null);
+            setSelectedBreach(null);
             swal("Success", response.data.message, "success");
             props.updateCreateModalStatus(true);
           } else if (response.data.status === 422) {
