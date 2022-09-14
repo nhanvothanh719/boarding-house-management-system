@@ -84,6 +84,16 @@ export default function CreateRoomContractModal(props) {
       .then((response) => {
         if (response.data.status === 200) {
           setErrors([]);
+          setInput({
+            deposit_amount: "",
+          });
+          setImages({
+            owner_signature: [],
+            renter_signature: [],
+          });
+          setEffectiveFromDate(moment());
+          setEffectiveUntilDate(moment());
+          setSelectedRenter(null);
           swal("Success", response.data.message, "success");
           props.updateModalStatus(true);
         } else if (response.data.status === 422) {
@@ -91,6 +101,8 @@ export default function CreateRoomContractModal(props) {
           setTimeout(() => {
             displayModal();
           }, 1000);
+        } else if (response.data.status === 403) {
+          swal("Warning", response.data.message, "warning");
         }
       })
       .catch((error) => {

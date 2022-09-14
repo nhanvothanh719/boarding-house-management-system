@@ -37,21 +37,21 @@ class ServiceRegistrationController extends Controller
         if(!$user) {
             return response([
                 'message' => 'Cannot register due to no renter found',
-                'status' => 404,
+                'status' => 403,
             ]);
         }
         $renter_check = $user->role_id === 1 ? true : false;
         if(!$renter_check) {
             return response([
                 'message' => 'Cannot register as the user is not the renter',
-                'status' => 404,
+                'status' => 403,
             ]);
         }
         $check_existed_registration = ServiceRegistration::where([['user_id', $user->id],['service_id', $request->service_id]])->count();
         if($check_existed_registration > 0) {
             return response([
                 'message' => 'This renter has already registered to use this service',
-                'status' => 404,
+                'status' => 403,
             ]);
         }
         try {

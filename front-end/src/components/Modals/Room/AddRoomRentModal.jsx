@@ -63,6 +63,8 @@ export default function AddRoomRentModal(props) {
       .then((response) => {
         if (response.data.status === 200) {
           setErrors([]);
+          setSelectedRenter(null);
+          setSelectedRoom(null);
           swal("Success", response.data.message, "success");
           props.updateCreateModalStatus(true);
         } else if (response.data.status === 422) {
@@ -70,6 +72,8 @@ export default function AddRoomRentModal(props) {
           setTimeout(() => {
             displayModal();
           }, 1000);
+        } else if (response.data.status === 403) {
+          swal("Warning", response.data.message, "warning");
         }
       })
       .catch((error) => {

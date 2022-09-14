@@ -90,7 +90,7 @@ export default function EditInvoiceModal(props) {
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="customModalTitle">Add more days to invoice deadline {moment(validUntilDate).format("DD/MM/YYYY")}</h5>
+              <h5 class="customModalTitle">Add more days to invoice deadline</h5>
               <button
                 type="button"
                 class="close"

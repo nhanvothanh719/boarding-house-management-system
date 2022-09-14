@@ -66,6 +66,7 @@ export default function RoomContractsList() {
         editable: "never",
         render: (rowData) => <p>{rowData.renter.name}</p>,
       },
+      
       {
         field: "effective_from",
         title: "Effective from",
@@ -119,8 +120,7 @@ export default function RoomContractsList() {
           <Button
             className="createBtn"
             style={{ backgroundColor: "white", color: "#1C4E80" }}
-            //onClick={(e) => setShowCreateModal(true)}
-            onClick={(e) => alert(moment(currentDate).add(7, 'M') > moment(currentDate).add(17, 'd'))}
+            onClick={(e) => setShowCreateModal(true)}
           >
             Add new room contract
           </Button>

@@ -52,6 +52,11 @@ export default function CreateCategoryModal(props) {
       .then((response) => {
         if (response.data.status === 200) {
           setErrors([]);
+          setInput({
+            name: "",
+            price: "",
+            description: "",
+          });
           swal("Success", response.data.message, "success");
           props.updateModalStatus(true);
         } else if (response.data.status === 422) {

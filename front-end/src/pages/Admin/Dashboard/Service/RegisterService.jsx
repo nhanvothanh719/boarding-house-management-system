@@ -10,6 +10,7 @@ import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
 import RegisterServiceModal from "../../../../components/Modals/Service/RegisterServiceModal";
 import WebPageTitle from "../../../../components/WebPageTitle/WebPageTitle";
+import DefaultAvatar from "../../../../assets/images/default_avatar.png";
 
 export default function RegisterService() {
   const [loading, setLoading] = useState(true);
@@ -44,7 +45,23 @@ export default function RegisterService() {
       {
         field: "user_id",
         title: "Renter",
-        render: (rowData) => <p> {rowData.user.name} </p>,
+        align: "left",
+        render: (rowData) => {
+          return (
+            <span>
+              <img
+                src={
+                  rowData.user.profile_picture !== null
+                    ? `http://127.0.0.1:8000/${rowData.user.profile_picture}`
+                    : DefaultAvatar
+                }
+                alt="avatar"
+                className="topAvatar"
+              />
+              <p style={{ display: "inline" }}> {rowData.user.name} </p>
+            </span>
+          );
+        },
       },
       {
         field: "service_id",

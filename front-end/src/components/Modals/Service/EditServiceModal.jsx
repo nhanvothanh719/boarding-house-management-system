@@ -70,6 +70,8 @@ export default function EditServiceModal(props) {
           }, 1000);
         } else if (response.data.status === 404) {
           swal("Error", response.data.message, "error");
+        } else if (response.data.status === 403) {
+          swal("Warning", response.data.message, "warning");
         }
       })
       .catch((error) => {
@@ -115,7 +117,7 @@ export default function EditServiceModal(props) {
                     required
                   />
                 </div>
-                <span>{errors.name}</span>
+                <small className="text-danger customSmallError">{errors.name}</small>
                 <div>
                 <label className="customModalLabel">Description:</label>
                   <TextField

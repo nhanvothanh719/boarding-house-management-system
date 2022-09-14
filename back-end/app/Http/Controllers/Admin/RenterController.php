@@ -38,7 +38,7 @@ class RenterController extends Controller
         $before_appropriate_time = date('Y-m-d', strtotime(' -18 year'));
         $after_appropriate_time = date('Y-m-d', strtotime(' -40 year'));
         $validator = Validator::make($request->all(), [
-            'name' => 'required|max:50|alpha',
+            'name' => 'required|max:50|regex:/(^[a-zA-Z][a-zA-Z\s]{0,20}[a-zA-Z]$)/',
             'email' => 'required|unique:users|max:50|email',
             'gender' => 'required',
             'date_of_birth' => ['required','date', 'before_or_equal:'.$before_appropriate_time, 'after_or_equal:'.$after_appropriate_time],
@@ -116,13 +116,13 @@ class RenterController extends Controller
         $before_appropriate_time = date('Y-m-d', strtotime(' -18 year'));
         $after_appropriate_time = date('Y-m-d', strtotime(' -40 year'));
         $validator = Validator::make($request->all(), [
-            'name' => 'required|max:50|string|alpha',
+            'name' => 'required|max:50|string|regex:/(^[a-zA-Z][a-zA-Z\s]{0,20}[a-zA-Z]$)/',
             'email' => 'required|max:50|string|email|unique:users,email,'.$id,
             'gender' => 'required',
             'date_of_birth' => ['required','date', 'before_or_equal:'.$before_appropriate_time, 'after_or_equal:'.$after_appropriate_time],
             'id_card_number' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|size:10|unique:users,id_card_number,'.$id,
             'phone_number' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|size:10|unique:users,phone_number,'.$id,
-            'occupation' => 'required|max:100|string|alpha',
+            'occupation' => 'required|max:100|string|regex:/(^[a-zA-Z][a-zA-Z\s]{0,20}[a-zA-Z]$)/',
             'permanent_address' => 'required',
             'profile_picture' => 'image',
             'role_id' => 'required|exists:roles,id',
@@ -193,7 +193,7 @@ class RenterController extends Controller
         if($user->role_id == Role::ROLE_ADMIN){
             return response([
                 'message' => 'Cannot lock account of user with admin role',
-                'status' => 404,
+                'status' => 403,
             ]);
         }
         if($user->is_locked == User::LOCKED_ACCOUNT) {

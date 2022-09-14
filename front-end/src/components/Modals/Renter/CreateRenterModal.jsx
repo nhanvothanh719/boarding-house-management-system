@@ -88,6 +88,20 @@ export default function CreateRenterModal(props) {
       .then((response) => {
         if (response.data.status === 200) {
           setErrors([]);
+          setAvatar([]);
+          setInput({
+            name: "",
+            email: "",
+            gender: "",
+            id_card_number: "",
+            phone_number: "",
+            occupation: "",
+            permanent_address: "",
+            role_id: "",  
+          }); 
+          setDateOfBirth(null);
+          setSelectGender('');
+          setSelectRole('');
           swal("Success", response.data.message, "success");
           props.updateModalStatus(true);
         } else if (response.data.status === 422) {

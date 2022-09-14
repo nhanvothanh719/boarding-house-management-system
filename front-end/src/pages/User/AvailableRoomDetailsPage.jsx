@@ -1,7 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react";
 
-import axios from "axios";
-
 import PageTitle from "../../components/User/PageTitle";
 import AvailableRoomDetails from "../../components/User/AvailableRoomDetails";
 import WebPageTitle from "../../components/WebPageTitle/WebPageTitle";

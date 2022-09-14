@@ -23,6 +23,7 @@ class AuthController extends Controller
                 $user = Auth::user();
                 if($user->is_locked === User::LOCKED_ACCOUNT) {
                     return response([
+                        'status' => 403,
                         'message' => 'This account is temporary locked',
                     ]);
                 }
@@ -54,8 +55,9 @@ class AuthController extends Controller
             ], 400); //Bad request
         }
         return response([
+            'status' => 401,
             'message' => 'Incorrect email or password',
-        ], 401); //Unauthorized
+        ]); //Unauthorized
     }
     
     public function logout() {

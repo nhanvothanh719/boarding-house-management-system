@@ -30,7 +30,7 @@ class BreachController extends Controller
 
     public function storeBreach(Request $request) {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:breaches|alpha',
+            'name' => 'required|unique:breaches|regex:/(^[a-zA-Z][a-zA-Z\s]{0,20}[a-zA-Z]$)/',
             'allowed_violate_number' => 'required|min:1|max:10|integer',
             'severity_level' => 'required|integer',
         ]);
@@ -76,7 +76,7 @@ class BreachController extends Controller
             ]);
         }
         $validator = Validator::make($request->all(), [
-            'name' => ['required','alpha','unique:breaches,name,'.$id],
+            'name' => ['required','regex:/(^[a-zA-Z][a-zA-Z\s]{0,20}[a-zA-Z]$)/','unique:breaches,name,'.$id],
             'allowed_violate_number' => 'required|min:1|max:10|integer',
             'severity_level' => 'required|integer',
         ]);
@@ -111,7 +111,7 @@ class BreachController extends Controller
             if($is_used) {
                 return response([
                     'message' => 'Cannot delete this breach since it is used',
-                    'status' => 404,
+                    'status' => 403,
                 ]);
             }
             $breach->delete();
