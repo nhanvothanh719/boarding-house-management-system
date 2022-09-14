@@ -10,6 +10,7 @@ import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
 import AddRoomRentModal from "../../../../components/Modals/Room/AddRoomRentModal";
 import WebPageTitle from "../../../../components/WebPageTitle/WebPageTitle";
+import DefaultAvatar from "../../../../assets/images/default_avatar.png";
 
 export default function RentRoom() {
   const [loading, setLoading] = useState(true);
@@ -42,7 +43,12 @@ export default function RentRoom() {
     return <Loading />;
   } else {
     columns = [
-      { title: "#", render: (rowData) => rowData.tableData.id + 1, width: "10%", align: "center" },
+      {
+        title: "#",
+        render: (rowData) => rowData.tableData.id + 1,
+        width: "10%",
+        align: "center",
+      },
       {
         field: "room_id",
         title: "Room number",
@@ -51,7 +57,23 @@ export default function RentRoom() {
       {
         field: "renter_id",
         title: "Renter",
-        render: (rowData) => <p> {rowData.renter.name} </p>,
+        align: "left",
+        render: (rowData) => {
+          return (
+            <span>
+              <img
+                src={
+                  rowData.renter.profile_picture !== null
+                    ? `http://127.0.0.1:8000/${rowData.renter.profile_picture}`
+                    : DefaultAvatar
+                }
+                alt="avatar"
+                className="topAvatar"
+              />
+              <p style={{ display: "inline" }}> {rowData.renter.name} </p>
+            </span>
+          );
+        },
       },
     ];
   }
@@ -85,15 +107,17 @@ export default function RentRoom() {
             Create new room rent
           </Button>
           <AddRoomRentModal
-          isShown={showCreateModal}
-          setCreateModalStatus={setCreateModalStatus}
-          updateCreateModalStatus={updateCreateModalStatus}
+            isShown={showCreateModal}
+            setCreateModalStatus={setCreateModalStatus}
+            updateCreateModalStatus={updateCreateModalStatus}
           />
         </div>
         <MaterialTable
           columns={columns}
           data={rentsList}
-          title={<span className="customDatatableTitle">All room registrations</span>}
+          title={
+            <span className="customDatatableTitle">All room registrations</span>
+          }
           options={{
             searchAutoFocus: false,
             searchFieldVariant: "outlined",
@@ -104,8 +128,8 @@ export default function RentRoom() {
             exportAllData: true,
             actionsColumnIndex: -1,
             headerStyle: {
-              fontFamily: 'Anek Telugu, sans-serif',
-            }
+              fontFamily: "Anek Telugu, sans-serif",
+            },
           }}
           actions={[
             {

@@ -13,7 +13,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import Loading from "../../../../components/Loading/Loading";
 import ConfirmLoading from "../../../../components/Loading/ConfirmLoading";
 import AppUrl from "../../../../RestAPI/AppUrl";
-import DefaultAvatar from "../../../../assets/images/avatar.jpeg";
+import DefaultAvatar from "../../../../assets/images/default_avatar.png";
 import "../../../../assets/css/Dashboard/datatable.css";
 import CreateRenterModal from "../../../../components/Modals/Renter/CreateRenterModal";
 import WebPageTitle from "../../../../components/WebPageTitle/WebPageTitle";
@@ -52,6 +52,8 @@ export default function UsersList() {
       if (response.data.status === 200) {
         swal("Success", response.data.message, "success");
         setRentersListChange(true);
+      } else if (response.data.status === 403) {
+        swal("Warning", response.data.message, "warning");
       }
     });
   };
@@ -79,13 +81,14 @@ export default function UsersList() {
       width: "7%",
       render: (rowData) => (
         <img
-          src={DefaultAvatar}
+          src={
+            rowData.profile_picture !== null ? `http://127.0.0.1:8000/${rowData.profile_picture}` : DefaultAvatar
+          }
           alt="avatar"
-          style={{ width: 40, borderRadius: "50%" }}
+          className="topAvatar"
         />
       ),
     },
-    // { field: "profile_picture", title: "Avatar", export: false, width: "10%", render: rowData => <img src={rowData.profile_picture} alt="avatar" style={{width: 40, borderRadius: '50%'}}/> },
     { field: "name", title: "Name", width: "20%" },
     { field: "email", title: "Email", width: "20%" },
     {

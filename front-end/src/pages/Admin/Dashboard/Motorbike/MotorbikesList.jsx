@@ -10,6 +10,8 @@ import AppUrl from "../../../../RestAPI/AppUrl";
 import CreateMotorbikeModal from "../../../../components/Modals/Motorbike/CreateMotorbikeModal";
 import EditMotorbikeModal from "../../../../components/Modals/Motorbike/EditMotorbikeModal";
 import WebPageTitle from "../../../../components/WebPageTitle/WebPageTitle";
+import DefaultMotorbikeImg from "../../../../assets/images/default_motorbike.jpeg";
+import ViewMotorbikeImageModal from "../../../../components/Modals/Motorbike/ViewMotorbikeImageModal";
 
 export default function MotorbikesList() {
   const [details] = useState([]);
@@ -18,6 +20,7 @@ export default function MotorbikesList() {
   const [motorbikesListChange, setMotorbikesListChange] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showViewImageModal, setShowViewImageModal] = useState(false);
   const [selectedMotorbikeId, setSelectedMotorbikeId] = useState(null);
 
   useEffect(() => {
@@ -40,6 +43,10 @@ export default function MotorbikesList() {
     setShowEditModal(status);
   };
 
+  const setViewImageModalStatus = (status) => {
+    setShowViewImageModal(status);
+  }
+
   const updateModalStatus = (status) => {
     setMotorbikesListChange(status);
   };
@@ -58,9 +65,15 @@ export default function MotorbikesList() {
         export: false,
         render: (rowData) => (
           <img
-            src={rowData}
+          src={
+            rowData.motorbike_image !== null ? `http://127.0.0.1:8000/${rowData.motorbike_image}` : DefaultMotorbikeImg
+          }
             alt="motorbike_image"
-            style={{ width: 40, borderRadius: "50%" }}
+            className="topAvatar"
+            onMouseEnter={() => {
+              setShowViewImageModal(true);
+              setSelectedMotorbikeId(rowData.id);
+            }}
           />
         ),
       },
@@ -146,6 +159,11 @@ export default function MotorbikesList() {
             motorbikeId={selectedMotorbikeId}
             setEditModalStatus={setEditModalStatus}
             updateModalStatus={updateModalStatus}
+          />
+          <ViewMotorbikeImageModal
+          isShown={showViewImageModal}
+          motorbikeId={selectedMotorbikeId}
+          setViewImageModalStatus={setViewImageModalStatus}
           />
         </div>
       </Fragment>

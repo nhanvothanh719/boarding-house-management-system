@@ -21,9 +21,9 @@ import {
 
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
-
 import "../../../../assets/css/Dashboard/user.css";
 import WebPageTitle from "../../../../components/WebPageTitle/WebPageTitle";
+import DefaultAvatar from "../../../../assets/images/default_avatar.png";
 
 export default function EditUser({ match }) {
   const history = useHistory();
@@ -142,7 +142,9 @@ export default function EditUser({ match }) {
           <div className="userShow">
             <div className="userShowTop">
               <img
-                src={`http://127.0.0.1:8000/${input.profile_picture}`}
+                src={
+                  input.profile_picture !== null ? `http://127.0.0.1:8000/${input.profile_picture}` : DefaultAvatar
+                }
                 alt=""
                 className="userShowImg"
               />
@@ -318,7 +320,9 @@ export default function EditUser({ match }) {
                 <div className="userUpdateUpload">
                   <img
                     className="userUpdateImg"
-                    src={`http://127.0.0.1:8000/${input.profile_picture}`}                    
+                    src={
+                      input.profile_picture !== null ? `http://127.0.0.1:8000/${input.profile_picture}` : DefaultAvatar
+                    }                 
                     alt=""
                   />
                   <label htmlFor="file">

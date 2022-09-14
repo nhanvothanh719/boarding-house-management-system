@@ -6,6 +6,7 @@ import axios from "axios";
 import WebPageTitle from "../../components/WebPageTitle/WebPageTitle";
 import NavBar from "../../layouts/User/NavBar";
 import Footer from "../../layouts/User/Footer";
+import swal from "sweetalert";
 
 function ResetPasswordPage(props) {
   const [input, setInput] = useState({
@@ -32,9 +33,14 @@ function ResetPasswordPage(props) {
     axios
       .post("/reset-password", data)
       .then((response) => {
-        setMessage(response.data.message);
-        //Delete input after submit the form
-        document.getElementById("resetPasswordForm").reset();
+        if (response.data.status === 200) {
+          swal("Success", response.data.message, "success");
+          document.getElementById("resetPasswordForm").reset();
+        } else if (response.data.status === 404) {
+          swal("Error", response.data.message, "error");
+        } else if (response.data.status === 403) {
+          swal("Warning", response.data.message, "warning");
+        }
       })
       .catch((error) => {
         setMessage(error.response.data.message);

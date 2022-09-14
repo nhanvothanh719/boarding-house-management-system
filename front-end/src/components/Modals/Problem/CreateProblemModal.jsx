@@ -60,6 +60,11 @@ export default function CreateProblemModal(props) {
       .then((response) => {
         if (response.data.status === 200) {
           setErrors([]);
+          setSeverityLevel("");
+          setInput({
+            title: "",
+            description: "",
+          })
           swal("Success", response.data.message, "success");
           props.updateModalStatus(true);
         } else if (response.data.status === 422) {

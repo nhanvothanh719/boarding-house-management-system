@@ -6,16 +6,25 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 use App\Models\User;
 
-use App\Http\Requests\InputEmailRequest;
-use App\Http\Requests\ResetPasswordRequest;
 use App\Mail\PasswordResetMail;
 
 class PasswordResetController extends Controller
 {
-    public function sendEmailToResetPassword(InputEmailRequest $request) {
+    public function sendEmailToResetPassword(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+        ]);
+        if($validator->fails()) 
+        {
+            return response([
+                'errors' => $validator->messages(),
+                'status' => 422,
+            ]);
+        }
         $email = $request->email;
         if(User::where('email', $email)->doesntExist()) {
             return response([
@@ -45,6 +54,18 @@ class PasswordResetController extends Controller
     }
 
     public function resetPassword(ResetPasswordRequest $request) {
+        $validator = Validator::make($request->all(), [
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|min:6|confirmed'
+        ]);
+        if($validator->fails()) 
+        {
+            return response([
+                'errors' => $validator->messages(),
+                'status' => 422,
+            ]);
+        }
         $email = $request->email;
         $token = $request->token;
         $new_password = Hash::make($request->password);

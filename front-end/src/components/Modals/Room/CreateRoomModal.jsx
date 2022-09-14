@@ -85,6 +85,17 @@ export default function CreateRoomModal(props) {
       .then((response) => {
         if (response.data.status === 200) {
           setErrors([]);
+          setInput({
+            number: "",
+            description: "",
+            area: "",
+            has_conditioner: "",
+            has_fridge: "",
+            has_wardrobe: "",
+            category_id: ""
+          });
+          setPictures([]);
+          setSelectedCategory(null);
           swal("Success", response.data.message, "success");
           props.updateModalStatus(true);
         } else if (response.data.status === 422) {

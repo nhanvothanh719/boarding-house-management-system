@@ -58,6 +58,9 @@ export default function AddBalanceChangeModal(props) {
       .then((response) => {
         if (response.data.status === 200) {
           setErrors([]);
+          setInput({});
+          setOccurredDate(moment());
+          setSelectBalanceCategory(0);
           swal("Success", response.data.message, "success");
           props.updateModalStatus(true);
         } else if (response.data.status === 422) {

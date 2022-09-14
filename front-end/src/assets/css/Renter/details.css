@@ -147,3 +147,16 @@ b, strong {
   font-weight: 600;
 }
 
+.errorIcon {
+  width: 200px;
+  height: 200px;
+  margin-top: 200px;
+}
+
+.errorMessageDisplay {
+  font-family: 'Montserrat Alternates', sans-serif;
+  font-weight: 500;
+  font-size: larger;
+  margin-top: 30px;
+  color: #922618;
+}

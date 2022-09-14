@@ -7,6 +7,8 @@ import AppUrl from "../../../RestAPI/AppUrl";
 import SearchRenterEdit from "../../Search/SearchRenterEdit";
 import { TextField } from "@mui/material";
 
+import DefaultMotorbikeImg from "../../../assets/images/default_motorbike.jpeg";
+
 export default function EditMotorbikeModal(props) {
   const [errors, setErrors] = useState([]);
   const [motorbikeImage, setMotorbikeImage] = useState([]);
@@ -143,7 +145,12 @@ export default function EditMotorbikeModal(props) {
                 </div>
                 <small className="text-danger customSmallError">{errors.motorbike_image}</small>
               </form>
-              <img src={`http://127.0.0.1:8000/${input.motorbike_image}`} alt= "" style={{width: "60px", height: "60px", borderRadius: "50%"}}/>
+              <img 
+              src={
+                input.motorbike_image !== null ? `http://127.0.0.1:8000/${input.motorbike_image}` : DefaultMotorbikeImg
+              }
+              alt= "" 
+              style={{width: "370px", height: "250px", borderRadius: "10%"}}/>
             </div>
             <div class="modal-footer">
               <button

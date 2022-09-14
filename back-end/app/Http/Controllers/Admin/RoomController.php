@@ -248,7 +248,7 @@ class RoomController extends Controller
         {
             return response([
                 'message' => 'The user with ID is not renter',
-                'status' => 404,
+                'status' => 403,
             ]);
         }
         $room_id = $request->room_id;
@@ -258,7 +258,7 @@ class RoomController extends Controller
             case(CustomHelper::getRoomStatusId(RoomStatus::STATUS_FULL)):
                 return response([
                     'message' => 'Cannot add renter since the room is full',
-                    'status' => 404,
+                    'status' => 403,
                 ]);
                 break;
             case(CustomHelper::getRoomStatusId(RoomStatus::STATUS_EMPTY)):
@@ -273,7 +273,7 @@ class RoomController extends Controller
                 if(CustomHelper::checkSameGender($user->gender, $room_id) == false) {
                     return response([
                         'message' => 'Cannot add this renter due to his/her gender',
-                        'status' => 404,
+                        'status' => 403,
                     ]);
                 }
                 $rent = new RoomRent;
@@ -294,7 +294,7 @@ class RoomController extends Controller
         $rent = RoomRent::find($id);
         if(!$rent) {
             return response([
-                'message' => 'The rent has not been made',
+                'message' => 'The room rent has not been made',
                 'status' => 404,
             ]);
         }

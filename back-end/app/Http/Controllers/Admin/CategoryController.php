@@ -22,7 +22,7 @@ class CategoryController extends Controller
 
     public function storeCategory(Request $request) {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:categories|alpha_num',
+            'name' => 'required|unique:categories',
             'price' => 'required|numeric|min:100|max:1000',
         ]);
         if($validator->fails())
@@ -70,7 +70,7 @@ class CategoryController extends Controller
 
     public function updateCategory(Request $request, $id) {
         $validator = Validator::make($request->all(), [
-            'name' => ['required','unique:categories,name,'.$id, 'alpha_num'],
+            'name' => ['required','unique:categories,name,'.$id],
             'price' => 'required|numeric|min:100|max:1000',
         ]);
         if($validator->fails())
@@ -105,7 +105,7 @@ class CategoryController extends Controller
             if($rooms_in_category > 0) {
                 return response([
                     'message' => 'Cannot delete this category since it is used',
-                    'status' => 404,
+                    'status' => 403,
                 ]);
             }
             else {

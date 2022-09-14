@@ -57,7 +57,7 @@ class RoomContractController extends Controller
         {
             return response([
                 'message' => 'The user with ID is not renter',
-                'status' => 404,
+                'status' => 403,
             ]);
         }
         $room_contract = new RoomContract;
