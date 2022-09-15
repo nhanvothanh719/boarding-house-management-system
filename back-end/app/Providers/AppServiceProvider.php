@@ -4,8 +4,10 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-use App\Repositories\Room\RoomRepositoryInterface;
 use App\Repositories\Room\RoomRepository;
+use App\Repositories\Room\RoomRepositoryInterface;
+use App\Repositories\RoomCategory\RoomCategoryRepository;
+use App\Repositories\RoomCategory\RoomCategoryRepositoryInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -16,7 +18,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //$this->app->bind(RoomRepositoryInterface::class, RoomRepository::class);
+        $this->app->bind(RoomRepositoryInterface::class, RoomRepository::class);
+        $this->app->bind(RoomCategoryRepositoryInterface::class, RoomCategoryRepository::class);
     }
 
     /**

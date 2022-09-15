@@ -31,8 +31,7 @@ function AvailableRoomDetails(props) {
   useEffect(() => {
     axios.get(AppUrl.AvailableRoomDetails + roomID).then((response) => {
       if (response.data.status === 200) {
-        console.log(response.data.details[0]);
-        setRoom(response.data.details[0]);
+        setRoom(response.data.room);
         setLoading(false);
       }
     });

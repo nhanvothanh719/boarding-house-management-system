@@ -48,19 +48,16 @@ export default function EditRoom({ match }) {
         setRoomDetails(response.data.room);
         setSelectedCategory(response.data.room.category);
         setRoomImages(response.data.room.images);
-        setRenters(response.data.room.renters);
       } else if (response.data.status === 404) {
         swal("Error", response.data.message, "error");
         history.push("/admin/view-all-rooms");
       }
     });
-    // axios.get(AppUrl.GetRoomDetails + roomId).then((response) => {
-    //   if (response.data.status === 200) {
-        
-    //     setRenters(response.data.allRenters);
-    //     setRoomImages(response.data.roomImages);
-    //   }
-    // });
+    axios.get(AppUrl.GetRoomDetails + roomId).then((response) => {
+      if (response.data.status === 200) {   
+        setRenters(response.data.allRenters);
+      }
+    });
     setLoading(false);
     if (roomDetailsChange) {
       setRoomDetailsChange(false);

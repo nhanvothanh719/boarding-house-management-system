@@ -24,6 +24,7 @@ function CategoriesList() {
     axios.get(AppUrl.ShowCategories).then((response) => {
       if (response.data.status === 200) {
         setCategoryList(response.data.allCategories);
+        console.log(response.data.allCategories);
       }
     });
     setLoading(false);

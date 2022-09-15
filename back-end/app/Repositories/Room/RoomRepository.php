@@ -9,13 +9,13 @@ class RoomRepository implements RoomRepositoryInterface
 {
     // protected $room = null;
 
-    // public function showAll() {
-    //     return Room::all();
-    // }
+    public function all() {
+        return Room::all();
+     }
 
-    // public function show($id) {
-    //     return Room::where('id', $id)->get();
-    // }
+    public function show($id) {
+        return Room::find($id);
+    }
 
     // public function store($request) {
     //     $room = new Room;
@@ -125,4 +125,12 @@ class RoomRepository implements RoomRepositoryInterface
         $full_status_id = RoomStatus::where('name', RoomStatus::STATUS_FULL)->value('id');
         return Room::where('status_id', '!=', $full_status_id)->get();
     }
+
+    // public function findRoomInCategory($id) {
+    //     $room = Room::where('category_id', $id)->first();
+    //     if($room) {
+    //         return true;
+    //     }
+    //     return false;
+    // }
 }

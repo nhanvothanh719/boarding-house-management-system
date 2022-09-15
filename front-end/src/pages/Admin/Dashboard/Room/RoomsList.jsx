@@ -24,6 +24,7 @@ export default function RoomsList() {
   useEffect(() => {
     axios.get(AppUrl.ShowRooms).then((response) => {
       if (response.status === 200) {
+        console.log(response.data.allRooms);
         setRoomsList(response.data.allRooms);
       }
     });

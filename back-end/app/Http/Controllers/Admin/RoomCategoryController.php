@@ -7,16 +7,20 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-use App\Models\Category;
-use App\Models\Room;
+use App\Repositories\RoomCategory\RoomCategoryRepositoryInterface;
 
-class CategoryController extends Controller
+class RoomCategoryController extends Controller
 {
+    protected $category;
+
+    public function __construct(RoomCategoryRepositoryInterface $category) {
+        $this->category = $category;
+    }
+
     public function index() {
-        $all_categories = Category::all();
         return response([
             'status' => 200,
-            'allCategories' => $all_categories,
+            'allCategories' => $this->category->all(),
         ]);
     }
 
@@ -32,28 +36,15 @@ class CategoryController extends Controller
                 'status' => 422,
             ]);
         }
-        try {
-            $category = Category::create([
-                'name' => $request->name,
-                'price' => $request->price,
-                'description' => $request->description,
-            ]);
-            return response([
-                'message' => 'Successfully create new category',
-                'category' => $category,
-                'status' => 200,
-            ], 200);
-        }
-        catch(Exception $exception) {
-            return response([
-                'message' => $exception->getMessage(),
-                'status' => 400,
-            ], 400);
-        }
+        $category = $this->category->store($request->all());
+        return response([
+            'message' => 'Successfully create new category',
+            'status' => 200,
+        ]);
     }
 
     public function editCategory($id) {
-        $category = Category::find($id);
+        $category = $this->category->show($id);
         if($category) {
             return response([
                 'status' => 200,
@@ -80,12 +71,9 @@ class CategoryController extends Controller
                 'status' => 422, //Unprocessable entity
             ]);
         }
-        $category = Category::find($id);
+        $category = $this->category->show($id);
         if($category) {
-            $category->name = $request->name;
-            $category->price = $request->price;
-            $category->description = $request->description;
-            $category->save();
+           $category = $this->category->update($request->all(), $id);
             return response([
                 'message' => 'Successfully update category',
                 'status' => 200,
@@ -99,27 +87,26 @@ class CategoryController extends Controller
     }
 
     public function deleteCategory($id) {
-        $category = Category::find($id);
+        $category = $this->category->show($id);
         if($category) {
-            $rooms_in_category = Room::where('category_id', $id)->count();
-            if($rooms_in_category > 0) {
+            if($this->category->checkUsed($id)) {
                 return response([
                     'message' => 'Cannot delete this category since it is used',
                     'status' => 403,
+                    'test' => $this->category->checkUsed($id),
                 ]);
             }
             else {
-                $category->delete();
+                $this->category->delete($id);
                 return response([
                     'status' => 200,
                     'message' => 'Successfully delete category',
                 ]);
             }
-        } else {
-            return response([
-                'message' => 'No category ID found',
-                'status' => 404,
-            ]);
         }
+        return response([
+            'message' => 'No category ID found',
+            'status' => 404,
+        ]);
     }
 }

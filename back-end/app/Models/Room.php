@@ -10,7 +10,7 @@ class Room extends Model
     use HasFactory;
     
     protected $guarded = ['id'];
-    protected $with = ['category', 'status', 'images', 'renters'];
+    protected $with = ['category', 'status', 'images'];
 
     public function category() {
         return $this->belongsTo(Category::class,'category_id','id');
@@ -22,9 +22,5 @@ class Room extends Model
 
     public function images() {
         return $this->hasMany(RoomImages::class, 'room_id', 'id');
-    }
-
-    public function renters() {
-        return $this->hasMany(RoomRent::class, 'room_id', 'id');
     }
 }

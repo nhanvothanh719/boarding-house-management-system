@@ -10,7 +10,7 @@ use App\Http\Controllers\AvailableRoomController;
 use App\Http\Controllers\RoomRentRegistrationController;
 
 use App\Http\Controllers\Admin\RoomController;
-use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\RoomCategoryController;
 use App\Http\Controllers\Admin\RenterController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\MotorbikeController;
@@ -85,14 +85,14 @@ Route::middleware('auth:api')->group(function(){
         Route::get('/all-users', [UserController::class, 'index']);
 
         //Category
-        Route::get('/all-categories', [CategoryController::class, 'index']);
-        Route::post('/store-category', [CategoryController::class, 'storeCategory']);
-        Route::get('/edit-category/{id}', [CategoryController::class, 'editCategory']);
-        Route::put('/update-category/{id}', [CategoryController::class, 'updateCategory']);
-        Route::delete('/delete-category/{id}', [CategoryController::class, 'deleteCategory']);
+        Route::get('/all-categories', [RoomCategoryController::class, 'index']);
+        Route::post('/store-category', [RoomCategoryController::class, 'storeCategory']);
+        Route::get('/edit-category/{id}', [RoomCategoryController::class, 'editCategory']);
+        Route::put('/update-category/{id}', [RoomCategoryController::class, 'updateCategory']);
+        Route::delete('/delete-category/{id}', [RoomCategoryController::class, 'deleteCategory']);
 
         //Room
-        Route::get('/all-rooms', [RoomController::class, 'getRooms']);
+        Route::get('/all-rooms', [RoomController::class, 'index']);
         Route::post('/store-room', [RoomController::class, 'storeRoom']);
         Route::get('/edit-room/{id}', [RoomController::class, 'editRoom']);
         Route::post('/update-room/{id}', [RoomController::class, 'updateRoom']);

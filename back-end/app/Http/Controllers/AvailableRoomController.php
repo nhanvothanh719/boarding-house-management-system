@@ -26,7 +26,7 @@ class AvailableRoomController extends Controller
 
     public function getAvailableRoomDetails($id) {
         return response([
-            'details' => $this->room->show($id),
+            'room' => $this->room->show($id),
             'status' => 200,
         ]);
     }

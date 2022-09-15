@@ -84,7 +84,7 @@ export default function EditCategoryModal(props) {
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="customModalTitle">Create new category</h5>
+              <h5 class="customModalTitle">Edit category</h5>
               <button
                 type="button"
                 class="close"
