@@ -101,7 +101,6 @@ Route::middleware('auth:api')->group(function(){
         Route::get('/all-room_rents', [RoomController::class, 'getAllRoomRents']);
         Route::post('/rent-room', [RoomController::class, 'rentRoom']);
         Route::delete('/cancel-rent-room/{id}', [RoomController::class, 'cancelRentRoom']);
-        Route::get('/room-details/{id}', [RoomController::class, 'getRoomDetails']);
 
         //Renter
         Route::get('/all-renters', [RenterController::class, 'index']);

@@ -32,7 +32,6 @@ class AppUrl {
   static GetAllRoomRents = this.BaseURL + "/all-room_rents";
   static RentRoom = this.BaseURL + "/rent-room";
   static CancelRentRoom = this.BaseURL + "/cancel-rent-room/";
-  static GetRoomDetails = this.BaseURL + "/room-details/";
 
   static ShowRenters = this.BaseURL + "/all-renters";
   static StoreRenter = this.BaseURL + "/store-renter";
