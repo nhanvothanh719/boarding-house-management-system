@@ -30,6 +30,8 @@ export default function EditRoom({ match }) {
     has_conditioner: "",
     has_fridge: "",
     has_wardrobe: "",
+    images: [],
+    renters: [],
   });
   const [uploadedPictures, setUploadedPictures] = useState([]);
   const [roomImages, setRoomImages] = useState([]);
@@ -43,19 +45,22 @@ export default function EditRoom({ match }) {
     axios.get(AppUrl.EditRoom + roomId).then((response) => {
       if (response.data.status === 200) {
         setInput(response.data.room);
+        setRoomDetails(response.data.room);
         setSelectedCategory(response.data.room.category);
+        setRoomImages(response.data.room.images);
+        setRenters(response.data.room.renters);
       } else if (response.data.status === 404) {
         swal("Error", response.data.message, "error");
         history.push("/admin/view-all-rooms");
       }
     });
-    axios.get(AppUrl.GetRoomDetails + roomId).then((response) => {
-      if (response.data.status === 200) {
-        setRoomDetails(response.data.roomDetails);
-        setRenters(response.data.allRenters);
-        setRoomImages(response.data.roomImages);
-      }
-    });
+    // axios.get(AppUrl.GetRoomDetails + roomId).then((response) => {
+    //   if (response.data.status === 200) {
+        
+    //     setRenters(response.data.allRenters);
+    //     setRoomImages(response.data.roomImages);
+    //   }
+    // });
     setLoading(false);
     if (roomDetailsChange) {
       setRoomDetailsChange(false);

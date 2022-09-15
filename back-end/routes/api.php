@@ -92,7 +92,7 @@ Route::middleware('auth:api')->group(function(){
         Route::delete('/delete-category/{id}', [CategoryController::class, 'deleteCategory']);
 
         //Room
-        Route::get('/all-rooms', [RoomController::class, 'index']);
+        Route::get('/all-rooms', [RoomController::class, 'getRooms']);
         Route::post('/store-room', [RoomController::class, 'storeRoom']);
         Route::get('/edit-room/{id}', [RoomController::class, 'editRoom']);
         Route::post('/update-room/{id}', [RoomController::class, 'updateRoom']);

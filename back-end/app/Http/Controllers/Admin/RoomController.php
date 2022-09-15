@@ -20,13 +20,20 @@ use App\Models\RoomStatus;
 use App\Models\RoomRent;
 use App\Models\User;
 
+// use App\Repositories\Room\RoomRepositoryInterface;
+
 class RoomController extends Controller
-{
-    public function index() {
-        $all_rooms = Room::all();
+{   
+    // protected $room;
+
+    // public function __construct(RoomRepositoryInterface $room) {
+    //     $this->room = $room;
+    // }
+
+    public function getRooms() {
         return response([
             'status' => 200,
-            'allRooms' => $all_rooms,
+            'allRooms' => Room::all(),
         ]);
     }
 
@@ -108,11 +115,9 @@ class RoomController extends Controller
     public function editRoom($id) {
         $room = Room::find($id);
         if($room) {
-            $room_images = RoomImages::where('room_id', $id)->get();
             return response([
                 'status' => 200,
                 'room' => $room,
-                'images' => $room_images,
             ]);
         }
         else {

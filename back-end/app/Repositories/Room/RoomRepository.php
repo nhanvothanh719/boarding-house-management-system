@@ -7,16 +7,15 @@ use App\Models\RoomStatus;
 
 class RoomRepository implements RoomRepositoryInterface
 {
-    protected $room = null;
+    // protected $room = null;
 
-    public function showAll() {
-        $full_status_id = RoomStatus::where('name', RoomStatus::STATUS_FULL)->value('id');
-        return Room::get();
-    }
+    // public function showAll() {
+    //     return Room::all();
+    // }
 
-    public function show($id) {
-        return Room::where('id', $id)->get();
-    }
+    // public function show($id) {
+    //     return Room::where('id', $id)->get();
+    // }
 
     // public function store($request) {
     //     $room = new Room;
