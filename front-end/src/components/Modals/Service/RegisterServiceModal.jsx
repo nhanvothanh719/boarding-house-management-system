@@ -66,7 +66,7 @@ export default function RegisterServiceModal(props) {
           setSelectedRenter(null);
           setSelectedService(null);
           swal("Success", response.data.message, "success");
-          props.updateCreateModalStatus(true);
+          props.updateModalStatus(true);
         } else if (response.data.status === 422) {
           setErrors(response.data.errors);
           setTimeout(() => {

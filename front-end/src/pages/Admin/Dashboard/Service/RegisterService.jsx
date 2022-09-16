@@ -35,8 +35,8 @@ export default function RegisterService() {
     setShowCreateModal(status);
   };
 
-  const updateCreateModalStatus = (status) => {
-    setShowCreateModal(status);
+  const updateModalStatus = (status) => {
+    setRegisteredServicesChange(status);
   };
 
   let columns = [];
@@ -105,7 +105,7 @@ export default function RegisterService() {
           <RegisterServiceModal
             isShown={showCreateModal}
             setCreateModalStatus={setCreateModalStatus}
-            updateCreateModalStatus={updateCreateModalStatus}
+            updateModalStatus={updateModalStatus}
           />
         </div>
         <MaterialTable

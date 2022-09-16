@@ -182,7 +182,7 @@ export default function EditServiceModal(props) {
                 data-dismiss="modal"
                 onClick={updateService}
               >
-                Send
+                Update
               </button>
               <button
                 type="button"
