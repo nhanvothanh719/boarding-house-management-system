@@ -93,7 +93,6 @@ class MotorbikeController extends Controller
     }
 
     public function updateMotorbike(Request $request, $id) {
-        //'unique:motorbikes,renter_id,'.$id
         $validator = Validator::make($request->all(), [
             'renter_id' => ['required', 'exists:users,id', 'unique:motorbikes,renter_id,'.$id],
             'license_plate' => 'required|min:6|max:10|unique:motorbikes,license_plate,'.$id,
