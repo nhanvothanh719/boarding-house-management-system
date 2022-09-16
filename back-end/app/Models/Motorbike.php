@@ -14,4 +14,6 @@ class Motorbike extends Model
     public function renter() {
         return $this->belongsTo(User::class,'renter_id','id');
     }
+
+    public const motorbike_image_public_folder = 'uploaded/motorbikes/';
 }

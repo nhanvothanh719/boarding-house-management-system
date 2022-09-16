@@ -10,6 +10,8 @@ use App\Repositories\RoomCategory\RoomCategoryRepository;
 use App\Repositories\RoomCategory\RoomCategoryRepositoryInterface;
 use App\Repositories\Balance\BalanceRepository;
 use App\Repositories\Balance\BalanceRepositoryInterface;
+use App\Repositories\Motorbike\MotorbikeRepository;
+use App\Repositories\Motorbike\MotorbikeRepositoryInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +25,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(RoomRepositoryInterface::class, RoomRepository::class);
         $this->app->bind(RoomCategoryRepositoryInterface::class, RoomCategoryRepository::class);
         $this->app->bind(BalanceRepositoryInterface::class, BalanceRepository::class);
+        $this->app->bind(MotorbikeRepositoryInterface::class, MotorbikeRepository::class);
     }
 
     /**

@@ -119,7 +119,6 @@ Route::middleware('auth:api')->group(function(){
         Route::get('/edit-motorbike/{id}', [MotorbikeController::class, 'editMotorbike']);
         Route::post('/update-motorbike/{id}', [MotorbikeController::class, 'updateMotorbike']);
         Route::delete('/delete-motorbike/{id}', [MotorbikeController::class, 'deleteMotorbike']);
-        Route::get('/all-motorbike_owners', [MotorbikeController::class, 'getMotorbikeOwners']);
 
         Route::get('/get-name/{id}', [UserController::class, 'getName']);
 

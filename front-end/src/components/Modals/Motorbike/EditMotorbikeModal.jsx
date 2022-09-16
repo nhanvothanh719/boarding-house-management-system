@@ -26,6 +26,7 @@ export default function EditMotorbikeModal(props) {
       model.show();
       axios.get(AppUrl.EditMotorbike + props.motorbikeId).then((response) => {
         if (response.data.status === 200) {
+          setSelectedRenter(response.data.motorbike.renter);
           setInput(response.data.motorbike);
         } else if (response.data.status === 404) {
           swal("Error", response.data.message, "error");
@@ -61,11 +62,7 @@ export default function EditMotorbikeModal(props) {
   const updateMotorbike = (e) => {
     e.preventDefault();
     const motorbike = new FormData();
-    if (selectedRenter === null) {
-      motorbike.append("renter_id", input.renter_id);
-    } else {
-      motorbike.append("renter_id", selectedRenter.id);
-    }
+    motorbike.append("renter_id", selectedRenter.id);
     motorbike.append("license_plate", input.license_plate);
     if (motorbikeImage.motorbike_image) {
       motorbike.append("motorbike_image", motorbikeImage.motorbike_image);
@@ -75,6 +72,11 @@ export default function EditMotorbikeModal(props) {
       .then((response) => {
         if (response.data.status === 200) {
           setErrors([]);
+          // setMotorbikeImage([]);
+          // setInput({
+          //   license_plate: "",
+          // });
+          // setSelectedRenter(null);
           swal("Success", response.data.message, "success");
           props.updateModalStatus(true);
         } else if (response.data.status === 422) {

@@ -47,7 +47,6 @@ class AppUrl {
   static EditMotorbike = this.BaseURL + "/edit-motorbike/";
   static UpdateMotorbike = this.BaseURL + "/update-motorbike/";
   static DeleteMotorbike = this.BaseURL + "/delete-motorbike/";
-  static GetAllMotorbikeOwners = this.BaseURL + "/all-motorbike_owners";
   
   static FindName = this.BaseURL + "/get-name/";
 
