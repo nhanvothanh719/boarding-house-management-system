@@ -4,9 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 
-use \stdClass;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 use App\Repositories\Breach\BreachRepositoryInterface;
@@ -108,5 +106,12 @@ class BreachController extends Controller
                 'message' => 'Successfully delete breach',
             ]);
         }
+    }
+
+    public function calculateTotalNumberBreachMade() {
+        return response([
+            'status' => 200,
+            'breachTotals' => $this->breach->calculateTotalNumberBreachMade(),
+        ]);
     }
 }

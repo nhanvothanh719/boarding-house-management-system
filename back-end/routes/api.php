@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\InvoiceController;
 use App\Http\Controllers\Admin\AnnouncementController;
 use App\Http\Controllers\Admin\BalanceController;
 use App\Http\Controllers\Admin\BreachController;
+use App\Http\Controllers\Admin\BreachHistoryController;
 use App\Http\Controllers\Admin\RoomContractController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProblemController;
@@ -72,6 +73,7 @@ Route::middleware('auth:api')->group(function(){
 
         Route::get('/get-renter-room-contract', [RenterRoomContractController::class, 'getRenterRoomContract']);
 
+        //
         Route::get('/get-all-renter-breaches', [RenterBreachHistoryController::class, 'getRenterBreaches']);
         Route::get('/get-breach-details/{id}', [RenterBreachHistoryController::class, 'getBreachDetails']);
         Route::get('/get-renter-breach-histories/{id}', [RenterBreachHistoryController::class, 'getRenterBreachHistories']);
@@ -164,15 +166,15 @@ Route::middleware('auth:api')->group(function(){
         Route::get('/edit-breach/{id}', [BreachController::class, 'editBreach']);
         Route::put('/update-breach/{id}', [BreachController::class, 'updateBreach']);
         Route::delete('/delete-breach/{id}', [BreachController::class, 'deleteBreach']);
-
-        Route::get('/all-breach-histories', [BreachController::class, 'getBreachHistories']);
-        Route::post('/store-breach-history', [BreachController::class, 'storeBreachHistory']);
-        Route::delete('/delete-breach-history/{id}', [BreachController::class, 'deleteBreachHistory']);
-
         Route::get('/get-total-number-breach-made', [BreachController::class, 'calculateTotalNumberBreachMade']);
-        Route::get('/get-renter-total-number-breach-made', [BreachController::class, 'getRenterTotalNumberBreachMade']);
-        Route::get('/get-all-renter-breaches/{id}', [BreachController::class, 'getRenterBreaches']);
-        Route::get('/count-renter-breaches/{id}', [BreachController::class, 'countRenterBreaches']);
+
+        Route::get('/all-breach-histories', [BreachHistoryController::class, 'getBreachHistories']);
+        Route::post('/store-breach-history', [BreachHistoryController::class, 'storeBreachHistory']);
+        Route::delete('/delete-breach-history/{id}', [BreachHistoryController::class, 'deleteBreachHistory']);
+
+        Route::get('/get-renter-total-number-breach-made', [BreachHistoryController::class, 'getRenterTotalNumberBreachMade']);
+        Route::get('/get-all-renter-breaches/{id}', [BreachHistoryController::class, 'getRenterBreaches']);
+        Route::get('/count-renter-breaches/{id}', [BreachHistoryController::class, 'countRenterBreaches']);
 
         //Room contract
         Route::get('/all-room-contracts', [RoomContractController::class, 'index']);

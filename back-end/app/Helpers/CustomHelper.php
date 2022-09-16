@@ -1,7 +1,7 @@
 <?php
 namespace App\Helpers;
 
-use Image;
+use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 
@@ -14,6 +14,7 @@ use App\Models\RoomImages;
 use App\Models\Balance;
 
 use App\Mail\InvoicePaidMail;
+use App\Models\Breach;
 
 class CustomHelper{
 
@@ -64,12 +65,11 @@ class CustomHelper{
         return true;
     }
 
-    public static function updateRoomImages($files, $room_id) {
-        $room_number = Room::find($room_id)->number;
-        $upload_folder = 'uploaded/rooms/'.$room_number.'/';
+    public static function updateRoomImages($files, $room_id, $old_room_number) {
         //Delete existed images:
         //In folder
-        if(File::exists($upload_folder)) {
+        $old_upload_folder = 'uploaded/rooms/'.$old_room_number.'/';
+        if(File::exists($old_upload_folder)) {
             $images = RoomImages::where('room_id', $room_id)->pluck('image_name');
             foreach ($images as $image) {
                 unlink($image);
@@ -78,6 +78,8 @@ class CustomHelper{
         //In database
         RoomImages::where('room_id', $room_id)->delete();
         //Store new images
+        $room_number = Room::find($room_id)->number;
+        $upload_folder = 'uploaded/rooms/'.$room_number.'/';
         if(!file_exists($upload_folder)) {
             mkdir($upload_folder);
         }
@@ -137,8 +139,9 @@ class CustomHelper{
         return Role::where('name', Role::ROLE_RENTER)->value('id');
     }
 
-    public static function isAdminRole(User $user) {
+    public static function isAdminRole($id) {
         $isAdmin = false;
+        $user = User::find($id);
         if($user->role_id == CustomHelper::getAdminRoleId()) {
             $isAdmin = true;
         }
@@ -179,6 +182,29 @@ class CustomHelper{
     }
 
     //-->
-}
 
+    //<!-- Lock account
+
+    public static function lockUserAccount($id, $is_lock) {
+        $user = User::find($id);
+        if($is_lock) {
+            $user->is_locked = User::LOCKED_ACCOUNT;
+        } else {
+            $user->is_locked = User::AVAILABLE_ACCOUNT;
+        }
+        $user->save();
+        return true;
+    }
+
+    //-->
+
+    //<!-- Breach
+
+    public static function getBreachAllowedNumber($id) {
+        return Breach::find($id)->allowed_violate_number;
+    }
+
+    //-->
+    
+}
 ?>

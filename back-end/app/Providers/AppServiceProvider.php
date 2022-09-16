@@ -14,6 +14,9 @@ use App\Repositories\Motorbike\MotorbikeRepository;
 use App\Repositories\Motorbike\MotorbikeRepositoryInterface;
 use App\Repositories\Breach\BreachRepository;
 use App\Repositories\Breach\BreachRepositoryInterface;
+use App\Repositories\BreachHistory\BreachHistoryRepository;
+use App\Repositories\BreachHistory\BreachHistoryRepositoryInterface;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -29,6 +32,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(BalanceRepositoryInterface::class, BalanceRepository::class);
         $this->app->bind(MotorbikeRepositoryInterface::class, MotorbikeRepository::class);
         $this->app->bind(BreachRepositoryInterface::class, BreachRepository::class);
+        $this->app->bind(BreachHistoryRepositoryInterface::class, BreachHistoryRepository::class);
     }
 
     /**

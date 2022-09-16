@@ -45,4 +45,8 @@ class BreachRepository implements BreachRepositoryInterface
         }
         return $is_used;
     }
+
+    public function calculateTotalNumberBreachMade() {
+        return Breach::withCount('breach_histories')->get();
+    }
 }

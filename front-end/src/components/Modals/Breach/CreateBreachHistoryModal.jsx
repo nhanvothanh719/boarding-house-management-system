@@ -62,16 +62,16 @@ export default function CreateBreachHistoryModal(props) {
     }
     else {
       props.setLoaderClass('');
-    props.setDisplayComponentsClass('d-none');
-    const data = {
-      breach_id: selectedBreach.id,
-      renter_id: selectedRenter.id,
-      violated_at: moment(violateMoment).utc().format("YYYY-MM-DD hh:mm:ss"),
-    };
-    axios
-      .post(AppUrl.StoreBreachHistory, data)
-      .then((response) => {
-        if (response.data.status === 200) {
+      props.setDisplayComponentsClass('d-none');
+      const data = {
+        breach_id: selectedBreach.id,
+        renter_id: selectedRenter.id,
+        violated_at: moment(violateMoment).utc().format("YYYY-MM-DD hh:mm:ss"),
+      };
+      axios
+        .post(AppUrl.StoreBreachHistory, data)
+        .then((response) => {
+          if (response.data.status === 200) {
             setErrors([]);
             setViolateMoment(moment());
             setSelectedRenter(null);
@@ -83,13 +83,15 @@ export default function CreateBreachHistoryModal(props) {
             setTimeout(() => {
               displayModal();
             }, 1000);
+          } else if (response.data.status === 403) {
+            swal("Warning", response.data.message, "warning");
           }
-        props.setLoaderClass('d-none');
-        props.setDisplayComponentsClass('');
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+          props.setLoaderClass('d-none');
+          props.setDisplayComponentsClass('');
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
   };
 

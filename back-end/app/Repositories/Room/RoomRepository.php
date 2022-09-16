@@ -38,7 +38,6 @@ class RoomRepository implements RoomRepositoryInterface
     }
 
     public function update($data, $id) {
-        $old_number = Room::where('id', $id)->value('number');
         $room = $this::show($id);
         $room->number = $data['number'];
         $room->category_id = $data['category_id'];

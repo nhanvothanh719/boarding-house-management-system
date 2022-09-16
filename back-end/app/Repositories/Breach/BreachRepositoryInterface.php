@@ -11,4 +11,5 @@ interface BreachRepositoryInterface
     public function delete($id);
 
     public function checkUsed($id);
+    public function calculateTotalNumberBreachMade();
 }

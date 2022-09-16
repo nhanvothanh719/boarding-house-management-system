@@ -21,4 +21,8 @@ class Breach extends Model
     public function renter_breaches() {
         return $this->belongsToMany(User::class, 'breach_histories', 'breach_id', 'renter_id');
     }
+
+    public function breach_histories() {
+        return $this->hasMany(BreachHistory::class, 'breach_id', 'id');
+    }
 }

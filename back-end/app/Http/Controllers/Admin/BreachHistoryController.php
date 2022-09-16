@@ -9,13 +9,22 @@ use App\Helpers\CustomHelper;
 
 use App\Mail\RuleViolateMail;
 
+use App\Repositories\BreachHistory\BreachHistoryRepositoryInterface;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
+
 class BreachHistoryController extends Controller
 {
+    protected $breach_history;
+
+    public function __construct(BreachHistoryRepositoryInterface $breach_history) {
+        $this->breach_history = $breach_history;
+    }
+
     public function getBreachHistories() {
-        $all_breach_histories = BreachHistory::all();
         return response([
             'status' => 200,
-            'allBreachHistories' => $all_breach_histories,
+            'allBreachHistories' => $this->breach_history->all(),
         ]);
     }
 
@@ -33,39 +42,25 @@ class BreachHistoryController extends Controller
                 'status' => 422,
             ]);
         }
-        $user = User::find($request->renter_id);
-        if(!$user) {
+        if(CustomHelper::isAdminRole($request->renter_id)) {
             return response([
-                'errors' => "No user found",
-                'status' => 404,
+                'message' => 'The user is not renter',
+                'status' => 403,
             ]);
         }
-        if(CustomHelper::isAdminRole($user)) {
-            return response([
-                'message' => 'The user with ID is not renter',
-                'status' => 404,
-            ]);
-        }
-        $breach = Breach::find($request->breach_id);
-        $breach_count = BreachHistory::where('breach_id', $request->breach_id)->where('renter_id', $request->renter_id)->count();
-        $remain_allowed_number = $breach->allowed_violate_number - $breach_count;
+        $remain_allowed_number = $this->breach_history->calculateBreachRemainAllowedNumber($request->renter_id, $request->breach_id);
         //Lock user's account
         if($remain_allowed_number == 1) {
-            $user->is_locked = User::LOCKED_ACCOUNT;
-            $user->save();
+            $is_locked_successfully = CustomHelper::lockUserAccount($request->renter_id, true);
         }
         if($remain_allowed_number <= 0) {
             return response([
                 'message' => 'Fail to add since the renter has committed this breach more than allowed times',
-                'status' => 404,
+                'status' => 403,
             ]);
         }
-        $breach_history = BreachHistory::create([
-            'breach_id' => $request->breach_id,
-            'renter_id' => $request->renter_id,
-            'violated_at' => $request->violated_at,
-        ]);
-        Mail::to($user->email)->send(new RuleViolateMail($user->name, $breach->name, $request->violated_at, $remain_allowed_number));
+        $breach_history = $this->breach_history->store($request->all());
+        Mail::to($breach_history->renter->email)->send(new RuleViolateMail($breach_history->renter->name, $breach_history->breach->name, $request->violated_at, $remain_allowed_number));
         return response([
             'status' => 200,
             'message' => 'Successfully add breach history',
@@ -73,87 +68,32 @@ class BreachHistoryController extends Controller
     }
 
     public function deleteBreachHistory($id) {
-        $breach_history = BreachHistory::find($id);
+        $breach_history = $this->breach_history->show($id);
         if(!$breach_history) {
             return response([
                 'message' => 'No record found',
                 'status' => 404,
             ]);
         }
-        else {
-            $breach_history->delete();
-            return response([
-                'status' => 200,
-                'message' => 'Successfully delete breach history',
-            ]);
-        }
+        $this->breach_history->delete($id);
+        return response([
+            'status' => 200,
+            'message' => 'Successfully delete breach history',
+        ]);
     }
 
     public function calculateTotalNumberBreachMade() {
-        $all_breaches = Breach::all();
-        $breach_totals = array();
-        foreach ($all_breaches as $breach) {
-            $breach_total = new stdClass();
-            $breach_total->name = $breach->name;
-            $breach_total->total = BreachHistory::where('breach_id', $breach->id)->count();
-            array_push($breach_totals, $breach_total);
-        }
+        // $all_breaches = Breach::all();
+        // $breach_totals = array();
+        // foreach ($all_breaches as $breach) {
+        //     $breach_total = new stdClass();
+        //     $breach_total->name = $breach->name;
+        //     $breach_total->total = BreachHistory::where('breach_id', $breach->id)->count();
+        //     array_push($breach_totals, $breach_total);
+        // }
         return response([
             'status' => 200,
             'breachTotals' => $breach_totals,
-        ]);
-    }
-
-    public function getRenterTotalNumberBreachMade() {
-        $all_renters = User::where('role_id', Role::where('name', Role::ROLE_RENTER)->value('id'))->get();
-        $renter_total = array();
-        foreach($all_renters as $renter) {
-            $item = new stdClass();
-            $item->renter_id = $renter->id;
-            $item->renter_name = $renter->name;
-            $item->total = BreachHistory::where('renter_id', $renter->id)->count();
-            array_push($renter_total, $item);
-        }
-        return response([
-            'status' => 200,
-            'renterTotal' => $renter_total,
-        ]);
-    }
-
-    public function getRenterBreaches($id) {
-        $user = User::find($id);
-        if(!$user) {
-            return response([
-                'message' => 'No renter found',
-                'status' => 404,
-            ]);
-        }
-        $renter_breaches = BreachHistory::where('renter_id', $id)->get();
-        return response([
-            'status' => 200,
-            'renterBreaches' => $renter_breaches,
-        ]);
-    }
-
-    public function countRenterBreaches($id) {
-        $user = User::find($id);
-        if(!$user) {
-            return response([
-                'message' => 'No renter found',
-                'status' => 404,
-            ]);
-        }
-        $breaches_id = Breach::pluck('id')->toArray();
-        $breaches_total = array();
-        foreach($breaches_id as $breach_id) {
-            $item = new stdClass();
-            $item->breach_name = Breach::find($breach_id)->name;
-            $item->total = BreachHistory::where('renter_id', $id)->where('breach_id', $breach_id)->count();;
-            array_push($breaches_total, $item);
-        }
-        return response([
-            'status' => 200,
-            'breachesTotal' => $breaches_total,
         ]);
     }
 }

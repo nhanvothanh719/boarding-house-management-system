@@ -82,12 +82,13 @@ class RoomController extends Controller
             ]);
         }
         $room = $this->room->show($id);
+        $old_room_number = $room->number;
         if($room) {
             $this->room->update($request->all(), $id);
             if($request->hasFile('image')) {
                 //Update images
                 $files = $request->file('image');
-                $are_images_updated = CustomHelper::updateRoomImages($files, $id);
+                $are_images_updated = CustomHelper::updateRoomImages($files, $id, $old_room_number);
             }
             return response([
                 'message' => 'Successfully update room',
