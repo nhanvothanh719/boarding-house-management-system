@@ -12,7 +12,7 @@ class Service extends Model
     const OPTIONAL = 0;
     protected $guarded = ['id'];
 
-    public function renters() {
+    public function users() {
         return $this->hasMany(ServiceRegistration::class, 'service_id', 'id');
     }
 }

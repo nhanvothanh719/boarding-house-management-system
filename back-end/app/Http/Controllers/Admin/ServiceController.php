@@ -102,7 +102,7 @@ class ServiceController extends Controller
         }
         if($this->service->checkCompulsory($id)) {
             return response([
-                'message' => 'Cannot delete compulsory service, change to optional service first',
+                'message' => 'Cannot delete compulsory service',
                 'status' => 403,
             ]);
         }

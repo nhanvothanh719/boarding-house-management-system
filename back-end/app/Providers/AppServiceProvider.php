@@ -18,6 +18,8 @@ use App\Repositories\BreachHistory\BreachHistoryRepository;
 use App\Repositories\BreachHistory\BreachHistoryRepositoryInterface;
 use App\Repositories\Service\ServiceRepository;
 use App\Repositories\Service\ServiceRepositoryInterface;
+use App\Repositories\ServiceRegistration\ServiceRegistrationRepository;
+use App\Repositories\ServiceRegistration\ServiceRegistrationRepositoryInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -35,6 +37,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(BreachRepositoryInterface::class, BreachRepository::class);
         $this->app->bind(BreachHistoryRepositoryInterface::class, BreachHistoryRepository::class);
         $this->app->bind(ServiceRepositoryInterface::class, ServiceRepository::class);
+        $this->app->bind(ServiceRegistrationRepositoryInterface::class, ServiceRegistrationRepository::class);
     }
 
     /**

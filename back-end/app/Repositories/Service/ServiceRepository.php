@@ -54,7 +54,7 @@ class ServiceRepository implements ServiceRepositoryInterface
 
     public function checkUsed($id) {
         $is_used = false;
-        if(Service::where('id', $id)->withCount('renters')->get()[0]->renters_count > 0){
+        if(Service::where('id', $id)->withCount('users')->get()[0]->users_count > 0){
             $is_used = true;
         }
         return $is_used;

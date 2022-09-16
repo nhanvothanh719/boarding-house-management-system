@@ -2,22 +2,26 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\CustomHelper;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-use App\Models\Service;
-use App\Models\User;
-use App\Models\ServiceRegistration;
+use App\Repositories\ServiceRegistration\ServiceRegistrationRepositoryInterface;
 
 class ServiceRegistrationController extends Controller
 {
+    protected $service_registration;
+
+    public function __construct(ServiceRegistrationRepositoryInterface $service_registration) {
+        $this->service_registration = $service_registration;
+    }
+
     public function index() {
-        $all_registrations = ServiceRegistration::all();
         return response([
             'status' => 200,
-            'allRegistrations' => $all_registrations,
+            'allRegistrations' => $this->service_registration->all(),
         ]);
     }
 
@@ -33,58 +37,38 @@ class ServiceRegistrationController extends Controller
                 'status' => 422,
             ]);
         }
-        $user = User::find($request->user_id);
-        if(!$user) {
+        if(CustomHelper::isAdminRole($request->user_id)) {
             return response([
-                'message' => 'Cannot register due to no renter found',
+                'message' => 'Cannot register since the user is not renter',
                 'status' => 403,
             ]);
         }
-        $renter_check = $user->role_id === 1 ? true : false;
-        if(!$renter_check) {
-            return response([
-                'message' => 'Cannot register as the user is not the renter',
-                'status' => 403,
-            ]);
-        }
-        $check_existed_registration = ServiceRegistration::where([['user_id', $user->id],['service_id', $request->service_id]])->count();
-        if($check_existed_registration > 0) {
+        $check_existed_registration = $this->service_registration->checkExisted($request->user_id, $request->service_id);
+        if($check_existed_registration) {
             return response([
                 'message' => 'This renter has already registered to use this service',
                 'status' => 403,
             ]);
         }
-        try {
-            ServiceRegistration::create([
-                'user_id' => $request->user_id,
-                'service_id' => $request->service_id,
-            ]);
-            return response([
-                'message' => 'Successfully create new service registration',
-                'status' => 200,
-            ], 200);
-        }
-        catch(Exception $exception) {
-            return response([
-                'message' => $exception->getMessage(),
-                'status' => 400,
-            ], 400);
-        }
+        $service_registration = $this->service_registration->store($request->all());
+        return response([
+            'message' => 'Successfully create new service registration',
+            'status' => 200,
+        ]);
     }
 
     public function unregisterService($id) {
-        $registration = ServiceRegistration::find($id);
-        if($registration) {
-            $registration->delete();
-            return response([
-                'status' => 200,
-                'message' => 'Successfully remove registration',
-            ]);
-        } else {
+        $registration = $this->service_registration->show($id);
+        if(!$registration) {
             return response([
                 'message' => 'No registration found',
                 'status' => 404,
             ]);
         }
+        $this->service_registration->delete($id);
+        return response([
+            'status' => 200,
+            'message' => 'Successfully remove service registration',
+        ]);
     }
 }
