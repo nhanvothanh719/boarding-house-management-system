@@ -8,9 +8,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 use App\Models\User;
-use App\Models\Announcement;
 
 use App\Jobs\SendAnnouncementMail;
+
 use App\Mail\AnnouncementMail;
 
 class AnnouncementController extends Controller
@@ -27,15 +27,11 @@ class AnnouncementController extends Controller
                 'status' => 422,
             ]);
         }
-        $announcement = Announcement::create([
-            'title' => $request->title,
-            'content' => $request->content,
-        ]);
         $renters_id = $request->all_id;
         //Send email
         foreach ($renters_id as $renter_id) {
             $renter = User::find($renter_id);
-            $announcementMail = new AnnouncementMail($announcement->title, $announcement->content);
+            $announcementMail = new AnnouncementMail($request->title, $request->content);
             $sendAnnouncementEmailJob = new SendAnnouncementMail($renter, $announcementMail);
             dispatch($sendAnnouncementEmailJob); //Push(Add) this job into queue
         }
