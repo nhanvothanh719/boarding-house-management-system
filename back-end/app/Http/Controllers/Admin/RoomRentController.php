@@ -2,11 +2,31 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\CustomHelper;
 use App\Http\Controllers\Controller;
+
 use Illuminate\Http\Request;
+
+use Illuminate\Support\Facades\Validator;
+
+use App\Repositories\RoomRent\RoomRentRepositoryInterface;
 
 class RoomRentController extends Controller
 {
+    protected $rent;
+
+    public function __construct(RoomRentRepositoryInterface $rent) {
+        $this->rent = $rent;
+    }
+
+    public function index() {
+        $all_room_rents = $this->rent->all();
+        return response([
+            'status' => 200,
+            'allRoomRents' => $all_room_rents,
+        ]);
+    }
+
     public function rentRoom(Request $request) {
         $validator = Validator::make($request->all(), [
             'renter_id' => 'unique:room_rents|exists:users,id',
@@ -19,54 +39,21 @@ class RoomRentController extends Controller
                 'status' => 422, //Unprocessable entity
             ]);
         }
-        $user = User::find($request->renter_id);
-        if(!$user) 
+        if(CustomHelper::isAdminRole($request->renter_id))
         {
             return response([
-                'message' => 'No user found',
-                'status' => 404,
-            ]);
-        }
-        if(CustomHelper::isAdminRole($user))
-        {
-            return response([
-                'message' => 'The user with ID is not renter',
+                'message' => 'The user is not renter',
                 'status' => 403,
             ]);
         }
-        $room_id = $request->room_id;
-        $room = Room::find($room_id);
-        $room_status_id = $room->status_id;
-        switch($room_status_id) {
-            case(CustomHelper::getRoomStatusId(RoomStatus::STATUS_FULL)):
-                return response([
-                    'message' => 'Cannot add renter since the room is full',
-                    'status' => 403,
-                ]);
-                break;
-            case(CustomHelper::getRoomStatusId(RoomStatus::STATUS_EMPTY)):
-                $rent = new RoomRent;
-                $rent->room_id = $room_id;
-                $rent->renter_id = $request->renter_id;
-                $rent->save();
-                $room->status_id = CustomHelper::getRoomStatusId(RoomStatus::STATUS_OCCUPIED);
-                $room->save();
-                break;
-            case(CustomHelper::getRoomStatusId(RoomStatus::STATUS_OCCUPIED)):
-                if(CustomHelper::checkSameGender($user->gender, $room_id) == false) {
-                    return response([
-                        'message' => 'Cannot add this renter due to his/her gender',
-                        'status' => 403,
-                    ]);
-                }
-                $rent = new RoomRent;
-                $rent->room_id = $room_id;
-                $rent->renter_id = $request->renter_id;
-                $rent->save();
-                $room->status_id = CustomHelper::getRoomStatusId(RoomStatus::STATUS_FULL);
-                $room->save();
-                break;
+        $is_updated = CustomHelper::updateIncreaseRoomStatus($request->room_id, $request->renter_id);
+        if(!$is_updated) {
+            return response([
+                'message' => 'Cannot add renter due to room status or gender of renter',
+                'status' => 403,
+            ]);
         }
+        $rent = $this->rent->store($request->all());
         return response([
             'message' => 'Add renter successfully',
             'status' => 200,
@@ -74,35 +61,18 @@ class RoomRentController extends Controller
     }
 
     public function cancelRentRoom($id) {
-        $rent = RoomRent::find($id);
+        $rent = $this->rent->show($id);
         if(!$rent) {
             return response([
                 'message' => 'The room rent has not been made',
                 'status' => 404,
             ]);
         }
-        $room = Room::find($rent->room_id);
-        switch($room->status_id) {
-            case(CustomHelper::getRoomStatusId(RoomStatus::STATUS_FULL)):
-                $room->status_id = CustomHelper::getRoomStatusId(RoomStatus::STATUS_OCCUPIED);
-                break;
-            case(CustomHelper::getRoomStatusId(RoomStatus::STATUS_OCCUPIED)):
-                $room->status_id = CustomHelper::getRoomStatusId(RoomStatus::STATUS_EMPTY);
-                break;
-        }
-        $room->save();
-        $rent->delete();
+        $is_updated = CustomHelper::updateDecreaseRoomStatus($rent->room_id);
+        $this->rent->delete($id);
         return response([
             'message' => 'Remove rent successfully',
             'status' => 200,
-        ]);
-    }
-
-    public function getAllRoomRents() {
-        $all_room_rents = RoomRent::all();
-        return response([
-            'status' => 200,
-            'allRoomRents' => $all_room_rents,
         ]);
     }
 }

@@ -73,6 +73,8 @@ export default function AddRoomRentModal(props) {
             displayModal();
           }, 1000);
         } else if (response.data.status === 403) {
+          setSelectedRenter(null);
+          setSelectedRoom(null);
           swal("Warning", response.data.message, "warning");
         }
       })

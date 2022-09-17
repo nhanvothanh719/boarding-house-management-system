@@ -85,11 +85,9 @@ export default function RentRoom() {
     axios.delete(AppUrl.CancelRentRoom + id).then((response) => {
       if (response.data.status === 200) {
         swal("Success", response.data.message, "success");
-        //Delete table row
-        selectedRentSection.closest("tr").remove();
+        setRoomRentsChange(true);
       } else if (response.data.status === 404) {
         swal("Fail", response.data.message, "error");
-        selectedRentSection.innerText = "Delete";
       }
     });
   };

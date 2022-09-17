@@ -117,7 +117,7 @@ class UserRepository implements UserRepositoryInterface
     }
 
     public function allRenters() {
-        return User::where('role_id', CustomHelper::getRenterRoleId())->get();
+        return User::where('role_id', User::ROLE_RENTER)->get();
     }
 
     public function getBreachHistories($id) {

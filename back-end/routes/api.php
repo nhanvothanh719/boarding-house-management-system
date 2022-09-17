@@ -1,5 +1,4 @@
 <?php
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AuthController;
@@ -24,6 +23,7 @@ use App\Http\Controllers\Admin\BreachHistoryController;
 use App\Http\Controllers\Admin\RoomContractController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProblemController;
+use App\Http\Controllers\Admin\RoomRentController;
 use App\Http\Controllers\Renter\RenterRoomController;
 use App\Http\Controllers\Renter\RenterInvoiceController;
 use App\Http\Controllers\Renter\RenterProblemController;
@@ -105,9 +105,11 @@ Route::middleware('auth:api')->group(function(){
         Route::get('/edit-room/{id}', [RoomController::class, 'editRoom']);
         Route::post('/update-room/{id}', [RoomController::class, 'updateRoom']);
         Route::delete('/delete-room/{id}', [RoomController::class, 'deleteRoom']);
-        Route::get('/all-room_rents', [RoomController::class, 'getAllRoomRents']);
-        Route::post('/rent-room', [RoomController::class, 'rentRoom']);
-        Route::delete('/cancel-rent-room/{id}', [RoomController::class, 'cancelRentRoom']);
+
+        //Room rent
+        Route::get('/all-room_rents', [RoomRentController::class, 'index']);
+        Route::post('/rent-room', [RoomRentController::class, 'rentRoom']);
+        Route::delete('/cancel-rent-room/{id}', [RoomRentController::class, 'cancelRentRoom']);
 
         //Renter
         Route::get('/all-renters', [RenterController::class, 'index']);

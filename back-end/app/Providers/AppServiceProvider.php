@@ -28,6 +28,8 @@ use App\Repositories\RoomContract\RoomContractRepository;
 use App\Repositories\RoomContract\RoomContractRepositoryInterface;
 use App\Repositories\RoomRentRegistration\RoomRentRegistrationRepository;
 use App\Repositories\RoomRentRegistration\RoomRentRegistrationRepositoryInterface;
+use App\Repositories\RoomRent\RoomRentRepository;
+use App\Repositories\RoomRent\RoomRentRepositoryInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -50,6 +52,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
         $this->app->bind(RoomContractRepositoryInterface::class, RoomContractRepository::class);
         $this->app->bind(RoomRentRegistrationRepositoryInterface::class, RoomRentRegistrationRepository::class);
+        $this->app->bind(RoomRentRepositoryInterface::class, RoomRentRepository::class);
     }
 
     /**
