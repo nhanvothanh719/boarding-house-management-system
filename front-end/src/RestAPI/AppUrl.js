@@ -57,6 +57,7 @@ class AppUrl {
   static UpdateService = this.BaseURL + "/update-service/";
   static DeleteService = this.BaseURL + "/delete-service/";
   static GetOptionalServices = this.BaseURL + "/all-optional-services";
+  static GetCompulsoryServices = this.BaseURL + "/all-compulsory-services";
   
   static ShowRegistrations = this.BaseURL + "/all-registrations";
   static RegisterService = this.BaseURL + "/register-service";
@@ -93,8 +94,7 @@ class AppUrl {
   static DeleteBreachHistory = this.BaseURL + "/delete-breach-history/";
 
   static GetTotalNumberBreachMade = this.BaseURL + "/get-total-number-breach-made";
-  static GetRenterTotalNumberBreachMade = this.BaseURL + "/get-renter-total-number-breach-made";
-  static GetRenterBreaches = this.BaseURL + "/get-all-renter-breaches/";
+  static GetRenterBreaches = this.BaseURL + "/get-renter-breaches/";
   static CountRenterBreaches = this.BaseURL + "/count-renter-breaches/";
 
   static ShowRoomContracts = this.BaseURL + "/all-room-contracts";

@@ -51,6 +51,13 @@ class ServiceController extends Controller
         ]);
     }
 
+    public function getCompulsoryServices() {
+        return response([
+            'status' => 200,
+            'allCompulsoryServices' => $this->service->allCompulsoryServices(),
+        ]);
+    }
+
     public function editService($id) {
         $service = $this->service->show($id);
         if($service) {

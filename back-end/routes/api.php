@@ -72,7 +72,7 @@ Route::middleware('auth:api')->group(function(){
         Route::get('/get-renter-room-contract', [RenterRoomContractController::class, 'getRenterRoomContract']);
 
         //
-        Route::get('/get-all-renter-breaches', [RenterBreachHistoryController::class, 'getRenterBreaches']);
+        Route::get('/get-renter-breaches', [RenterBreachHistoryController::class, 'getRenterBreaches']);
         Route::get('/get-breach-details/{id}', [RenterBreachHistoryController::class, 'getBreachDetails']);
         Route::get('/get-renter-breach-histories/{id}', [RenterBreachHistoryController::class, 'getRenterBreachHistories']);
     });
@@ -115,6 +115,8 @@ Route::middleware('auth:api')->group(function(){
 
         //Renter
         Route::get('/all-renters', [RenterController::class, 'index']);
+        Route::get('/get-renter-breaches/{id}', [RenterController::class, 'getRenterBreachHistories']);
+        Route::get('/all-registered_services/{id}', [RenterController::class, 'getRegisteredServices']);
 
         //Motorbike
         Route::get('/all-motorbikes', [MotorbikeController::class, 'index']);
@@ -132,6 +134,7 @@ Route::middleware('auth:api')->group(function(){
         Route::put('/update-service/{id}', [ServiceController::class, 'updateService']);
         Route::delete('/delete-service/{id}', [ServiceController::class, 'deleteService']);
         Route::get('/all-optional-services', [ServiceController::class, 'getOptionalServices']);
+        Route::get('/all-compulsory-services', [ServiceController::class, 'getCompulsoryServices']);
         
         Route::get('/all-registrations', [ServiceRegistrationController::class, 'index']);
         Route::post('/register-service', [ServiceRegistrationController::class, 'registerService']);
@@ -143,7 +146,6 @@ Route::middleware('auth:api')->group(function(){
         Route::get('/edit-invoice/{id}', [InvoiceController::class, 'editInvoice']);
         Route::put('/update-invoice/{id}', [InvoiceController::class, 'updateInvoice']);
         Route::delete('/delete-invoice/{id}', [InvoiceController::class, 'deleteInvoice']);
-        Route::get('/all-registered_services/{id}', [InvoiceController::class, 'getRegisteredServices']);
         Route::post('/create-temporary-invoice/{id}', [InvoiceController::class, 'createTemporaryInvoice']);
         Route::post('/update-service-quantity/{service_id}/{value}',[InvoiceController::class, 'updateServiceQuantity']);
         Route::get('/send-invoice/{id}', [InvoiceController::class, 'sendInvoice']);
@@ -173,8 +175,6 @@ Route::middleware('auth:api')->group(function(){
         Route::post('/store-breach-history', [BreachHistoryController::class, 'storeBreachHistory']);
         Route::delete('/delete-breach-history/{id}', [BreachHistoryController::class, 'deleteBreachHistory']);
 
-        Route::get('/get-renter-total-number-breach-made', [BreachHistoryController::class, 'getRenterTotalNumberBreachMade']);
-        Route::get('/get-all-renter-breaches/{id}', [BreachHistoryController::class, 'getRenterBreaches']);
         Route::get('/count-renter-breaches/{id}', [BreachHistoryController::class, 'countRenterBreaches']);
 
         //Room contract

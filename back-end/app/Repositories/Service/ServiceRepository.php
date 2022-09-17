@@ -48,10 +48,6 @@ class ServiceRepository implements ServiceRepositoryInterface
         return $this::show($id)->delete();
     }
 
-    public function allOptionalServices() {
-        return Service::where('is_compulsory', 0)->get();
-    }
-
     public function checkUsed($id) {
         $is_used = false;
         if(Service::where('id', $id)->withCount('users')->get()[0]->users_count > 0){
@@ -66,5 +62,19 @@ class ServiceRepository implements ServiceRepositoryInterface
             $is_compulsory = true;
         }
         return $is_compulsory;
+    }
+
+    public function allOptionalServices() {
+        return Service::where('is_compulsory', Service::OPTIONAL)->get();
+    }
+
+    public function allCompulsoryServices() {
+        $compulsory_services = array();
+        $all_services = Service::where('is_compulsory', Service::COMPULSORY)->get();
+        foreach($all_services as $service) {
+            $service->quantity = 0;
+            array_push($compulsory_services, $service);
+        }
+        return $compulsory_services;
     }
 }

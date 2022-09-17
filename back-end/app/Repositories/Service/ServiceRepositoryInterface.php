@@ -12,4 +12,6 @@ interface ServiceRepositoryInterface
 
     public function checkUsed($id);
     public function checkCompulsory($id);
+    public function allOptionalServices();
+    public function allCompulsoryServices();
 }

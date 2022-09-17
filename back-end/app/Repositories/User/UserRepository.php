@@ -6,9 +6,7 @@ use App\Helpers\CustomHelper;
 use App\Models\User;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 class UserRepository implements UserRepositoryInterface
 {
@@ -116,5 +114,22 @@ class UserRepository implements UserRepositoryInterface
         }
         $user->save();
         return $message;
+    }
+
+    public function allRenters() {
+        return User::where('role_id', CustomHelper::getRenterRoleId())->get();
+    }
+
+    public function getBreachHistories($id) {
+        return $this::show($id)->breach_histories;
+    }
+
+    public function getRegisteredServices($id) {
+        $registered_services = array();
+        foreach($this::show($id)->service_registrations as $registration) {
+            $registration->service->quantity = 0;
+            array_push($registered_services, $registration->service);
+        }
+        return $registered_services;
     }
 }

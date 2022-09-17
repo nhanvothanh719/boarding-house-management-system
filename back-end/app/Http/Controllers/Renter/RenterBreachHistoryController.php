@@ -48,7 +48,7 @@ class RenterBreachHistoryController extends Controller
             $item->description = $breach->description;
             $item->allowed_violate_number = $breach->allowed_violate_number;
             $item->severity_level = $breach->severity_level;
-            $item->total = BreachHistory::where('renter_id', $user->id)->where('breach_id', $breach_id)->count();;
+            $item->total = BreachHistory::where('renter_id', $user->id)->where('breach_id', $breach_id)->count();
             array_push($renter_breach_details, $item);
         }
         return response([

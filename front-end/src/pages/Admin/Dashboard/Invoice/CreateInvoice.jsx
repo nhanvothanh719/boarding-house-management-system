@@ -18,6 +18,7 @@ export default function CreateInvoice({ match }) {
   const renterId = match.params.renterID;
   var totalPrice = 0;
 
+  const [compulsoryServices, setCompulsoryServices] = useState([]);
   const [registeredServices, setRegisteredServices] = useState([]);
   const [errors, setErrors] = useState([]);
   const [input, setInput] = useState({
@@ -37,6 +38,11 @@ export default function CreateInvoice({ match }) {
         setRegisteredServices(response.data.allServices);
       }
     });
+    axios.get(AppUrl.GetCompulsoryServices).then((response) => {
+      if (response.data.status === 200) {
+        setCompulsoryServices(response.data.allCompulsoryServices);
+      }
+    });
   }, [renterId]);
 
   const handleInput = (e) => {
@@ -44,9 +50,19 @@ export default function CreateInvoice({ match }) {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
 
-  const handleServiceAmountInput = (service_id, e, index) => {
+  const handleRegisteredServiceAmountInput = (service_id, e, index) => {
     setRegisteredServices((registeredServices) =>
       registeredServices.map((service) =>
+        service_id === service.id
+          ? { ...service, quantity: e.target.value }
+          : service
+      )
+    );
+  };
+
+  const handleCompulsoryServiceAmountInput = (service_id, e, index) => {
+    setCompulsoryServices((compulsoryServices) =>
+    compulsoryServices.map((service) =>
         service_id === service.id
           ? { ...service, quantity: e.target.value }
           : service
@@ -57,7 +73,7 @@ export default function CreateInvoice({ match }) {
   const createInvoice = (e) => {
     e.preventDefault();
     const invoice = {
-      services: registeredServices,
+      services: ([...registeredServices, ...compulsoryServices]),
       discount: input.discount,
       effective_from: moment(effectiveFromDate).utc().format("YYYY-MM-DD"),
       valid_until: moment(validUntilDate).utc().format("YYYY-MM-DD"),
@@ -98,7 +114,7 @@ export default function CreateInvoice({ match }) {
             <div className="roomTopLeft">
               <div className="leftContainer">
                 <div className="roomInfoTop">
-                  <span className="customFieldTitle">Used Services</span>
+                  <span className="customFieldTitle">Optional Services</span>
                 </div>
                 <table
                   class="table table-striped"
@@ -170,7 +186,7 @@ export default function CreateInvoice({ match }) {
                               defaultValue={0}
                               value={item.quantity}
                               onChange={(e) =>
-                                handleServiceAmountInput(item.id, e, index)
+                                handleRegisteredServiceAmountInput(item.id, e, index)
                               }
                             />
                           </td>
@@ -191,6 +207,102 @@ export default function CreateInvoice({ match }) {
                     })}
                   </tbody>
                 </table>
+
+                <div className="roomInfoTop">
+                  <span className="customFieldTitle">Compulsory Services</span>
+                </div>
+                <table
+                  class="table table-striped"
+                  style={{ marginTop: "20px" }}
+                >
+                  <thead
+                    style={{
+                      backgroundColor: "#1C4E80",
+                      color: "white",
+                      textAlign: "center",
+                    }}
+                  >
+                    <tr>
+                      <th
+                        scope="col"
+                        style={{
+                          border: "1px solid",
+                          borderCollapse: "collapse",
+                        }}
+                      >
+                        Service name
+                      </th>
+                      <th
+                        scope="col"
+                        style={{
+                          border: "1px solid",
+                          borderCollapse: "collapse",
+                        }}
+                      >
+                        Amount
+                      </th>
+                      <th
+                        scope="col"
+                        style={{
+                          border: "1px solid",
+                          borderCollapse: "collapse",
+                        }}
+                      >
+                        Subtotal
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {compulsoryServices.map((item, index) => {
+                      totalPrice += item.unit_price * Math.abs(item.quantity);
+                      return (
+                        <tr key={index}>
+                          <td
+                            width="50%"
+                            style={{
+                              border: "1px solid",
+                              borderCollapse: "collapse",
+                            }}
+                          >
+                            {item.name}
+                          </td>
+                          <td
+                            width="25%"
+                            style={{
+                              border: "1px solid",
+                              borderCollapse: "collapse",
+                            }}
+                          >
+                            <input
+                              type="number"
+                              className="form-control"
+                              name="quantity"
+                              min={0}
+                              defaultValue={0}
+                              value={item.quantity}
+                              onChange={(e) =>
+                                handleCompulsoryServiceAmountInput(item.id, e, index)
+                              }
+                            />
+                          </td>
+                          <td
+                            width="25%"
+                            style={{
+                              border: "1px solid",
+                              borderCollapse: "collapse",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            {(
+                              item.unit_price * Math.abs(item.quantity)
+                            ).toFixed(2)}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+                
                 <small className="text-danger">{errors.quantity}</small>
                 <div
                   className="roomInfoItem"
