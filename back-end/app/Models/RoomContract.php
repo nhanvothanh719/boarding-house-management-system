@@ -11,6 +11,8 @@ class RoomContract extends Model
     protected $guarded = ['id'];
     protected $with = ['renter'];
 
+    public const ROOM_CONTRACT_PUBLIC_FOLDER = 'uploaded/room_contract'; 
+
     public function renter() {
         return $this->belongsTo(User::class,'renter_id','id');
     }
