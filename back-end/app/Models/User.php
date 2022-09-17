@@ -18,6 +18,9 @@ class User extends Authenticatable
     const LOCKED_ACCOUNT = 1;
     const AVAILABLE_ACCOUNT = 0;
 
+    const ROLE_ADMIN = 0;
+    const ROLE_RENTER = 1;
+
     public const AVATAR_PUBLIC_FOLDER = 'uploaded/avatar/'; 
 
     /**
@@ -55,13 +58,6 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
-    protected $with = ['role'];
-    //protected $with = ['role', 'room'];
-    
-    public function role() {
-        return $this->belongsTo(Role::class,'role_id','id');
-    }
 
     public function room() {
         return $this->hasOneThrough(Room::class, RoomRent::class, 'renter_id', 'id', 'id', 'id');

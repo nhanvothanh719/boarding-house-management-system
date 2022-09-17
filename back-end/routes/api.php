@@ -105,13 +105,9 @@ Route::middleware('auth:api')->group(function(){
         Route::get('/edit-room/{id}', [RoomController::class, 'editRoom']);
         Route::post('/update-room/{id}', [RoomController::class, 'updateRoom']);
         Route::delete('/delete-room/{id}', [RoomController::class, 'deleteRoom']);
-        Route::get('/all-statuses', [RoomController::class, 'getAllRoomStatuses']);
         Route::get('/all-room_rents', [RoomController::class, 'getAllRoomRents']);
         Route::post('/rent-room', [RoomController::class, 'rentRoom']);
         Route::delete('/cancel-rent-room/{id}', [RoomController::class, 'cancelRentRoom']);
-
-        //Role
-        Route::get('/all-roles', [RoleController::class, 'index']);
 
         //Renter
         Route::get('/all-renters', [RenterController::class, 'index']);

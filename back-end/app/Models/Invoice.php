@@ -9,6 +9,11 @@ class Invoice extends Model
 {
     const STATUS_PAID = 1;
     const STATUS_NOT_PAID = 0;
+
+    const PAYMENT_METHOD_CASH = 1;
+    const PAYMENT_METHOD_RAZORPAY = 2;
+    const PAYMENT_METHOD_PAYPAL = 3;
+
     use HasFactory;
     protected $guarded = ['id'];
     protected $with = ['renter', 'services', 'payment'];

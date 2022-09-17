@@ -34,14 +34,11 @@ class AppUrl {
   static EditRoom = this.BaseURL + "/edit-room/";
   static UpdateRoom = this.BaseURL + "/update-room/";
   static DeleteRoom = this.BaseURL + "/delete-room/";
-  static GetAllStatuses = this.BaseURL + "/all-statuses";
   static GetAllRoomRents = this.BaseURL + "/all-room_rents";
   static RentRoom = this.BaseURL + "/rent-room";
   static CancelRentRoom = this.BaseURL + "/cancel-rent-room/";
 
   static ShowRenters = this.BaseURL + "/all-renters";
-
-  static ShowRoles = this.BaseURL + "/all-roles";
 
   static ShowMotorbikes = this.BaseURL + "/all-motorbikes";
   static StoreMotorbike = this.BaseURL + "/store-motorbike";

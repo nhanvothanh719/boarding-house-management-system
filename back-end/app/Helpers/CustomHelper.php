@@ -5,16 +5,14 @@ use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 
-use App\Models\RoomStatus;
-use App\Models\Role;
 use App\Models\User;
 use App\Models\Room;
 use App\Models\RoomRent;
 use App\Models\RoomImages;
 use App\Models\Balance;
+use App\Models\Breach;
 
 use App\Mail\InvoicePaidMail;
-use App\Models\Breach;
 
 class CustomHelper{
 
@@ -109,40 +107,12 @@ class CustomHelper{
 
     //-->
 
-    //<!-- Room status
-
-    public static function getRoomStatusId($room_status) {
-        return RoomStatus::where('name', $room_status)->value('id');
-    }
-
-    public static function getEmptyStatusId() {
-        return RoomStatus::where('name', RoomStatus::STATUS_EMPTY)->value('id');
-    }
-
-    public static function getOccupiedStatusId() {
-        return RoomStatus::where('name', RoomStatus::STATUS_OCCUPIED)->value('id');
-    }
-
-    public static function getFullStatusId() {
-        return RoomStatus::where('name', RoomStatus::STATUS_FULL)->value('id');
-    }
-
-    //-->
-
     //<!-- Role
-
-    public static function getAdminRoleId() {
-        return Role::where('name', Role::ROLE_ADMIN)->value('id');
-    }
-
-    public static function getRenterRoleId() {
-        return Role::where('name', Role::ROLE_RENTER)->value('id');
-    }
 
     public static function isAdminRole($id) {
         $isAdmin = false;
         $user = User::find($id);
-        if($user->role_id == CustomHelper::getAdminRoleId()) {
+        if($user->role_id == User::ROLE_ADMIN) {
             $isAdmin = true;
         }
         return $isAdmin;

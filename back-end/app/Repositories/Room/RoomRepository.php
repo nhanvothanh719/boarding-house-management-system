@@ -2,8 +2,6 @@
 
 namespace App\Repositories\Room;
 
-use App\Helpers\CustomHelper;
-
 use App\Models\Room;
 
 class RoomRepository implements RoomRepositoryInterface
@@ -18,14 +16,13 @@ class RoomRepository implements RoomRepositoryInterface
     }
 
     public function getAvailableRooms() {
-        $full_status_id = CustomHelper::getEmptyStatusId();
-        return Room::where('status_id', '!=', $full_status_id)->get();
+        return Room::where('status_id', '!=', Room::STATUS_EMPTY)->get();
     }
 
     public function store($data) {
         $room = new Room;
         $room->number = $data['number'];
-        $room->status_id = CustomHelper::getEmptyStatusId();
+        $room->status_id = Room::STATUS_EMPTY;
         $room->category_id = $data['category_id'];
         $room->description = $data['description'];
         $room->area = $data['area'];
@@ -51,14 +48,16 @@ class RoomRepository implements RoomRepositoryInterface
 
     public function delete($id) {
         $room = $this::show($id);
+        $room->images()->delete();
+        $room->rents()->delete();
+        $room->rent_requests()->delete();
         return $room->delete();
     }
 
     public function checkUsed($id) {
         $is_used = true;
         $room_status_id = Room::where('id', $id)->value('status_id');
-        $empty_status_id = CustomHelper::getEmptyStatusId();
-        if($room_status_id == $empty_status_id) {
+        if($room_status_id == Room::STATUS_EMPTY) {
             $is_used = false;
         }
         return $is_used;

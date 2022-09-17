@@ -12,7 +12,6 @@ import AppUrl from "../../../RestAPI/AppUrl";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
 export default function CreateUserModal(props) {
-  const [rolesList, setRolesList] = useState([]);
   const [avatar, setAvatar] = useState([]);
   const [errors, setErrors] = useState([]);
   const [input, setInput] = useState({
@@ -35,11 +34,6 @@ export default function CreateUserModal(props) {
         document.getElementById("createUserModal")
       );
       model.show();
-      axios.get(AppUrl.ShowRoles).then((response) => {
-        if (response.data.status === 200) {
-          setRolesList(response.data.allRoles);
-        }
-      });
     }
   }, [props.isShown]);
 
@@ -286,20 +280,18 @@ export default function CreateUserModal(props) {
                       value={selectRole}
                       required
                     >
-                      {rolesList.map((role) => {
-                        return (
-                          <MenuItem
-                            value={role.id}
-                            key={role.id}
-                            style={{
-                              display: "block",
-                              padding: "5px 30px 5px",
-                            }}
-                          >
-                            {role.name}
-                          </MenuItem>
-                        );
-                      })}
+                      <MenuItem
+                        value={0}
+                        style={{ display: "block", padding: "5px 30px 5px" }}
+                      >
+                        Admin
+                      </MenuItem>
+                      <MenuItem
+                        value={1}
+                        style={{ display: "block", padding: "5px 30px 5px" }}
+                      >
+                        Renter
+                      </MenuItem>
                     </Select>
                   </FormControl>
                 </div>

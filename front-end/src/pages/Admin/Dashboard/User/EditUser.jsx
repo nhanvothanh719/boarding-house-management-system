@@ -59,11 +59,6 @@ export default function EditUser({ match }) {
   const [userInfoChange, setUserInfoChange] = useState(false);
 
   useEffect(() => {
-    axios.get(AppUrl.ShowRoles).then((response) => {
-      if (response.data.status === 200) {
-        setRoles(response.data.allRoles);
-      }
-    });
     axios.get(AppUrl.EditUser + userId).then((response) => {
       if (response.data.status === 200) {
         setInput(response.data.user);
@@ -304,14 +299,14 @@ export default function EditUser({ match }) {
                 value={input.role_id}
               >
                 <option selected>--- Select role ---</option>
-                {roles.map((role) => {
-                  return (
-                    <option value={role.id} key={role.id}>
+                <option value="0" key="0">
                       {" "}
-                      {role.name}{" "}
+                      Admin{" "}
                     </option>
-                  );
-                })}
+                    <option value="1" key="1">
+                      {" "}
+                      Renter{" "}
+                    </option>
               </select>
                 </div>
                 <small className="text-danger">{errors.permanent_address}</small>

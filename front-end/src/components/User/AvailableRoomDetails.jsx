@@ -27,6 +27,7 @@ function AvailableRoomDetails(props) {
   });
   const [loading, setLoading] = useState(true);
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const status = ["Empty", "Occupied", "Full"];
 
   useEffect(() => {
     axios.get(AppUrl.AvailableRoomDetails + roomID).then((response) => {
@@ -97,7 +98,7 @@ function AvailableRoomDetails(props) {
                       <BeenhereIcon className="mr-3" />
                       Status :
                     </span>{" "}
-                    {room.status.name}{" "}
+                    {status[room.status_id - 1]}{" "}
                   </li>
                   <li className="spaceDisplay">
                     <span>
