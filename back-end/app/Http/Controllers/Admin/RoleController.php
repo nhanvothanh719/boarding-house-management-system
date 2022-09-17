@@ -4,17 +4,20 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 
-use Illuminate\Http\Request;
-
-use App\Models\Role;
+use App\Repositories\Role\RoleRepositoryInterface;
 
 class RoleController extends Controller
 {
+    protected $role;
+
+    public function __construct(RoleRepositoryInterface $role) {
+        $this->role = $role;
+    }
+
     public function index() {
-        $all_roles = Role::all();
         return response([
             'status' => 200,
-            'allRoles' => $all_roles,
+            'allRoles' => $this->role->all(),
         ]);
     }
 }
