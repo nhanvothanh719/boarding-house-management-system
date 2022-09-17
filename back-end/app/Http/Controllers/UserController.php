@@ -5,32 +5,138 @@ namespace App\Http\Controllers;
 use App\Helpers\CustomHelper;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Mail; 
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
-use App\Models\User;
+use App\Mail\FirstPasswordChangeMail;
+
+use App\Repositories\User\UserRepositoryInterface;
 
 class UserController extends Controller
 {
-    public const avatar_public_folder = 'uploaded/avatar/';
+    protected $user;
+
+    public function __construct(UserRepositoryInterface $user) {
+        $this->user = $user;
+    }
 
     public function index() {
-        $all_users = User::all();
         return response([
             'status' => 200,
-            'allUsers' => $all_users,
+            'allUsers' => $this->user->all(),
         ]);
     }
 
     public function getUserProfile() {
         return response([
             'status' => 200,
-            'currentUser' => Auth::user(),
+            'currentUser' => $this->user->getCurrentUser(),
+        ]);
+    }
+
+    public function storeUser(Request $request) {
+        $before_appropriate_time = date('Y-m-d', strtotime(' -18 year'));
+        $after_appropriate_time = date('Y-m-d', strtotime(' -40 year'));
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:50|regex:/(^[a-zA-Z][a-zA-Z\s]{0,20}[a-zA-Z]$)/',
+            'email' => 'required|unique:users|max:50|email',
+            'gender' => 'required',
+            'date_of_birth' => ['required','date', 'before_or_equal:'.$before_appropriate_time, 'after_or_equal:'.$after_appropriate_time],
+            'id_card_number' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|size:10|unique:users',
+            'phone_number' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|size:10|unique:users',
+            'occupation' => 'required|max:100|regex:/^[a-zA-Z ]+$/',
+            'permanent_address' => 'required',
+            'profile_picture' => 'image',
+            'role_id' => 'required|exists:roles,id',
+        ]);
+        if($validator->fails()) 
+        {
+            return response([
+                'errors' => $validator->messages(),
+                'status' => 422,
+            ]);
+        }
+        $user_avatar = null;
+        $generated_password = Str::random(10);
+        if($request->hasFile('profile_picture')) {
+            $user_avatar = $request->file('profile_picture');
+        }
+        $user = $this->user->store($request->all(), $generated_password, $user_avatar);
+        $token = rand(10, 1000);
+        DB::table('password_resets')->insert([
+            'email' => $user->email,
+            'token' => $token,
+        ]); 
+        Mail::to($user->email)->send(new FirstPasswordChangeMail($generated_password, $token));
+        return response([
+            'message' => 'Create new user successfully',
+            'status' => 200,
+        ]);
+    }
+
+    public function editUser($id) {
+        $user = $this->user->show($id);
+        if($user) {
+            //Change to user
+            return response([
+                'status' => 200,
+                'user' => $user,
+            ]);
+        }
+        else {
+            return response([
+                'status' => 404,
+                'message' => 'No user found',
+            ]);
+        }
+    }
+
+    public function updateUser(Request $request, $id) {
+        $before_appropriate_time = date('Y-m-d', strtotime(' -18 year'));
+        $after_appropriate_time = date('Y-m-d', strtotime(' -40 year'));
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:50|string|regex:/(^[a-zA-Z][a-zA-Z\s]{0,20}[a-zA-Z]$)/',
+            'email' => 'required|max:50|string|email|unique:users,email,'.$id,
+            'gender' => 'required',
+            'date_of_birth' => ['required','date', 'before_or_equal:'.$before_appropriate_time, 'after_or_equal:'.$after_appropriate_time],
+            'id_card_number' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|size:10|unique:users,id_card_number,'.$id,
+            'phone_number' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|size:10|unique:users,phone_number,'.$id,
+            'occupation' => 'required|max:100|string|regex:/(^[a-zA-Z][a-zA-Z\s]{0,20}[a-zA-Z]$)/',
+            'permanent_address' => 'required',
+            'profile_picture' => 'image',
+            'role_id' => 'required|exists:roles,id',
+        ]);
+        if($validator->fails())
+        {
+            return response([
+                'errors' => $validator->messages(),
+                'status' => 422, //Unprocessable entity
+            ]);
+        }
+        $user = $this->user->show($id);
+        if($user) {
+            $user = $this->user->update($request->all(), $user->id);
+            $user = $this->user->updateImportantInfo($request->all(), $user->id);
+            if($request->hasFile('profile_picture')) {
+                $new_avatar = $request->file('profile_picture');
+                $old_avatar = $user->profile_picture;
+                $this->user->updateUserAvatar($user->id, $old_avatar, $new_avatar);
+            }
+            return response([
+                'message' => 'Successfully update user',
+                'status' => 200,
+            ]);
+        }
+        return response([
+            'message' => 'No user found',
+            'status' => 404,
         ]);
     }
 
     public function updateUserProfile(Request $request) {
-        $user = Auth::user();
+        $user = $this->user->getCurrentUser();
         $before_appropriate_time = date('Y-m-d', strtotime(' -18 year'));
         $after_appropriate_time = date('Y-m-d', strtotime(' -40 year'));
         $validator = Validator::make($request->all(), [
@@ -48,13 +154,7 @@ class UserController extends Controller
                 'status' => 422, //Unprocessable entity
             ]);
         }
-        $user->name = $request->input('name');
-        $user->email = $request->input('email');
-        $user->date_of_birth = $request->input('date_of_birth');
-        $user->phone_number = $request->input('phone_number');
-        $user->occupation = $request->input('occupation');
-        $user->permanent_address = $request->input('permanent_address');
-        $user->save();
+        $user = $this->user->update($request->all(), $user->id);
         return response([
             'message' => 'Successfully update user profile',
             'status' => 200,
@@ -72,17 +172,52 @@ class UserController extends Controller
                 'status' => 422, //Unprocessable entity
             ]);
         }
-        $user = Auth::user();
+        $user = $this->user->getCurrentUser();
         if($request->hasFile('profile_picture')) {
             $new_avatar = $request->file('profile_picture');
             $old_avatar = $user->profile_picture;
-            $upload_folder = UserController::avatar_public_folder;
-            $user->profile_picture = CustomHelper::updateImage($old_avatar, $new_avatar, $upload_folder);
+            $this->user->updateUserAvatar($user->id, $old_avatar, $new_avatar);
         }
-        $user->save();
         return response([
             'message' => 'Successfully update avatar',
             'status' => 200,
         ]);
     }
+
+    public function deleteUser($id) {
+        $user = $this->user->show($id);
+        if($user) {
+            $this->user->delete($id);
+            return response([
+                'status' => 200,
+                'message' => 'Successfully delete user',
+            ]);
+        }
+        return response([
+            'message' => 'No user found',
+            'status' => 404,
+        ]);
+    }
+
+    public function lockUserAccount($id) {
+        $user = $this->user->show($id);
+        if(!$user) {
+            return response([
+                'message' => 'No user found',
+                'status' => 404,
+            ]);
+        }
+        if(CustomHelper::isAdminRole($user->id)){
+            return response([
+                'message' => 'Cannot lock account of user with admin role',
+                'status' => 403,
+            ]);
+        }
+        $is_locked = $this->user->lockUserAccount($id);
+        return response([
+            'message' => $is_locked,
+            'status' => 200,
+        ]);
+    }
+
 }

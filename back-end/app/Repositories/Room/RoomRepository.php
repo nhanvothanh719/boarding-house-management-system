@@ -5,7 +5,6 @@ namespace App\Repositories\Room;
 use App\Helpers\CustomHelper;
 
 use App\Models\Room;
-use App\Models\RoomStatus;
 
 class RoomRepository implements RoomRepositoryInterface
 {

@@ -11,7 +11,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import AppUrl from "../../../RestAPI/AppUrl";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
-export default function CreateRenterModal(props) {
+export default function CreateUserModal(props) {
   const [rolesList, setRolesList] = useState([]);
   const [avatar, setAvatar] = useState([]);
   const [errors, setErrors] = useState([]);
@@ -32,7 +32,7 @@ export default function CreateRenterModal(props) {
   useEffect(() => {
     if (props.isShown === true) {
       var model = new window.bootstrap.Modal(
-        document.getElementById("createRenterModal")
+        document.getElementById("createUserModal")
       );
       model.show();
       axios.get(AppUrl.ShowRoles).then((response) => {
@@ -45,7 +45,7 @@ export default function CreateRenterModal(props) {
 
   const displayModal = () => {
     var model = new window.bootstrap.Modal(
-      document.getElementById("createRenterModal")
+      document.getElementById("createUserModal")
     );
     model.show();
   };
@@ -59,11 +59,11 @@ export default function CreateRenterModal(props) {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
 
-  const handleRenterAvatar = (e) => {
+  const handleUserAvatar = (e) => {
     setAvatar({ image: e.target.files[0] });
   };
 
-  const addRenter = (e) => {
+  const addUser = (e) => {
     e.preventDefault();
     props.setLoaderClass("");
     props.setDisplayComponentsClass("d-none");
@@ -84,7 +84,7 @@ export default function CreateRenterModal(props) {
       renter.append("profile_picture", avatar.image);
     }
     axios
-      .post(AppUrl.StoreRenter, renter)
+      .post(AppUrl.StoreUser, renter)
       .then((response) => {
         if (response.data.status === 200) {
           setErrors([]);
@@ -122,7 +122,7 @@ export default function CreateRenterModal(props) {
     <Fragment>
       <div
         class="modal fade"
-        id="createRenterModal"
+        id="createUserModal"
         tabindex="-1"
         aria-hidden="true"
         onClick={closeModal}
@@ -243,7 +243,7 @@ export default function CreateRenterModal(props) {
                     type="file"
                     className="form-control"
                     name="profile_picture"
-                    onChange={handleRenterAvatar}
+                    onChange={handleUserAvatar}
                     accept="image/*"
                   />
                 </div>
@@ -311,7 +311,7 @@ export default function CreateRenterModal(props) {
               type="button"
               class="btn btn-primary"
               data-dismiss="modal"
-              onClick={addRenter}
+              onClick={addUser}
             >
               Create
             </button>

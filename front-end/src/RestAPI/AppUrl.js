@@ -15,7 +15,13 @@ class AppUrl {
 
   static CheckAdminAuthenticated = this.BaseURL + "/check-admin-authenticated";
   static CheckRenterAuthenticated = this.BaseURL + "/check-renter-authenticated";
+
   static GetAllUsers = this.BaseURL + "/all-users";
+  static StoreUser = this.BaseURL + "/store-user";
+  static EditUser = this.BaseURL + "/edit-user/";
+  static UpdateUser = this.BaseURL + "/update-user/";
+  static DeleteUser = this.BaseURL + "/delete-user/";
+  static LockUserAccount = this.BaseURL + "/lock-user-account/";
 
   static StoreCategory = this.BaseURL + "/store-category";
   static ShowCategories = this.BaseURL + "/all-categories";
@@ -34,11 +40,6 @@ class AppUrl {
   static CancelRentRoom = this.BaseURL + "/cancel-rent-room/";
 
   static ShowRenters = this.BaseURL + "/all-renters";
-  static StoreRenter = this.BaseURL + "/store-renter";
-  static EditRenter = this.BaseURL + "/edit-renter/";
-  static UpdateRenter = this.BaseURL + "/update-renter/";
-  static DeleteRenter = this.BaseURL + "/delete-renter/";
-  static LockRenterAccount = this.BaseURL + "/lock-renter-account/";
 
   static ShowRoles = this.BaseURL + "/all-roles";
 

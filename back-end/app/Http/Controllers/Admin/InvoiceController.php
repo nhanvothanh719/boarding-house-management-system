@@ -7,15 +7,12 @@ use App\Http\Controllers\Controller;
 use App\Helpers\CustomHelper;
 
 use \stdClass;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 use App\Models\User;
 use App\Models\Room;
-use App\Models\Balance;
 use App\Models\Service;
 use App\Models\Invoice;
 use App\Models\RoomRent;
@@ -26,52 +23,20 @@ use App\Models\ServiceRegistration;
 
 use App\Mail\InvoiceSendMail;
 
+use App\Repositories\Invoice\InvoiceRepositoryInterface;
+
 class InvoiceController extends Controller
 {
-    public function index() {
-        $all_invoices = Invoice::all();
-        return response([
-            'status' => 200,
-            'allInvoices' => $all_invoices,
-        ]);
+    protected $invoice;
+
+    public function __construct(InvoiceRepositoryInterface $invoice) {
+        $this->invoice = $invoice;
     }
 
-    public function getRegisteredServices($id) {
-        $user = User::find($id);
-        if(!$user) {
-            return response([
-                'message' => 'No user found',
-                'status' => 404,
-            ]);
-        }
-        $all_services = array();
-        $registered_services_id = ServiceRegistration::where('user_id', $id)->pluck('service_id');
-        foreach($registered_services_id as $service_id) {
-            $service = Service::find($service_id);
-            $item = new stdClass();
-            $item->id = $service_id;
-            $item->name = $service->name;
-            $item->is_compulsory = $service->is_compulsory;
-            $item->unit = $service->unit;
-            $item->unit_price = $service->unit_price;
-            $item->quantity = 0;
-            array_push($all_services, $item);
-        }
-        $compulsory_services_id = Service::where('is_compulsory', Service::COMPULSORY)->pluck('id');
-        foreach($compulsory_services_id as $service_id) {
-            $service = Service::find($service_id);
-            $item = new stdClass();
-            $item->id = $service_id;
-            $item->name = $service->name;
-            $item->is_compulsory = $service->is_compulsory;
-            $item->unit = $service->unit;
-            $item->unit_price = $service->unit_price;
-            $item->quantity = 0;
-            array_push($all_services, $item);
-        }
+    public function index() {
         return response([
             'status' => 200,
-            'allServices' => $all_services,
+            'allInvoices' => $this->invoice->all(),
         ]);
     }
 

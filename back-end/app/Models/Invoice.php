@@ -12,6 +12,7 @@ class Invoice extends Model
     use HasFactory;
     protected $guarded = ['id'];
     protected $with = ['renter', 'services', 'payment'];
+    
     public function renter()
     {
         return $this->belongsTo(User::class,'renter_id','id');
@@ -19,7 +20,6 @@ class Invoice extends Model
 
     public function services()
     {
-        //return $this->belongsToMany(Invoice::class, 'invoice_details', 'service_id', 'invoice_id');
         return $this->hasMany(InvoiceDetail::class, 'invoice_id', 'id');
     }
 
@@ -27,5 +27,4 @@ class Invoice extends Model
     {
         return $this->hasOne(PaymentHistory::class, 'invoice_id', 'id');
     }
-
 }

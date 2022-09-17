@@ -15,7 +15,7 @@ import ConfirmLoading from "../../../../components/Loading/ConfirmLoading";
 import AppUrl from "../../../../RestAPI/AppUrl";
 import DefaultAvatar from "../../../../assets/images/default_avatar.png";
 import "../../../../assets/css/Dashboard/datatable.css";
-import CreateRenterModal from "../../../../components/Modals/Renter/CreateRenterModal";
+import CreateUserModal from "../../../../components/Modals/User/CreateUserModal";
 import WebPageTitle from "../../../../components/WebPageTitle/WebPageTitle";
 
 export default function UsersList() {
@@ -25,15 +25,15 @@ export default function UsersList() {
   const [loading, setLoading] = useState(true);
   const [loaderClass, setLoaderClass] = useState("d-none");
   const [displayComponentsClass, setDisplayComponentsClass] = useState("");
-  const [rentersList, setRentersList] = useState([]);
-  const [rentersListChange, setRentersListChange] = useState(false);
+  const [usersList, setUsersList] = useState([]);
+  const [usersListChange, setUsersListChange] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [currentUserId, setCurrentUserId] = useState(0);
 
   useEffect(() => {
     axios.get(AppUrl.GetAllUsers).then((response) => {
       if (response.data.status === 200) {
-        setRentersList(response.data.allUsers);
+        setUsersList(response.data.allUsers);
       }
     });
     axios.get(AppUrl.GetUserProfile).then((response) => {
@@ -42,16 +42,16 @@ export default function UsersList() {
       }
     });
     setLoading(false);
-    if (rentersListChange) {
-      setRentersListChange(false);
+    if (usersListChange) {
+      setUsersListChange(false);
     }
-  }, [rentersListChange]);
+  }, [usersListChange]);
 
-  const lockRenterAccount = (id) => {
-    axios.put(AppUrl.LockRenterAccount + id).then((response) => {
+  const lockUserAccount = (id) => {
+    axios.put(AppUrl.LockUserAccount + id).then((response) => {
       if (response.data.status === 200) {
         swal("Success", response.data.message, "success");
-        setRentersListChange(true);
+        setUsersListChange(true);
       } else if (response.data.status === 403) {
         swal("Warning", response.data.message, "warning");
       }
@@ -63,7 +63,7 @@ export default function UsersList() {
   };
 
   const updateModalStatus = (status) => {
-    setRentersListChange(status);
+    setUsersListChange(status);
   };
 
   var columns = [];
@@ -147,7 +147,7 @@ export default function UsersList() {
           </div>
           <MaterialTable
             columns={columns}
-            data={rentersList}
+            data={usersList}
             title={<span className="customDatatableTitle">All users</span>}
             options={{
               searchAutoFocus: false,
@@ -172,33 +172,33 @@ export default function UsersList() {
               (user) => ({
                 icon: user.is_locked ? LockOpenIcon : LockOutlinedIcon,
                 tooltip: user.is_locked ? "Unlock account" : "Lock account",
-                onClick: (event, user) => lockRenterAccount(user.id),
+                onClick: (event, user) => lockUserAccount(user.id),
                 disabled: user.role_id === 0,
               }),
-              (renter) => ({
+              (user) => ({
                 icon: FolderSharedIcon,
-                tooltip: "Renter details",
-                onClick: (event, renter) =>
+                tooltip: "User details",
+                onClick: (event, user) =>
                   history.push(
-                    `/admin/view-all-invoices-of-renter/${renter.id}`
+                    `/admin/view-all-invoices-of-renter/${user.id}`
                   ),
-                disabled: renter.role_id === 0,
+                disabled: user.role_id === 0,
               }),
             ]}
             editable={{
               isDeletable: (rowData) => rowData.id !== currentUserId,
-              onRowDelete: (thisRenter) =>
+              onRowDelete: (thisUser) =>
                 new Promise((resolve, reject) => {
                   setTimeout(() => {
-                    const selectedRenter = [...details];
-                    const index = thisRenter.tableData.id;
-                    selectedRenter.splice(index, 1); //1: only one record
+                    const selectedUser = [...details];
+                    const index = thisUser.tableData.id;
+                    selectedUser.splice(index, 1); //1: only one record
                     axios
-                      .delete(AppUrl.DeleteRenter + thisRenter.id)
+                      .delete(AppUrl.DeleteUser + thisUser.id)
                       .then((response) => {
                         if (response.data.status === 200) {
                           swal("Success", response.data.message, "success");
-                          setRentersListChange(true);
+                          setUsersListChange(true);
                         } else if (response.data.status === 404) {
                           swal("Error", response.data.message, "error");
                         }
@@ -209,7 +209,7 @@ export default function UsersList() {
             }}
           />
         </div>
-        <CreateRenterModal
+        <CreateUserModal
           isShown={showCreateModal}
           setLoaderClass={setLoaderClass}
           setDisplayComponentsClass={setDisplayComponentsClass}

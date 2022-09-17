@@ -16,10 +16,14 @@ use App\Repositories\Breach\BreachRepository;
 use App\Repositories\Breach\BreachRepositoryInterface;
 use App\Repositories\BreachHistory\BreachHistoryRepository;
 use App\Repositories\BreachHistory\BreachHistoryRepositoryInterface;
+use App\Repositories\Invoice\InvoiceRepository;
+use App\Repositories\Invoice\InvoiceRepositoryInterface;
 use App\Repositories\Service\ServiceRepository;
 use App\Repositories\Service\ServiceRepositoryInterface;
 use App\Repositories\ServiceRegistration\ServiceRegistrationRepository;
 use App\Repositories\ServiceRegistration\ServiceRegistrationRepositoryInterface;
+use App\Repositories\User\UserRepository;
+use App\Repositories\User\UserRepositoryInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -38,6 +42,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(BreachHistoryRepositoryInterface::class, BreachHistoryRepository::class);
         $this->app->bind(ServiceRepositoryInterface::class, ServiceRepository::class);
         $this->app->bind(ServiceRegistrationRepositoryInterface::class, ServiceRegistrationRepository::class);
+        $this->app->bind(InvoiceRepositoryInterface::class, InvoiceRepository::class);
+        $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
     }
 
     /**

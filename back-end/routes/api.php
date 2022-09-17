@@ -24,8 +24,6 @@ use App\Http\Controllers\Admin\BreachHistoryController;
 use App\Http\Controllers\Admin\RoomContractController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProblemController;
-
-
 use App\Http\Controllers\Renter\RenterRoomController;
 use App\Http\Controllers\Renter\RenterInvoiceController;
 use App\Http\Controllers\Renter\RenterProblemController;
@@ -81,10 +79,18 @@ Route::middleware('auth:api')->group(function(){
 
     //Dashboard
     Route::middleware('isAdmin')->group(function(){
+
         Route::get('/check-admin-authenticated', function() {
             return response(['message' => 'Login successfully. You are the admin', 'status' => 200]);
-        });    
+        });
+
+        //User
         Route::get('/all-users', [UserController::class, 'index']);
+        Route::post('/store-user', [UserController::class, 'storeUser']);
+        Route::get('/edit-user/{id}', [UserController::class, 'editUser']);
+        Route::post('/update-user/{id}', [UserController::class, 'updateUser']);
+        Route::delete('/delete-user/{id}', [UserController::class, 'deleteUser']);
+        Route::put('/lock-user-account/{id}', [UserController::class, 'lockUserAccount']);
 
         //Category
         Route::get('/all-categories', [RoomCategoryController::class, 'index']);
@@ -104,16 +110,11 @@ Route::middleware('auth:api')->group(function(){
         Route::post('/rent-room', [RoomController::class, 'rentRoom']);
         Route::delete('/cancel-rent-room/{id}', [RoomController::class, 'cancelRentRoom']);
 
-        //Renter
-        Route::get('/all-renters', [RenterController::class, 'index']);
-        Route::post('/store-renter', [RenterController::class, 'storeRenter']);
-        Route::get('/edit-renter/{id}', [RenterController::class, 'editRenter']);
-        Route::post('/update-renter/{id}', [RenterController::class, 'updateRenter']);
-        Route::delete('/delete-renter/{id}', [RenterController::class, 'deleteRenter']);
-        Route::put('/lock-renter-account/{id}', [RenterController::class, 'lockRenterAccount']);
-
         //Role
         Route::get('/all-roles', [RoleController::class, 'index']);
+
+        //Renter
+        Route::get('/all-renters', [RenterController::class, 'index']);
 
         //Motorbike
         Route::get('/all-motorbikes', [MotorbikeController::class, 'index']);
