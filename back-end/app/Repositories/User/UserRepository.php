@@ -91,6 +91,29 @@ class UserRepository implements UserRepositoryInterface
         return Auth::user();
     }
 
+    public function checkCanLogin($data) {
+        return Auth::attempt($data);
+    }
+
+    public function checkLockedAccount($id) {
+        return $this::show($id)->is_locked == User::LOCKED_ACCOUNT ? true : false;
+    }
+
+    public function checkAdmin($id) {
+        return $this::show($id)->role_id == User::ROLE_ADMIN ? true : false;
+    }
+
+    public function generateTokenWithScope($id)
+    {
+        //Generate access token with scope
+        if($this::checkAdmin($id)) {
+            //createToken method accepts the name of the token as its first argument and an optional array of scopes
+            //$user->createToken('admin_auth_token',['use-dashboard'])->accessToken;
+            return $this::show($id)->createToken('admin_auth_token',['use-dashboard'])->accessToken;
+        }
+        return $this::show($id)->createToken('auth_token',['perform-renter-work'])->accessToken;
+    }
+
     public function storeUserAvatar($id, $avatar) {
         $user = $this::show($id);
         $upload_folder = User::AVATAR_PUBLIC_FOLDER;

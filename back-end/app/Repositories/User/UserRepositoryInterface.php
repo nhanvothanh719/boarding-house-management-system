@@ -10,6 +10,11 @@ interface UserRepositoryInterface
     public function update(array $data, $id);
     public function delete($id);
 
+    public function checkCanLogin($data);
+    public function checkLockedAccount($id);
+    public function checkAdmin($id);
+    public function generateTokenWithScope($id);
+
     public function getCurrentUser();
     public function storeUserAvatar($id, $avatar);
     public function updateUserAvatar($id, $old_avatar, $new_avatar);
