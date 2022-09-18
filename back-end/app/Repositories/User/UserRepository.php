@@ -4,6 +4,9 @@ namespace App\Repositories\User;
 
 use App\Helpers\CustomHelper;
 use App\Models\User;
+use App\Jobs\SendAnnouncementMail;
+use App\Mail\AnnouncementMail;
+
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -131,5 +134,22 @@ class UserRepository implements UserRepositoryInterface
             array_push($registered_services, $registration->service);
         }
         return $registered_services;
+    }
+
+    public function sendAnnouncement($data) {
+        $is_sent = true;
+        $renters_id = $data['all_id'];
+        //Send email
+        foreach ($renters_id as $renter_id) {
+            $renter = User::find($renter_id);
+            if(!$renter) {
+                $is_sent = false;
+                return $is_sent;
+            }
+            $announcementMail = new AnnouncementMail($data['title'], $data['content']);
+            $sendAnnouncementEmailJob = new SendAnnouncementMail($renter, $announcementMail);
+            dispatch($sendAnnouncementEmailJob); //Push(Add) this job into queue
+        }
+        return $is_sent;
     }
 }

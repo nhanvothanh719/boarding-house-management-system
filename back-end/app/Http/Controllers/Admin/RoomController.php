@@ -8,8 +8,6 @@ use App\Helpers\CustomHelper;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Input;
 
 use App\Repositories\Room\RoomRepositoryInterface;
 
@@ -123,12 +121,4 @@ class RoomController extends Controller
             'status' => 404,
         ]);
     }
-
-    // public function getAllRoomStatuses() {
-    //     $all_statuses = RoomStatus::all();
-    //     return response([
-    //         'status' => 200,
-    //         'allStatuses' => $all_statuses,
-    //     ]);
-    // }
 }

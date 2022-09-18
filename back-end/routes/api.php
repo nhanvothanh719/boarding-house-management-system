@@ -11,12 +11,10 @@ use App\Http\Controllers\RoomRentRegistrationController;
 use App\Http\Controllers\Admin\RoomController;
 use App\Http\Controllers\Admin\RoomCategoryController;
 use App\Http\Controllers\Admin\RenterController;
-use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\MotorbikeController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\ServiceRegistrationController;
 use App\Http\Controllers\Admin\InvoiceController;
-use App\Http\Controllers\Admin\AnnouncementController;
 use App\Http\Controllers\Admin\BalanceController;
 use App\Http\Controllers\Admin\BreachController;
 use App\Http\Controllers\Admin\BreachHistoryController;
@@ -24,6 +22,7 @@ use App\Http\Controllers\Admin\RoomContractController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProblemController;
 use App\Http\Controllers\Admin\RoomRentController;
+
 use App\Http\Controllers\Renter\RenterRoomController;
 use App\Http\Controllers\Renter\RenterInvoiceController;
 use App\Http\Controllers\Renter\RenterProblemController;
@@ -115,6 +114,7 @@ Route::middleware('auth:api')->group(function(){
         Route::get('/all-renters', [RenterController::class, 'index']);
         Route::get('/get-renter-breaches/{id}', [RenterController::class, 'getRenterBreachHistories']);
         Route::get('/all-registered_services/{id}', [RenterController::class, 'getRegisteredServices']);
+        Route::post('send-announcement', [RenterController::class, 'sendAnnouncement']);
 
         //Motorbike
         Route::get('/all-motorbikes', [MotorbikeController::class, 'index']);
@@ -148,9 +148,6 @@ Route::middleware('auth:api')->group(function(){
         Route::post('/update-service-quantity/{service_id}/{value}',[InvoiceController::class, 'updateServiceQuantity']);
         Route::get('/send-invoice/{id}', [InvoiceController::class, 'sendInvoice']);
         Route::get('/get-renter-invoices/{id}', [InvoiceController::class, 'getRenterInvoices']);
-
-        //Announcement
-        Route::post('send-announcement', [AnnouncementController::class, 'sendAnnouncement']);
 
         //Balance
         Route::get('/get-balance', [BalanceController::class, 'index']);

@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+
 use App\Repositories\User\UserRepositoryInterface;
 
 class RenterController extends Controller
@@ -46,6 +49,31 @@ class RenterController extends Controller
         return response([
             'status' => 200,
             'allServices' => $this->renter->getRegisteredServices($id),
+        ]);
+    }
+
+    public function sendAnnouncement(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'title' => 'required',
+            'content' => 'required',
+        ]);
+        if($validator->fails())
+        {
+            return response([
+                'errors' => $validator->messages(),
+                'status' => 422,
+            ]);
+        }
+        $is_sent = $this->renter->sendAnnouncement($request->all());
+        if(!$is_sent) {
+            return response([
+                'message' => "Fail to send announcement due to no renter found",
+                'status' => 404,
+            ]);
+        }
+        return response([
+            'message' => "Successfully send announcement",
+            'status' => 200,
         ]);
     }
 

@@ -14,4 +14,6 @@ class RoomRentRegistrationController extends Controller
     public function __construct(RoomRentRegistrationRepositoryInterface $request) {
         $this->request = $request;
     }
+
+    
 }
