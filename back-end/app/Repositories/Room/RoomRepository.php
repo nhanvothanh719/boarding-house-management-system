@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Room;
 
+use App\Helpers\CustomHelper;
 use App\Models\Room;
 
 class RoomRepository implements RoomRepositoryInterface
@@ -61,5 +62,43 @@ class RoomRepository implements RoomRepositoryInterface
             $is_used = false;
         }
         return $is_used;
+    }
+
+    public static function updateIncreaseRoomStatus($id) {
+        $is_updated = true;
+        $room = Room::find($id);
+        $room_status_id = $room->status_id;
+        switch($room_status_id) {
+            case(Room::STATUS_FULL):
+                $is_updated = false;
+                break;
+            case(Room::STATUS_OCCUPIED):
+                $room->status_id = Room::STATUS_FULL;
+                break;
+            case(Room::STATUS_EMPTY):
+                $room->status_id = Room::STATUS_OCCUPIED;
+                break;
+        }
+        $room->save();
+        return $is_updated;
+    }
+
+    public static function updateDecreaseRoomStatus($id) {
+        $is_updated = true;
+        $room = Room::find($id);
+        $room_status_id = $room->status_id;
+        switch($room_status_id) {
+            case(Room::STATUS_FULL):
+                $room->status_id = Room::STATUS_OCCUPIED;
+                break;
+            case(Room::STATUS_OCCUPIED):
+                $room->status_id = Room::STATUS_EMPTY;
+                break;
+            case(Room::STATUS_EMPTY):
+                $is_updated = false;
+                break;
+        }
+        $room->save();
+        return $is_updated;
     }
 }

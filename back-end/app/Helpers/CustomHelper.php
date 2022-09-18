@@ -123,7 +123,7 @@ class CustomHelper{
 
     //<!-- Gender
 
-    public static function checkSameGender($renter_gender, $room_id) {
+    public function checkSameGender($renter_gender, $room_id) {
         $room_partner_id = RoomRent::where('room_id', $room_id)->value('renter_id');
         $room_partner_gender = User::find($room_partner_id)->gender;
         if(!$room_partner_gender) {
@@ -179,55 +179,5 @@ class CustomHelper{
     }
 
     //-->
-
-    //<!-- Room status
-
-    public static function updateIncreaseRoomStatus($room_id, $renter_id) {
-        $is_updated = true;
-        $room = Room::find($room_id);
-        $renter_gender = User::find($renter_id)->gender;
-        $room_status_id = $room->status_id;
-        switch($room_status_id) {
-            case(Room::STATUS_FULL):
-                $is_updated = false;
-                break;
-            case(Room::STATUS_OCCUPIED):
-                if(CustomHelper::checkSameGender($renter_gender, $room_id) == false) {
-                    $is_updated = false;
-                    break;
-                }
-                $room->status_id = Room::STATUS_FULL;
-                $room->save();
-                break;
-            case(Room::STATUS_EMPTY):
-                $room->status_id = Room::STATUS_OCCUPIED;
-                $room->save();
-                break;
-        }
-        return $is_updated;
-    }
-
-    public static function updateDecreaseRoomStatus($id) {
-        $is_updated = true;
-        $room = Room::find($id);
-        $room_status_id = $room->status_id;
-        switch($room_status_id) {
-            case(Room::STATUS_FULL):
-                $room->status_id = Room::STATUS_OCCUPIED;
-                $room->save();
-                break;
-            case(Room::STATUS_OCCUPIED):
-                $room->status_id = Room::STATUS_EMPTY;
-                $room->save();
-                break;
-            case(Room::STATUS_EMPTY):
-                $is_updated = false;
-                break;
-        }
-        return $is_updated;
-    }
-
-    //-->
-    
 }
 ?>

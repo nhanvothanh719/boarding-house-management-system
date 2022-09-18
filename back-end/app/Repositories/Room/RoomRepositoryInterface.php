@@ -12,4 +12,6 @@ interface RoomRepositoryInterface
 
     public function getAvailableRooms();
     public function checkUsed($id);
+    public static function updateIncreaseRoomStatus($id);
+    public static function updateDecreaseRoomStatus($id);
 }
