@@ -34,6 +34,8 @@ use App\Repositories\RoomRent\RoomRentRepository;
 use App\Repositories\RoomRent\RoomRentRepositoryInterface;
 use App\Repositories\PaymentHistory\PaymentHistoryRepository;
 use App\Repositories\PaymentHistory\PaymentHistoryRepositoryInterface;
+use App\Repositories\Problem\ProblemRepository;
+use App\Repositories\Problem\ProblemRepositoryInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -59,6 +61,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(RoomRentRegistrationRepositoryInterface::class, RoomRentRegistrationRepository::class);
         $this->app->bind(RoomRentRepositoryInterface::class, RoomRentRepository::class);
         $this->app->bind(PaymentHistoryRepositoryInterface::class, PaymentHistoryRepository::class);
+        $this->app->bind(ProblemRepositoryInterface::class, ProblemRepository::class);
     }
 
     /**

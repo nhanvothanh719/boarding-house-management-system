@@ -4,20 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 
-use App\Helpers\CustomHelper;
-
-use Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail; 
-use Illuminate\Support\Str;
-
-use App\Models\User;
-use App\Models\Motorbike;
 
 use App\Repositories\Motorbike\MotorbikeRepositoryInterface;
 

@@ -8,16 +8,21 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
-use App\Models\Problem;
+use App\Repositories\Problem\ProblemRepositoryInterface;
 
 class RenterProblemController extends Controller
 {
+    protected $problem;
+
+    public function __construct(ProblemRepositoryInterface $problem) {
+        $this->problem = $problem;
+    }
+
     public function getRenterProblems() {
         $current_renter_id = Auth::user()->id;
-        $all_problems = Problem::where('renter_id', $current_renter_id)->get();
         return response([
             "status" => 200,
-            "allProblems" => $all_problems, 
+            "allProblems" => $this->problem->findByRenterId($current_renter_id), 
         ]);
     }
 
@@ -34,13 +39,7 @@ class RenterProblemController extends Controller
                 'status' => 422,
             ]);
         }
-            $problem = Problem::create([
-                'renter_id' => Auth::user()->id,
-                'title' => $request->title,
-                'description' => $request->description,
-                'severity_level' => $request->severity_level,
-                'status' => Problem::STATUS_PENDING,
-            ]); 
+            $problem = $this->problem->store($request->all());
             return response([
                 'status' => 200,
                 'message' => 'Successfully send created problem to admin',
@@ -48,7 +47,7 @@ class RenterProblemController extends Controller
     }
 
     public function getProblemDetails($id) {
-        $problem = Problem::find($id);
+        $problem = $this->problem->show($id);
         if(!$problem) {
             return response([
                 'message' => 'No problem found',
@@ -74,17 +73,14 @@ class RenterProblemController extends Controller
                 'status' => 422,
             ]);
         }
-        $problem = Problem::find($id);
+        $problem = $this->problem->show($id);
         if(!$problem) {
             return response([
                 'message' => 'No problem found',
                 'status' => 404,
             ]);
         }
-        $problem->title = $request->title;
-        $problem->description = $request->description;
-        $problem->severity_level = $request->severity_level;
-        $problem->save();
+        $this->problem->update($request->all(), $id);
         return response([
             'message' => 'Update problem successfully',
             'status' => 200,
@@ -92,14 +88,20 @@ class RenterProblemController extends Controller
     }
 
     public function deleteProblem($id) {
-        $problem = Problem::find($id);
+        $problem = $this->problem->show($id);
         if(!$problem) {
             return response([
                 'message' => 'No problem found',
                 'status' => 404,
             ]);
         }
-        $problem->delete();
+        if($problem->renter->id != Auth::user()->id) {
+            return response([
+                'message' => 'Cannot delete problem belonging to others',
+                'status' => 403,
+            ]);
+        }
+        $this->problem->delete($id);
         return response([
             'status' => 200,
             'message' => 'Successfully delete problem',

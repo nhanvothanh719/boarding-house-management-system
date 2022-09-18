@@ -2,8 +2,6 @@
 
 namespace App\Repositories\PaymentHistory;
 
-use App\Helpers\CustomHelper;
-
 use App\Models\PaymentHistory;
 
 class PaymentHistoryRepository implements PaymentHistoryRepositoryInterface 
