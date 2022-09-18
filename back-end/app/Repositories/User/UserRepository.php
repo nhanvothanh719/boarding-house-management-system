@@ -119,6 +119,18 @@ class UserRepository implements UserRepositoryInterface
         return $message;
     }
 
+    public function updatePassword($email, $new_hash_password) {
+        $user_id = User::where('email', $email)->value('id');
+        $user = $this::show($user_id);
+        $user->password = $new_hash_password;
+        $user->save();
+    }
+
+    public function checkAdminRole($id)
+    {
+        return $this->show($id)->role_id == User::ROLE_ADMIN ? true : false;
+    }
+
     public function allRenters() {
         return User::where('role_id', User::ROLE_RENTER)->get();
     }
@@ -151,12 +163,5 @@ class UserRepository implements UserRepositoryInterface
             dispatch($sendAnnouncementEmailJob); //Push(Add) this job into queue
         }
         return $is_sent;
-    }
-
-    public function updatePassword($email, $new_hash_password) {
-        $user_id = User::where('email', $email)->value('id');
-        $user = $this::show($user_id);
-        $user->password = $new_hash_password;
-        $user->save();
     }
 }

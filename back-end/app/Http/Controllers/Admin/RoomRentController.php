@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Helpers\CustomHelper;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
@@ -39,14 +38,7 @@ class RoomRentController extends Controller
                 'status' => 422, //Unprocessable entity
             ]);
         }
-        if(CustomHelper::isAdminRole($request->renter_id))
-        {
-            return response([
-                'message' => 'The user is not renter',
-                'status' => 403,
-            ]);
-        }
-        $is_updated = CustomHelper::updateIncreaseRoomStatus($request->room_id, $request->renter_id);
+        $is_updated = $this->rent->accept($request->all());
         if(!$is_updated) {
             return response([
                 'message' => 'Cannot add renter due to room status or gender of renter',
@@ -68,8 +60,13 @@ class RoomRentController extends Controller
                 'status' => 404,
             ]);
         }
-        $is_updated = CustomHelper::updateDecreaseRoomStatus($rent->room_id);
-        $this->rent->delete($id);
+        $is_updated = $this->rent->cancel($id);
+        if(!$is_updated) {
+            return response([
+                'message' => 'Cannot remove renter',
+                'status' => 403,
+            ]);
+        }
         return response([
             'message' => 'Remove rent successfully',
             'status' => 200,

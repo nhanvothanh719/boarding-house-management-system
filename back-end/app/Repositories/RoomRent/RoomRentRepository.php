@@ -5,9 +5,20 @@ namespace App\Repositories\RoomRent;
 use App\Helpers\CustomHelper;
 
 use App\Models\RoomRent;
+use App\Repositories\Room\RoomRepositoryInterface;
+use App\Repositories\User\UserRepositoryInterface;
 
 class RoomRentRepository implements RoomRentRepositoryInterface
 {
+    private $room_repository;
+    private $user_repository;
+
+    public function __construct(RoomRepositoryInterface $room_repository, UserRepositoryInterface $user_repository) 
+    {
+        $this->room_repository = $room_repository;
+        $this->user_repository = $user_repository;
+    }
+
     public function all() {
         return RoomRent::all();
     }
@@ -24,11 +35,51 @@ class RoomRentRepository implements RoomRentRepositoryInterface
         return $rent;
     }
 
-    public function update($data, $id) {
-
+    public function accept($data) {
+        $is_updated = true;
+        if($this->user_repository->checkAdminRole($data['renter_id'])) {
+            $is_updated = false;
+            return $is_updated;
+        }
+        $renter_gender = $this->user_repository->show($data['renter_id'])->gender;
+        $is_accepted = $this->room_repository->updateIncreaseRoomStatus($data['room_id']);
+            if(!$is_accepted) {
+                $is_updated = false;
+                return $is_updated;
+            } 
+            //Check same gender
+            $is_accepted = $this::checkGender($data['room_id'], $renter_gender);
+            if(!$is_accepted) {
+                $is_updated = false;
+                return $is_updated;
+            } 
+        return $is_updated;
     }
 
-    public function delete($id) {
-        $this::show($id)->delete();
+    public function cancel($id) {
+        $room_rent = $this::show($id);
+        $is_updated = $this->room_repository->updateDecreaseRoomStatus($room_rent->room_id);
+        $room_rent->delete();
+        return $is_updated;
+    }
+
+    public function checkGender($room_id, $renter_gender) {
+        $is_same_gender = false;
+        $room = $this->room_repository->show($room_id);
+        $renter_in_room = $room->renters->first();
+        //Check renter in room
+        if(!$renter_in_room) {
+            //Check registered user
+            $partner = $room->rent_requests->first();
+            if(!$partner) {
+                $is_same_gender = true;
+            } else {
+                $is_same_gender = $partner->sender_gender == $renter_gender ? true : false;
+            }
+        } else {
+            $partner_gender = $renter_in_room->first()->gender;
+            $is_same_gender = $partner_gender == $renter_gender ? true : false;
+        }
+        return $is_same_gender;
     }
 }

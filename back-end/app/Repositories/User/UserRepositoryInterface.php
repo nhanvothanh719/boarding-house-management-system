@@ -16,6 +16,7 @@ interface UserRepositoryInterface
     public function lockUserAccount($id);
     public function updateImportantInfo($data, $id);
     public function updatePassword($email, $new_hash_password);
+    public function checkAdminRole($id);
     
     public function allRenters();
     public function getBreachHistories($id);

@@ -7,6 +7,7 @@ interface RoomRentRepositoryInterface
     public function all();
     public function show($id);
     public function store(array $data);
-    public function update(array $data, $id);
-    public function delete($id);
+
+    public function accept($data);
+    public function cancel($id);
 }

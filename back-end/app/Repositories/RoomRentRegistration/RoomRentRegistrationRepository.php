@@ -62,7 +62,7 @@ class RoomRentRegistrationRepository implements RoomRentRegistrationRepositoryIn
                 return $is_updated;
             } 
         }
-        //$room_rent_registration->save();
+        $room_rent_registration->save();
         return $is_updated;
     }
     
