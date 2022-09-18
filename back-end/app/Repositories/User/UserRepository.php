@@ -152,4 +152,11 @@ class UserRepository implements UserRepositoryInterface
         }
         return $is_sent;
     }
+
+    public function updatePassword($email, $new_hash_password) {
+        $user_id = User::where('email', $email)->value('id');
+        $user = $this::show($user_id);
+        $user->password = $new_hash_password;
+        $user->save();
+    }
 }

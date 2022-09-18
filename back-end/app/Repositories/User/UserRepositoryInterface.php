@@ -15,6 +15,7 @@ interface UserRepositoryInterface
     public function updateUserAvatar($id, $old_avatar, $new_avatar);
     public function lockUserAccount($id);
     public function updateImportantInfo($data, $id);
+    public function updatePassword($email, $new_hash_password);
     
     public function allRenters();
     public function getBreachHistories($id);

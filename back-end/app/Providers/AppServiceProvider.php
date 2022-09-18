@@ -36,6 +36,8 @@ use App\Repositories\PaymentHistory\PaymentHistoryRepository;
 use App\Repositories\PaymentHistory\PaymentHistoryRepositoryInterface;
 use App\Repositories\Problem\ProblemRepository;
 use App\Repositories\Problem\ProblemRepositoryInterface;
+use App\Repositories\PasswordReset\PasswordResetRepository;
+use App\Repositories\PasswordReset\PasswordResetRepositoryInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -62,6 +64,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(RoomRentRepositoryInterface::class, RoomRentRepository::class);
         $this->app->bind(PaymentHistoryRepositoryInterface::class, PaymentHistoryRepository::class);
         $this->app->bind(ProblemRepositoryInterface::class, ProblemRepository::class);
+        $this->app->bind(PasswordResetRepositoryInterface::class, PasswordResetRepository::class);
     }
 
     /**

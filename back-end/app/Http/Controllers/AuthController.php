@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 use App\Models\User;
-use App\Models\Role;
 
 use App\Http\Requests\RegisterRequest;
 
@@ -29,7 +28,7 @@ class AuthController extends Controller
                 }
                 //Generate access token
                 //If user logins with Admin role
-                if($user->role_id == Role::where('name', Role::ROLE_ADMIN)->value('id')) 
+                if($user->role_id == User::ROLE_ADMIN) 
                 {
                     //Generate access token with scope
                     //createToken method accepts the name of the token as its first argument and an optional array of scopes
