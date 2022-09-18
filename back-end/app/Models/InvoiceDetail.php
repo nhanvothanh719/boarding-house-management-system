@@ -10,9 +10,15 @@ class InvoiceDetail extends Model
     use HasFactory;
     protected $guarded = ['id'];
 
-    protected $with = ['service'];
-    public function service()
-     {
-         return $this->belongsTo(Service::class,'service_id','id');
-     }
+    //protected $with = ['service'];
+    // public function service()
+    // {
+    //     return $this->belongsTo(Service::class,'service_id','id');
+    // }
+
+    protected $with = ['services'];
+    public function services()
+    {
+        return $this->hasMany(Service::class,'service_id','id');
+    }
 }

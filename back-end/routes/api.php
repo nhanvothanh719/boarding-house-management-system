@@ -29,6 +29,7 @@ use App\Http\Controllers\Renter\RenterProblemController;
 use App\Http\Controllers\Renter\RenterServiceController;
 use App\Http\Controllers\Renter\RenterRoomContractController;
 use App\Http\Controllers\Renter\RenterBreachHistoryController;
+use App\Http\Controllers\Renter\RenterPaymentController;
 
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/register', [AuthController::class, 'register']);
@@ -58,7 +59,7 @@ Route::middleware('auth:api')->group(function(){
         Route::get('/get-invoice-details/{id}', [RenterInvoiceController::class, 'getInvoiceDetails']);
         Route::get('/all-renter-invoices', [RenterInvoiceController::class, 'getRenterInvoices']);
 
-        Route::post('/make-payment/{id}', [RenterInvoiceController::class, 'makePayment']);
+        Route::post('/make-payment/{id}', [RenterPaymentController::class, 'payInvoice']);
         
         Route::get('/all-renter-problems', [RenterProblemController::class, 'getRenterProblems']);
         Route::post('/store-renter-problem', [RenterProblemController::class, 'storeProblem']);

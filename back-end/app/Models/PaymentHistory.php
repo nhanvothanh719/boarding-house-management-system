@@ -9,4 +9,8 @@ class PaymentHistory extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
+
+    const PAYMENT_METHOD_CASH = 1;
+    const PAYMENT_METHOD_RAZORPAY = 2;
+    const PAYMENT_METHOD_PAYPAL = 3;
 }

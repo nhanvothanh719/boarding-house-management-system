@@ -23,7 +23,7 @@ class InvoiceRepository implements InvoiceRepositoryInterface
     }
 
     public function all() {
-        return Invoice::all();
+        return Invoice::find();
     }
 
     public function show($id) {
@@ -56,9 +56,16 @@ class InvoiceRepository implements InvoiceRepositoryInterface
     public function update($data, $id) {
         $invoice = $this::show($id);
         if($data['is_paid'] == Invoice::STATUS_PAID) {
+            if($this::checkOverdue($id)) {
+                return false;
+            }
             $invoice->is_paid = Invoice::STATUS_PAID;
             $renter_id = $invoice->renter_id;
-            $this->payment_history_repository->addPaymentHistory($id, $renter_id, Invoice::PAYMENT_METHOD_CASH);
+            //Add payment history
+            $payment_info = new stdClass();
+            $payment_info->payment_method = 'Cash';
+            $payment_info->payment_id = 'pay_by_cash_for_invoice_'.$id;
+            $this->payment_history_repository->store($payment_info, $invoice->id, $renter_id);
         }
         $invoice->effective_from = $data['effective_from'];
         $invoice->valid_until = $data['valid_until'];
@@ -69,9 +76,11 @@ class InvoiceRepository implements InvoiceRepositoryInterface
         $invoice_info->month = $invoice->month;
         $invoice_info->year = $invoice->year;
         $invoice_info->amount = $invoice->total;
-        $invoice_info->payment_method = Invoice::PAYMENT_METHOD_CASH;
+        $invoice_info->payment_method = 'Cash';
 
         $add_balance = CustomHelper::handleAfterPayment($invoice_info, $invoice->renter_id, $id);
+
+        return true;
     }
 
     public function delete($id) {
@@ -114,5 +123,15 @@ class InvoiceRepository implements InvoiceRepositoryInterface
             return true;
         }
         return $is_paid;
+    }
+
+    public function markAsPaid($id) {
+        $invoice = $this::show($id);
+        $invoice->is_paid = Invoice::STATUS_PAID;
+        $invoice->save();
+    }
+
+    public function checkOverdue($id) {
+        $this::show($id)->valid_until->gt(date('Y-m-d H:i:s')) ? true : false; //greater than
     }
 }
