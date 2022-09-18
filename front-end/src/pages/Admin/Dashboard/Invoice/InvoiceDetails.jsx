@@ -87,6 +87,8 @@ export default function InvoiceDetails({ match }) {
       } else if (response.data.status === 404) {
         swal("Error", response.data.message, "error");
         history.push("/admin/view-all-renters-with-invoices");
+      } else if (response.data.status === 403) {
+        swal("Warning", response.data.message, "warning");
       }
       setLoaderClass('d-none');
       setDisplayComponentsClass('');

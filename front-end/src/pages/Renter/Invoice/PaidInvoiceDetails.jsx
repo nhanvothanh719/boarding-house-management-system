@@ -12,15 +12,12 @@ import swal from "sweetalert";
 export default function PaidInvoiceDetails({ match }) {
   const history = useHistory();
   const invoiceId = match.params.invoiceID;
+  const paymentMethod = ['Cash', 'Razorpay', 'Paypal'];
 
   const [loading, setLoading] = useState(true);
   const [invoice, setInvoice] = useState({
     renter: {},
-    payment: {
-      method: {
-        name: "",
-      },
-    },
+    payment: {},
     discount: "",
     extra_fee: "",
     extra_fee_description: "",
@@ -109,7 +106,7 @@ export default function PaidInvoiceDetails({ match }) {
                     <i className="fa fa-circle text-blue-m2 text-xs mr-1"></i>{" "}
                     <span className="text-600 text-90">Paid method:</span>{" "}
                     <span className="badge badge-primary badge-pill px-25">
-                    {invoice.payment.method.name}
+                    {paymentMethod[invoice.payment.payment_method_id - 1]}
                     </span>
                   </div>
                 </div>

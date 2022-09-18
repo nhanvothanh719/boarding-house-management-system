@@ -35,7 +35,7 @@ export default function RentRoom() {
   };
 
   const updateCreateModalStatus = (status) => {
-    setShowCreateModal(status);
+    setRoomRentsChange(status);
   };
 
   let columns = [];
@@ -79,9 +79,6 @@ export default function RentRoom() {
   }
 
   const cancelRent = (e, id) => {
-    e.preventDefault();
-    const selectedRentSection = e.currentTarget;
-    selectedRentSection.innerText = "Deleting";
     axios.delete(AppUrl.CancelRentRoom + id).then((response) => {
       if (response.data.status === 200) {
         swal("Success", response.data.message, "success");

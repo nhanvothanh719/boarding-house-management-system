@@ -40,8 +40,10 @@ class InvoicePaidMail extends Mailable
         $year = $this->year;
         $amount = $this->amount;
         $payment_method = $this->payment_method;
+        $payment_method_names = ['Cash', 'Razorpay', 'Paypal'];
+        $payment_method_name = $payment_method_names[$payment_method - 1];
         return $this->from('boarding_house_admin@gmail.com')
-        ->view('mail.invoicePaidConfirmation', compact('month', 'year', 'amount', 'payment_method'))
+        ->view('mail.invoicePaidConfirmation', compact('month', 'year', 'amount', 'payment_method_name'))
         ->subject('Invoice paid confirmation email');
     }
 }

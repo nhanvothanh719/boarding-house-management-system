@@ -18,6 +18,8 @@ use App\Repositories\BreachHistory\BreachHistoryRepository;
 use App\Repositories\BreachHistory\BreachHistoryRepositoryInterface;
 use App\Repositories\Invoice\InvoiceRepository;
 use App\Repositories\Invoice\InvoiceRepositoryInterface;
+use App\Repositories\InvoiceDetail\InvoiceDetailRepository;
+use App\Repositories\InvoiceDetail\InvoiceDetailRepositoryInterface;
 use App\Repositories\Service\ServiceRepository;
 use App\Repositories\Service\ServiceRepositoryInterface;
 use App\Repositories\ServiceRegistration\ServiceRegistrationRepository;
@@ -30,6 +32,8 @@ use App\Repositories\RoomRentRegistration\RoomRentRegistrationRepository;
 use App\Repositories\RoomRentRegistration\RoomRentRegistrationRepositoryInterface;
 use App\Repositories\RoomRent\RoomRentRepository;
 use App\Repositories\RoomRent\RoomRentRepositoryInterface;
+use App\Repositories\PaymentHistory\PaymentHistoryRepository;
+use App\Repositories\PaymentHistory\PaymentHistoryRepositoryInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -49,10 +53,12 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ServiceRepositoryInterface::class, ServiceRepository::class);
         $this->app->bind(ServiceRegistrationRepositoryInterface::class, ServiceRegistrationRepository::class);
         $this->app->bind(InvoiceRepositoryInterface::class, InvoiceRepository::class);
+        $this->app->bind(InvoiceDetailRepositoryInterface::class, InvoiceDetailRepository::class);
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
         $this->app->bind(RoomContractRepositoryInterface::class, RoomContractRepository::class);
         $this->app->bind(RoomRentRegistrationRepositoryInterface::class, RoomRentRegistrationRepository::class);
         $this->app->bind(RoomRentRepositoryInterface::class, RoomRentRepository::class);
+        $this->app->bind(PaymentHistoryRepositoryInterface::class, PaymentHistoryRepository::class);
     }
 
     /**
