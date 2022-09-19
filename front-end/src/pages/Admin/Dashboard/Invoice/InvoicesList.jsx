@@ -191,7 +191,7 @@ export default function InvoicesList() {
                   setShowEditModal(true);
                   setSelectedInvoiceId(invoice.id);
                 },
-                disabled: invoice.is_paid !== 0,
+                disabled: invoice.payment !== null,
               }),
               (invoice) => ({
                 icon: PaymentsIcon,
@@ -205,38 +205,7 @@ export default function InvoicesList() {
               }),
             ]}
             editable={{
-              isEditable: (rowData) => moment(rowData.valid_until) >= moment(),
               isDeletable: (rowData) => rowData.is_paid === 0,
-              onRowUpdate: (newInvoice, oldInvoice) =>
-                new Promise((resolve, reject) => {
-                  setTimeout(() => {
-                    setLoaderClass("");
-                    setDisplayComponentsClass("d-none");
-                    const data = {
-                      effective_from: moment(newInvoice.effective_until).format(
-                        "YYYY-MM-DD"
-                      ),
-                      valid_until: moment(newInvoice.valid_until).format(
-                        "YYYY-MM-DD"
-                      ),
-                      month: newInvoice.month,
-                      //is_paid: newInvoice.is_paid,
-                    };
-                    axios
-                      .put(AppUrl.UpdateInvoice + oldInvoice.id, data)
-                      .then((response) => {
-                        if (response.data.status === 200) {
-                          swal("Success", response.data.message, "success");
-                          setInvoicesListChange(true);
-                        } else if (response.data.status === 404) {
-                          swal("Error", response.data.message, "error");
-                        }
-                        setLoaderClass("d-none");
-                        setDisplayComponentsClass("");
-                      });
-                    resolve();
-                  }, 1000);
-                }),
               onRowDelete: (thisInvoice) =>
                 new Promise((resolve, reject) => {
                   setTimeout(() => {

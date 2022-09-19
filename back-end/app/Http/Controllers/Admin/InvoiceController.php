@@ -81,8 +81,7 @@ class InvoiceController extends Controller
         $appropriate_time = date('Y-m-d', strtotime(' +0 day'));
         $validator = Validator::make($request->all(), [
             'effective_from' => 'required|date|after_or_equal:'.$appropriate_time,
-            'valid_until' => ['required', 'date', 'before_or_equal:'.date("Y-m-d", strtotime($appropriate_time."+15 day")), 'after_or_equal:'.date("Y-m-d", strtotime($appropriate_time."+1 day"))],
-            'month' => 'required|min:1|max:12|integer',
+            'valid_until' => ['required', 'date', 'before_or_equal:'.date("Y-m-d", strtotime($appropriate_time."+15 day")), 'after_or_equal:'.date("Y-m-d", strtotime($appropriate_time."+2 day"))],
         ]);
         if($validator->fails()) 
         {
@@ -98,6 +97,7 @@ class InvoiceController extends Controller
                 'status' => 404,
             ]);
         }
+        $this->invoice->update($request->all(), $id);
         return response([
             'message' => 'Successfully update invoice',
             'status' => 200,

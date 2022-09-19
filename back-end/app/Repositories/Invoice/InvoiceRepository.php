@@ -51,7 +51,6 @@ class InvoiceRepository implements InvoiceRepositoryInterface
         $invoice = $this::show($id);
         $invoice->effective_from = $data['effective_from'];
         $invoice->valid_until = $data['valid_until'];
-        $invoice->month = $data['month'];
         $invoice->save();
     }
 

@@ -16,6 +16,7 @@ export default function EditInvoiceModal(props) {
       month: "",
       effective_from: "",
     });
+    const [effectiveFromDate, setEffectiveFromDate] = useState(moment());
     const [validUntilDate, setValidUntilDate] = useState(moment());
 
   useEffect(() => {
@@ -26,6 +27,7 @@ export default function EditInvoiceModal(props) {
       model.show();
       axios.get(AppUrl.InvoiceDetails + props.invoiceId).then((response) => {
         if (response.data.status === 200) {
+          setEffectiveFromDate(moment(response.data.invoice.effective_from));
           setValidUntilDate(moment(response.data.invoice.valid_until));
           setInput(response.data.invoice);
         } else if (response.data.status === 404) {
@@ -52,7 +54,7 @@ export default function EditInvoiceModal(props) {
     props.setDisplayComponentsClass('d-none');
     const invoice = {
       month: input.month,
-      effective_from: input.effective_from,
+      effective_from: moment(validUntilDate).format("YYYY-MM-DD"),
       valid_until: moment(validUntilDate).format("YYYY-MM-DD"),
     };
     axios
@@ -105,6 +107,23 @@ export default function EditInvoiceModal(props) {
               <hr />
               <form>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <div>
+                    <label className="customModalLabel">Effective from:</label>
+                    <DatePicker
+                      label="Effective from"
+                      name="effective_from"
+                      value={effectiveFromDate}
+                      onChange={(selectedDate) => {
+                        setEffectiveFromDate(selectedDate);
+                      }}
+                      renderInput={(params) => (
+                        <TextField fullWidth {...params} helperText={null} />
+                      )}
+                    />
+                  </div>
+                  <small className="text-danger customSmallError">
+                    {errors.valid_until}
+                  </small>
                   <div>
                     <label className="customModalLabel">Valid until:</label>
                     <DatePicker
