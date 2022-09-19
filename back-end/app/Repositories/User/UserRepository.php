@@ -3,13 +3,18 @@
 namespace App\Repositories\User;
 
 use App\Helpers\CustomHelper;
-use App\Models\User;
-use App\Jobs\SendAnnouncementMail;
-use App\Mail\AnnouncementMail;
 
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use stdClass;
+
+use Illuminate\Support\Arr;
+
+use App\Models\User;
+
+use App\Jobs\SendAnnouncementMail;
+use App\Mail\AnnouncementMail;
 
 class UserRepository implements UserRepositoryInterface
 {
@@ -190,5 +195,68 @@ class UserRepository implements UserRepositoryInterface
             dispatch($sendAnnouncementEmailJob); //Push(Add) this job into queue
         }
         return $is_sent;
+    }
+
+    public function countRentersByGender() {
+        $renters_count = array();
+        //Get all gender values of all users
+        $genders_id = User::pluck('gender')->toArray();
+        //Only get unique values in array
+        $genders_id = array_unique($genders_id);
+        foreach($genders_id as $gender_id) {
+            //stdClass is a generic 'empty' class used when casting other types to objects
+            $item = new stdClass();
+            if($gender_id == User::GENDER_MALE_ID){
+                $item->gender = "Male";
+                $item->total = User::where('gender', $gender_id)->where('role_id', User::ROLE_RENTER)->count();
+            }
+            if($gender_id == User::GENDER_FEMALE_ID){
+                $item->gender = "Female";
+                $item->total = User::where('gender', $gender_id)->where('role_id', User::ROLE_RENTER)->count();
+            }
+            array_push($renters_count, $item);
+        }
+        return $renters_count;
+    }
+
+    public function getRenterInvoices($id) {
+        return $this::show($id)->invoices;
+    }
+
+    public function countRenterTotalUsedServicesAmount($id) {
+        $renter_invoices = $this::show($id)->invoices;
+        $invoices = array();
+        foreach($renter_invoices as $invoice) {
+            $services_of_invoice = array();
+            foreach($invoice->services as $service) {
+                $item = new stdClass();
+                $item->service_name = $service->service->name;
+                $item->total = $service->quantity;
+                array_push($services_of_invoice, $item);
+            }
+            array_push($invoices, $services_of_invoice);
+        }
+        // Arr::collapses -> Collapses an array of arrays into a single array
+        $all_services = Arr::collapse($invoices);
+
+        $unique_services = collect($all_services)->unique('service_name')->values()->all();
+        $unique_service_names = array();
+        foreach($unique_services as $service) {
+            array_push($unique_service_names, $service->service_name);
+        }
+        $services_count = array();
+        foreach($unique_service_names as $name) {
+            $item = new stdClass();
+            $item->service_name = $name; 
+            $total_use = 0;
+            foreach($all_services as $service) {
+                if($service->service_name == $name) {
+                    $total_use = $total_use + $service->total;
+                }
+            }
+            $item->total = $total_use;
+            array_push($services_count, $item);
+        }
+        return $services_count;
     }
 }

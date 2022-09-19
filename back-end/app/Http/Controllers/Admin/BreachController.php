@@ -107,7 +107,7 @@ class BreachController extends Controller
             ]);
         }
     }
-
+    
     public function calculateTotalNumberBreachMade() {
         return response([
             'status' => 200,

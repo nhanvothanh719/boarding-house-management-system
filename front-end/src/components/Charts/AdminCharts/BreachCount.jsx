@@ -47,7 +47,7 @@ export default function BreachCount(props) {
           <YAxis />
           <Tooltip />
           <Legend />
-          <Bar dataKey="total" fill={color}>
+          <Bar dataKey="breach_histories_count" fill={color}>
             <LabelList dataKey="total" position="top" />
           </Bar>
         </BarChart>

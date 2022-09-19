@@ -79,41 +79,4 @@ class BreachHistoryController extends Controller
             'message' => 'Successfully delete breach history',
         ]);
     }
-
-    public function calculateTotalNumberBreachMade() {
-        // $all_breaches = Breach::all();
-        // $breach_totals = array();
-        // foreach ($all_breaches as $breach) {
-        //     $breach_total = new stdClass();
-        //     $breach_total->name = $breach->name;
-        //     $breach_total->total = BreachHistory::where('breach_id', $breach->id)->count();
-        //     array_push($breach_totals, $breach_total);
-        // }
-        return response([
-            'status' => 200,
-            'breachTotals' => $breach_totals,
-        ]);
-    }
-
-    public function countRenterBreaches($id) {
-        $renter = $this->renter->show($id);
-        if(!$renter) {
-            return response([
-                'message' => 'No renter found',
-                'status' => 404,
-            ]);
-        }
-        $breaches_id = Breach::pluck('id')->toArray();
-        $breaches_total = array();
-        foreach($breaches_id as $breach_id) {
-            $item = new stdClass();
-            $item->breach_name = Breach::find($breach_id)->name;
-            $item->total = BreachHistory::where('renter_id', $id)->where('breach_id', $breach_id)->count();;
-            array_push($breaches_total, $item);
-        }
-        return response([
-            'status' => 200,
-            'breachesTotal' => $breaches_total,
-        ]);
-    }
 }

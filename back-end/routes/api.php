@@ -19,10 +19,11 @@ use App\Http\Controllers\Admin\BalanceController;
 use App\Http\Controllers\Admin\BreachController;
 use App\Http\Controllers\Admin\BreachHistoryController;
 use App\Http\Controllers\Admin\RoomContractController;
-use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProblemController;
 use App\Http\Controllers\Admin\RoomRentController;
 use App\Http\Controllers\Admin\PaymentController;
+
+use App\Http\Controllers\Admin\DashboardController;
 
 use App\Http\Controllers\Renter\RenterRoomController;
 use App\Http\Controllers\Renter\RenterInvoiceController;
@@ -117,6 +118,9 @@ Route::middleware('auth:api')->group(function(){
         Route::get('/get-renter-breaches/{id}', [RenterController::class, 'getRenterBreachHistories']);
         Route::get('/all-registered_services/{id}', [RenterController::class, 'getRegisteredServices']);
         Route::post('send-announcement', [RenterController::class, 'sendAnnouncement']);
+        Route::get('/get-renter-invoices/{id}', [RenterController::class, 'getRenterInvoices']);
+        Route::get('/get-renter-total-used-services-amount/{id}', [RenterController::class, 'countRenterTotalUsedServicesAmount']);
+        Route::get('/count-renters-by-gender', [RenterController::class, 'countRentersByGender']);
 
         //Motorbike
         Route::get('/all-motorbikes', [MotorbikeController::class, 'index']);
@@ -149,7 +153,6 @@ Route::middleware('auth:api')->group(function(){
         Route::post('/create-temporary-invoice/{id}', [InvoiceController::class, 'createTemporaryInvoice']);
         Route::post('/update-service-quantity/{service_id}/{value}',[InvoiceController::class, 'updateServiceQuantity']);
         Route::get('/send-invoice/{id}', [InvoiceController::class, 'sendInvoice']);
-        Route::get('/get-renter-invoices/{id}', [InvoiceController::class, 'getRenterInvoices']);
 
         //Payment
         Route::post('/pay-by-cash/{id}', [PaymentController::class, 'payInvoice']);
@@ -186,12 +189,13 @@ Route::middleware('auth:api')->group(function(){
         Route::post('/update-signatures/{id}', [RoomContractController::class, 'updateSignatures']);
 
         //Dashboard
-        Route::get('/count-renters-by-gender', [DashboardController::class, 'countRentersByGender']);
+        /////
         Route::get('/count-rooms-by-status', [DashboardController::class, 'countRoomsByStatus']);
         Route::get('/count-used-services', [DashboardController::class, 'countUsedServices']);
         Route::get('/get-paid-invoices-rate', [DashboardController::class, 'getPaidInvoicesRate']);
         Route::get('/report-breaches', [DashboardController::class, 'reportBreaches']);
         Route::get('/get-widgets-data', [DashboardController::class, 'displayNumberOnWidget']);
+        /////
 
         //Problem
         Route::get('/all-problems', [ProblemController::class, 'index']);

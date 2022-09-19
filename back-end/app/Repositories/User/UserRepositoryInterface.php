@@ -27,4 +27,8 @@ interface UserRepositoryInterface
     public function getBreachHistories($id);
     public function getRegisteredServices($id);
     public function sendAnnouncement($data);
+
+    public function countRentersByGender();
+    public function getRenterInvoices($id);
+    public function countRenterTotalUsedServicesAmount($id);
 }

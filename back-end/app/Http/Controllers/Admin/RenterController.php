@@ -77,42 +77,61 @@ class RenterController extends Controller
         ]);
     }
 
-    // public function getRenterInvoices($id) {
-    //     $renter = User::find($id);
-    //     if(!$renter) {
-    //         return response([
-    //             'message' => 'No renter found',
-    //             'status' => 404,
-    //         ]);
-    //     }
-    //     $all_invoices = Invoice::where('renter_id', $id)->orderBy('month', 'asc')->get();
-    //     return response([
-    //         'status' => 200,
-    //         'allInvoices' => $all_invoices,
-    //         'servicesCount' => InvoiceController::countUsedServices($id),
-    //     ]);
-    // }
+    public function countRentersByGender() {
+        return response([
+            'status' => 200,
+            'rentersCount' => $this->renter->countRentersByGender(),
+        ]);
+    }
 
-    // public function countUsedServices($id) {
-    //     $services_count = array();
-    //     $services_id = Service::pluck('id')->toArray();
-    //     $renter_invoices_id = Invoice::where('renter_id', $id)->pluck('id');
-    //     //Get all invoices belonging to renter
-    //     foreach($services_id as $service_id) {
-    //         $count = 0;
-    //         foreach($renter_invoices_id as $invoice_id) {
-    //             $services_id_in_invoice_details = InvoiceDetail::where('invoice_id', $invoice_id)->pluck('service_id');
-    //             foreach($services_id_in_invoice_details as $detail_service_id) {
-    //                 if($detail_service_id == $service_id) {
-    //                     $count++;
-    //                 }
-    //             }
-    //         }
-    //         $item = new stdClass(); //stdClass is a generic 'empty' class used when casting other types to objects
-    //         $item->service_name = Service::where('id', $service_id)->value('name');
-    //         $item->total = $count;
-    //         array_push($services_count, $item);
-    //     }
-    //     return $services_count;  
-    // }
+    public function getRenterInvoices($id) {
+        $renter = $this->renter->show($id);
+        if(!$renter) {
+            return response([
+                'message' => 'No renter found',
+                'status' => 404,
+            ]);
+        }
+        return response([
+            'status' => 200,
+            'allInvoices' => $this->renter->getRenterInvoices($id),
+        ]);
+    }
+
+    public function countRenterTotalUsedServicesAmount($id) {
+        $renter = $this->renter->show($id);
+        if(!$renter) {
+            return response([
+                'message' => 'No renter found',
+                'status' => 404,
+            ]);
+        }
+        return response([
+            'status' => 200,
+            'servicesCount' => $this->renter->countRenterTotalUsedServicesAmount($id),
+        ]);
+    }
+
+    //Renter
+    public function countRenterBreaches($id) {
+        $renter = $this->renter->show($id);
+        if(!$renter) {
+            return response([
+                'message' => 'No renter found',
+                'status' => 404,
+            ]);
+        }
+        $breaches_id = Breach::pluck('id')->toArray();
+        $breaches_total = array();
+        foreach($breaches_id as $breach_id) {
+            $item = new stdClass();
+            $item->breach_name = Breach::find($breach_id)->name;
+            $item->total = BreachHistory::where('renter_id', $id)->where('breach_id', $breach_id)->count();;
+            array_push($breaches_total, $item);
+        }
+        return response([
+            'status' => 200,
+            'breachesTotal' => $breaches_total,
+        ]);
+    }
 }

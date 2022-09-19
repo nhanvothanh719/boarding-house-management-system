@@ -8,12 +8,13 @@ import AppUrl from "../../../RestAPI/AppUrl";
 export default function RenterUsedServiceCount(props) {
   const [usedServicesList, setUsedServicesList] = useState([]);
   const color = "#0091D5";
-  const chartTitle = "Total usage of services";
+  const chartTitle = "Total usage of registered services";
 
   useEffect(() => {
-    axios.get(AppUrl.GetRenterInvoices + props.renterId).then((response) => {
+    axios.get(AppUrl.GetRenterTotalUsedServicesAmount + props.renterId).then((response) => {
       if (response.data.status === 200) {
         setUsedServicesList(response.data.servicesCount);
+        console.log(response.data.servicesCount);
       }
     });
   }, [props.renterId]);
@@ -34,7 +35,7 @@ export default function RenterUsedServiceCount(props) {
           />
           <YAxis
             label={{
-              value: "Number of uses",
+              value: "Amount of uses",
               angle: -90,
               position: "insideLeft",
             }}
