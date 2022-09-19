@@ -70,6 +70,8 @@ class AppUrl {
   static SendInvoice = this.BaseURL + "/send-invoice/";
   static GetRenterInvoices = this.BaseURL + "/get-renter-invoices/";
 
+  static PayInvoiceByCash = this.BaseURL + "/pay-by-cash/";
+
   static SendAnnouncement = this.BaseURL + "/send-announcement";
 
   static GetBalance = this.BaseURL + "/get-balance";

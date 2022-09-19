@@ -49,16 +49,10 @@ export default function RenterInvoicesList({ match }) {
     },
     {
       field: "is_paid",
-      title: "Condition",
+      title: "Status",
       render: (rowData) => (
         <div>
-          <span
-            className={`${
-              rowData.is_paid === 1 ? "statusActive" : "statusPassive"
-            }`}
-          >
-            {rowData.is_paid === 1 ? "Paid" : "Not yet"}
-          </span>
+          <span className={`${rowData.payment !== null ? "statusActive" : "statusPassive"}` }>{rowData.payment !== null ? "Paid" : "Not yet" }</span>
         </div>
       ),
     },

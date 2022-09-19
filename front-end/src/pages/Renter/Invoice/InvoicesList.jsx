@@ -54,13 +54,7 @@ export default function InvoicesList() {
       title: "Paid",
       render: (rowData) => (
         <div>
-          <span
-            className={`${
-              rowData.is_paid === 1 ? "statusActive" : "statusPassive"
-            }`}
-          >
-            {rowData.is_paid === 1 ? "Paid" : "Not yet"}
-          </span>
+          <span className={`${rowData.payment !== null ? "statusActive" : "statusPassive"}` }>{rowData.payment !== null ? "Paid" : "Not yet" }</span>
         </div>
       ),
     },

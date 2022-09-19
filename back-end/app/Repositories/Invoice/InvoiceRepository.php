@@ -2,28 +2,22 @@
 
 namespace App\Repositories\Invoice;
 
-use App\Helpers\CustomHelper;
-
-use stdClass;
-
 use App\Models\Invoice;
 
 use App\Repositories\InvoiceDetail\InvoiceDetailRepositoryInterface;
-use App\Repositories\PaymentHistory\PaymentHistoryRepositoryInterface;
+use Carbon\Carbon;
 
 class InvoiceRepository implements InvoiceRepositoryInterface 
 {
     private $invoice_detail_repository;
-    private $payment_history_repository;
 
-    public function __construct(InvoiceDetailRepositoryInterface $invoice_detail_repository, PaymentHistoryRepositoryInterface $payment_history_repository) 
+    public function __construct(InvoiceDetailRepositoryInterface $invoice_detail_repository) 
     {
         $this->invoice_detail_repository = $invoice_detail_repository;
-        $this->payment_history_repository = $payment_history_repository;
     }
 
     public function all() {
-        return Invoice::find();
+        return Invoice::all();
     }
 
     public function show($id) {
@@ -55,32 +49,18 @@ class InvoiceRepository implements InvoiceRepositoryInterface
 
     public function update($data, $id) {
         $invoice = $this::show($id);
-        if($data['is_paid'] == Invoice::STATUS_PAID) {
-            if($this::checkOverdue($id)) {
-                return false;
-            }
-            $invoice->is_paid = Invoice::STATUS_PAID;
-            $renter_id = $invoice->renter_id;
-            //Add payment history
-            $payment_info = new stdClass();
-            $payment_info->payment_method = 'Cash';
-            $payment_info->payment_id = 'pay_by_cash_for_invoice_'.$id;
-            $this->payment_history_repository->store($payment_info, $invoice->id, $renter_id);
-        }
         $invoice->effective_from = $data['effective_from'];
         $invoice->valid_until = $data['valid_until'];
         $invoice->month = $data['month'];
         $invoice->save();
 
-        $invoice_info = new stdClass();
-        $invoice_info->month = $invoice->month;
-        $invoice_info->year = $invoice->year;
-        $invoice_info->amount = $invoice->total;
-        $invoice_info->payment_method = 'Cash';
+        // $invoice_info = new stdClass();
+        // $invoice_info->month = $invoice->month;
+        // $invoice_info->year = $invoice->year;
+        // $invoice_info->amount = $invoice->total;
+        // $invoice_info->payment_method = 'Cash';
 
-        $add_balance = CustomHelper::handleAfterPayment($invoice_info, $invoice->renter_id, $id);
-
-        return true;
+        //$add_balance = CustomHelper::handleAfterPayment($invoice_info, $invoice->renter_id, $id);
     }
 
     public function delete($id) {
@@ -118,20 +98,12 @@ class InvoiceRepository implements InvoiceRepositoryInterface
     }
 
     public function checkPaid($id) {
-        $is_paid = false;
-        if($this::show($id)->is_paid == Invoice::STATUS_PAID) {
-            return true;
-        }
-        return $is_paid;
-    }
-
-    public function markAsPaid($id) {
-        $invoice = $this::show($id);
-        $invoice->is_paid = Invoice::STATUS_PAID;
-        $invoice->save();
+        return $this::show($id)->payment == null ? false : true;;
     }
 
     public function checkOverdue($id) {
-        $this::show($id)->valid_until->gt(date('Y-m-d H:i:s')) ? true : false; //greater than
+        $current_date = date('Y-m-d H:i:s');
+        $final_valid_date = Carbon::createFromFormat('Y-m-d H:i:s', $this::show($id)->valid_until);
+        return $final_valid_date->gt($current_date) ? true : false; //greater than
     }
 }

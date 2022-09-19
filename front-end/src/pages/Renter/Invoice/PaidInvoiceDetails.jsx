@@ -26,7 +26,6 @@ export default function PaidInvoiceDetails({ match }) {
     year: "",
     effective_from: "",
     valid_until: "",
-    is_paid: "",
   });
   const [usedServices, setUsedServices] = useState([
     {
@@ -98,7 +97,7 @@ export default function PaidInvoiceDetails({ match }) {
                     <i className="fa fa-circle text-blue-m2 text-xs mr-1"></i>{" "}
                     <span className="text-600 text-90">Status:</span>{" "}
                     <span className="badge badge-success badge-pill px-25">
-                      {invoice.is_paid ? "Paid" : "Unpaid"}
+                      {invoice.payment !== null ? "Paid" : "Unpaid"}
                     </span>
                   </div>
 

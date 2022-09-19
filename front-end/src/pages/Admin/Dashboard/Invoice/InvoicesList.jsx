@@ -1,16 +1,17 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import { Button } from "react-bootstrap";
 
 import MaterialTable from "material-table";
 import swal from "sweetalert";
 import axios from "axios";
 import moment from "moment";
-import MoreTimeIcon from '@mui/icons-material/MoreTime';
+import MoreTimeIcon from "@mui/icons-material/MoreTime";
+import PaymentsIcon from "@mui/icons-material/Payments";
 
 import Loading from "../../../../components/Loading/Loading";
 import ConfirmLoading from "../../../../components/Loading/ConfirmLoading";
 import AppUrl from "../../../../RestAPI/AppUrl";
-import { Button } from "react-bootstrap";
 import SelectRenterModal from "../../../../components/Modals/Invoice/SelectRenterModal";
 import WebPageTitle from "../../../../components/WebPageTitle/WebPageTitle";
 import EditInvoiceModal from "../../../../components/Modals/Invoice/EditInvoiceModal";
@@ -52,67 +53,107 @@ export default function InvoicesList() {
     setInvoicesListChange(status);
   };
 
+  const markAsPayByCash = (e, invoiceId) => {
+    e.preventDefault();
+    setLoaderClass('');
+    setDisplayComponentsClass('d-none');
+    const payment = {
+      payment_method: "Cash",
+      payment_id: "pay_by_cash_for_invoice_" + invoiceId,
+    };
+    axios.post(AppUrl.PayInvoiceByCash + invoiceId, payment).then((res) => {
+      if (res.data.status === 200) {
+        swal("Success", res.data.message, "success");
+        setInvoicesListChange(true);
+      } else if (res.data.status === 403) {
+        swal("Warning", res.data.message, "warning");
+      }
+      setDisplayComponentsClass("");
+      setLoaderClass("d-none");
+    });
+  };
+
   var columns = [];
 
-    columns = [
-      { title: "#", render: (rowData) => rowData.tableData.id + 1, width: "10%", align: "center" },
-      {
-        field: "renter_id",
-        title: "User",
-        editable: "never",
-        width: "10%",
-        render: (rowData) => <p>{rowData.renter.name}</p>,
-      },
-      { field: "total", title: "Total", width: "20%", editable: "never" , align: "center"},
-      {
-        field: "month",
-        title: "Month",
-        width: "10%",
-        type: "numeric",
-        editable: "never",
-        validate: (rowData) =>
-          rowData.month < 1 || rowData.month > 12 || !Number.isInteger(rowData.month)
-            ? { isValid: false, helperText: "Inappropriate month input" }
-            : true,
-      },
-      {
-        field: "effective_from",
-        title: "Paid from",
-        type: "date",
-        editable: "never",
-        render: (rowData) => moment(rowData.effective_from).format("DD/MM/YYYY"),
-      },
-      {
-        field: "valid_until",
-        title: "Paid until",
-        type: "date",
-        editable: "never",
-        render: (rowData) => moment(rowData.valid_until).format("DD/MM/YYYY"),
-      },
-      { 
-        field: "is_paid", 
-        title: "Paid", 
-        editable: ( row ,rowData ) => rowData.is_paid === 0, 
-        lookup: { 0: "Not yet", 1: "Paid" },
-        render: rowData => (
-          <div>
-              <span className={`${rowData.is_paid === 1 ? "statusActive" : "statusPassive"}` }>{rowData.is_paid === 1 ? "Paid" : "Not yet" }</span>
-          </div>
-        )
-      },
-    ];
+  columns = [
+    {
+      title: "#",
+      render: (rowData) => rowData.tableData.id + 1,
+      width: "10%",
+      align: "center",
+    },
+    {
+      field: "renter_id",
+      title: "User",
+      editable: "never",
+      width: "10%",
+      render: (rowData) => <p>{rowData.renter.name}</p>,
+    },
+    {
+      field: "total",
+      title: "Total",
+      width: "20%",
+      editable: "never",
+      align: "center",
+    },
+    {
+      field: "month",
+      title: "Month",
+      width: "10%",
+      type: "numeric",
+      editable: "never",
+      validate: (rowData) =>
+        rowData.month < 1 ||
+        rowData.month > 12 ||
+        !Number.isInteger(rowData.month)
+          ? { isValid: false, helperText: "Inappropriate month input" }
+          : true,
+    },
+    {
+      field: "effective_from",
+      title: "Paid from",
+      type: "date",
+      editable: "never",
+      render: (rowData) => moment(rowData.effective_from).format("DD/MM/YYYY"),
+    },
+    {
+      field: "valid_until",
+      title: "Paid until",
+      type: "date",
+      editable: "never",
+      render: (rowData) => moment(rowData.valid_until).format("DD/MM/YYYY"),
+    },
+    {
+      field: "is_paid",
+      title: "Status",
+      editable: "never",
+      render: (rowData) => (
+        <div>
+          <span
+            className={`${
+              rowData.payment !== null ? "statusActive" : "statusPassive"
+            }`}
+          >
+            {rowData.payment !== null ? "Paid" : "Not yet"}
+          </span>
+        </div>
+      ),
+    },
+  ];
 
-    if (loading) {
-      return <Loading />;
-    }
-    return (
-      <Fragment>
-        <WebPageTitle pageTitle="Invoices" />
-        <div className={loaderClass}><ConfirmLoading/></div>
-        <div className={displayComponentsClass}>
+  if (loading) {
+    return <Loading />;
+  }
+  return (
+    <Fragment>
+      <WebPageTitle pageTitle="Invoices" />
+      <div className={loaderClass}>
+        <ConfirmLoading />
+      </div>
+      <div className={displayComponentsClass}>
         <div className="customDatatable">
           <div className="customDatatableHeader">
-          <Button
+            <Button
               className="createBtn"
               style={{ backgroundColor: "white", color: "#1C4E80" }}
               onClick={(e) => setShowSelectModal(true)}
@@ -120,9 +161,9 @@ export default function InvoicesList() {
               Add new invoice
             </Button>
             <SelectRenterModal
-        isShown={showSelectModal}
-        setCreateModalStatus={setSelectModalStatus}
-      />
+              isShown={showSelectModal}
+              setCreateModalStatus={setSelectModalStatus}
+            />
           </div>
           <MaterialTable
             columns={columns}
@@ -152,22 +193,34 @@ export default function InvoicesList() {
                 },
                 disabled: invoice.is_paid !== 0,
               }),
+              (invoice) => ({
+                icon: PaymentsIcon,
+                tooltip: "Pay by Cash",
+                onClick: (event, invoice) => {
+                  markAsPayByCash(event, invoice.id);
+                },
+                disabled:
+                  invoice.payment != null ||
+                  moment(invoice.valid_until) < moment(),
+              }),
             ]}
             editable={{
-              isEditable: rowData => moment(rowData.valid_until) >= moment(),
-              isDeletable: rowData => rowData.is_paid === 0,
+              isEditable: (rowData) => moment(rowData.valid_until) >= moment(),
+              isDeletable: (rowData) => rowData.is_paid === 0,
               onRowUpdate: (newInvoice, oldInvoice) =>
                 new Promise((resolve, reject) => {
                   setTimeout(() => {
-                    setLoaderClass('');
-                    setDisplayComponentsClass('d-none');
+                    setLoaderClass("");
+                    setDisplayComponentsClass("d-none");
                     const data = {
-                      effective_from: moment(newInvoice.effective_until)
-                        .format("YYYY-MM-DD"),
-                      valid_until: moment(newInvoice.valid_until)
-                        .format("YYYY-MM-DD"),
+                      effective_from: moment(newInvoice.effective_until).format(
+                        "YYYY-MM-DD"
+                      ),
+                      valid_until: moment(newInvoice.valid_until).format(
+                        "YYYY-MM-DD"
+                      ),
                       month: newInvoice.month,
-                      is_paid: newInvoice.is_paid,
+                      //is_paid: newInvoice.is_paid,
                     };
                     axios
                       .put(AppUrl.UpdateInvoice + oldInvoice.id, data)
@@ -178,8 +231,8 @@ export default function InvoicesList() {
                         } else if (response.data.status === 404) {
                           swal("Error", response.data.message, "error");
                         }
-                        setLoaderClass('d-none');
-                        setDisplayComponentsClass('');
+                        setLoaderClass("d-none");
+                        setDisplayComponentsClass("");
                       });
                     resolve();
                   }, 1000);
@@ -209,14 +262,14 @@ export default function InvoicesList() {
           />
         </div>
         <EditInvoiceModal
-            isShown={showEditModal}
-            invoiceId={selectedInvoiceId}
-            setLoaderClass={setLoaderClass}
-            setDisplayComponentsClass={setDisplayComponentsClass}
-            setEditModalStatus={setEditModalStatus}
-            updateModalStatus={updateModalStatus}
-          />
-        </div>
-      </Fragment>
-    );
-  }
+          isShown={showEditModal}
+          invoiceId={selectedInvoiceId}
+          setLoaderClass={setLoaderClass}
+          setDisplayComponentsClass={setDisplayComponentsClass}
+          setEditModalStatus={setEditModalStatus}
+          updateModalStatus={updateModalStatus}
+        />
+      </div>
+    </Fragment>
+  );
+}

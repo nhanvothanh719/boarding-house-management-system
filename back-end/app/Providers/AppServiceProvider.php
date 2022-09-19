@@ -56,12 +56,15 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(BreachHistoryRepositoryInterface::class, BreachHistoryRepository::class);
         $this->app->bind(ServiceRepositoryInterface::class, ServiceRepository::class);
         $this->app->bind(ServiceRegistrationRepositoryInterface::class, ServiceRegistrationRepository::class);
+        //
         $this->app->bind(InvoiceRepositoryInterface::class, InvoiceRepository::class);
+        //
         $this->app->bind(InvoiceDetailRepositoryInterface::class, InvoiceDetailRepository::class);
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
         $this->app->bind(RoomContractRepositoryInterface::class, RoomContractRepository::class);
         $this->app->bind(RoomRentRegistrationRepositoryInterface::class, RoomRentRegistrationRepository::class);
         $this->app->bind(RoomRentRepositoryInterface::class, RoomRentRepository::class);
+        //
         $this->app->bind(PaymentHistoryRepositoryInterface::class, PaymentHistoryRepository::class);
         $this->app->bind(ProblemRepositoryInterface::class, ProblemRepository::class);
         $this->app->bind(PasswordResetRepositoryInterface::class, PasswordResetRepository::class);

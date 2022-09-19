@@ -32,7 +32,6 @@ export default function UnpaidInvoiceDetails({ match }) {
       year: "",
       effective_from: "",
       valid_until: "",
-      is_paid: "",
     });
     const [usedServices, setUsedServices] = useState([
       {
@@ -116,15 +115,11 @@ export default function UnpaidInvoiceDetails({ match }) {
   //Handle payment
   const makePayment = (e, payment_method) => {
     e.preventDefault();
-    if (invoice.is_paid === 1) {
+    if (invoice.payment !== null) {
       swal("Error", "The invoice has been paid", "error");
     } else {
       const payment = {
         payment_method: payment_method,
-        month: invoice.month,
-        year: invoice.year,
-        amount: invoice.total,
-        payer_id: invoice.renter_id,
       };
       switch (payment_method) {
         case "Razorpay":
@@ -144,6 +139,8 @@ export default function UnpaidInvoiceDetails({ match }) {
                   if (res.data.status === 200) {
                     swal("success", res.data.message, "success");
                     setUpdatePage(true);
+                  } else if (res.data.status === 403) {
+                    swal("Warning", res.data.message, "warning");
                   }
                   setDisplayComponentsClass('');
                   setLoaderClass('d-none');
@@ -217,8 +214,8 @@ export default function UnpaidInvoiceDetails({ match }) {
                     <div className="my-2">
                       <i className="fa fa-circle text-blue-m2 text-xs mr-1"></i>{" "}
                       <span className="text-600 text-90">Status:</span>{" "}
-                      <span className={invoice.is_paid ? "badge badge-success badge-pill px-25" : "badge badge-danger badge-pill px-25"}>
-                        {invoice.is_paid ? "Paid" : "Unpaid"}
+                      <span className={invoice.payment !== null ? "badge badge-success badge-pill px-25" : "badge badge-danger badge-pill px-25"}>
+                        {invoice.payment !== null ? "Paid" : "Unpaid"}
                       </span>
                     </div>
                   </div>

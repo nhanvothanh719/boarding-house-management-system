@@ -18,8 +18,9 @@ class RenterInvoiceController extends Controller
 {
     public function getRenterInvoices() {
         $current_renter_id = Auth::user()->id;
-        $unpaid_invoices = Invoice::where('renter_id', $current_renter_id)->where('is_paid', Invoice::STATUS_NOT_PAID)->get();
-        $paid_invoices = Invoice::where('renter_id', $current_renter_id)->where('is_paid', Invoice::STATUS_PAID)->get();
+        //Error
+        $unpaid_invoices = Invoice::where('renter_id', $current_renter_id)->get();
+        $paid_invoices = Invoice::where('renter_id', $current_renter_id)->get();
         return response([
             'status' => 200,
             'unpaidInvoices' => $unpaid_invoices,

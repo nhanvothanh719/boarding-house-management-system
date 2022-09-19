@@ -17,8 +17,7 @@ class RenterPaymentController extends Controller
     }
 
     public function payInvoice(Request $request, $id) {
-        $renter_id = Auth::user()->id;
-        $is_paid = $this->payment->store($request->all(), $id, $renter_id);
+        $is_paid = $this->payment->store($request->all(), $id);
         if(!$is_paid) {
             return response([
                 'status' => 403,

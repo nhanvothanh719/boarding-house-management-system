@@ -98,13 +98,6 @@ class InvoiceController extends Controller
                 'status' => 404,
             ]);
         }
-        $is_updated = $this->invoice->update($request->all(), $id);
-        if(!$is_updated) {
-            return response([
-                'message' => 'Cannot paid invoice due to it is overdue',
-                'status' => 403,
-            ]);
-        }
         return response([
             'message' => 'Successfully update invoice',
             'status' => 200,

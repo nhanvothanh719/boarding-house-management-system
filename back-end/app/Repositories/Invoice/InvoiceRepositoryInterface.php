@@ -13,6 +13,5 @@ interface InvoiceRepositoryInterface
     public function checkCreated($id, $month);
     public function getInvoiceDetails($id);
     public function checkPaid($id);
-    public function markAsPaid($id);
     public function checkOverdue($id);
 }

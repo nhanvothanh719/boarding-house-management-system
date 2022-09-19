@@ -9,11 +9,12 @@ class Motorbike extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
+
+    public const motorbike_image_public_folder = 'uploaded/motorbikes/';
+
     protected $with = ['renter'];
 
     public function renter() {
         return $this->belongsTo(User::class,'renter_id','id');
     }
-
-    public const motorbike_image_public_folder = 'uploaded/motorbikes/';
 }

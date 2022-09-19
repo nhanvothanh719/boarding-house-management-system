@@ -10,18 +10,19 @@ class PaymentHistoryRepository implements PaymentHistoryRepositoryInterface
 {
     private $invoice_repository;
 
-    public function __construct(InvoiceRepositoryInterface $invoice_detail_repository) 
+    public function __construct(InvoiceRepositoryInterface $invoice_repository) 
     {
-        $this->invoice_detail_repository = $invoice_detail_repository;
+        $this->invoice_repository = $invoice_repository;
     }
 
     public function show($id) {
         return PaymentHistory::find($id);
     }
 
-    public function store($data, $invoice_id, $renter_id) {
+    public function store($data, $invoice_id) {
+        $invoice = $this->invoice_repository->show($invoice_id);
         $is_stored = true;
-        if($this->invoice_repository->checkOverdue($invoice_id)) {
+        if(!$this->invoice_repository->checkOverdue($invoice_id)) {
             $is_stored = false;
             return $is_stored;
         }
@@ -40,11 +41,9 @@ class PaymentHistoryRepository implements PaymentHistoryRepositoryInterface
                 break;
         }
         $payment->payment_id = $data['payment_id'];
-        $payment->made_by = $renter_id;
+        $payment->made_by = $invoice->renter_id;
         $payment->made_at = date('Y-m-d H:i:s');
         $payment->save();
-        //Mark the invoice as is paid
-        $this->invoice_repository->markAsPaid($invoice_id);
         
         //CustomHelper::handleAfterPayment($request, $user_id ,$id);
 

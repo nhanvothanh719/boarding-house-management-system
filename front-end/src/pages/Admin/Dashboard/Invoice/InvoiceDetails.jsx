@@ -35,7 +35,6 @@ export default function InvoiceDetails({ match }) {
     discount: "",
     total: "",
     year: "",
-    is_paid: "",
     extra_fee: "",
     extra_fee_description: "",
   });
@@ -195,7 +194,7 @@ export default function InvoiceDetails({ match }) {
                     className="roomInfoValue"
                     style={{ color: "#0091D5", fontWeight: "bold" }}
                   >
-                    {invoice.is_paid === 1 ? "Paid" : "Not Paid"}
+                    {invoice.payment !== null ? "Paid" : "Not Paid"}
                   </span>
                 </div>
                 <div

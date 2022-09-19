@@ -22,6 +22,7 @@ use App\Http\Controllers\Admin\RoomContractController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProblemController;
 use App\Http\Controllers\Admin\RoomRentController;
+use App\Http\Controllers\Admin\PaymentController;
 
 use App\Http\Controllers\Renter\RenterRoomController;
 use App\Http\Controllers\Renter\RenterInvoiceController;
@@ -149,6 +150,9 @@ Route::middleware('auth:api')->group(function(){
         Route::post('/update-service-quantity/{service_id}/{value}',[InvoiceController::class, 'updateServiceQuantity']);
         Route::get('/send-invoice/{id}', [InvoiceController::class, 'sendInvoice']);
         Route::get('/get-renter-invoices/{id}', [InvoiceController::class, 'getRenterInvoices']);
+
+        //Payment
+        Route::post('/pay-by-cash/{id}', [PaymentController::class, 'payInvoice']);
 
         //Balance
         Route::get('/get-balance', [BalanceController::class, 'index']);
