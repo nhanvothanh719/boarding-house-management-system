@@ -4,9 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 
-use App\Helpers\CustomHelper;
-
 use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\Validator;
 
 use App\Repositories\Room\RoomRepositoryInterface;
@@ -41,10 +40,6 @@ class RoomController extends Controller
             ]);
         }
         $room = $this->room->store($request->all());
-        if($request->hasFile('image')) {
-            $files = $request->file('image');
-            $are_images_stored = CustomHelper::storeRoomImages($files, $room->id);
-        }
         return response([
             'message' => 'Create new room successfully',
             'status' => 200,
@@ -83,11 +78,11 @@ class RoomController extends Controller
         $old_room_number = $room->number;
         if($room) {
             $this->room->update($request->all(), $id);
-            if($request->hasFile('image')) {
-                //Update images
-                $files = $request->file('image');
-                $are_images_updated = CustomHelper::updateRoomImages($files, $id, $old_room_number);
-            }
+            // if($request->hasFile('image')) {
+            //     //Update images
+            //     $files = $request->file('image');
+            //     $are_images_updated = CustomHelper::updateRoomImages($files, $id, $old_room_number);
+            // }
             return response([
                 'message' => 'Successfully update room',
                 'status' => 200,
@@ -104,12 +99,12 @@ class RoomController extends Controller
         if($room) {
             if($this->room->checkUsed($id)) {
                 return response([
-                    'message' => 'Cannot delete room since it is used',
+                    'message' => 'Cannot delete room since it has renter(s)',
                     'status' => 403,
                 ]);
             }
             //Delete images
-            $are_images_deleted = CustomHelper::deleteRoomImages($id);
+            //$are_images_deleted = CustomHelper::deleteRoomImages($id);
             $this->room->delete($id);
             return response([
                 'status' => 200,

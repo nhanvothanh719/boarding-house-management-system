@@ -1,8 +1,8 @@
 <?php
 namespace App\Helpers;
 
-use Intervention\Image\Facades\Image;
-use Illuminate\Support\Facades\File;
+
+
 
 
 use App\Models\User;
@@ -42,67 +42,7 @@ class CustomHelper{
         return $upload_folder.$image_name;
     }
 
-    public static function storeRoomImages($files, $room_id) {
-        $room_number = Room::find($room_id)->number;
-        $upload_folder = 'uploaded/rooms/'.$room_number.'/';
-        if(!file_exists($upload_folder)) {
-            mkdir($upload_folder);
-        }
-        foreach ($files as $file) {
-            $generated_name = hexdec(uniqid()).'.'.$file->getClientOriginalExtension();
-            $image = $upload_folder.$generated_name;
-            //Save img in public folder
-            Image::make($file)->resize(300, 200)->save($image);
-            //Save img in database
-            $room_image = new RoomImages;
-            $room_image->room_id = $room_id;
-            $room_image->image_name = $image;
-            $room_image->save();
-        }
-        return true;
-    }
-
-    public static function updateRoomImages($files, $room_id, $old_room_number) {
-        //Delete existed images:
-        //In folder
-        $old_upload_folder = 'uploaded/rooms/'.$old_room_number.'/';
-        if(File::exists($old_upload_folder)) {
-            $images = RoomImages::where('room_id', $room_id)->pluck('image_name');
-            foreach ($images as $image) {
-                unlink($image);
-            }
-        }
-        //In database
-        RoomImages::where('room_id', $room_id)->delete();
-        //Store new images
-        $room_number = Room::find($room_id)->number;
-        $upload_folder = 'uploaded/rooms/'.$room_number.'/';
-        if(!file_exists($upload_folder)) {
-            mkdir($upload_folder);
-        }
-        foreach ($files as $file) {
-            $generated_name = hexdec(uniqid()).'.'.$file->getClientOriginalExtension();
-            $image = $upload_folder.$generated_name;
-            //Save img in public folder
-            Image::make($file)->resize(300, 200)->save($image);
-            //Save img in database
-            $room_image = new RoomImages;
-            $room_image->room_id = $room_id;
-            $room_image->image_name = $image;
-            $room_image->save();
-        }
-        return true;
-    }
-
-    public static function deleteRoomImages($room_id) {
-        $room_number = Room::find($room_id)->number;
-        $upload_folder = 'uploaded/rooms/'.$room_number.'/';
-        //In folder
-        File::deleteDirectory(public_path($upload_folder));
-        //In database
-        RoomImages::where('room_id', $room_id)->delete();
-        return true;
-    }
+    
 
     //-->
 

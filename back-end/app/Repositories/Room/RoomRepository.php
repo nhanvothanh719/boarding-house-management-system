@@ -2,11 +2,18 @@
 
 namespace App\Repositories\Room;
 
-use App\Helpers\CustomHelper;
 use App\Models\Room;
+use App\Repositories\RoomImage\RoomImageRepository;
+use App\Repositories\RoomImage\RoomImageRepositoryInterface;
 
 class RoomRepository implements RoomRepositoryInterface
 {
+    private $image_repository;
+
+    public function __construct(RoomImageRepository $image_repository) 
+    {
+        $this->image_repository = $image_repository;
+    }
 
     public function all() {
         return Room::all();
@@ -31,6 +38,10 @@ class RoomRepository implements RoomRepositoryInterface
         $room->has_fridge = $data['has_fridge'] == true ? '1' : '0';
         $room->has_wardrobe = $data['has_wardrobe'] == true ? '1' : '0';
         $room->save();
+        if($data['image'] !== null) {
+            $files = $data['image'];
+            $this->image_repository->store($files, $room->id);
+        }
         return $room;
     }
 
@@ -44,15 +55,21 @@ class RoomRepository implements RoomRepositoryInterface
         $room->has_fridge = $data['has_fridge'];
         $room->has_wardrobe = $data['has_wardrobe'];
         $room->save();
+        if($data['image'] !== null) {
+            //Update images
+            $files = $data['image'];
+            $this->image_repository->update($files, $id);
+        }
         return $room;
     }
 
     public function delete($id) {
         $room = $this::show($id);
-        $room->images()->delete();
+        //$room->images()->delete();
         $room->rents()->delete();
         $room->rent_requests()->delete();
-        return $room->delete();
+        $this->image_repository->delete($id);
+        $room->delete();
     }
 
     public function checkUsed($id) {

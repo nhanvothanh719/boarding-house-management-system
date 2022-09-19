@@ -122,7 +122,7 @@ class BalanceRepository implements BalanceRepositoryInterface
         //Automatically add income
         $balance = Balance::create([
             'description' => 'Income from invoice with ID: '.$invoice->id,
-            'is_income' => 1,
+            'is_income' => Balance::CATEGORY_EARNED,
             'amount' => $invoice->total,
             'occurred_on' => date('Y-m-d', strtotime(' +0 day')),
         ]);
