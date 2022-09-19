@@ -2,11 +2,19 @@
 
 namespace App\Repositories\BreachHistory;
 
-use App\Helpers\CustomHelper;
 use App\Models\BreachHistory;
+
+use App\Repositories\User\UserRepositoryInterface;
 
 class BreachHistoryRepository implements BreachHistoryRepositoryInterface 
 {
+    private $user_repository;
+
+    public function __construct(UserRepositoryInterface $user_repository) 
+    {
+        $this->user_repository = $user_repository;
+    }
+
     public function all() {
         return BreachHistory::all();
     }
@@ -29,9 +37,17 @@ class BreachHistoryRepository implements BreachHistoryRepositoryInterface
     }
 
     public function calculateBreachRemainAllowedNumber($renter_id, $breach_id) {
-        $allowed_violate_number = CustomHelper::getBreachAllowedNumber($breach_id);
+        $allowed_violate_number = $this->breach_repository->getAllowedViolationNumberOfBreach($breach_id);
         $breach_count = BreachHistory::where('breach_id', $breach_id)->where('renter_id', $renter_id)->count();
         $remain_allowed_number = $allowed_violate_number - $breach_count;
         return $remain_allowed_number;
+    }
+
+    public function checkAdminRole($id) {
+        return $this->user_repository->checkAdminRole($id);
+    }
+
+    public function lockUserAccount($id) {
+        return $this->user_repository->lockUserAccount($id);
     }
 }

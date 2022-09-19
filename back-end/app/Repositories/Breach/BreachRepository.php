@@ -49,4 +49,8 @@ class BreachRepository implements BreachRepositoryInterface
     public function calculateTotalNumberBreachMade() {
         return Breach::withCount('breach_histories')->get();
     }
+
+    public function getAllowedViolationNumberOfBreach($id) {
+        return $this::show($id)->allowed_violate_number;
+    }
 }

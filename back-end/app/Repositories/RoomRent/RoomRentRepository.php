@@ -2,9 +2,8 @@
 
 namespace App\Repositories\RoomRent;
 
-use App\Helpers\CustomHelper;
-
 use App\Models\RoomRent;
+
 use App\Repositories\Room\RoomRepositoryInterface;
 use App\Repositories\User\UserRepositoryInterface;
 

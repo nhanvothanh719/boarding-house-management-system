@@ -12,4 +12,5 @@ interface BreachRepositoryInterface
 
     public function checkUsed($id);
     public function calculateTotalNumberBreachMade();
+    public function getAllowedViolationNumberOfBreach($id);
 }

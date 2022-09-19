@@ -37,7 +37,7 @@ class ServiceRegistrationController extends Controller
                 'status' => 422,
             ]);
         }
-        if(CustomHelper::isAdminRole($request->user_id)) {
+        if($this->service_registration->checkAdminRole($request->user_id)) {
             return response([
                 'message' => 'Cannot register since the user is not renter',
                 'status' => 403,

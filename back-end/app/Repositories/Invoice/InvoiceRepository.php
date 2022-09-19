@@ -53,14 +53,6 @@ class InvoiceRepository implements InvoiceRepositoryInterface
         $invoice->valid_until = $data['valid_until'];
         $invoice->month = $data['month'];
         $invoice->save();
-
-        // $invoice_info = new stdClass();
-        // $invoice_info->month = $invoice->month;
-        // $invoice_info->year = $invoice->year;
-        // $invoice_info->amount = $invoice->total;
-        // $invoice_info->payment_method = 'Cash';
-
-        //$add_balance = CustomHelper::handleAfterPayment($invoice_info, $invoice->renter_id, $id);
     }
 
     public function delete($id) {

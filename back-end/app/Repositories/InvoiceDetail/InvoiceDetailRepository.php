@@ -2,8 +2,6 @@
 
 namespace App\Repositories\InvoiceDetail;
 
-use App\Helpers\CustomHelper;
-
 use App\Models\InvoiceDetail;
 
 class InvoiceDetailRepository implements InvoiceDetailRepositoryInterface 

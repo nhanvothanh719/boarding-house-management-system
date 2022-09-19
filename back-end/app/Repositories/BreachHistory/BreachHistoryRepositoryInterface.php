@@ -10,4 +10,6 @@ interface BreachHistoryRepositoryInterface
     public function delete($id);
 
     public function calculateBreachRemainAllowedNumber($renter_id, $breach_id);
+    public function checkAdminRole($id);
+    public function lockUserAccount($id);
 }

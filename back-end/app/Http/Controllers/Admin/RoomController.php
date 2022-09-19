@@ -78,11 +78,6 @@ class RoomController extends Controller
         $old_room_number = $room->number;
         if($room) {
             $this->room->update($request->all(), $id);
-            // if($request->hasFile('image')) {
-            //     //Update images
-            //     $files = $request->file('image');
-            //     $are_images_updated = CustomHelper::updateRoomImages($files, $id, $old_room_number);
-            // }
             return response([
                 'message' => 'Successfully update room',
                 'status' => 200,
@@ -103,8 +98,6 @@ class RoomController extends Controller
                     'status' => 403,
                 ]);
             }
-            //Delete images
-            //$are_images_deleted = CustomHelper::deleteRoomImages($id);
             $this->room->delete($id);
             return response([
                 'status' => 200,

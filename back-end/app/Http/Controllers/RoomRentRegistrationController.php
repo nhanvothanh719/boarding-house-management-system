@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\CustomHelper;
-use App\Models\Room;
 use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\Validator;
 
 use App\Repositories\RoomRentRegistration\RoomRentRegistrationRepositoryInterface;
@@ -78,7 +77,6 @@ class RoomRentRegistrationController extends Controller
         }
         return response([
             'message' => 'Cannot update due to gender of sender or room condition',
-            //'test' => $room,
             'status' => 403,
         ]);
         

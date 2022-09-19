@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\CustomHelper;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Mail; 
@@ -207,15 +205,9 @@ class UserController extends Controller
                 'status' => 404,
             ]);
         }
-        if(CustomHelper::isAdminRole($user->id)){
-            return response([
-                'message' => 'Cannot lock account of user with admin role',
-                'status' => 403,
-            ]);
-        }
-        $is_locked = $this->user->lockUserAccount($id);
+        $is_locked_message = $this->user->lockUserAccount($id);
         return response([
-            'message' => $is_locked,
+            'message' => $is_locked_message,
             'status' => 200,
         ]);
     }

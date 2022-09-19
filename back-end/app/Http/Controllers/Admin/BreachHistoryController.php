@@ -5,8 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Helpers\CustomHelper;
-
 use App\Mail\RuleViolateMail;
 
 use App\Repositories\BreachHistory\BreachHistoryRepositoryInterface;
@@ -42,7 +40,7 @@ class BreachHistoryController extends Controller
                 'status' => 422,
             ]);
         }
-        if(CustomHelper::isAdminRole($request->renter_id)) {
+        if($this->breach_history->checkAdminRole($request->renter_id)) {
             return response([
                 'message' => 'The user is not renter',
                 'status' => 403,
@@ -51,7 +49,7 @@ class BreachHistoryController extends Controller
         $remain_allowed_number = $this->breach_history->calculateBreachRemainAllowedNumber($request->renter_id, $request->breach_id);
         //Lock user's account
         if($remain_allowed_number == 1) {
-            $is_locked_successfully = CustomHelper::lockUserAccount($request->renter_id, true);
+            $is_locked_successfully = $this->breach_history->lockUserAccount($request->renter_id);
         }
         if($remain_allowed_number <= 0) {
             return response([

@@ -131,6 +131,10 @@ class UserRepository implements UserRepositoryInterface
     public function lockUserAccount($id)
     {
         $message = 'Lock account successfully';
+        if($this::checkAdminRole($id)) {
+            $message = 'Cannot lock account with Admin role';
+            return $message;
+        }
         $user = $this::show($id);
         if($user->is_locked == User::LOCKED_ACCOUNT) {
             $user->is_locked = User::AVAILABLE_ACCOUNT;

@@ -2,8 +2,6 @@
 
 namespace App\Repositories\PasswordReset;
 
-use App\Helpers\CustomHelper;
-
 use App\Models\PasswordReset;
 
 use App\Repositories\User\UserRepositoryInterface;

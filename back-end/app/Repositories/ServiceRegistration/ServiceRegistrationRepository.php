@@ -4,8 +4,17 @@ namespace App\Repositories\ServiceRegistration;
 
 use App\Models\ServiceRegistration;
 
+use App\Repositories\User\UserRepositoryInterface;
+
 class ServiceRegistrationRepository implements ServiceRegistrationRepositoryInterface
 {
+    private $user_repository;
+
+    public function __construct(UserRepositoryInterface $user_repository) 
+    {
+        $this->user_repository = $user_repository;
+    }
+
     public function all() {
         return ServiceRegistration::all();
     }
@@ -33,5 +42,9 @@ class ServiceRegistrationRepository implements ServiceRegistrationRepositoryInte
             $is_existed = true;
         }
         return $is_existed;
+    }
+
+    public function checkAdminRole($id) {
+        return $this->user_repository->checkAdminRole($id);
     }
 }
