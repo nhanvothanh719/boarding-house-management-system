@@ -7,7 +7,7 @@
 </head>
 <body>
     <p>You received an email sent from BeeHouse manager.</p>
-    <p>Your payment with {{ $payment_method_name }} for the {{ $month }}/{{ $year }} invoice is made successfully.</p>
+    <p>Your payment with {{ $payment_method }} for the {{ $month }}/{{ $year }} invoice is made successfully.</p>
     <p>Thank you for believing us.</p>
 </body>
 </html>

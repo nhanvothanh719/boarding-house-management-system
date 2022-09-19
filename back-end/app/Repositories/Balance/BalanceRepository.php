@@ -6,6 +6,10 @@ use \stdClass;
 
 use App\Models\Balance;
 
+use App\Mail\InvoicePaidMail;
+
+use Illuminate\Support\Facades\Mail;
+
 class BalanceRepository implements BalanceRepositoryInterface 
 {
     public function all() {
@@ -112,5 +116,24 @@ class BalanceRepository implements BalanceRepositoryInterface
         $earned->total = Balance::where('is_income', Balance::CATEGORY_EARNED)->sum('amount');
         array_push($money_type, $earned);
         return $money_type;
+    }
+
+    public function handleAfterPayment($invoice, $payment_method) {
+        //Automatically add income
+        $balance = Balance::create([
+            'description' => 'Income from invoice with ID: '.$invoice->id,
+            'is_income' => 1,
+            'amount' => $invoice->total,
+            'occurred_on' => date('Y-m-d', strtotime(' +0 day')),
+        ]);
+        //Send email confirmation
+        $renter_email = $invoice->renter->email;
+        Mail::to($renter_email)->send(new InvoicePaidMail(
+            $invoice->month,
+            $invoice->year,
+            $invoice->total,
+            $payment_method
+        ));
+        return $balance;
     }
 }

@@ -5,14 +5,18 @@ namespace App\Repositories\PaymentHistory;
 use App\Models\PaymentHistory;
 
 use App\Repositories\Invoice\InvoiceRepositoryInterface;
+use App\Repositories\Balance\BalanceRepositoryInterface;
 
 class PaymentHistoryRepository implements PaymentHistoryRepositoryInterface 
 {
     private $invoice_repository;
+    private $balance_repository;
 
-    public function __construct(InvoiceRepositoryInterface $invoice_repository) 
+    public function __construct(InvoiceRepositoryInterface $invoice_repository,
+    BalanceRepositoryInterface $balance_repository) 
     {
         $this->invoice_repository = $invoice_repository;
+        $this->balance_repository = $balance_repository;
     }
 
     public function show($id) {
@@ -45,7 +49,7 @@ class PaymentHistoryRepository implements PaymentHistoryRepositoryInterface
         $payment->made_at = date('Y-m-d H:i:s');
         $payment->save();
         
-        //CustomHelper::handleAfterPayment($request, $user_id ,$id);
+        $this->balance_repository->handleAfterPayment($invoice, $payment_method);
 
         return $is_stored;
     }
