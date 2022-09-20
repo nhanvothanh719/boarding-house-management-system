@@ -31,4 +31,5 @@ interface UserRepositoryInterface
     public function countRentersByGender();
     public function getRenterInvoices($id);
     public function countRenterTotalUsedServicesAmount($id);
+    public function getRenterBreachHistories($id);
 }

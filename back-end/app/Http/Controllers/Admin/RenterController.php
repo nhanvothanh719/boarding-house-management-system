@@ -121,17 +121,9 @@ class RenterController extends Controller
                 'status' => 404,
             ]);
         }
-        $breaches_id = Breach::pluck('id')->toArray();
-        $breaches_total = array();
-        foreach($breaches_id as $breach_id) {
-            $item = new stdClass();
-            $item->breach_name = Breach::find($breach_id)->name;
-            $item->total = BreachHistory::where('renter_id', $id)->where('breach_id', $breach_id)->count();;
-            array_push($breaches_total, $item);
-        }
         return response([
             'status' => 200,
-            'breachesTotal' => $breaches_total,
+            'breachesTotal' => $this->renter->getRenterBreachHistories($id),
         ]);
     }
 }

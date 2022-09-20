@@ -1,5 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 import swal from "sweetalert";
 import axios from "axios";
@@ -52,7 +53,10 @@ export default function RentRoom() {
       {
         field: "room_id",
         title: "Room number",
-        render: (rowData) => <p> {rowData.room.number} </p>,
+        render: (rowData) => 
+        <Link className="customDashboardLink" to={`/admin/edit-room/${rowData.room_id}`}>
+          {rowData.room.number}
+          </Link>,
       },
       {
         field: "renter_id",
@@ -70,7 +74,7 @@ export default function RentRoom() {
                 alt="avatar"
                 className="topAvatar"
               />
-              <p style={{ display: "inline" }}> {rowData.renter.name} </p>
+              <Link className="customDashboardLink" to={`/admin/edit-user/${rowData.renter_id}`}>{rowData.renter.name}</Link>
             </span>
           );
         },

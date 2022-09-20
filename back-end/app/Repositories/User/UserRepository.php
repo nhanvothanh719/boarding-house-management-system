@@ -15,6 +15,7 @@ use App\Models\User;
 
 use App\Jobs\SendAnnouncementMail;
 use App\Mail\AnnouncementMail;
+use Illuminate\Database\Eloquent\Builder;
 
 class UserRepository implements UserRepositoryInterface
 {
@@ -258,5 +259,22 @@ class UserRepository implements UserRepositoryInterface
             array_push($services_count, $item);
         }
         return $services_count;
+    }
+
+    public function getRenterBreachHistories($id) {
+        $renter_breach_histories = $this::show($id)->breach_histories;
+        $unique_breach_histories = collect($renter_breach_histories)->unique('breach_id')->values()->all();
+        $breaches_total = array();
+        foreach($unique_breach_histories as $breach_history) {
+            $item = new stdClass;
+            $item->breach_name = $breach_history->breach->name;
+            $breach_id = $breach_history->breach->id;
+            $item->total = User::withCount([
+                'breach_histories' => function ($query) use($breach_id) {
+                    $query->where('breach_id', $breach_id);
+                }])->where('id', $id)->get()[0]->breach_histories_count;
+            array_push($breaches_total, $item);
+        }
+        return $breaches_total;
     }
 }

@@ -37,7 +37,8 @@ class BreachHistoryRepository implements BreachHistoryRepositoryInterface
     }
 
     public function calculateBreachRemainAllowedNumber($renter_id, $breach_id) {
-        $allowed_violate_number = $this->breach_repository->getAllowedViolationNumberOfBreach($breach_id);
+        $id = BreachHistory::where('breach_id', $breach_id)->first()->id;
+        $allowed_violate_number = $this::show($id)->breach->allowed_violate_number;
         $breach_count = BreachHistory::where('breach_id', $breach_id)->where('renter_id', $renter_id)->count();
         $remain_allowed_number = $allowed_violate_number - $breach_count;
         return $remain_allowed_number;

@@ -121,6 +121,7 @@ Route::middleware('auth:api')->group(function(){
         Route::get('/get-renter-invoices/{id}', [RenterController::class, 'getRenterInvoices']);
         Route::get('/get-renter-total-used-services-amount/{id}', [RenterController::class, 'countRenterTotalUsedServicesAmount']);
         Route::get('/count-renters-by-gender', [RenterController::class, 'countRentersByGender']);
+        Route::get('/count-renter-breaches/{id}', [RenterController::class, 'countRenterBreaches']);
 
         //Motorbike
         Route::get('/all-motorbikes', [MotorbikeController::class, 'index']);
@@ -177,8 +178,6 @@ Route::middleware('auth:api')->group(function(){
         Route::get('/all-breach-histories', [BreachHistoryController::class, 'getBreachHistories']);
         Route::post('/store-breach-history', [BreachHistoryController::class, 'storeBreachHistory']);
         Route::delete('/delete-breach-history/{id}', [BreachHistoryController::class, 'deleteBreachHistory']);
-
-        Route::get('/count-renter-breaches/{id}', [BreachHistoryController::class, 'countRenterBreaches']);
 
         //Room contract
         Route::get('/all-room-contracts', [RoomContractController::class, 'index']);

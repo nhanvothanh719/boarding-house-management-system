@@ -30,13 +30,13 @@ export default function RenterBreachCount(props) {
     <Fragment>
       <div className="customChartContainer">
         <h3 className="customChartTitle">{chartTitle}</h3>
-        <BarChart width={730} height={250} data={breachesTotal}>
+        <BarChart width={1050} height={250} barSize={50} data={breachesTotal}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="breach_name" />
           <YAxis />
           <Tooltip />
           <Legend />
-          <Bar dataKey="total" fill={color} />
+          <Bar dataKey="total" fill={color} name="Total"/>
         </BarChart>
       </div>
     </Fragment>
