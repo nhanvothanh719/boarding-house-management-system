@@ -39,7 +39,7 @@ function ForgetPasswordPage(props) {
           setErrors(response.data.errors);
         } else if (response.data.status === 404) {
           swal("Error", response.data.message, "error");
-        } else if (response.data.status === 403) {
+        } else if (response.data.status === 400) {
           swal("Warning", response.data.message, "warning");
         }
         setDisplayComponentsClass("");

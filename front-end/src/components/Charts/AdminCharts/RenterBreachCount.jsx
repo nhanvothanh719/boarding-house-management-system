@@ -32,7 +32,7 @@ export default function RenterBreachCount(props) {
         <h3 className="customChartTitle">{chartTitle}</h3>
         <BarChart width={1050} height={250} barSize={50} data={breachesTotal}>
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="breach_name" />
+          <XAxis dataKey="name" />
           <YAxis />
           <Tooltip />
           <Legend />

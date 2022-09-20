@@ -81,4 +81,24 @@ class RoomRentRepository implements RoomRentRepositoryInterface
         }
         return $is_same_gender;
     }
+
+    public function checkRentRoom($renter_id) {
+        return RoomRent::where('renter_id', $renter_id)->first() ? true : false;
+    }
+
+    public function getRenterRoom($renter_id) {
+        $rented_room_id = RoomRent::where('renter_id', $renter_id)->value('room_id');
+        return $this->room_repository->show($rented_room_id);
+    }
+
+    public function getRenterCurrentRoomPartners($renter_id) {
+        $rented_room_id = RoomRent::where('renter_id', $renter_id)->value('room_id');
+        $roommates_id = RoomRent::where('room_id', $rented_room_id)->where('renter_id', '!=', $renter_id)->pluck('renter_id');
+        $roommates = array();
+        foreach($roommates_id as $roommate_id) {
+            $roommate = $this->user_repository->show($roommate_id);
+            array_push($roommates, $roommate);
+        }
+        return $roommates;
+    }
 }

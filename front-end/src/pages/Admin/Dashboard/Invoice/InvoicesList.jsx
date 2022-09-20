@@ -65,7 +65,7 @@ export default function InvoicesList() {
       if (res.data.status === 200) {
         swal("Success", res.data.message, "success");
         setInvoicesListChange(true);
-      } else if (res.data.status === 403) {
+      } else if (res.data.status === 400) {
         swal("Warning", res.data.message, "warning");
       }
       setDisplayComponentsClass("");
@@ -220,7 +220,7 @@ export default function InvoicesList() {
                           setInvoicesListChange(true);
                         } else if (response.data.status === 404) {
                           swal("Error", response.data.message, "error");
-                        } else if (response.data.status === 403) {
+                        } else if (response.data.status === 400) {
                           swal("Warning", response.data.message, "warning");
                         }
                       });

@@ -16,4 +16,7 @@ interface InvoiceRepositoryInterface
     public function checkOverdue($id);
 
     public function countInvoices();
+
+    public function getRenterPaidInvoices($renter_id);
+    public function getRenterUnpaidInvoices($renter_id);
 }

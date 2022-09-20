@@ -42,7 +42,7 @@ function LoginPage() {
           swal("Success", response.data.message, "success");
         } else if (response.data.status === 401) {
           swal("Error", response.data.message, "error");
-        } else if (response.data.status === 403) {
+        } else if (response.data.status === 400) {
           swal("Warning", response.data.message, "warning");
         }
       })

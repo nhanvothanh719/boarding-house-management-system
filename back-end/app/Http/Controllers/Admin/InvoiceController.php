@@ -46,13 +46,13 @@ class InvoiceController extends Controller
         if($this->invoice->checkCreated($renter_id, $request->month)) {
             return response([
                 'message' => 'Renter has already had invoice for the chosen month',
-                'status' => 403,
+                'status' => 400,
             ]);
         }
         if($request->extra_fee && !$request->extra_fee_description) {
             return response([
                 'message' => 'The description field is needed',
-                'status' => 403,
+                'status' => 400,
             ]);
         }
         $invoice = $this->invoice->store($request->all(), $renter_id);
@@ -116,7 +116,7 @@ class InvoiceController extends Controller
         if($this->invoice->checkPaid($id)) {
             return response([
                 'message' => 'Cannot delete since this invoice is paid',
-                'status' => 403,
+                'status' => 400,
             ]);
         }
         $this->invoice->delete($id);
@@ -134,7 +134,7 @@ class InvoiceController extends Controller
         if($room == null) {
             return response([
                 'message' => 'Renter was not in any room',
-                'status' => 403,
+                'status' => 400,
             ]);
         }
         $room_number = $room->number;

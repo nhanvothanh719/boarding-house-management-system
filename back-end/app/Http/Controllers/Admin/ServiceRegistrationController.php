@@ -40,14 +40,14 @@ class ServiceRegistrationController extends Controller
         if($this->service_registration->checkAdminRole($request->user_id)) {
             return response([
                 'message' => 'Cannot register since the user is not renter',
-                'status' => 403,
+                'status' => 400,
             ]);
         }
         $check_existed_registration = $this->service_registration->checkExisted($request->user_id, $request->service_id);
         if($check_existed_registration) {
             return response([
                 'message' => 'This renter has already registered to use this service',
-                'status' => 403,
+                'status' => 400,
             ]);
         }
         $service_registration = $this->service_registration->store($request->all());

@@ -10,4 +10,8 @@ interface RoomRentRepositoryInterface
 
     public function accept($data);
     public function cancel($id);
+
+    public function checkRentRoom($renter_id);
+    public function getRenterRoom($renter_id);
+    public function getRenterCurrentRoomPartners($renter_id);
 }

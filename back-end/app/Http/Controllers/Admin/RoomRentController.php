@@ -42,7 +42,7 @@ class RoomRentController extends Controller
         if(!$is_updated) {
             return response([
                 'message' => 'Cannot add renter due to room status or gender of renter',
-                'status' => 403,
+                'status' => 400,
             ]);
         }
         $rent = $this->rent->store($request->all());
@@ -64,7 +64,7 @@ class RoomRentController extends Controller
         if(!$is_updated) {
             return response([
                 'message' => 'Cannot remove renter',
-                'status' => 403,
+                'status' => 400,
             ]);
         }
         return response([

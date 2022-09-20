@@ -83,7 +83,7 @@ export default function CreateBreachHistoryModal(props) {
             setTimeout(() => {
               displayModal();
             }, 1000);
-          } else if (response.data.status === 403) {
+          } else if (response.data.status === 400) {
             swal("Warning", response.data.message, "warning");
           }
           props.setLoaderClass('d-none');

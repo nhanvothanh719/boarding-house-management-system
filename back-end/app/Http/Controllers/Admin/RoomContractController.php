@@ -50,7 +50,7 @@ class RoomContractController extends Controller
         {
             return response([
                 'message' => 'The user is not renter',
-                'status' => 403,
+                'status' => 400,
             ]);
         }
         $owner_signature = $request->file('owner_signature');

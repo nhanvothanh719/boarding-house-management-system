@@ -43,7 +43,7 @@ class BreachHistoryController extends Controller
         if($this->breach_history->checkAdminRole($request->renter_id)) {
             return response([
                 'message' => 'The user is not renter',
-                'status' => 403,
+                'status' => 400,
             ]);
         }
         $remain_allowed_number = $this->breach_history->calculateBreachRemainAllowedNumber($request->renter_id, $request->breach_id);
@@ -54,7 +54,7 @@ class BreachHistoryController extends Controller
         if($remain_allowed_number <= 0) {
             return response([
                 'message' => 'Fail to add since the renter has committed this breach more than allowed times',
-                'status' => 403,
+                'status' => 400,
             ]);
         }
         $breach_history = $this->breach_history->store($request->all());

@@ -4,6 +4,8 @@ namespace App\Repositories\Service;
 
 use App\Models\Service;
 
+use Illuminate\Database\Eloquent\Builder;
+
 class ServiceRepository implements ServiceRepositoryInterface
 {
     public function all() {
@@ -64,11 +66,11 @@ class ServiceRepository implements ServiceRepositoryInterface
         return $is_compulsory;
     }
 
-    public function allOptionalServices() {
+    public function getAllOptionalServices() {
         return Service::where('is_compulsory', Service::OPTIONAL)->get();
     }
 
-    public function allCompulsoryServices() {
+    public function getAllCompulsoryServices() {
         $compulsory_services = array();
         $all_services = Service::where('is_compulsory', Service::COMPULSORY)->get();
         foreach($all_services as $service) {
@@ -80,5 +82,12 @@ class ServiceRepository implements ServiceRepositoryInterface
 
     public function countUsedServices() {
         return Service::withCount('users')->get();
+    }
+
+    public function getRegisteredServices($renter_id) {
+        //select * from services WHERE EXISTS(SELECT * FROM services WHERE service_registrations(or users).user_id = $renter_id);
+        return Service::whereHas('users', function (Builder $query) use($renter_id) {
+            $query->where('user_id', $renter_id);
+           })->get();
     }
 }

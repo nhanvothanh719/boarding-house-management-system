@@ -98,7 +98,7 @@ class RenterProblemController extends Controller
         if($problem->renter->id != Auth::user()->id) {
             return response([
                 'message' => 'Cannot delete problem belonging to others',
-                'status' => 403,
+                'status' => 400,
             ]);
         }
         $this->problem->delete($id);

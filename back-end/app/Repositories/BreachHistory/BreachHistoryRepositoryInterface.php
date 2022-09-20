@@ -14,4 +14,6 @@ interface BreachHistoryRepositoryInterface
     public function lockUserAccount($id);
 
     public function getTotalBreachesByMonth();
+
+    public function getHistoriesOfBreach($renter_id, $breach_id) ;
 }

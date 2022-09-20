@@ -69,4 +69,8 @@ class BreachHistoryRepository implements BreachHistoryRepositoryInterface
         }
         return $breaches_in_month_count;
     }
+
+    public function getHistoriesOfBreach($renter_id, $breach_id) {
+        return BreachHistory::where('renter_id', $renter_id)->where('breach_id', $breach_id)->get();
+    }
 }

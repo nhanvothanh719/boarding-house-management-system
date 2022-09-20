@@ -77,7 +77,7 @@ class RoomRentRegistrationController extends Controller
         }
         return response([
             'message' => 'Cannot update due to gender of sender or room condition',
-            'status' => 403,
+            'status' => 400,
         ]);
         
     }

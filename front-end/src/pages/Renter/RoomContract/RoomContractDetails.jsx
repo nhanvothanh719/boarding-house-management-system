@@ -42,8 +42,7 @@ export default function RoomContractDetails() {
     return (
       <Fragment>
         <WebPageTitle pageTitle="Room contract details" />
-        {/* <RoomContract roomContract={details} /> */}
-        <Error errorMessage={errorMessage} />
+        <RoomContract roomContract={details} />
       </Fragment>
     );
   }

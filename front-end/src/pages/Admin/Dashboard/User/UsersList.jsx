@@ -52,7 +52,7 @@ export default function UsersList() {
       if (response.data.status === 200) {
         swal("Success", response.data.message, "success");
         setUsersListChange(true);
-      } else if (response.data.status === 403) {
+      } else if (response.data.status === 400) {
         swal("Warning", response.data.message, "warning");
       }
     });

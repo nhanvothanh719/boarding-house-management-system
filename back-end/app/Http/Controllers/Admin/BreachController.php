@@ -97,7 +97,7 @@ class BreachController extends Controller
             if($this->breach->checkUsed($id)) {
                 return response([
                     'message' => 'Cannot delete this breach since it is used',
-                    'status' => 403,
+                    'status' => 400,
                 ]);
             }
             $this->breach->delete($id);

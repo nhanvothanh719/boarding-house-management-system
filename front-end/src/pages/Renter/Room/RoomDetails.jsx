@@ -5,11 +5,13 @@ import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 
 import AppUrl from "../../../RestAPI/AppUrl";
 import axios from "axios";
+import swal from "sweetalert";
 
 import Loading from "../../../components/Loading/Loading";
 import WebPageTitle from "../../../components/WebPageTitle/WebPageTitle";
 import noImage from "../../../assets/images/no_image.jpeg";
 import "../../../assets/css/Renter/details.css";
+import Error from "../Error/Error";
 
 export default function RoomDetails() {
   const [loading, setLoading] = useState(true);
@@ -24,17 +26,33 @@ export default function RoomDetails() {
     images: []
   });
   const [otherRoommates, setOtherRoommates] = useState([]);
+  const [errorDisplay, setErrorDisplay] = useState(false);
+  const errorMessage =
+    "Oops. You has not assigned to any rooms. Please contact with the admin.";
 
   useEffect(() => {
     axios.get(AppUrl.GetRenterRoomInfo).then((response) => {
       if (response.data.status === 200) {
         setRoom(response.data.room);
         setOtherRoommates(response.data.roommates);
+        console.log(response.data.room);
+      } else if (response.data.status === 404) {
+        swal("Error", response.data.message, "error");
+        setErrorDisplay(true);
       }
     });
     setLoading(false);
   }, []);
 
+  if (loading) {
+    return <Loading />;
+  } else if (errorDisplay) {
+    return (
+      <Fragment>
+        <Error errorMessage={errorMessage} />
+      </Fragment>
+    );
+  } else {
   var display_images = "";
   if (room.images.length === 0) {
     display_images = 
@@ -79,10 +97,6 @@ export default function RoomDetails() {
             </div>
       );
     });
-
-  if(loading) {
-    return <Loading/>
-  }
   return (
     <Fragment>
       <WebPageTitle pageTitle="Room details" />
@@ -135,4 +149,5 @@ export default function RoomDetails() {
       </div>
     </Fragment>
   );
+  }
 }

@@ -142,7 +142,9 @@ class AppUrl {
 
   static GetRenterRoomContract = this.BaseURL + "/get-renter-room-contract";
 
-  static GetAllRenterBreaches = this.BaseURL + "/get-all-renter-breaches";
+  //
+  static GetAllRenterBreaches = this.BaseURL + "/get-renter-breaches";
+  //
   static GetBreachDetails = this.BaseURL + "/get-breach-details/";
   static GetRenterBreachHistories = this.BaseURL + "/get-renter-breach-histories/";
 

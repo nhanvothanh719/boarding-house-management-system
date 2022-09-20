@@ -19,7 +19,7 @@ class PaymentController extends Controller
         $is_paid = $this->payment->store($request->all(), $id);
         if(!$is_paid) {
             return response([
-                'status' => 403,
+                'status' => 400,
                 'message' => 'Cannot paid invoice due to it is overdue',
             ]);
         }

@@ -23,15 +23,15 @@ use App\Http\Controllers\Admin\ProblemController;
 use App\Http\Controllers\Admin\RoomRentController;
 use App\Http\Controllers\Admin\PaymentController;
 
-use App\Http\Controllers\Admin\DashboardController;
-
-use App\Http\Controllers\Renter\RenterRoomController;
+use App\Http\Controllers\Renter\RenterBreachController;
 use App\Http\Controllers\Renter\RenterInvoiceController;
 use App\Http\Controllers\Renter\RenterProblemController;
 use App\Http\Controllers\Renter\RenterServiceController;
 use App\Http\Controllers\Renter\RenterRoomContractController;
 use App\Http\Controllers\Renter\RenterBreachHistoryController;
+use App\Http\Controllers\Renter\RenterInfoController;
 use App\Http\Controllers\Renter\RenterPaymentController;
+use App\Http\Controllers\Renter\RenterRoomRentController;
 
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/register', [AuthController::class, 'register']);
@@ -56,7 +56,9 @@ Route::middleware('auth:api')->group(function(){
             return response(['message' => 'Login successfully. You are the renter', 'status' => 200]);
         }); 
 
-        Route::get('/get-renter-room-info', [RenterRoomController::class, 'getRoomInfo']);
+        Route::get('/get-renter-breaches', [RenterInfoController::class, 'getRenterBreaches']);
+        
+        Route::get('/get-renter-room-info', [RenterRoomRentController::class, 'getRenterRoomInfo']);
 
         Route::get('/get-invoice-details/{id}', [RenterInvoiceController::class, 'getInvoiceDetails']);
         Route::get('/all-renter-invoices', [RenterInvoiceController::class, 'getRenterInvoices']);
@@ -73,9 +75,8 @@ Route::middleware('auth:api')->group(function(){
 
         Route::get('/get-renter-room-contract', [RenterRoomContractController::class, 'getRenterRoomContract']);
 
-        //
-        Route::get('/get-renter-breaches', [RenterBreachHistoryController::class, 'getRenterBreaches']);
-        Route::get('/get-breach-details/{id}', [RenterBreachHistoryController::class, 'getBreachDetails']);
+        Route::get('/get-breach-details/{id}', [RenterBreachController::class, 'getBreachDetails']);
+        
         Route::get('/get-renter-breach-histories/{id}', [RenterBreachHistoryController::class, 'getRenterBreachHistories']);
     });
 

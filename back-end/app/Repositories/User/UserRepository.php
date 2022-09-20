@@ -261,19 +261,28 @@ class UserRepository implements UserRepositoryInterface
         return $services_count;
     }
 
-    public function getRenterBreachHistories($id) {
+    public function getUniqueRenterBreachHistoriesByBreach($id) {
         $renter_breach_histories = $this::show($id)->breach_histories;
         $unique_breach_histories = collect($renter_breach_histories)->unique('breach_id')->values()->all();
+        return $unique_breach_histories;
+    }
+
+    public function getRenterBreachHistories($id) {
+        $unique_breach_histories = $this::getUniqueRenterBreachHistoriesByBreach($id);
         $breaches_total = array();
         foreach($unique_breach_histories as $breach_history) {
-            $item = new stdClass;
-            $item->breach_name = $breach_history->breach->name;
+            $breach = new stdClass;
+            $breach->id = $breach_history->breach->id;
+            $breach->name = $breach_history->breach->name;
+            $breach->severity_level = $breach_history->breach->severity_level;
+            $breach->allowed_violate_number = $breach_history->breach->allowed_violate_number;
+            $breach->description = $breach_history->breach->description;
             $breach_id = $breach_history->breach->id;
-            $item->total = User::withCount([
+            $breach->total = User::withCount([
                 'breach_histories' => function ($query) use($breach_id) {
                     $query->where('breach_id', $breach_id);
                 }])->where('id', $id)->get()[0]->breach_histories_count;
-            array_push($breaches_total, $item);
+            array_push($breaches_total, $breach);
         }
         return $breaches_total;
     }

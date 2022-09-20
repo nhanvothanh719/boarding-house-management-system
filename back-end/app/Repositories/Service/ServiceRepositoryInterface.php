@@ -12,8 +12,10 @@ interface ServiceRepositoryInterface
 
     public function checkUsed($id);
     public function checkCompulsory($id);
-    public function allOptionalServices();
-    public function allCompulsoryServices();
+    public function getAllOptionalServices();
+    public function getAllCompulsoryServices();
 
     public function countUsedServices();
+
+    public function getRegisteredServices($renter_id);
 }

@@ -20,7 +20,7 @@ class AuthController extends Controller
             $user = $this->user->getCurrentUser();
             if($this->user->checkLockedAccount($user->id)) {
                 return response([
-                    'status' => 403,
+                    'status' => 400,
                     'message' => 'This account is temporary locked',
                 ]);
             }

@@ -102,4 +102,12 @@ class InvoiceRepository implements InvoiceRepositoryInterface
     public function countInvoices() {
         return Invoice::count();
     }
+
+    public function getRenterPaidInvoices($renter_id) {
+        return Invoice::has('payment')->where('renter_id', $renter_id)->get();
+    }
+
+    public function getRenterUnpaidInvoices($renter_id) {
+        return Invoice::doesntHave('payment')->where('renter_id', $renter_id)->get();
+    }
 }

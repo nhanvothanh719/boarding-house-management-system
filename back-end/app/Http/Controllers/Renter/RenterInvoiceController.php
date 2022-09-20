@@ -4,39 +4,26 @@ namespace App\Http\Controllers\Renter;
 
 use App\Http\Controllers\Controller;
 
-use App\Helpers\CustomHelper;
-
-use Illuminate\Http\Request;
+use App\Repositories\Invoice\InvoiceRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
-
-use App\Models\Invoice;
-use App\Models\InvoiceDetail;
-use App\Models\PaymentMethod;
-use App\Models\PaymentHistory;
 
 class RenterInvoiceController extends Controller
 {
-    public function getRenterInvoices() {
-        $current_renter_id = Auth::user()->id;
-        //Error
-        $unpaid_invoices = Invoice::where('renter_id', $current_renter_id)->get();
-        $paid_invoices = Invoice::where('renter_id', $current_renter_id)->get();
-        return response([
-            'status' => 200,
-            'unpaidInvoices' => $unpaid_invoices,
-            'paidInvoices' => $paid_invoices,
-        ]);
+    protected $invoice;
+
+    public function __construct(InvoiceRepositoryInterface $invoice) {
+        $this->invoice = $invoice;
     }
 
     public function getInvoiceDetails($id) {
-        $invoice = Invoice::find($id);
+        $invoice = $this->invoice->show($id);
         if(!$invoice) {
             return response([
                 'status' => 404,
                 'message' => 'No invoice found',
             ]);
         }
-        $invoice_details = InvoiceDetail::where('invoice_id', $id)->get();
+        $invoice_details = $this->invoice->getInvoiceDetails($invoice->id);
         return response([
             'status' => 200,
             'invoice' => $invoice,
@@ -44,7 +31,12 @@ class RenterInvoiceController extends Controller
         ]);
     }
 
-    // public function makePayment(Request $request, $id) {
-        
-    // }
+    public function getRenterInvoices() {
+        $current_renter_id = Auth::user()->id;
+        return response([
+            'status' => 200,
+            'unpaidInvoices' => $this->invoice->getRenterUnpaidInvoices($current_renter_id),
+            'paidInvoices' => $this->invoice->getRenterPaidInvoices($current_renter_id),
+        ]);
+    }
 }

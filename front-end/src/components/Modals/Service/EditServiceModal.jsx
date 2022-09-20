@@ -70,7 +70,7 @@ export default function EditServiceModal(props) {
           }, 1000);
         } else if (response.data.status === 404) {
           swal("Error", response.data.message, "error");
-        } else if (response.data.status === 403) {
+        } else if (response.data.status === 400) {
           swal("Warning", response.data.message, "warning");
         }
       })

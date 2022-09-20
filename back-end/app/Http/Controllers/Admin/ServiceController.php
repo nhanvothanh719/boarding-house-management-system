@@ -47,14 +47,14 @@ class ServiceController extends Controller
     public function getOptionalServices() {
         return response([
             'status' => 200,
-            'allOptionalServices' => $this->service->allOptionalServices(),
+            'allOptionalServices' => $this->service->getAllOptionalServices(),
         ]);
     }
 
     public function getCompulsoryServices() {
         return response([
             'status' => 200,
-            'allCompulsoryServices' => $this->service->allCompulsoryServices(),
+            'allCompulsoryServices' => $this->service->getAllCompulsoryServices(),
         ]);
     }
 
@@ -110,13 +110,13 @@ class ServiceController extends Controller
         if($this->service->checkCompulsory($id)) {
             return response([
                 'message' => 'Cannot delete compulsory service',
-                'status' => 403,
+                'status' => 400,
             ]);
         }
         if($this->service->checkUsed($id)) {
             return response([
                 'message' => 'Cannot delete this service since it is used',
-                'status' => 403,
+                'status' => 400,
             ]);
         }
         $this->service->delete($id);

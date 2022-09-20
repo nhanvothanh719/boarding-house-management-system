@@ -92,7 +92,7 @@ class RoomCategoryController extends Controller
             if($this->category->checkUsed($id)) {
                 return response([
                     'message' => 'Cannot delete this category since it is used',
-                    'status' => 403,
+                    'status' => 400,
                     'test' => $this->category->checkUsed($id),
                 ]);
             }

@@ -139,7 +139,7 @@ export default function UnpaidInvoiceDetails({ match }) {
                   if (res.data.status === 200) {
                     swal("success", res.data.message, "success");
                     setUpdatePage(true);
-                  } else if (res.data.status === 403) {
+                  } else if (res.data.status === 400) {
                     swal("Warning", res.data.message, "warning");
                   }
                   setDisplayComponentsClass('');
