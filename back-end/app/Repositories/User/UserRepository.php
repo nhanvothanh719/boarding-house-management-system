@@ -277,4 +277,8 @@ class UserRepository implements UserRepositoryInterface
         }
         return $breaches_total;
     }
+
+    public function countRenters() {
+        return User::where('role_id', User::ROLE_RENTER)->count();
+    }
 }

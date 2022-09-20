@@ -136,4 +136,8 @@ class BalanceRepository implements BalanceRepositoryInterface
         ));
         return $balance;
     }
+
+    public function getEarnedAmount() {
+        return round(Balance::where('is_income', Balance::CATEGORY_EARNED)->sum('amount'), 2);
+    }
 }

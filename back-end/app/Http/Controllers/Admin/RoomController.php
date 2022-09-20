@@ -109,4 +109,18 @@ class RoomController extends Controller
             'status' => 404,
         ]);
     }
+
+    public function countRoomsByStatus() {
+        return response([
+            'status' => 200,
+            'roomsCount' => $this->room->countRoomsByStatus()
+        ]);
+    }
+
+    public function countRooms() {
+        return response([
+            'status' => 200,
+            'total' => $this->room->countRooms(),
+        ]);
+    }
 }

@@ -5,6 +5,7 @@ namespace App\Repositories\Room;
 use App\Models\Room;
 use App\Repositories\RoomImage\RoomImageRepository;
 use App\Repositories\RoomImage\RoomImageRepositoryInterface;
+use stdClass;
 
 class RoomRepository implements RoomRepositoryInterface
 {
@@ -81,7 +82,7 @@ class RoomRepository implements RoomRepositoryInterface
         return $is_used;
     }
 
-    public static function updateIncreaseRoomStatus($id) {
+    public function updateIncreaseRoomStatus($id) {
         $is_updated = true;
         $room = Room::find($id);
         $room_status_id = $room->status_id;
@@ -100,7 +101,7 @@ class RoomRepository implements RoomRepositoryInterface
         return $is_updated;
     }
 
-    public static function updateDecreaseRoomStatus($id) {
+    public function updateDecreaseRoomStatus($id) {
         $is_updated = true;
         $room = Room::find($id);
         $room_status_id = $room->status_id;
@@ -117,5 +118,26 @@ class RoomRepository implements RoomRepositoryInterface
         }
         $room->save();
         return $is_updated;
+    }
+
+    public function countRoomsByStatus() {
+        $rooms_count = array();
+        $empty_rooms = new stdClass;
+        $empty_rooms->status = "Empty";
+        $empty_rooms->total = Room::where('status_id', ROOM::STATUS_EMPTY)->count();
+        array_push($rooms_count, $empty_rooms);
+        $occupied_rooms = new stdClass;
+        $occupied_rooms->status = "Occupied";
+        $occupied_rooms->total = Room::where('status_id', ROOM::STATUS_OCCUPIED)->count();
+        array_push($rooms_count, $occupied_rooms);
+        $full_rooms = new stdClass;
+        $full_rooms->status = "Full";
+        $full_rooms->total = Room::where('status_id', ROOM::STATUS_FULL)->count();
+        array_push($rooms_count, $full_rooms);
+        return $rooms_count;
+    }
+
+    public function countRooms() {
+        return Room::count();
     }
 }

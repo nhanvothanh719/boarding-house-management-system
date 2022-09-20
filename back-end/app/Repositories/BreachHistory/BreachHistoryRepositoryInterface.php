@@ -12,4 +12,6 @@ interface BreachHistoryRepositoryInterface
     public function calculateBreachRemainAllowedNumber($renter_id, $breach_id);
     public function checkAdminRole($id);
     public function lockUserAccount($id);
+
+    public function getTotalBreachesByMonth();
 }

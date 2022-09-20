@@ -79,4 +79,11 @@ class BreachHistoryController extends Controller
             'message' => 'Successfully delete breach history',
         ]);
     }
+
+    public function reportBreaches() {
+        return response([
+            'status' => 200,
+            'breachesInMonthCount' => $this->breach_history->getTotalBreachesByMonth(),
+        ]);
+    }
 }

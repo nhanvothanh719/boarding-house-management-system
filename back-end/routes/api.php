@@ -102,11 +102,13 @@ Route::middleware('auth:api')->group(function(){
         Route::delete('/delete-category/{id}', [RoomCategoryController::class, 'deleteCategory']);
 
         //Room
+        Route::get('/count-rooms', [RoomController::class, 'countRooms']);
         Route::get('/all-rooms', [RoomController::class, 'index']);
         Route::post('/store-room', [RoomController::class, 'storeRoom']);
         Route::get('/edit-room/{id}', [RoomController::class, 'editRoom']);
         Route::post('/update-room/{id}', [RoomController::class, 'updateRoom']);
         Route::delete('/delete-room/{id}', [RoomController::class, 'deleteRoom']);
+        Route::get('/count-rooms-by-status', [RoomController::class, 'countRoomsByStatus']);
 
         //Room rent
         Route::get('/all-room_rents', [RoomRentController::class, 'index']);
@@ -122,6 +124,7 @@ Route::middleware('auth:api')->group(function(){
         Route::get('/get-renter-total-used-services-amount/{id}', [RenterController::class, 'countRenterTotalUsedServicesAmount']);
         Route::get('/count-renters-by-gender', [RenterController::class, 'countRentersByGender']);
         Route::get('/count-renter-breaches/{id}', [RenterController::class, 'countRenterBreaches']);
+        Route::get('/count-renters', [RenterController::class, 'countRenters']);
 
         //Motorbike
         Route::get('/all-motorbikes', [MotorbikeController::class, 'index']);
@@ -140,6 +143,7 @@ Route::middleware('auth:api')->group(function(){
         Route::delete('/delete-service/{id}', [ServiceController::class, 'deleteService']);
         Route::get('/all-optional-services', [ServiceController::class, 'getOptionalServices']);
         Route::get('/all-compulsory-services', [ServiceController::class, 'getCompulsoryServices']);
+        Route::get('/count-used-services', [ServiceController::class, 'countUsedServices']);
         
         Route::get('/all-registrations', [ServiceRegistrationController::class, 'index']);
         Route::post('/register-service', [ServiceRegistrationController::class, 'registerService']);
@@ -157,6 +161,7 @@ Route::middleware('auth:api')->group(function(){
 
         //Payment
         Route::post('/pay-by-cash/{id}', [PaymentController::class, 'payInvoice']);
+        Route::get('/get-paid-invoices-rate', [PaymentController::class, 'getPaidInvoicesRate']);
 
         //Balance
         Route::get('/get-balance', [BalanceController::class, 'index']);
@@ -166,6 +171,7 @@ Route::middleware('auth:api')->group(function(){
         Route::get('/edit-balance-change/{id}', [BalanceController::class, 'editBalanceChange']);
         Route::put('/update-balance-change/{id}', [BalanceController::class, 'updateBalanceChange']);
         Route::delete('/delete-balance-change/{id}', [BalanceController::class, 'deleteBalanceChange']);
+        Route::get('/get-earned-amount', [BalanceController::class, 'getEarnedAmount']);
 
         //Breach
         Route::get('/all-breaches', [BreachController::class, 'index']);
@@ -175,9 +181,11 @@ Route::middleware('auth:api')->group(function(){
         Route::delete('/delete-breach/{id}', [BreachController::class, 'deleteBreach']);
         Route::get('/get-total-number-breach-made', [BreachController::class, 'calculateTotalNumberBreachMade']);
 
+        //Breach history
         Route::get('/all-breach-histories', [BreachHistoryController::class, 'getBreachHistories']);
         Route::post('/store-breach-history', [BreachHistoryController::class, 'storeBreachHistory']);
         Route::delete('/delete-breach-history/{id}', [BreachHistoryController::class, 'deleteBreachHistory']);
+        Route::get('/report-breaches', [BreachHistoryController::class, 'reportBreaches']);
 
         //Room contract
         Route::get('/all-room-contracts', [RoomContractController::class, 'index']);
@@ -186,15 +194,6 @@ Route::middleware('auth:api')->group(function(){
         Route::delete('/delete-room-contract/{id}', [RoomContractController::class, 'deleteRoomContract']);
         Route::get('/get-room-contract-details/{id}', [RoomContractController::class, 'getRoomContractDetails']);
         Route::post('/update-signatures/{id}', [RoomContractController::class, 'updateSignatures']);
-
-        //Dashboard
-        /////
-        Route::get('/count-rooms-by-status', [DashboardController::class, 'countRoomsByStatus']);
-        Route::get('/count-used-services', [DashboardController::class, 'countUsedServices']);
-        Route::get('/get-paid-invoices-rate', [DashboardController::class, 'getPaidInvoicesRate']);
-        Route::get('/report-breaches', [DashboardController::class, 'reportBreaches']);
-        Route::get('/get-widgets-data', [DashboardController::class, 'displayNumberOnWidget']);
-        /////
 
         //Problem
         Route::get('/all-problems', [ProblemController::class, 'index']);

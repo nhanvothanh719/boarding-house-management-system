@@ -125,4 +125,11 @@ class ServiceController extends Controller
             'message' => 'Successfully delete service',
         ]);
     }
+
+    public function countUsedServices() {
+        return response([
+            'status' => 200,
+            'usedServicesCount' => $this->service->countUsedServices(),
+        ]);
+    }
 }

@@ -28,4 +28,12 @@ class PaymentController extends Controller
             'message' => 'The invoice is paid successfully'
         ]);
     }
+
+    public function getPaidInvoicesRate() {
+        return response([
+            'status' => 200,
+            'paidInvoicesRate' => $this->payment->getPaidInvoicesRate(),
+            'invoicePaidMethodsCount' => $this->payment->countPaidMethods(),
+        ]);
+    }
 }

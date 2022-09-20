@@ -5,6 +5,7 @@ namespace App\Repositories\BreachHistory;
 use App\Models\BreachHistory;
 
 use App\Repositories\User\UserRepositoryInterface;
+use stdClass;
 
 class BreachHistoryRepository implements BreachHistoryRepositoryInterface 
 {
@@ -50,5 +51,22 @@ class BreachHistoryRepository implements BreachHistoryRepositoryInterface
 
     public function lockUserAccount($id) {
         return $this->user_repository->lockUserAccount($id);
+    }
+
+    public function getTotalBreachesByMonth() {
+        $current_month = 11;
+        $months_in_year = 12;
+        $breaches_in_month_count = array();
+        for($month = 1; $month <= $months_in_year; $month++) {
+            $total_breaches_in_month = BreachHistory::whereYear('violated_at', date('Y'))
+            ->whereMonth('violated_at', $month)->count();
+            $item = new stdClass();
+            $item->month = $month;
+            if($month <= $current_month) {
+                $item->total_breaches_in_month = $total_breaches_in_month;
+            }
+            array_push($breaches_in_month_count, $item);
+        }
+        return $breaches_in_month_count;
     }
 }

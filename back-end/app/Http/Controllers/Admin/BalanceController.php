@@ -122,4 +122,11 @@ class BalanceController extends Controller
             ]);
         }
     }
+
+    public function getEarnedAmount() {
+        return response([
+            'status' => 200,
+            'amount' => $this->balance->getEarnedAmount(),
+        ]);
+    }
 }

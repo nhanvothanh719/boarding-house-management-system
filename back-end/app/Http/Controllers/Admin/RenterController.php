@@ -126,4 +126,11 @@ class RenterController extends Controller
             'breachesTotal' => $this->renter->getRenterBreachHistories($id),
         ]);
     }
+
+    public function countRenters() {
+        return response([
+            'status' => 200,
+            'total' => $this->renter->countRenters(),
+        ]);
+    }
 }

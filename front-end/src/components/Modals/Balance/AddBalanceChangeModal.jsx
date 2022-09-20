@@ -51,14 +51,17 @@ export default function AddBalanceChangeModal(props) {
       is_income: selectBalanceCategory,
       amount: input.amount,
       description: input.description,
-      occurred_on: moment(occurredDate).utc().format("YYYY-MM-DD hh:mm:ss"),
+      occurred_on: moment(occurredDate).format("YYYY-MM-DD hh:mm:ss"),
     };
     axios
       .post(AppUrl.UpdateBalance, data)
       .then((response) => {
         if (response.data.status === 200) {
           setErrors([]);
-          setInput({});
+          setInput({
+            description: "",
+            amount: "",
+          });
           setOccurredDate(moment());
           setSelectBalanceCategory(0);
           swal("Success", response.data.message, "success");

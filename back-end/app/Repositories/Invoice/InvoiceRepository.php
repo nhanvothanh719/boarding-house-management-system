@@ -6,6 +6,7 @@ use App\Models\Invoice;
 
 use App\Repositories\InvoiceDetail\InvoiceDetailRepositoryInterface;
 use Carbon\Carbon;
+use stdClass;
 
 class InvoiceRepository implements InvoiceRepositoryInterface 
 {
@@ -96,5 +97,9 @@ class InvoiceRepository implements InvoiceRepositoryInterface
         $current_date = date('Y-m-d H:i:s');
         $final_valid_date = Carbon::createFromFormat('Y-m-d H:i:s', $this::show($id)->valid_until);
         return $final_valid_date->gt($current_date) ? true : false; //greater than
+    }
+
+    public function countInvoices() {
+        return Invoice::count();
     }
 }

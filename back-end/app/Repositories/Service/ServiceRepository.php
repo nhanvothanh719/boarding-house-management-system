@@ -77,4 +77,8 @@ class ServiceRepository implements ServiceRepositoryInterface
         }
         return $compulsory_services;
     }
+
+    public function countUsedServices() {
+        return Service::withCount('users')->get();
+    }
 }

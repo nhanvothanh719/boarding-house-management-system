@@ -37,8 +37,10 @@ class AppUrl {
   static GetAllRoomRents = this.BaseURL + "/all-room_rents";
   static RentRoom = this.BaseURL + "/rent-room";
   static CancelRentRoom = this.BaseURL + "/cancel-rent-room/";
+  static CountRooms = this.BaseURL + "/count-rooms"; 
 
   static ShowRenters = this.BaseURL + "/all-renters";
+  static CountRenters = this.BaseURL + "/count-renters"; 
 
   static ShowMotorbikes = this.BaseURL + "/all-motorbikes";
   static StoreMotorbike = this.BaseURL + "/store-motorbike";
@@ -82,6 +84,8 @@ class AppUrl {
   static EditBalanceChange = this.BaseURL + "/edit-balance-change/";
   static UpdateBalanceChange = this.BaseURL + "/update-balance-change/";
   static DeleteBalanceChange = this.BaseURL + "/delete-balance-change/";
+  static GetEarnedAmount = this.BaseURL + "/get-earned-amount";
+ 
 
   static ShowBreaches = this.BaseURL + "/all-breaches";
   static StoreBreach = this.BaseURL + "/store-breach";
@@ -109,7 +113,6 @@ class AppUrl {
   static CountUsedServices = this.BaseURL + "/count-used-services";
   static GetPaidInvoicesRate = this.BaseURL + "/get-paid-invoices-rate";
   static ReportBreaches = this.BaseURL + "/report-breaches";
-  static GetWidgetsData = this.BaseURL + "/get-widgets-data";
 
   static ShowProblems = this.BaseURL + "/all-problems";
   

@@ -14,4 +14,6 @@ interface InvoiceRepositoryInterface
     public function getInvoiceDetails($id);
     public function checkPaid($id);
     public function checkOverdue($id);
+
+    public function countInvoices();
 }

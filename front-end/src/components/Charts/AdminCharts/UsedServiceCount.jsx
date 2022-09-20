@@ -32,11 +32,11 @@ export default function UsedServiceCount() {
       <h3 className="customChartTitle">{chartTitle}</h3>
       <BarChart width={730} height={250} data={usedServicesCount} style={{ flex: "5"}}>
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="service_name" />
+        <XAxis dataKey="name" />
         <YAxis />
         <Tooltip />
         <Legend />
-        <Bar name="Total uses" dataKey="total" fill={color} />
+        <Bar name="Total uses" dataKey="users_count" fill={color} />
       </BarChart>
       </div>
     </Fragment>
