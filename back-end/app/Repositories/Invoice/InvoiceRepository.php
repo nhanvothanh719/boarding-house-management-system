@@ -94,8 +94,8 @@ class InvoiceRepository implements InvoiceRepositoryInterface
     }
 
     public function checkOverdue($id) {
-        $current_date = date('Y-m-d H:i:s');
-        $final_valid_date = Carbon::createFromFormat('Y-m-d H:i:s', $this::show($id)->valid_until);
+        $current_date = date('Y-m-d');
+        $final_valid_date = Carbon::createFromFormat('Y-m-d', $this::show($id)->valid_until);
         return $final_valid_date->gt($current_date) ? true : false; //greater than
     }
 

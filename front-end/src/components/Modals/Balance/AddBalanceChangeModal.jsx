@@ -6,7 +6,7 @@ import moment from "moment";
 import TextField from "@mui/material/TextField";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 
 import AppUrl from "../../../RestAPI/AppUrl";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
@@ -164,8 +164,7 @@ export default function AddBalanceChangeModal(props) {
                 <div className="">
                   <label className="customModalLabel">Occurred on:</label>
                   <LocalizationProvider dateAdapter={AdapterDateFns}>
-                  <DatePicker
-                    views={["day", "month", "year"]}
+                  <DateTimePicker
                     label="Occurred on"
                     name="occurred_on"
                     value={occurredDate}

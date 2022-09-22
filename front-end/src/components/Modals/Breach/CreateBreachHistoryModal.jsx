@@ -66,7 +66,7 @@ export default function CreateBreachHistoryModal(props) {
       const data = {
         breach_id: selectedBreach.id,
         renter_id: selectedRenter.id,
-        violated_at: moment(violateMoment).utc().format("YYYY-MM-DD hh:mm:ss"),
+        violated_at: moment(violateMoment).format("YYYY-MM-DD hh:mm:ss"),
       };
       axios
         .post(AppUrl.StoreBreachHistory, data)

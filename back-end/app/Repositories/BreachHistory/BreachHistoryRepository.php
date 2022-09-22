@@ -54,7 +54,7 @@ class BreachHistoryRepository implements BreachHistoryRepositoryInterface
     }
 
     public function getTotalBreachesByMonth() {
-        $current_month = 11;
+        $current_month = 12;
         $months_in_year = 12;
         $breaches_in_month_count = array();
         for($month = 1; $month <= $months_in_year; $month++) {
