@@ -59,16 +59,11 @@ export default function EditUser({ match }) {
   const [userInfoChange, setUserInfoChange] = useState(false);
 
   useEffect(() => {
-    axios.get(AppUrl.ShowRoles).then((response) => {
+    axios.get(AppUrl.EditUser + userId).then((response) => {
       if (response.data.status === 200) {
-        setRoles(response.data.allRoles);
-      }
-    });
-    axios.get(AppUrl.EditRenter + userId).then((response) => {
-      if (response.data.status === 200) {
-        setInput(response.data.renter);
-        setUserInfo(response.data.renter);
-        setDateOfBirth(response.data.renter.date_of_birth);
+        setInput(response.data.user);
+        setUserInfo(response.data.user);
+        setDateOfBirth(response.data.user.date_of_birth);
       } else if (response.data.status === 404) {
         swal("Error", response.data.message, "error");
         history.push("/admin/view-all-renters");
@@ -88,7 +83,7 @@ export default function EditUser({ match }) {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
 
-  const handleRenterAvatar = (e) => {
+  const handleUserAvatar = (e) => {
     setAvatar({ image: e.target.files[0] });
   };
 
@@ -112,7 +107,7 @@ export default function EditUser({ match }) {
     }
 
     axios
-      .post(AppUrl.UpdateRenter + userId, user)
+      .post(AppUrl.UpdateUser + userId, user)
       .then((response) => {
         if (response.data.status === 200) {
           swal("Success", response.data.message, "success");
@@ -150,11 +145,11 @@ export default function EditUser({ match }) {
               />
               <div className="userShowTopTitle">
                 <span className="userShowUsername">{userInfo.name}</span>
-                <span className="userShowUserTitle">{input.role_id === 0 ? "Admin" : "Renter"}</span>
+                <span className="userShowUserTitle">{input.role_id === 0 ? "Admin" : "User"}</span>
               </div>
             </div>
             <div className="userShowBottom">
-              <em className="userShowTitle">Renter Information</em>
+              <em className="userShowTitle">User Information</em>
               <div className="userShowInfo">
                 <SupervisedUserCircle className="userShowIcon" />
                 <span className="userShowInfoTitle">{userInfo.id_card_number}</span>
@@ -191,7 +186,7 @@ export default function EditUser({ match }) {
               className="userUpdateForm"
               encType="multipart/form-data"
               onSubmit={updateDetails}
-              id="createRenterForm"
+              id="createUserForm"
             >
               <div className="userUpdateLeft">
                 <div className="userUpdateItem">
@@ -304,14 +299,14 @@ export default function EditUser({ match }) {
                 value={input.role_id}
               >
                 <option selected>--- Select role ---</option>
-                {roles.map((role) => {
-                  return (
-                    <option value={role.id} key={role.id}>
+                <option value="0" key="0">
                       {" "}
-                      {role.name}{" "}
+                      Admin{" "}
                     </option>
-                  );
-                })}
+                    <option value="1" key="1">
+                      {" "}
+                      Renter{" "}
+                    </option>
               </select>
                 </div>
                 <small className="text-danger">{errors.permanent_address}</small>
@@ -333,7 +328,7 @@ export default function EditUser({ match }) {
                     id="file"
                     style={{ display: "none" }}
                     name="profile_picture"
-                    onChange={handleRenterAvatar}
+                    onChange={handleUserAvatar}
                     accept="image/*"
                   />
                 </div>

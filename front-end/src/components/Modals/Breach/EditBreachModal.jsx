@@ -126,7 +126,7 @@ export default function EditBreachModal(props) {
                   <TextField
                     label="Description"
                     name="description"
-                    value={input.description}
+                    value={input.description === null ? "" : input.description}
                     onChange={handleInput}
                     fullWidth
                     required

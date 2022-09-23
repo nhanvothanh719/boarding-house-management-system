@@ -155,7 +155,7 @@ export default function RoomContractsList() {
                     .then((response) => {
                       if (response.data.status === 200) {
                         swal("Success", response.data.message, "success");
-                        roomContractsListChange(true);
+                        setRoomContractsListChange(true);
                       } else if (response.data.status === 404) {
                         swal("Error", response.data.message, "error");
                       }

@@ -14,16 +14,12 @@ export default function RoomRentRegistrationsList() {
   const [details] = useState([]);
   const [loading, setLoading] = useState(true);
   const [roomRentRegistrationsList, setRoomRentRegistrationsList] = useState([]);
-  const [roomInfos, setRoomInfos] = useState([]);
-  const [roomRentRegistrationsListChange, setRoomRentRegistrationsListChange] =
-    useState(false);
+  const [roomRentRegistrationsListChange, setRoomRentRegistrationsListChange] = useState(false);
 
   useEffect(() => {
     axios.get(AppUrl.ShowRoomRentRegistrations).then((response) => {
       if (response.status === 200) {
         setRoomRentRegistrationsList(response.data.allRoomRentRegistrations);
-        setRoomInfos(response.data.allRoomInfos);
-        console.log(response.data.allRoomInfos);
       }
     });
     setLoading(false);
@@ -39,6 +35,8 @@ export default function RoomRentRegistrationsList() {
         setRoomRentRegistrationsListChange(true);
       } else if (response.data.status === 404) {
         swal("Error", response.data.message, "error");
+      } else if (response.data.status === 400) {
+        swal("Warning", response.data.message, "warning");
       }
     })
   };
@@ -63,9 +61,11 @@ export default function RoomRentRegistrationsList() {
         field: "registered_room_id",
         title: "Registered room",
         width: "10%",
-        render: (rowData) => (
-            roomInfos["" + rowData.registered_room_id]
-          ),
+        render: rowData => (
+          <div>
+              <span className="statusOnGoing">{rowData.room.number}</span>
+          </div>
+        )
       },
       {
         field: "is_accepted",

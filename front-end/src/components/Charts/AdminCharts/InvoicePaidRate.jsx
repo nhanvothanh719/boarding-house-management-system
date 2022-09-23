@@ -36,7 +36,7 @@ export default function InvoicePaidRate() {
             innerRadius={90}
             outerRadius={123}
             label
-            nameKey="payment_method"
+            nameKey="method_name"
             dataKey="total"
           >
             {invoicePaidMethodsCount.map((entry, index) => (

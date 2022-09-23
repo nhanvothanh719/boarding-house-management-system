@@ -18,6 +18,11 @@ class User extends Authenticatable
     const LOCKED_ACCOUNT = 1;
     const AVAILABLE_ACCOUNT = 0;
 
+    const ROLE_ADMIN = 0;
+    const ROLE_RENTER = 1;
+
+    public const AVATAR_PUBLIC_FOLDER = 'uploaded/avatar/'; 
+
     /**
      * The attributes that are mass assignable.
      *
@@ -54,14 +59,43 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    protected $with = ['role', 'room'];
-    public function role()
-    {
-        return $this->belongsTo(Role::class,'role_id','id');
+    public function room() {
+        return $this->hasOneThrough(Room::class, RoomRent::class, 'renter_id', 'id', 'id', 'id');
     }
 
-    public function room()
-    {
-        return $this->hasOneThrough(Room::class, RoomRent::class, 'renter_id', 'id', 'id', 'id');
+    public function motorbike() {
+        return $this->hasOne(Motorbike::class, 'renter_id', 'id');
+    }
+
+    public function breach_histories() {
+        return $this->hasMany(BreachHistory::class, 'renter_id');
+    }
+
+    public function invoices() {
+        return $this->hasMany(Invoice::class, 'renter_id');
+    }
+
+    public function payment_histories() {
+        return $this->hasMany(PaymentHistory::class, 'made_by');
+    }
+
+    public function room_contract() {
+        return $this->hasOne(RoomContract::class, 'renter_id', 'id');
+    }
+
+    public function room_rent() {
+        return $this->hasOne(RoomRent::class, 'renter_id', 'id');
+    }
+
+    public function problems() {
+        return $this->hasMany(Problem::class, 'renter_id');
+    }
+
+    public function service_registrations() {
+        return $this->hasMany(ServiceRegistration::class, 'user_id');
+    }
+
+    public function password_reset_histories() {
+        return $this->hasMany(PasswordReset::class, 'email', 'id');
     }
 }

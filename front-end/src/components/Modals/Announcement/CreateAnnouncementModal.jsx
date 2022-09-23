@@ -62,6 +62,8 @@ export default function CreateAnnouncementModal(props) {
           setTimeout(() => {
             displayModal();
           }, 1000);
+        } else if (response.data.status === 404) {
+          swal("Error", response.data.message, "error");
         }
         props.setLoaderClass('d-none');
         props.setDisplayComponentsClass('');

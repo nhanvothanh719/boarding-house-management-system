@@ -15,7 +15,13 @@ class AppUrl {
 
   static CheckAdminAuthenticated = this.BaseURL + "/check-admin-authenticated";
   static CheckRenterAuthenticated = this.BaseURL + "/check-renter-authenticated";
+
   static GetAllUsers = this.BaseURL + "/all-users";
+  static StoreUser = this.BaseURL + "/store-user";
+  static EditUser = this.BaseURL + "/edit-user/";
+  static UpdateUser = this.BaseURL + "/update-user/";
+  static DeleteUser = this.BaseURL + "/delete-user/";
+  static LockUserAccount = this.BaseURL + "/lock-user-account/";
 
   static StoreCategory = this.BaseURL + "/store-category";
   static ShowCategories = this.BaseURL + "/all-categories";
@@ -28,27 +34,19 @@ class AppUrl {
   static EditRoom = this.BaseURL + "/edit-room/";
   static UpdateRoom = this.BaseURL + "/update-room/";
   static DeleteRoom = this.BaseURL + "/delete-room/";
-  static GetAllStatuses = this.BaseURL + "/all-statuses";
   static GetAllRoomRents = this.BaseURL + "/all-room_rents";
   static RentRoom = this.BaseURL + "/rent-room";
   static CancelRentRoom = this.BaseURL + "/cancel-rent-room/";
-  static GetRoomDetails = this.BaseURL + "/room-details/";
+  static CountRooms = this.BaseURL + "/count-rooms"; 
 
   static ShowRenters = this.BaseURL + "/all-renters";
-  static StoreRenter = this.BaseURL + "/store-renter";
-  static EditRenter = this.BaseURL + "/edit-renter/";
-  static UpdateRenter = this.BaseURL + "/update-renter/";
-  static DeleteRenter = this.BaseURL + "/delete-renter/";
-  static LockRenterAccount = this.BaseURL + "/lock-renter-account/";
-
-  static ShowRoles = this.BaseURL + "/all-roles";
+  static CountRenters = this.BaseURL + "/count-renters"; 
 
   static ShowMotorbikes = this.BaseURL + "/all-motorbikes";
   static StoreMotorbike = this.BaseURL + "/store-motorbike";
   static EditMotorbike = this.BaseURL + "/edit-motorbike/";
   static UpdateMotorbike = this.BaseURL + "/update-motorbike/";
   static DeleteMotorbike = this.BaseURL + "/delete-motorbike/";
-  static GetAllMotorbikeOwners = this.BaseURL + "/all-motorbike_owners";
   
   static FindName = this.BaseURL + "/get-name/";
 
@@ -58,6 +56,7 @@ class AppUrl {
   static UpdateService = this.BaseURL + "/update-service/";
   static DeleteService = this.BaseURL + "/delete-service/";
   static GetOptionalServices = this.BaseURL + "/all-optional-services";
+  static GetCompulsoryServices = this.BaseURL + "/all-compulsory-services";
   
   static ShowRegistrations = this.BaseURL + "/all-registrations";
   static RegisterService = this.BaseURL + "/register-service";
@@ -72,6 +71,9 @@ class AppUrl {
   static DeleteInvoice = this.BaseURL + "/delete-invoice/";
   static SendInvoice = this.BaseURL + "/send-invoice/";
   static GetRenterInvoices = this.BaseURL + "/get-renter-invoices/";
+  static GetRenterTotalUsedServicesAmount = this.BaseURL + "/get-renter-total-used-services-amount/"
+
+  static PayInvoiceByCash = this.BaseURL + "/pay-by-cash/";
 
   static SendAnnouncement = this.BaseURL + "/send-announcement";
 
@@ -82,6 +84,8 @@ class AppUrl {
   static EditBalanceChange = this.BaseURL + "/edit-balance-change/";
   static UpdateBalanceChange = this.BaseURL + "/update-balance-change/";
   static DeleteBalanceChange = this.BaseURL + "/delete-balance-change/";
+  static GetEarnedAmount = this.BaseURL + "/get-earned-amount";
+ 
 
   static ShowBreaches = this.BaseURL + "/all-breaches";
   static StoreBreach = this.BaseURL + "/store-breach";
@@ -94,8 +98,7 @@ class AppUrl {
   static DeleteBreachHistory = this.BaseURL + "/delete-breach-history/";
 
   static GetTotalNumberBreachMade = this.BaseURL + "/get-total-number-breach-made";
-  static GetRenterTotalNumberBreachMade = this.BaseURL + "/get-renter-total-number-breach-made";
-  static GetRenterBreaches = this.BaseURL + "/get-all-renter-breaches/";
+  static GetRenterBreaches = this.BaseURL + "/get-renter-breaches/";
   static CountRenterBreaches = this.BaseURL + "/count-renter-breaches/";
 
   static ShowRoomContracts = this.BaseURL + "/all-room-contracts";
@@ -110,7 +113,6 @@ class AppUrl {
   static CountUsedServices = this.BaseURL + "/count-used-services";
   static GetPaidInvoicesRate = this.BaseURL + "/get-paid-invoices-rate";
   static ReportBreaches = this.BaseURL + "/report-breaches";
-  static GetWidgetsData = this.BaseURL + "/get-widgets-data";
 
   static ShowProblems = this.BaseURL + "/all-problems";
   
@@ -140,7 +142,9 @@ class AppUrl {
 
   static GetRenterRoomContract = this.BaseURL + "/get-renter-room-contract";
 
-  static GetAllRenterBreaches = this.BaseURL + "/get-all-renter-breaches";
+  //
+  static GetAllRenterBreaches = this.BaseURL + "/get-renter-breaches";
+  //
   static GetBreachDetails = this.BaseURL + "/get-breach-details/";
   static GetRenterBreachHistories = this.BaseURL + "/get-renter-breach-histories/";
 

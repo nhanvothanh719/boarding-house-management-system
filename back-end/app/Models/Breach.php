@@ -17,4 +17,12 @@ class Breach extends Model
     const SEVERITY_NEGLIGIBLE = 4;
 
     protected $guarded = ['id'];
+
+    public function renter_breaches() {
+        return $this->belongsToMany(User::class, 'breach_histories', 'breach_id', 'renter_id');
+    }
+
+    public function breach_histories() {
+        return $this->hasMany(BreachHistory::class, 'breach_id', 'id');
+    }
 }

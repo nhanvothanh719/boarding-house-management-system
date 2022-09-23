@@ -3,56 +3,36 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 
-use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
-
-use App\Models\User;
-use App\Models\Role;
-
-use App\Http\Requests\RegisterRequest;
+use App\Repositories\User\UserRepositoryInterface;
 
 class AuthController extends Controller
 {
+    protected $user;
+
+    public function __construct(UserRepositoryInterface $user) {
+        $this->user = $user;
+    }
+
     public function login(Request $request) {
-        try {
-            if(Auth::attempt($request->only('email', 'password'))) {
-                $is_admin = false;
-                $user = Auth::user();
-                if($user->is_locked === User::LOCKED_ACCOUNT) {
-                    return response([
-                        'status' => 403,
-                        'message' => 'This account is temporary locked',
-                    ]);
-                }
-                //Generate access token
-                //If user logins with Admin role
-                if($user->role_id == Role::where('name', Role::ROLE_ADMIN)->value('id')) 
-                {
-                    //Generate access token with scope
-                    //createToken method accepts the name of the token as its first argument and an optional array of scopes
-                    $auth_token = $user->createToken('admin_auth_token',['use-dashboard'])->accessToken;
-                    $is_admin = true;
-                }
-                else {
-                    $auth_token = $user->createToken('auth_token',['perform-renter-work'])->accessToken;
-                    $is_admin = false;
-                }
+        //if(Auth::attempt($request->only('email', 'password'))) {
+        if($this->user->checkCanLogin($request->only('email', 'password'))) {
+            $user = $this->user->getCurrentUser();
+            if($this->user->checkLockedAccount($user->id)) {
                 return response([
-                    'message' => 'Login successfully',
-                    'token' => $auth_token,
-                    'user' => $user, //User data
-                    'isAdmin' => $is_admin,
-                    'status' => 200,
-                ], 200); //OK
+                    'status' => 400,
+                    'message' => 'This account is temporary locked',
+                ]);
             }
-        }
-        catch(Exception $exception) {
+            $is_admin = $this->user->checkAdmin($user->id);
+            $auth_token = $this->user->generateTokenWithScope($user->id);
             return response([
-                'message' => $exception->getMessage(),
-            ], 400); //Bad request
+                'message' => 'Login successfully',
+                'token' => $auth_token,
+                'user' => $user, //User data
+                'isAdmin' => $is_admin,
+                'status' => 200, //OK
+            ]); 
         }
         return response([
             'status' => 401,
@@ -61,17 +41,10 @@ class AuthController extends Controller
     }
     
     public function logout() {
-        try {
         auth()->user()->tokens()->delete();
         return response([
             'message' => 'Log out successfully',
             'status' => 200,
-        ], 200); //OK
-        }
-        catch(Exception $exception) {
-            return response([
-                'message' => $exception->getMessage(),
-            ], 400);
-        }
+        ]);
     }
 }

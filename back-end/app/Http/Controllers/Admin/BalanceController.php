@@ -4,27 +4,29 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 
-use \stdClass;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\DB;
 
-use App\Models\Balance;
+use App\Repositories\Balance\BalanceRepositoryInterface;
 
 class BalanceController extends Controller
 {
-    //Chi tra ve 30 gia tri gan nhat
+    protected $balance;
+
+    public function __construct(BalanceRepositoryInterface $balance) {
+        $this->balance = $balance;
+    }
+
     public function index() {
-        $all_details = Balance::all();
         return response([
             'status' => 200,
-            'allDetails' => $all_details,
+            'allDetails' => $this->balance->all(),
         ]);
     }
 
     public function updateBalance(Request $request) {
-        $before_appropriate_time = date('Y-m-d');
-        $after_appropriate_time = date('Y-m-d', strtotime(' -3 month'));
+        $before_appropriate_time = date('Y-m-d H:i:s', strtotime(' -1 hours'));
+        $after_appropriate_time = date('Y-m-d H:i:s', strtotime(' -3 months'));
         $validator = Validator::make($request->all(), [
             'description' => 'required',
             'is_income' => 'required',
@@ -38,69 +40,15 @@ class BalanceController extends Controller
                 'status' => 422,
             ]);
         }
-        $balance = Balance::create([
-            'description' => $request->description,
-            'is_income' => $request->is_income,
-            'amount' => $request->amount,
-            'occurred_on' => $request->occurred_on,
-        ]);
+        $balance = $this->balance->store($request->all());
         return response([
             'status' => 200,
-            'message' => 'Successfully add change',
+            'message' => 'Successfully add balance change',
         ]);
     }
 
     public function calculateBalance() {
-        //Get recent changes
-        $recent_changes = Balance::orderBy('occurred_on', 'DESC')->get();
-        //Group all the same date
-        $recent_changes = $recent_changes->groupBy('occurred_on');
-        //
-        $recent_changes_array = array();
-        foreach ($recent_changes as $change) {
-            array_push($recent_changes_array, $change);
-        }
-        //Get maximum 15 recent values
-        $changes_number = count($recent_changes_array);
-        if($changes_number > 15) {
-            $recent_changes_array = array_splice($recent_changes_array, 0, 14);
-        }
-        //Reverse the collection --> (values() for resetting the keys)
-        $recent_changes_array = array_reverse($recent_changes_array);
-        //$recent_changes = $recent_changes;
-        $grouped_recent_changes = array();
-        foreach($recent_changes_array as $recent_changes_item) {
-            $amount = 0;
-            $item = new stdClass();
-            $item->occurred_on = $recent_changes_item[0]['occurred_on'];
-            foreach($recent_changes_item as $change) {
-                if($change->is_income == 0) {
-                    $change->amount = -1 * $change->amount;
-                }
-                $amount = $amount + $change->amount;
-            }
-            if($amount > 0) {
-                $item->is_income = 1;
-            }
-            else {
-                $item->is_income = 0;
-            }
-            $item->amount = $amount;
-            array_push($grouped_recent_changes, $item);
-        }
-        $recent_balance_changes = array();
-        foreach($grouped_recent_changes as $key => $change) {
-            $item = new stdClass();
-            $item->occurred_on = $change->occurred_on;
-            if($key == 0) {
-                $item->amount = $grouped_recent_changes[0]->amount;
-            } else if($key == 1) {
-                $item->amount = $grouped_recent_changes[$key - 1]->amount + $change->amount;
-            } else {
-                $item->amount = $recent_balance_changes[$key - 2]->amount + $grouped_recent_changes[$key - 1]->amount + $change->amount;
-            }
-            array_push($recent_balance_changes, $item);
-        }
+        $recent_balance_changes = $this->balance->getRecentBalanceChanges();
         return response([
             'status' => 200,
             'recentBalanceChanges' => $recent_balance_changes, 
@@ -109,23 +57,14 @@ class BalanceController extends Controller
     }
 
     public function getExpenseRate() {
-        $pie_data = array();
-        $expenses = new stdClass();
-        $expenses->description = "Expenses";
-        $expenses->total = Balance::where('is_income', 0)->sum('amount');
-        array_push($pie_data, $expenses);
-        $earned = new stdClass();
-        $earned->description = "Earned";
-        $earned->total = Balance::where('is_income', 1)->sum('amount');
-        array_push($pie_data, $earned);
         return response([
             'status' => 200,
-            'pieData' => $pie_data, 
+            'pieData' => $this->balance->calculateExpenseRate(), 
         ]);
     }
 
     public function editBalanceChange($id) {
-        $balance_change = Balance::find($id);
+        $balance_change = $this->balance->show($id);
         if(!$balance_change) {
             return response([
                 'message' => 'No balance change found',
@@ -139,8 +78,8 @@ class BalanceController extends Controller
     }
 
     public function updateBalanceChange(Request $request, $id) {
-        $before_appropriate_time = date('Y-m-d');
-        $after_appropriate_time = date('Y-m-d', strtotime(' -3 months'));
+        $before_appropriate_time = date('Y-m-d H:i:s', strtotime(' -1 hours'));
+        $after_appropriate_time = date('Y-m-d H:i:s', strtotime(' -3 months'));
         $validator = Validator::make($request->all(), [
             'description' => 'required',
             'amount' => 'required|numeric|gt:0', //gt: greater than
@@ -153,28 +92,22 @@ class BalanceController extends Controller
                 'status' => 422,
             ]);
         }
-        $balance_change = Balance::find($id);
+        $balance_change = $this->balance->show($id);
         if(!$balance_change) {
             return response([
                 'message' => 'No balance change found',
                 'status' => 404,
             ]);
         }
-        $balance_change->amount = $request->amount;
-        $balance_change->occurred_on = $request->occurred_on;
-        $balance_change->description = $request->description;
-        $balance_change->save();
+        $this->balance->update($request->all(), $id);
         return response([
             'status' => 200,
             'message' => 'Successfully update balance change',
-            'from' => $after_appropriate_time,
-            'to' => $before_appropriate_time,
-            'result' => $request->occurred_on,
         ]);
     }
 
     public function deleteBalanceChange($id) {
-        $balance_change = Balance::find($id);
+        $balance_change = $this->balance->show($id);
         if(!$balance_change) {
             return response([
                 'message' => 'No balance change found',
@@ -182,11 +115,18 @@ class BalanceController extends Controller
             ]);
         }
         else {
-            $balance_change->delete();
+            $this->balance->delete($id);
             return response([
                 'status' => 200,
                 'message' => 'Successfully delete balance change',
             ]);
         }
+    }
+
+    public function getEarnedAmount() {
+        return response([
+            'status' => 200,
+            'amount' => $this->balance->getEarnedAmount(),
+        ]);
     }
 }

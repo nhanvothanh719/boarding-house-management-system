@@ -31,7 +31,7 @@ export default function RenterInvoicePaid(props) {
         <AreaChart
           width={500}
           height={250}
-          data={invoicesList}
+          data={invoicesList.sort((a, b) => (a.month > b.month) ? 1 : -1)}
           margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
         >
           <defs>

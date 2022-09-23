@@ -16,6 +16,7 @@ function ResetPasswordPage(props) {
     password_confirmation: "",
   });
   const [message, setMessage] = useState("");
+  const [errors, setErrors] = useState([]);
 
   useEffect(() => {
     window.scroll(0, 0);
@@ -34,13 +35,16 @@ function ResetPasswordPage(props) {
       .post("/reset-password", data)
       .then((response) => {
         if (response.data.status === 200) {
+          setErrors([]);
           swal("Success", response.data.message, "success");
           document.getElementById("resetPasswordForm").reset();
+        } else if (response.data.status === 422) {
+          setErrors(response.data.errors);
         } else if (response.data.status === 404) {
           swal("Error", response.data.message, "error");
-        } else if (response.data.status === 403) {
+        } else if (response.data.status === 400) {
           swal("Warning", response.data.message, "warning");
-        }
+        } 
       })
       .catch((error) => {
         setMessage(error.response.data.message);
@@ -94,6 +98,7 @@ function ResetPasswordPage(props) {
                     required
                   />
                 </div>
+                <small className="text-danger">{errors.token}</small>
                 <div className="form-group">
                   <label for="inputEmail" className="formLabel">
                     Email address:
@@ -109,6 +114,7 @@ function ResetPasswordPage(props) {
                     required
                   />
                 </div>
+                <small className="text-danger">{errors.email}</small>
                 <div className="form-group">
                   <label for="inputPassword" className="formLabel">
                     New password:
@@ -123,6 +129,7 @@ function ResetPasswordPage(props) {
                     required
                   />
                 </div>
+                <small className="text-danger">{errors.password}</small>
                 <div className="form-group">
                   <label for="confirmedPassword" className="formLabel">
                     Confirmed password:
@@ -137,6 +144,7 @@ function ResetPasswordPage(props) {
                     required
                   />
                 </div>
+                <small className="text-danger">{errors.password_confirmation}</small>
                 <button
                   type="submit"
                   className="btn btn-primary btn-block loginFormButton"

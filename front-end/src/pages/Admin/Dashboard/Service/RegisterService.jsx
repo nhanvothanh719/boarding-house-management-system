@@ -15,8 +15,7 @@ import DefaultAvatar from "../../../../assets/images/default_avatar.png";
 export default function RegisterService() {
   const [loading, setLoading] = useState(true);
   const [registrations, setRegistrations] = useState([]);
-  const [registeredServicesChange, setRegisteredServicesChange] =
-    useState(false);
+  const [registeredServicesListChange, setRegisteredServicesListChange] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
 
   useEffect(() => {
@@ -25,18 +24,18 @@ export default function RegisterService() {
         setRegistrations(response.data.allRegistrations);
       }
     });
-    if (registeredServicesChange) {
-      setRegisteredServicesChange(false);
+    if (registeredServicesListChange) {
+      setRegisteredServicesListChange(false);
     }
     setLoading(false);
-  }, [registeredServicesChange]);
+  }, [registeredServicesListChange]);
 
   const setCreateModalStatus = (status) => {
     setShowCreateModal(status);
   };
 
-  const updateCreateModalStatus = (status) => {
-    setShowCreateModal(status);
+  const updateModalStatus = (status) => {
+    setRegisteredServicesListChange(status);
   };
 
   let columns = [];
@@ -72,17 +71,10 @@ export default function RegisterService() {
 
   const unregisterService = (e, id) => {
     e.preventDefault();
-    const selectedRegistration = e.currentTarget;
-    selectedRegistration.innerText = "Deleting";
     axios.delete(AppUrl.UnregisterService + id).then((response) => {
       if (response.data.status === 200) {
         swal("Success", response.data.message, "success");
-        //Delete table row
-        selectedRegistration.closest("tr").remove();
-        //setColumnNumberChange(true);
-      } else if (response.data.status === 404) {
-        swal("Fail", response.data.message, "error");
-        selectedRegistration.innerText = "Delete";
+        setRegisteredServicesListChange(true);
       }
     });
   };
@@ -105,7 +97,7 @@ export default function RegisterService() {
           <RegisterServiceModal
             isShown={showCreateModal}
             setCreateModalStatus={setCreateModalStatus}
-            updateCreateModalStatus={updateCreateModalStatus}
+            updateModalStatus={updateModalStatus}
           />
         </div>
         <MaterialTable

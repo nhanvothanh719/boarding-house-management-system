@@ -9,6 +9,7 @@ class ServiceRegistration extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
+
     protected $with = ['user', 'service'];
 
     public function user() {

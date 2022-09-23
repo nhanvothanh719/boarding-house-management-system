@@ -9,6 +9,7 @@ class RoomRent extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
+
     protected $with = ['renter', 'room'];
 
     public function renter() {

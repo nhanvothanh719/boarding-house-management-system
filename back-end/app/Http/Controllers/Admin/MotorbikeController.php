@@ -4,58 +4,39 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 
-use App\Helpers\CustomHelper;
-
-use Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail; 
-use Illuminate\Support\Str;
 
-use App\Models\User;
-use App\Models\Motorbike;
+use App\Repositories\Motorbike\MotorbikeRepositoryInterface;
 
 class MotorbikeController extends Controller
 {
-    public const motorbike_image_public_folder = 'uploaded/motorbikes/';
+    protected $motorbike;
 
-    public function index() {
-        $all_motorbikes = Motorbike::all();
-        return response([
-            'status' => 200,
-            'allMotorbikes' => $all_motorbikes,
-        ]);
+    public function __construct(MotorbikeRepositoryInterface $motorbike) {
+        $this->motorbike = $motorbike;
     }
 
-    public function getMotorbikeOwners() {
-        $all_owners_id = DB::table('motorbikes')->pluck('renter_id');
-        $motorbike_owners = array();
-        foreach ($all_owners_id as $owner_id) {
-            $owner = User::find($owner_id);
-            array_push($motorbike_owners, $owner);
-        }
+    public function index() {
         return response([
             'status' => 200,
-            'allOwners' => $motorbike_owners,
+            'allMotorbikes' => $this->motorbike->all(),
         ]);
     }
 
     public function deleteMotorbike($id) {
-        $motorbike = Motorbike::find($id);
+        $motorbike =  $this->motorbike->all();
         if($motorbike) {
             File::delete($motorbike->motorbike_image);
-            $motorbike->delete();
+            $this->motorbike->delete($id);
             return response([
-                'message' => 'Successfully delete renter',
+                'message' => 'Successfully delete motorbike',
                 'status' => 200,
             ]);
         } else {
             return response([
-                'message' => 'No renter found',
+                'message' => 'No motorbike found',
                 'status' => 404,
             ]);
         }
@@ -74,32 +55,18 @@ class MotorbikeController extends Controller
                 'status' => 422,
             ]);
         }
-        try {
-            $motorbike = new Motorbike;
-            $motorbike->renter_id = $request->input('renter_id');
-            $motorbike->license_plate = $request->input('license_plate');
-            if($request->hasFile('motorbike_image')) {
-                $image = $request->file('motorbike_image');
-                $upload_folder = MotorbikeController::motorbike_image_public_folder;
-                $motorbike->motorbike_image = CustomHelper::addImage($image, $upload_folder);
-            }
-            $motorbike->save();
+        if($request->hasFile('motorbike_image')) {
+            $image = $request->file('motorbike_image');
+            $motorbike = $this->motorbike->store($request->all(), $image);
             return response([
                 'message' => 'Create new motorbike successfully',
                 'status' => 200,
-            ], 200);
+            ]);
         }
-        catch(Exception $exception) {
-            return response([
-                'message' => $exception->getMessage(),
-                'status' => 400,
-            ], 400);
-        }
-
     }
 
     public function editMotorbike($id) {
-        $motorbike = Motorbike::find($id);
+        $motorbike = $this->motorbike->show($id);
         if($motorbike) {
             return response([
                 'status' => 200,
@@ -115,15 +82,8 @@ class MotorbikeController extends Controller
     }
 
     public function updateMotorbike(Request $request, $id) {
-        $user = User::find($request->input('renter_id'));
-        if(!$user) {
-            return response([
-                'message' => 'No person with provided ID found',
-                'status' => 404, //Unprocessable entity
-            ]);
-        }
         $validator = Validator::make($request->all(), [
-            'renter_id' => 'required|exists:users,id|unique:motorbikes,renter_id,'.$id,
+            'renter_id' => ['required', 'exists:users,id', 'unique:motorbikes,renter_id,'.$id],
             'license_plate' => 'required|min:6|max:10|unique:motorbikes,license_plate,'.$id,
             'motorbike_image' => 'image',
         ]);
@@ -134,26 +94,21 @@ class MotorbikeController extends Controller
                 'status' => 422, //Unprocessable entity
             ]);
         }
-        $motorbike = Motorbike::find($id);
-        if($motorbike) {
-            $motorbike->renter_id = $request->input('renter_id');
-            $motorbike->license_plate = $request->input('license_plate');
-            if($request->hasFile('motorbike_image')) {
-                $new_image = $request->file('motorbike_image');
-                $old_image = $motorbike->motorbike_image;
-                $upload_folder = MotorbikeController::motorbike_image_public_folder;
-                $motorbike->motorbike_image = CustomHelper::updateImage($old_image, $new_image, $upload_folder);
-            }
-            $motorbike->save();
-            return response([
-                'message' => 'Successfully update motorbike',
-                'status' => 200,
-            ]);
-        } else {
+        $motorbike = $this->motorbike->show($id);
+        if(!$motorbike) {
             return response([
                 'message' => 'No motorbike found',
                 'status' => 404,
             ]);
         }
+        $new_image = null;
+        if($request->hasFile('motorbike_image')) {
+            $new_image = $request->file('motorbike_image');
+        }
+        $this->motorbike->update($request->all(), $id, $new_image);
+        return response([
+            'message' => 'Successfully update motorbike',
+            'status' => 200,
+        ]);
     }
 }

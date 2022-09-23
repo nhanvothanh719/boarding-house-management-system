@@ -4,211 +4,133 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 
-use App\Helpers\CustomHelper;
-
-use Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail; 
-use Illuminate\Support\Str;
 
-use App\Models\User;
-use App\Models\Role;
-use App\Models\Motorbike;
-
-use App\Mail\FirstPasswordChangeMail;
+use App\Repositories\User\UserRepositoryInterface;
 
 class RenterController extends Controller
 {
-    public const avatar_public_folder = 'uploaded/avatar/';
+    protected $renter;
+
+    public function __construct(UserRepositoryInterface $renter) {
+        $this->renter = $renter;
+    }
 
     public function index() {
-        $all_renters = User::where('role_id', CustomHelper::getRenterRoleId())->get();
         return response([
             'status' => 200,
-            'allRenters' => $all_renters,
+            'allRenters' => $this->renter->allRenters(),
         ]);
     }
 
-    public function storeRenter(Request $request) {
-        $before_appropriate_time = date('Y-m-d', strtotime(' -18 year'));
-        $after_appropriate_time = date('Y-m-d', strtotime(' -40 year'));
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|max:50|regex:/(^[a-zA-Z][a-zA-Z\s]{0,20}[a-zA-Z]$)/',
-            'email' => 'required|unique:users|max:50|email',
-            'gender' => 'required',
-            'date_of_birth' => ['required','date', 'before_or_equal:'.$before_appropriate_time, 'after_or_equal:'.$after_appropriate_time],
-            'id_card_number' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|size:10|unique:users',
-            'phone_number' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|size:10|unique:users',
-            'occupation' => 'required|max:100|regex:/^[a-zA-Z ]+$/',
-            'permanent_address' => 'required',
-            'profile_picture' => 'image',
-            'role_id' => 'required|exists:roles,id',
+    public function getRenterBreachHistories($id) {
+        $user = $this->renter->show($id);
+        if(!$user) {
+            return response([
+                'status' => 404,
+                'message' => 'No renter found',
+            ]);
+        }
+        return response([
+            'status' => 200,
+            'renterBreachHistories' => $this->renter->getBreachHistories($id),
         ]);
-        if($validator->fails()) 
+    }
+
+    public function getRegisteredServices($id) {
+        $renter = $this->renter->show($id);
+        if(!$renter) {
+            return response([
+                'message' => 'No renter found',
+                'status' => 404,
+            ]);
+        }
+        return response([
+            'status' => 200,
+            'allServices' => $this->renter->getRegisteredServices($id),
+        ]);
+    }
+
+    public function sendAnnouncement(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'title' => 'required',
+            'content' => 'required',
+        ]);
+        if($validator->fails())
         {
             return response([
                 'errors' => $validator->messages(),
                 'status' => 422,
             ]);
         }
-        try {
-            $renter = new User;
-            $renter->name = $request->input('name');
-            $renter->email = $request->input('email');
-            //Todo: Create initial password --> Random
-            $generated_password = Str::random(10);
-            $renter->password = Hash::make($generated_password);
-            //
-            $renter->gender = $request->input('gender');
-            $renter->date_of_birth = $request->input('date_of_birth');
-            $renter->id_card_number = $request->input('id_card_number');
-            $renter->phone_number = $request->input('phone_number');
-            $renter->occupation = $request->input('occupation');
-            $renter->permanent_address = $request->input('permanent_address');
-            $renter->role_id = $request->input('role_id');
-            if($request->hasFile('profile_picture')) {
-                $image = $request->file('profile_picture');
-                $upload_folder = RenterController::avatar_public_folder;
-                $renter->profile_picture = CustomHelper::addImage($image, $upload_folder);
-            }
-            $renter->save();
-            $token = rand(10, 1000);
-            DB::table('password_resets')->insert([
-                'email' => $request->input('email'),
-                'token' => $token,
-            ]);
-            Mail::to($renter->email)->send(new FirstPasswordChangeMail($generated_password, $token));
+        $is_sent = $this->renter->sendAnnouncement($request->all());
+        if(!$is_sent) {
             return response([
-                'message' => 'Create new renter successfully',
-                'status' => 200,
-            ], 200);
-        }
-        catch(Exception $exception) {
-            return response([
-                'message' => $exception->getMessage(),
-                'status' => 400,
-            ], 400);
-        }
-    }
-
-    public function editRenter($id) {
-        $renter = User::find($id);
-        if($renter) {
-            return response([
-                'status' => 200,
-                'renter' => $renter,
-            ]);
-        }
-        else {
-            return response([
-                'status' => 404,
-                'message' => 'No renter found',
-            ]);
-        }
-    }
-
-    public function updateRenter(Request $request, $id) {
-        $before_appropriate_time = date('Y-m-d', strtotime(' -18 year'));
-        $after_appropriate_time = date('Y-m-d', strtotime(' -40 year'));
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|max:50|string|regex:/(^[a-zA-Z][a-zA-Z\s]{0,20}[a-zA-Z]$)/',
-            'email' => 'required|max:50|string|email|unique:users,email,'.$id,
-            'gender' => 'required',
-            'date_of_birth' => ['required','date', 'before_or_equal:'.$before_appropriate_time, 'after_or_equal:'.$after_appropriate_time],
-            'id_card_number' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|size:10|unique:users,id_card_number,'.$id,
-            'phone_number' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|size:10|unique:users,phone_number,'.$id,
-            'occupation' => 'required|max:100|string|regex:/(^[a-zA-Z][a-zA-Z\s]{0,20}[a-zA-Z]$)/',
-            'permanent_address' => 'required',
-            'profile_picture' => 'image',
-            'role_id' => 'required|exists:roles,id',
-        ]);
-        if($validator->fails())
-        {
-            return response([
-                'errors' => $validator->messages(),
-                'status' => 422, //Unprocessable entity
-            ]);
-        }
-        $renter = User::find($id);
-        if($renter) {
-            $renter->name = $request->input('name');
-            $renter->email = $request->input('email');
-            $renter->gender = $request->input('gender');
-            $renter->date_of_birth = $request->input('date_of_birth');
-            $renter->id_card_number = $request->input('id_card_number');
-            $renter->phone_number = $request->input('phone_number');
-            $renter->occupation = $request->input('occupation');
-            $renter->permanent_address = $request->input('permanent_address');
-            $renter->role_id = $request->input('role_id');
-            if($request->hasFile('profile_picture')) {
-                $new_avatar = $request->file('profile_picture');
-                $old_avatar = $renter->profile_picture;
-                $upload_folder = RenterController::avatar_public_folder;
-                $renter->profile_picture = CustomHelper::updateImage($old_avatar, $new_avatar, $upload_folder);
-            }
-            $renter->save();
-            return response([
-                'message' => 'Successfully update renter',
-                'status' => 200,
-            ]);
-        } else {
-            return response([
-                'message' => 'No renter found',
+                'message' => "Fail to send announcement due to no renter found",
                 'status' => 404,
             ]);
         }
-    }
-
-    public function deleteRenter($id) {
-        $renter = User::find($id);
-        if($renter) {
-            //Delete motorbike
-            $motorbike_id = Motorbike::where('user_id', $id)->value('id');
-            $motorbike = Motorbike::find($motorbike_id);
-            if($motorbike) {
-                File::delete($motorbike->motorbike_image);
-                $motorbike->delete();
-            }
-            File::delete($renter->profile_picture);
-            $renter->delete();
-            return response([
-                'status' => 200,
-                'message' => 'Successfully delete renter',
-            ]);
-        } else {
-            return response([
-                'message' => 'No renter found',
-                'status' => 404,
-            ]);
-        }
-    }
-
-    public function lockRenterAccount($id) {
-        $user = User::find($id);
-        if($user->role_id == Role::ROLE_ADMIN){
-            return response([
-                'message' => 'Cannot lock account of user with admin role',
-                'status' => 403,
-            ]);
-        }
-        if($user->is_locked == User::LOCKED_ACCOUNT) {
-            $user->is_locked = User::AVAILABLE_ACCOUNT;
-            $user->save();
-            return response([
-                'message' => 'Unlock account successfully',
-                'status' => 200,
-            ]);
-        }
-        $user->is_locked = User::LOCKED_ACCOUNT;
-        $user->save();
         return response([
-            'message' => 'Lock account successfully',
+            'message' => "Successfully send announcement",
             'status' => 200,
+        ]);
+    }
+
+    public function countRentersByGender() {
+        return response([
+            'status' => 200,
+            'rentersCount' => $this->renter->countRentersByGender(),
+        ]);
+    }
+
+    public function getRenterInvoices($id) {
+        $renter = $this->renter->show($id);
+        if(!$renter) {
+            return response([
+                'message' => 'No renter found',
+                'status' => 404,
+            ]);
+        }
+        return response([
+            'status' => 200,
+            'allInvoices' => $this->renter->getRenterInvoices($id),
+        ]);
+    }
+
+    public function countRenterTotalUsedServicesAmount($id) {
+        $renter = $this->renter->show($id);
+        if(!$renter) {
+            return response([
+                'message' => 'No renter found',
+                'status' => 404,
+            ]);
+        }
+        return response([
+            'status' => 200,
+            'servicesCount' => $this->renter->countRenterTotalUsedServicesAmount($id),
+        ]);
+    }
+
+    //Renter
+    public function countRenterBreaches($id) {
+        $renter = $this->renter->show($id);
+        if(!$renter) {
+            return response([
+                'message' => 'No renter found',
+                'status' => 404,
+            ]);
+        }
+        return response([
+            'status' => 200,
+            'breachesTotal' => $this->renter->getRenterBreachHistories($id),
+        ]);
+    }
+
+    public function countRenters() {
+        return response([
+            'status' => 200,
+            'total' => $this->renter->countRenters(),
         ]);
     }
 }

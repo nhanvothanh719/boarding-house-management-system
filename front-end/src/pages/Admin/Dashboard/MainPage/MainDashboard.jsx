@@ -14,16 +14,30 @@ import AppUrl from "../../../../RestAPI/AppUrl";
 import WebPageTitle from "../../../../components/WebPageTitle/WebPageTitle";
 
 function MainDashboard() {
-  const [displayData, setDisplayData] = useState({});
+  const [rentersAmount, setRentersAmount] = useState("");
+  const [roomsAmount, setRoomsAmount] = useState("");
+  const [earnedAmount, setEarnedAmount] = useState("");
   const [currentBalance, setCurrentBalance] = useState("");
 
   useEffect(() => {
-    axios.get(AppUrl.GetWidgetsData).then(
+    axios.get(AppUrl.CountRenters).then(
       (response) => {
         if(response.data.status === 200) {
-          setDisplayData(response.data.results);
+          setRentersAmount(response.data.total);
         }
       });
+      axios.get(AppUrl.CountRooms).then(
+        (response) => {
+          if(response.data.status === 200) {
+            setRoomsAmount(response.data.total);
+          }
+        });
+        axios.get(AppUrl.GetEarnedAmount).then(
+          (response) => {
+            if(response.data.status === 200) {
+              setEarnedAmount(response.data.amount);
+            }
+          });
       axios.get(AppUrl.GetRecentBalanceChanges).then((response) => {
         if (response.data.status === 200) {
           setCurrentBalance(response.data.currentBalance);
@@ -35,9 +49,9 @@ function MainDashboard() {
     <Fragment>
       <WebPageTitle pageTitle="Dashboard" />
       <div className="widgets">
-        <Widget type="renter" amount={displayData.rentersTotal}/>
-        <Widget type="room" amount={displayData.roomsTotal}/>
-        <Widget type="earning" amount={displayData.earnedAmount} />
+        <Widget type="renter" amount={rentersAmount}/>
+        <Widget type="room" amount={roomsAmount}/>
+        <Widget type="earning" amount={earnedAmount} />
         <Widget type="balance" amount={currentBalance} />
       </div>
       <BalanceVariation />

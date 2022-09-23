@@ -9,6 +9,7 @@ class BreachHistory extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
+
     protected $with = ['renter', 'breach'];
 
     public function renter() {

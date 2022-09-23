@@ -7,21 +7,26 @@ use Illuminate\Http\Request;
 use App\Models\Room;
 use App\Models\RoomStatus;
 
+use App\Repositories\Room\RoomRepositoryInterface;
+
 class AvailableRoomController extends Controller
 {
+    protected $room;
+
+    public function __construct(RoomRepositoryInterface $room) {
+        $this->room = $room;
+    }
+    
     public function displayAllAvailableRooms() {
-        $full_status_id = RoomStatus::where('name', RoomStatus::STATUS_FULL)->value('id');
-        $available_rooms = Room::where('status_id', '!=', $full_status_id)->get();
         return response([
             'status' => 200,
-            'availableRooms' => $available_rooms,
+            'availableRooms' => $this->room->getAvailableRooms(),
         ]);
     }
 
     public function getAvailableRoomDetails($id) {
-        $room_details = Room::where('id', $id)->get();
         return response([
-            'details' => $room_details,
+            'room' => $this->room->show($id),
             'status' => 200,
         ]);
     }

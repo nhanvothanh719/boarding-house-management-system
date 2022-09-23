@@ -12,15 +12,12 @@ import swal from "sweetalert";
 export default function PaidInvoiceDetails({ match }) {
   const history = useHistory();
   const invoiceId = match.params.invoiceID;
+  const paymentMethod = ['Cash', 'Razorpay', 'Paypal'];
 
   const [loading, setLoading] = useState(true);
   const [invoice, setInvoice] = useState({
     renter: {},
-    payment: {
-      method: {
-        name: "",
-      },
-    },
+    payment: {},
     discount: "",
     extra_fee: "",
     extra_fee_description: "",
@@ -29,7 +26,6 @@ export default function PaidInvoiceDetails({ match }) {
     year: "",
     effective_from: "",
     valid_until: "",
-    is_paid: "",
   });
   const [usedServices, setUsedServices] = useState([
     {
@@ -101,7 +97,7 @@ export default function PaidInvoiceDetails({ match }) {
                     <i className="fa fa-circle text-blue-m2 text-xs mr-1"></i>{" "}
                     <span className="text-600 text-90">Status:</span>{" "}
                     <span className="badge badge-success badge-pill px-25">
-                      {invoice.is_paid ? "Paid" : "Unpaid"}
+                      {invoice.payment !== null ? "Paid" : "Unpaid"}
                     </span>
                   </div>
 
@@ -109,7 +105,7 @@ export default function PaidInvoiceDetails({ match }) {
                     <i className="fa fa-circle text-blue-m2 text-xs mr-1"></i>{" "}
                     <span className="text-600 text-90">Paid method:</span>{" "}
                     <span className="badge badge-primary badge-pill px-25">
-                    {invoice.payment.method.name}
+                    {paymentMethod[invoice.payment.payment_method_id - 1]}
                     </span>
                   </div>
                 </div>

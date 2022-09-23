@@ -26,12 +26,10 @@ export default function EditProfile() {
   const [avatar, setAvatar] = useState("");
   const [loading, setLoading] = useState(true);
   const [userInfoChange, setUserInfoChange] = useState(false);
-  const [role, setRole] = useState({});
 
   useEffect(() => {
     axios.get(AppUrl.GetUserProfile).then((response) => {
       if (response.data.status === 200) {
-        setRole(response.data.currentUser.role);
         setUserInfo(response.data.currentUser);
         setAvatar(response.data.currentUser.profile_picture);
       }
@@ -193,7 +191,7 @@ export default function EditProfile() {
                         <Form.Control
                           type="text"
                           id="inputRole"
-                          value={role.name}
+                          value={userInfo.role_id === 0 ? "Admin" : "Renter"}
                           disabled
                         />
                       </FormGroup>

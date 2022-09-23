@@ -93,12 +93,12 @@ export default function CreateAnnouncement() {
             Create new announcement
             </Button>
             <CreateAnnouncementModal 
-      isShown={showCreateModal}
-      setLoaderClass={setLoaderClass}
-      setDisplayComponentsClass={setDisplayComponentsClass}
-      rentersIdList={rentersIdList}
-      setCreateModalStatus={setCreateModalStatus}
-      />
+            isShown={showCreateModal}
+            setLoaderClass={setLoaderClass}
+            setDisplayComponentsClass={setDisplayComponentsClass}
+            rentersIdList={rentersIdList}
+            setCreateModalStatus={setCreateModalStatus}
+            />
         </div>
         <MaterialTable
         columns={columns}

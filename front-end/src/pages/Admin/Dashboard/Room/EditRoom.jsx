@@ -3,13 +3,14 @@ import { Link, useHistory } from "react-router-dom";
 
 import swal from "sweetalert";
 import axios from "axios";
+import { Publish } from "@material-ui/icons";
 
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
 import SearchCategoryEdit from "../../../../components/Search/SearchCategoryEdit";
+import DefaultAvatar from "../../../../assets/images/default_avatar.png";
 
 import "../../../../assets/css/Dashboard/room.css";
-import { Publish } from "@material-ui/icons";
 import WebPageTitle from "../../../../components/WebPageTitle/WebPageTitle";
 
 export default function EditRoom({ match }) {
@@ -30,6 +31,8 @@ export default function EditRoom({ match }) {
     has_conditioner: "",
     has_fridge: "",
     has_wardrobe: "",
+    images: [],
+    renters: [],
   });
   const [uploadedPictures, setUploadedPictures] = useState([]);
   const [roomImages, setRoomImages] = useState([]);
@@ -43,17 +46,13 @@ export default function EditRoom({ match }) {
     axios.get(AppUrl.EditRoom + roomId).then((response) => {
       if (response.data.status === 200) {
         setInput(response.data.room);
+        setRoomDetails(response.data.room);
         setSelectedCategory(response.data.room.category);
+        setRoomImages(response.data.room.images);
+        setRenters(response.data.room.renters);
       } else if (response.data.status === 404) {
         swal("Error", response.data.message, "error");
         history.push("/admin/view-all-rooms");
-      }
-    });
-    axios.get(AppUrl.GetRoomDetails + roomId).then((response) => {
-      if (response.data.status === 200) {
-        setRoomDetails(response.data.roomDetails);
-        setRenters(response.data.allRenters);
-        setRoomImages(response.data.roomImages);
       }
     });
     setLoading(false);
@@ -135,7 +134,7 @@ export default function EditRoom({ match }) {
         <div className="roomInfoTop">
           <span>
             <img
-              src={`http://127.0.0.1:8000/${renter.profile_picture}`}
+              src={renter.profile_picture ? `http://127.0.0.1:8000/${renter.profile_picture}`  : DefaultAvatar}
               alt="renter_profile_picture"
               className="renterInRoomImg"
             />

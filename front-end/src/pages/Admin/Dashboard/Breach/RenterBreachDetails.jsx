@@ -17,7 +17,7 @@ export default function RenterBreachDetails({ match }) {
   useEffect(() => {
     axios.get(AppUrl.GetRenterBreaches + renterId).then((response) => {
       if (response.data.status === 200) {
-        setBreaches(response.data.renterBreaches);
+        setBreaches(response.data.renterBreachHistories);
       }
     });
     setLoading(false);

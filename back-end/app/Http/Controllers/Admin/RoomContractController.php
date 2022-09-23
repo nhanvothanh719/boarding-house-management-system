@@ -8,20 +8,21 @@ use App\Helpers\CustomHelper;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\File;
 
-use App\Models\User;
-use App\Models\RoomContract;
+use App\Repositories\RoomContract\RoomContractRepositoryInterface;
 
 class RoomContractController extends Controller
 {
-    public const room_contract_public_folder = 'uploaded/room_contract';
+    protected $contract;
+
+    public function __construct(RoomContractRepositoryInterface $contract) {
+        $this->contract = $contract;
+    }
 
     public function index() {
-        $all_room_contracts = RoomContract::all();
         return response([
             'status' => 200,
-            'allRoomContracts' => $all_room_contracts,
+            'allRoomContracts' => $this->contract->all(),
         ]);
     }
 
@@ -45,32 +46,16 @@ class RoomContractController extends Controller
                 'status' => 422,
             ]);
         }
-        $user = User::find($request->renter_id);
-        if(!$user) 
+        if(CustomHelper::isAdminRole($request->renter_id))
         {
             return response([
-                'message' => 'No user found',
-                'status' => 404,
+                'message' => 'The user is not renter',
+                'status' => 400,
             ]);
         }
-        if(CustomHelper::isAdminRole($user))
-        {
-            return response([
-                'message' => 'The user with ID is not renter',
-                'status' => 403,
-            ]);
-        }
-        $room_contract = new RoomContract;
-        $room_contract->renter_id = $request->renter_id;
-        $room_contract->deposit_amount = $request->deposit_amount;
-        $room_contract->effective_from = $request->effective_from;
-        $room_contract->effective_until = $request->effective_until;
-        $upload_folder = RoomContractController::room_contract_public_folder.'/'.$request->renter_id.'/';
         $owner_signature = $request->file('owner_signature');
-        $room_contract->owner_signature = CustomHelper::addImage($owner_signature, $upload_folder);
         $renter_signature = $request->file('renter_signature');
-        $room_contract->renter_signature = CustomHelper::addImage($renter_signature, $upload_folder);
-        $room_contract->save();
+        $room_contract = $this->contract->store($request->all(), $owner_signature, $renter_signature);
         return response([
             'message' => 'Create new room contract successfully',
             'status' => 200,
@@ -91,16 +76,14 @@ class RoomContractController extends Controller
                 'status' => 422,
             ]);
         }
-        $room_contract = RoomContract::find($id);
+        $room_contract = $this->contract->show($id);
         if(!$room_contract) {
             return response([
                 'message' => 'No room contract found',
                 'status' => 404,
             ]);
         }
-        $room_contract->effective_until = $request->effective_until;
-        $room_contract->deposit_amount = $request->deposit_amount;
-        $room_contract->save();
+        $this->contract->update($request->all(), $id);
         return response([
             'message' => 'Update room contract successfully',
             'status' => 200,
@@ -108,7 +91,7 @@ class RoomContractController extends Controller
     }
 
     public function getRoomContractDetails($id) {
-        $room_contract = RoomContract::find($id);
+        $room_contract = $this->contract->show($id);
         if(!$room_contract) {
             return response([
                 'message' => 'No room contract found',
@@ -133,18 +116,16 @@ class RoomContractController extends Controller
                 'status' => 422,
             ]);
         }
-        $room_contract = RoomContract::find($id);
+        $room_contract = $this->contract->show($id);
         if(!$room_contract) {
             return response([
                 'message' => 'No room contract found',
                 'status' => 404,
             ]);
         }
-        $old_owner_signature = $room_contract->owner_signature;
-        $old_renter_signature = $room_contract->renter_signature;
-        $upload_folder = RoomContractController::room_contract_public_folder.'/'.$room_contract->renter_id.'/';
-        $room_contract->owner_signature = CustomHelper::updateImage($old_owner_signature, $request->file('owner_signature'), $upload_folder);
-        $room_contract->renter_signature = CustomHelper::updateImage($old_renter_signature, $request->file('renter_signature'), $upload_folder);
+        $owner_signature = $request->file('owner_signature');
+        $renter_signature = $request->file('renter_signature');
+        $this->contract->updateSignatures($id, $owner_signature, $renter_signature);
         $room_contract->save();
         return response([
             'message' => 'Update signatures in room contract successfully',
@@ -153,18 +134,14 @@ class RoomContractController extends Controller
     }
 
     public function deleteRoomContract($id) {
-        $room_contract = RoomContract::find($id);
+        $room_contract = $this->contract->show($id);
         if(!$room_contract) {
             return response([
-                'message' => 'No renter found',
+                'message' => 'No room contract found',
                 'status' => 404,
             ]);
         }
-        //Delete existed images:
-        $upload_folder = RoomContractController::room_contract_public_folder.'/'.$room_contract->renter_id.'/';
-        //In folder
-        File::deleteDirectory(public_path($upload_folder));
-        $room_contract->delete();
+        $this->contract->delete($id);
         return response([
             'message' => 'Successfully delete room contract',
             'status' => 200,

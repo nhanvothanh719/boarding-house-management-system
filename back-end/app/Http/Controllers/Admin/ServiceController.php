@@ -7,17 +7,20 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-use App\Models\Service;
-use App\Models\User;
-use App\Models\ServiceRegistration;
+use App\Repositories\Service\ServiceRepositoryInterface;
 
 class ServiceController extends Controller
 {
+    protected $service;
+
+    public function __construct(ServiceRepositoryInterface $service) {
+        $this->service = $service;
+    }
+
     public function index() {
-        $all_services = Service::all();
         return response([
             'status' => 200,
-            'allServices' => $all_services,
+            'allServices' => $this->service->all(),
         ]);
     }
 
@@ -34,50 +37,39 @@ class ServiceController extends Controller
                 'status' => 422,
             ]);
         }
-        try {
-            $service = Service::create([
-                'name' => $request->name,
-                'description' => $request->description,
-                'is_compulsory' => $request->is_compulsory == true ? '1' : '0',
-                'unit' => $request->unit,
-                'unit_price' => $request->unit_price,
-            ]);
-            return response([
-                'message' => 'Successfully create new service',
-                'service' => $service,
-                'status' => 200,
-            ], 200);
-        }
-        catch(Exception $exception) {
-            return response([
-                'message' => $exception->getMessage(),
-                'status' => 400,
-            ], 400);
-        }
+        $service = $this->service->store($request->all());
+        return response([
+            'message' => 'Successfully create new service',
+            'status' => 200,
+        ]);
     }
 
     public function getOptionalServices() {
-        $optional_services = Service::where('is_compulsory', 0)->get();
         return response([
             'status' => 200,
-            'allOptionalServices' => $optional_services,
+            'allOptionalServices' => $this->service->getAllOptionalServices(),
+        ]);
+    }
+
+    public function getCompulsoryServices() {
+        return response([
+            'status' => 200,
+            'allCompulsoryServices' => $this->service->getAllCompulsoryServices(),
         ]);
     }
 
     public function editService($id) {
-        $service = Service::find($id);
+        $service = $this->service->show($id);
         if($service) {
             return response([
                 'status' => 200,
                 'service' => $service,
             ]);
         }
-        else {
-            return response([
-                'status' => 404,
-                'message' => 'No service found',
-            ]);
-        }
+        return response([
+            'status' => 404,
+            'message' => 'No service found',
+        ]);
     }
 
     public function updateService(Request $request, $id) {
@@ -93,63 +85,51 @@ class ServiceController extends Controller
                 'status' => 422, //Unprocessable entity
             ]);
         }
-        $service = Service::find($id);
-        if($service) {
-            $is_compulsory_before = $service->is_compulsory;
-            if($is_compulsory_before == 0 && $is_compulsory_before!= $request->is_compulsory) {
-                $check_use_service = ServiceRegistration::where('service_id', $id)->count();
-                if($check_use_service > 0){
-                    return response([
-                        'message' => 'Cannot update this service to compulsory since it is used',
-                        'status' => 403,
-                    ]);
-                }
-            }
-            $service->name = $request->name;
-            $service->description = $request->description;
-            $service->unit = $request->unit;
-            $service->unit_price = $request->unit_price;
-            $service->is_compulsory = $request->is_compulsory == true ? '1' : '0';
-            $service->save();
-            return response([
-                'message' => 'Successfully update service',
-                'status' => 200,
-            ]);
-        } else {
-            return response([
-                'message' => 'No service found',
-                'status' => 404,
-            ]);
-        }
-    }
-
-    public function deleteService($id) {
-        $service = Service::find($id);
+        $service = $this->service->show($id);
         if(!$service) {
             return response([
                 'message' => 'No service found',
                 'status' => 404,
             ]);
         }
-        if($service->is_compulsory == 1) {
+        $this->service->update($request->all(), $id);
+        return response([
+            'message' => 'Successfully update service',
+            'status' => 200,
+        ]);
+    }
+
+    public function deleteService($id) {
+        $service = $this->service->show($id);
+        if(!$service) {
             return response([
-                'message' => 'Cannot delete compulsory service, change to optional service first',
-                'status' => 403,
+                'message' => 'No service found',
+                'status' => 404,
             ]);
         }
-        $check_use_service = ServiceRegistration::where('service_id', $id)->count();
-        if($check_use_service > 0) {
+        if($this->service->checkCompulsory($id)) {
+            return response([
+                'message' => 'Cannot delete compulsory service',
+                'status' => 400,
+            ]);
+        }
+        if($this->service->checkUsed($id)) {
             return response([
                 'message' => 'Cannot delete this service since it is used',
-                'status' => 403,
+                'status' => 400,
             ]);
         }
-        else {
-            $service->delete();
-            return response([
-                'status' => 200,
-                'message' => 'Successfully delete service',
-            ]);
-        }
+        $this->service->delete($id);
+        return response([
+            'status' => 200,
+            'message' => 'Successfully delete service',
+        ]);
+    }
+
+    public function countUsedServices() {
+        return response([
+            'status' => 200,
+            'usedServicesCount' => $this->service->countUsedServices(),
+        ]);
     }
 }

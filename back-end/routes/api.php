@@ -1,5 +1,4 @@
 <?php
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AuthController;
@@ -10,27 +9,29 @@ use App\Http\Controllers\AvailableRoomController;
 use App\Http\Controllers\RoomRentRegistrationController;
 
 use App\Http\Controllers\Admin\RoomController;
-use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\RoomCategoryController;
 use App\Http\Controllers\Admin\RenterController;
-use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\MotorbikeController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\ServiceRegistrationController;
 use App\Http\Controllers\Admin\InvoiceController;
-use App\Http\Controllers\Admin\AnnouncementController;
 use App\Http\Controllers\Admin\BalanceController;
 use App\Http\Controllers\Admin\BreachController;
+use App\Http\Controllers\Admin\BreachHistoryController;
 use App\Http\Controllers\Admin\RoomContractController;
-use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProblemController;
+use App\Http\Controllers\Admin\RoomRentController;
+use App\Http\Controllers\Admin\PaymentController;
 
-
-use App\Http\Controllers\Renter\RenterRoomController;
+use App\Http\Controllers\Renter\RenterBreachController;
 use App\Http\Controllers\Renter\RenterInvoiceController;
 use App\Http\Controllers\Renter\RenterProblemController;
 use App\Http\Controllers\Renter\RenterServiceController;
 use App\Http\Controllers\Renter\RenterRoomContractController;
 use App\Http\Controllers\Renter\RenterBreachHistoryController;
+use App\Http\Controllers\Renter\RenterInfoController;
+use App\Http\Controllers\Renter\RenterPaymentController;
+use App\Http\Controllers\Renter\RenterRoomRentController;
 
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/register', [AuthController::class, 'register']);
@@ -55,12 +56,14 @@ Route::middleware('auth:api')->group(function(){
             return response(['message' => 'Login successfully. You are the renter', 'status' => 200]);
         }); 
 
-        Route::get('/get-renter-room-info', [RenterRoomController::class, 'getRoomInfo']);
+        Route::get('/get-renter-breaches', [RenterInfoController::class, 'getRenterBreaches']);
+        
+        Route::get('/get-renter-room-info', [RenterRoomRentController::class, 'getRenterRoomInfo']);
 
         Route::get('/get-invoice-details/{id}', [RenterInvoiceController::class, 'getInvoiceDetails']);
         Route::get('/all-renter-invoices', [RenterInvoiceController::class, 'getRenterInvoices']);
 
-        Route::post('/make-payment/{id}', [RenterInvoiceController::class, 'makePayment']);
+        Route::post('/make-payment/{id}', [RenterPaymentController::class, 'payInvoice']);
         
         Route::get('/all-renter-problems', [RenterProblemController::class, 'getRenterProblems']);
         Route::post('/store-renter-problem', [RenterProblemController::class, 'storeProblem']);
@@ -72,47 +75,57 @@ Route::middleware('auth:api')->group(function(){
 
         Route::get('/get-renter-room-contract', [RenterRoomContractController::class, 'getRenterRoomContract']);
 
-        Route::get('/get-all-renter-breaches', [RenterBreachHistoryController::class, 'getRenterBreaches']);
-        Route::get('/get-breach-details/{id}', [RenterBreachHistoryController::class, 'getBreachDetails']);
+        Route::get('/get-breach-details/{id}', [RenterBreachController::class, 'getBreachDetails']);
+        
         Route::get('/get-renter-breach-histories/{id}', [RenterBreachHistoryController::class, 'getRenterBreachHistories']);
     });
 
     //Dashboard
     Route::middleware('isAdmin')->group(function(){
+
         Route::get('/check-admin-authenticated', function() {
             return response(['message' => 'Login successfully. You are the admin', 'status' => 200]);
-        });    
+        });
+
+        //User
         Route::get('/all-users', [UserController::class, 'index']);
+        Route::post('/store-user', [UserController::class, 'storeUser']);
+        Route::get('/edit-user/{id}', [UserController::class, 'editUser']);
+        Route::post('/update-user/{id}', [UserController::class, 'updateUser']);
+        Route::delete('/delete-user/{id}', [UserController::class, 'deleteUser']);
+        Route::put('/lock-user-account/{id}', [UserController::class, 'lockUserAccount']);
 
         //Category
-        Route::get('/all-categories', [CategoryController::class, 'index']);
-        Route::post('/store-category', [CategoryController::class, 'storeCategory']);
-        Route::get('/edit-category/{id}', [CategoryController::class, 'editCategory']);
-        Route::put('/update-category/{id}', [CategoryController::class, 'updateCategory']);
-        Route::delete('/delete-category/{id}', [CategoryController::class, 'deleteCategory']);
+        Route::get('/all-categories', [RoomCategoryController::class, 'index']);
+        Route::post('/store-category', [RoomCategoryController::class, 'storeCategory']);
+        Route::get('/edit-category/{id}', [RoomCategoryController::class, 'editCategory']);
+        Route::put('/update-category/{id}', [RoomCategoryController::class, 'updateCategory']);
+        Route::delete('/delete-category/{id}', [RoomCategoryController::class, 'deleteCategory']);
 
         //Room
+        Route::get('/count-rooms', [RoomController::class, 'countRooms']);
         Route::get('/all-rooms', [RoomController::class, 'index']);
         Route::post('/store-room', [RoomController::class, 'storeRoom']);
         Route::get('/edit-room/{id}', [RoomController::class, 'editRoom']);
         Route::post('/update-room/{id}', [RoomController::class, 'updateRoom']);
         Route::delete('/delete-room/{id}', [RoomController::class, 'deleteRoom']);
-        Route::get('/all-statuses', [RoomController::class, 'getAllRoomStatuses']);
-        Route::get('/all-room_rents', [RoomController::class, 'getAllRoomRents']);
-        Route::post('/rent-room', [RoomController::class, 'rentRoom']);
-        Route::delete('/cancel-rent-room/{id}', [RoomController::class, 'cancelRentRoom']);
-        Route::get('/room-details/{id}', [RoomController::class, 'getRoomDetails']);
+        Route::get('/count-rooms-by-status', [RoomController::class, 'countRoomsByStatus']);
+
+        //Room rent
+        Route::get('/all-room_rents', [RoomRentController::class, 'index']);
+        Route::post('/rent-room', [RoomRentController::class, 'rentRoom']);
+        Route::delete('/cancel-rent-room/{id}', [RoomRentController::class, 'cancelRentRoom']);
 
         //Renter
         Route::get('/all-renters', [RenterController::class, 'index']);
-        Route::post('/store-renter', [RenterController::class, 'storeRenter']);
-        Route::get('/edit-renter/{id}', [RenterController::class, 'editRenter']);
-        Route::post('/update-renter/{id}', [RenterController::class, 'updateRenter']);
-        Route::delete('/delete-renter/{id}', [RenterController::class, 'deleteRenter']);
-        Route::put('/lock-renter-account/{id}', [RenterController::class, 'lockRenterAccount']);
-
-        //Role
-        Route::get('/all-roles', [RoleController::class, 'index']);
+        Route::get('/get-renter-breaches/{id}', [RenterController::class, 'getRenterBreachHistories']);
+        Route::get('/all-registered_services/{id}', [RenterController::class, 'getRegisteredServices']);
+        Route::post('send-announcement', [RenterController::class, 'sendAnnouncement']);
+        Route::get('/get-renter-invoices/{id}', [RenterController::class, 'getRenterInvoices']);
+        Route::get('/get-renter-total-used-services-amount/{id}', [RenterController::class, 'countRenterTotalUsedServicesAmount']);
+        Route::get('/count-renters-by-gender', [RenterController::class, 'countRentersByGender']);
+        Route::get('/count-renter-breaches/{id}', [RenterController::class, 'countRenterBreaches']);
+        Route::get('/count-renters', [RenterController::class, 'countRenters']);
 
         //Motorbike
         Route::get('/all-motorbikes', [MotorbikeController::class, 'index']);
@@ -120,7 +133,6 @@ Route::middleware('auth:api')->group(function(){
         Route::get('/edit-motorbike/{id}', [MotorbikeController::class, 'editMotorbike']);
         Route::post('/update-motorbike/{id}', [MotorbikeController::class, 'updateMotorbike']);
         Route::delete('/delete-motorbike/{id}', [MotorbikeController::class, 'deleteMotorbike']);
-        Route::get('/all-motorbike_owners', [MotorbikeController::class, 'getMotorbikeOwners']);
 
         Route::get('/get-name/{id}', [UserController::class, 'getName']);
 
@@ -131,6 +143,8 @@ Route::middleware('auth:api')->group(function(){
         Route::put('/update-service/{id}', [ServiceController::class, 'updateService']);
         Route::delete('/delete-service/{id}', [ServiceController::class, 'deleteService']);
         Route::get('/all-optional-services', [ServiceController::class, 'getOptionalServices']);
+        Route::get('/all-compulsory-services', [ServiceController::class, 'getCompulsoryServices']);
+        Route::get('/count-used-services', [ServiceController::class, 'countUsedServices']);
         
         Route::get('/all-registrations', [ServiceRegistrationController::class, 'index']);
         Route::post('/register-service', [ServiceRegistrationController::class, 'registerService']);
@@ -142,14 +156,13 @@ Route::middleware('auth:api')->group(function(){
         Route::get('/edit-invoice/{id}', [InvoiceController::class, 'editInvoice']);
         Route::put('/update-invoice/{id}', [InvoiceController::class, 'updateInvoice']);
         Route::delete('/delete-invoice/{id}', [InvoiceController::class, 'deleteInvoice']);
-        Route::get('/all-registered_services/{id}', [InvoiceController::class, 'getRegisteredServices']);
         Route::post('/create-temporary-invoice/{id}', [InvoiceController::class, 'createTemporaryInvoice']);
         Route::post('/update-service-quantity/{service_id}/{value}',[InvoiceController::class, 'updateServiceQuantity']);
         Route::get('/send-invoice/{id}', [InvoiceController::class, 'sendInvoice']);
-        Route::get('/get-renter-invoices/{id}', [InvoiceController::class, 'getRenterInvoices']);
 
-        //Announcement
-        Route::post('send-announcement', [AnnouncementController::class, 'sendAnnouncement']);
+        //Payment
+        Route::post('/pay-by-cash/{id}', [PaymentController::class, 'payInvoice']);
+        Route::get('/get-paid-invoices-rate', [PaymentController::class, 'getPaidInvoicesRate']);
 
         //Balance
         Route::get('/get-balance', [BalanceController::class, 'index']);
@@ -159,6 +172,7 @@ Route::middleware('auth:api')->group(function(){
         Route::get('/edit-balance-change/{id}', [BalanceController::class, 'editBalanceChange']);
         Route::put('/update-balance-change/{id}', [BalanceController::class, 'updateBalanceChange']);
         Route::delete('/delete-balance-change/{id}', [BalanceController::class, 'deleteBalanceChange']);
+        Route::get('/get-earned-amount', [BalanceController::class, 'getEarnedAmount']);
 
         //Breach
         Route::get('/all-breaches', [BreachController::class, 'index']);
@@ -166,15 +180,13 @@ Route::middleware('auth:api')->group(function(){
         Route::get('/edit-breach/{id}', [BreachController::class, 'editBreach']);
         Route::put('/update-breach/{id}', [BreachController::class, 'updateBreach']);
         Route::delete('/delete-breach/{id}', [BreachController::class, 'deleteBreach']);
-
-        Route::get('/all-breach-histories', [BreachController::class, 'getBreachHistories']);
-        Route::post('/store-breach-history', [BreachController::class, 'storeBreachHistory']);
-        Route::delete('/delete-breach-history/{id}', [BreachController::class, 'deleteBreachHistory']);
-
         Route::get('/get-total-number-breach-made', [BreachController::class, 'calculateTotalNumberBreachMade']);
-        Route::get('/get-renter-total-number-breach-made', [BreachController::class, 'getRenterTotalNumberBreachMade']);
-        Route::get('/get-all-renter-breaches/{id}', [BreachController::class, 'getRenterBreaches']);
-        Route::get('/count-renter-breaches/{id}', [BreachController::class, 'countRenterBreaches']);
+
+        //Breach history
+        Route::get('/all-breach-histories', [BreachHistoryController::class, 'getBreachHistories']);
+        Route::post('/store-breach-history', [BreachHistoryController::class, 'storeBreachHistory']);
+        Route::delete('/delete-breach-history/{id}', [BreachHistoryController::class, 'deleteBreachHistory']);
+        Route::get('/report-breaches', [BreachHistoryController::class, 'reportBreaches']);
 
         //Room contract
         Route::get('/all-room-contracts', [RoomContractController::class, 'index']);
@@ -183,14 +195,6 @@ Route::middleware('auth:api')->group(function(){
         Route::delete('/delete-room-contract/{id}', [RoomContractController::class, 'deleteRoomContract']);
         Route::get('/get-room-contract-details/{id}', [RoomContractController::class, 'getRoomContractDetails']);
         Route::post('/update-signatures/{id}', [RoomContractController::class, 'updateSignatures']);
-
-        //Dashboard
-        Route::get('/count-renters-by-gender', [DashboardController::class, 'countRentersByGender']);
-        Route::get('/count-rooms-by-status', [DashboardController::class, 'countRoomsByStatus']);
-        Route::get('/count-used-services', [DashboardController::class, 'countUsedServices']);
-        Route::get('/get-paid-invoices-rate', [DashboardController::class, 'getPaidInvoicesRate']);
-        Route::get('/report-breaches', [DashboardController::class, 'reportBreaches']);
-        Route::get('/get-widgets-data', [DashboardController::class, 'displayNumberOnWidget']);
 
         //Problem
         Route::get('/all-problems', [ProblemController::class, 'index']);

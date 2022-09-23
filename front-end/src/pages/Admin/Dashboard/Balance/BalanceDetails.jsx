@@ -129,7 +129,7 @@ export default function BalanceDetails() {
           <AddBalanceChangeModal
               isShown={showCreateModal}
               setCreateModalStatus={setCreateModalStatus}
-              updateCreateModalStatus={updateModalStatus}
+              updateModalStatus={updateModalStatus}
             />
         </div>
         <MaterialTable

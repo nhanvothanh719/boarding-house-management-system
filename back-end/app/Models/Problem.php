@@ -9,7 +9,6 @@ class Problem extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
-    protected $with = ['renter', 'responder'];
 
     const SEVERITY_HIGH = 1;
     const SEVERITY_NORMAL = 2;
@@ -18,6 +17,8 @@ class Problem extends Model
     const STATUS_PENDING = 1;
     const STATUS_ONGOING = 2;
     const STATUS_SOLVED = 3;
+
+    protected $with = ['renter', 'responder'];
 
     public function renter() {
         return $this->belongsTo(User::class,'renter_id','id');

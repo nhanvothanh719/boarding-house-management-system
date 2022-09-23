@@ -119,7 +119,7 @@ export default function BreachRate(props) {
             innerRadius={80}
             outerRadius={100}
             fill={color}
-            dataKey="total"
+            dataKey="breach_histories_count"
             onMouseEnter={onPieEnter}
           />
         </PieChart>

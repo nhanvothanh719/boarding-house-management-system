@@ -3,15 +3,19 @@ import { Link } from "react-router-dom";
 import { Col, Container, Row } from "react-bootstrap";
 
 import axios from "axios";
+import swal from "sweetalert";
 
 import WebPageTitle from "../../components/WebPageTitle/WebPageTitle";
 import NavBar from "../../layouts/User/NavBar";
 import Footer from "../../layouts/User/Footer";
-import swal from "sweetalert";
+import ConfirmLoading from "../../components/Loading/ConfirmLoading";
 
 function ForgetPasswordPage(props) {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const [errors, setErrors] = useState([]);
+  const [loaderClass, setLoaderClass] = useState("d-none");
+  const [displayComponentsClass, setDisplayComponentsClass] = useState("");
 
   useEffect(() => {
     window.scroll(0, 0);
@@ -19,21 +23,27 @@ function ForgetPasswordPage(props) {
 
   const formSubmit = (e) => {
     e.preventDefault();
+    setLoaderClass("");
+    setDisplayComponentsClass("d-none");
     const data = {
       email: email,
     };
-    
     axios
       .post("/forget-password", data)
       .then((response) => {
         if (response.data.status === 200) {
+          setErrors([]);
           swal("Success", response.data.message, "success");
           document.getElementById("forgetPasswordForm").reset();
+        } else if (response.data.status === 422) {
+          setErrors(response.data.errors);
         } else if (response.data.status === 404) {
           swal("Error", response.data.message, "error");
-        } else if (response.data.status === 403) {
+        } else if (response.data.status === 400) {
           swal("Warning", response.data.message, "warning");
         }
+        setDisplayComponentsClass("");
+        setLoaderClass("d-none");
       })
       .catch((error) => {
         setMessage(error.response.data.message);
@@ -72,6 +82,10 @@ function ForgetPasswordPage(props) {
                 </h3>
                 {error}
                 <div className="form-group">
+                <div className={loaderClass}>
+                    <ConfirmLoading />
+                  </div>
+                  <div className={displayComponentsClass}>
                   <label for="inputEmail" className="formLabel">
                     Email address:
                   </label>
@@ -87,7 +101,7 @@ function ForgetPasswordPage(props) {
                     }}
                     required
                   />
-                </div>
+                <small className="text-danger">{errors.email}</small>
                 <button
                   type="submit"
                   className="btn btn-primary btn-block loginFormButton"
@@ -99,6 +113,8 @@ function ForgetPasswordPage(props) {
                   Have an account?{" "}
                 </Link>
                 <br />
+                </div>
+                </div>
               </form>
             </div>
           </Col>

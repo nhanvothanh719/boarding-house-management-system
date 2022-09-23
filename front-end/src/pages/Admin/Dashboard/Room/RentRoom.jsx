@@ -1,5 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 import swal from "sweetalert";
 import axios from "axios";
@@ -35,7 +36,7 @@ export default function RentRoom() {
   };
 
   const updateCreateModalStatus = (status) => {
-    setShowCreateModal(status);
+    setRoomRentsChange(status);
   };
 
   let columns = [];
@@ -52,7 +53,10 @@ export default function RentRoom() {
       {
         field: "room_id",
         title: "Room number",
-        render: (rowData) => <p> {rowData.room.number} </p>,
+        render: (rowData) => 
+        <Link className="customDashboardLink" to={`/admin/edit-room/${rowData.room_id}`}>
+          {rowData.room.number}
+          </Link>,
       },
       {
         field: "renter_id",
@@ -70,7 +74,7 @@ export default function RentRoom() {
                 alt="avatar"
                 className="topAvatar"
               />
-              <p style={{ display: "inline" }}> {rowData.renter.name} </p>
+              <Link className="customDashboardLink" to={`/admin/edit-user/${rowData.renter_id}`}>{rowData.renter.name}</Link>
             </span>
           );
         },
@@ -79,17 +83,12 @@ export default function RentRoom() {
   }
 
   const cancelRent = (e, id) => {
-    e.preventDefault();
-    const selectedRentSection = e.currentTarget;
-    selectedRentSection.innerText = "Deleting";
     axios.delete(AppUrl.CancelRentRoom + id).then((response) => {
       if (response.data.status === 200) {
         swal("Success", response.data.message, "success");
-        //Delete table row
-        selectedRentSection.closest("tr").remove();
+        setRoomRentsChange(true);
       } else if (response.data.status === 404) {
         swal("Fail", response.data.message, "error");
-        selectedRentSection.innerText = "Delete";
       }
     });
   };

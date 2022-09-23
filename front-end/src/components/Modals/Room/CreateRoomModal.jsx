@@ -18,7 +18,7 @@ export default function CreateRoomModal(props) {
     has_wardrobe: "",
     category_id: ""
   });
-  const [pictures, setPictures] = useState("");
+  const [pictures, setPictures] = useState([]);
   const [errors, setErrors] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
 
@@ -58,13 +58,15 @@ export default function CreateRoomModal(props) {
   const addRoom = (e) => {
     e.preventDefault();
     const room = new FormData();
-    if (pictures) {
+    if (pictures.length > 0) {
       for (let i = 0; i < pictures.length; i++) {
         //Appends a new value onto an existing key inside a FormData object
         //or adds the key if it does not already exist.
         room.append(`image[${i}]`, pictures[i]);
         console.log(pictures[i]);
       }
+    } else {
+      room.append('image', []);
     }
     if(selectedCategory === null) {
       setErrors({ category_id: "The category field is required." });

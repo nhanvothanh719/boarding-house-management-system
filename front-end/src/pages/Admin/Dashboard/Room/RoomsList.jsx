@@ -19,11 +19,13 @@ export default function RoomsList() {
   const [roomsList, setRoomsList] = useState([]);
   const [roomsListChange, setRoomsListChange] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
-  const statusStyle = { "Empty": "statusOnGoing", "Occupied": "statusActive", "Full": "statusPassive"};
+  const status = ["Empty", "Occupied", "Full"];
+  const statusStyle = ["statusOnGoing", "statusActive", "statusPassive"];
 
   useEffect(() => {
     axios.get(AppUrl.ShowRooms).then((response) => {
       if (response.status === 200) {
+        console.log(response.data.allRooms);
         setRoomsList(response.data.allRooms);
       }
     });
@@ -51,7 +53,7 @@ export default function RoomsList() {
         title: "Status", 
         render: (rowData) => {
           return (
-              <span className={`${statusStyle[rowData.status.name]}`}>{rowData.status.name}</span>
+              <span className={`${statusStyle[rowData.status_id - 1]}`}>{status[rowData.status_id - 1]}</span>
           );
         }
       },
@@ -143,6 +145,8 @@ export default function RoomsList() {
                           setRoomsListChange(true);
                         } else if (response.data.status === 404) {
                           swal("Error", response.data.message, "error");
+                        } else if (response.data.status === 400) {
+                          swal("Warning", response.data.message, "warning");
                         }
                       });
                     resolve();

@@ -72,7 +72,9 @@ export default function AddRoomRentModal(props) {
           setTimeout(() => {
             displayModal();
           }, 1000);
-        } else if (response.data.status === 403) {
+        } else if (response.data.status === 400) {
+          setSelectedRenter(null);
+          setSelectedRoom(null);
           swal("Warning", response.data.message, "warning");
         }
       })

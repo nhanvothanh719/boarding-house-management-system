@@ -6,7 +6,7 @@ import moment from "moment";
 import TextField from "@mui/material/TextField";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 
 import AppUrl from "../../../RestAPI/AppUrl";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
@@ -51,14 +51,17 @@ export default function AddBalanceChangeModal(props) {
       is_income: selectBalanceCategory,
       amount: input.amount,
       description: input.description,
-      occurred_on: moment(occurredDate).utc().format("YYYY-MM-DD hh:mm:ss"),
+      occurred_on: moment(occurredDate).format("YYYY-MM-DD hh:mm:ss"),
     };
     axios
       .post(AppUrl.UpdateBalance, data)
       .then((response) => {
         if (response.data.status === 200) {
           setErrors([]);
-          setInput({});
+          setInput({
+            description: "",
+            amount: "",
+          });
           setOccurredDate(moment());
           setSelectBalanceCategory(0);
           swal("Success", response.data.message, "success");
@@ -161,8 +164,7 @@ export default function AddBalanceChangeModal(props) {
                 <div className="">
                   <label className="customModalLabel">Occurred on:</label>
                   <LocalizationProvider dateAdapter={AdapterDateFns}>
-                  <DatePicker
-                    views={["day", "month", "year"]}
+                  <DateTimePicker
                     label="Occurred on"
                     name="occurred_on"
                     value={occurredDate}

@@ -27,11 +27,6 @@ export default function BreachHistories() {
   const [showCreateModal, setShowCreateModal] = useState(false);
 
   useEffect(() => {
-    axios.get(AppUrl.GetRenterTotalNumberBreachMade).then((response) => {
-      if (response.data.status === 200) {
-        console.log(response.data.renterTotal);
-      }
-    });
     axios.get(AppUrl.ShowBreachHistories).then((response) => {
       if (response.data.status === 200) {
         setBreachHistories(response.data.allBreachHistories);

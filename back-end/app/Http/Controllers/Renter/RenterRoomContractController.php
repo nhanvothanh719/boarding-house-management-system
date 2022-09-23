@@ -7,13 +7,19 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-use App\Models\RoomContract;
+use App\Repositories\RoomContract\RoomContractRepositoryInterface;
 
 class RenterRoomContractController extends Controller
 {
+    protected $contract;
+
+    public function __construct(RoomContractRepositoryInterface $contract) {
+        $this->contract = $contract;
+    }
+
     public function getRenterRoomContract() {
         $current_renter_id = Auth::user()->id;
-        $room_contract = RoomContract::where('renter_id', $current_renter_id)->first();
+        $room_contract = $this->contract->findRoomContractByRenterId($current_renter_id);
         if(!$room_contract) {
             return response([
                 'status' => 404,
