@@ -24,7 +24,7 @@ class ContactUsController extends Controller
                 'status' => 422,
             ]);
         }
-        Mail::to('nhanvothanh719@gmail.com')->send(new ContactUsMail($request->name, $request->email, $request->message));
+        Mail::to('boarding_house_admin@gmail.com')->send(new ContactUsMail($request->name, $request->email, $request->message));
         return response([
             'message' => 'Thank you for contacting us',
             'status' => 200,
