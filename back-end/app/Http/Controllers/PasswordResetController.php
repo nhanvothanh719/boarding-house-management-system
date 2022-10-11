@@ -57,7 +57,7 @@ class PasswordResetController extends Controller
                 'status' => 404,
             ]);
         }
-        $password_reset = $this->reset->update($request->all());
+        $password_reset = $this->reset->updatePassword($request->all());
         return response([
             'message' => 'Change password successfully',
             'status' => 200,

@@ -53,13 +53,14 @@ class InvoiceRepository implements InvoiceRepositoryInterface
         $invoice->effective_from = $data['effective_from'];
         $invoice->valid_until = $data['valid_until'];
         $invoice->save();
+        return $invoice;
     }
 
     public function delete($id) {
         $invoice = $this::show($id);
         $invoice->services()->delete();
         $invoice->payment()->delete();
-        $invoice->delete();
+        return $invoice->delete();
     }
 
     public function checkCreated($id, $month) {

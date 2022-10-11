@@ -28,14 +28,13 @@ class ServiceRepository implements ServiceRepositoryInterface
     }
 
     public function update($data, $id) {
+        $is_updated = true;
         $service = $this::show($id);
         $is_compulsory_before = $service->is_compulsory;
         if($is_compulsory_before == Service::OPTIONAL && $is_compulsory_before != $data['is_compulsory']) {
             if($this::checkUsed($id)){
-                return response([
-                    'message' => 'Cannot update this service to compulsory since it is used',
-                    'status' => 403,
-                ]);
+                $is_updated = false;
+                return $is_updated;
             }
         }
         $service->name = $data['name'];
@@ -44,6 +43,7 @@ class ServiceRepository implements ServiceRepositoryInterface
         $service->unit_price = $data['unit_price'];
         $service->is_compulsory = $data['is_compulsory'] == true ? '1' : '0';
         $service->save();
+        return $is_updated;
     }
 
     public function delete($id) {

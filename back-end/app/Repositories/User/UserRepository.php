@@ -37,7 +37,7 @@ class UserRepository implements UserRepositoryInterface
         $user->phone_number = $data['phone_number'];
         $user->occupation = $data['occupation'];
         $user->permanent_address = $data['permanent_address'];
-        $user->role_id = $data['role_id'];
+        $user->role = $data['role'];
         $user->password = Hash::make($generated_password);
         $user->save();
         //Store avatar
@@ -63,7 +63,7 @@ class UserRepository implements UserRepositoryInterface
         $user = $this::show($id);
         $user->gender = $data['gender'];
         $user->id_card_number = $data['id_card_number'];
-        $user->role_id = $data['role_id'];
+        $user->role = $data['role'];
         $user->save();
         return $user;
     }
@@ -90,7 +90,7 @@ class UserRepository implements UserRepositoryInterface
         $user->service_registrations()->delete();
         $user->password_reset_histories()->delete();
         File::delete($user->profile_picture);
-        $user->delete();
+        return $user->delete();
     }
 
     public function getCurrentUser() {
@@ -106,7 +106,7 @@ class UserRepository implements UserRepositoryInterface
     }
 
     public function checkAdmin($id) {
-        return $this::show($id)->role_id == User::ROLE_ADMIN ? true : false;
+        return $this::show($id)->role == User::ROLE_ADMIN ? true : false;
     }
 
     public function generateTokenWithScope($id)
@@ -161,11 +161,11 @@ class UserRepository implements UserRepositoryInterface
 
     public function checkAdminRole($id)
     {
-        return $this->show($id)->role_id == User::ROLE_ADMIN ? true : false;
+        return $this->show($id)->role == User::ROLE_ADMIN ? true : false;
     }
 
     public function allRenters() {
-        return User::where('role_id', User::ROLE_RENTER)->get();
+        return User::where('role', User::ROLE_RENTER)->get();
     }
 
     public function getBreachHistories($id) {
@@ -209,11 +209,11 @@ class UserRepository implements UserRepositoryInterface
             $item = new stdClass();
             if($gender_id == User::GENDER_MALE_ID){
                 $item->gender = "Male";
-                $item->total = User::where('gender', $gender_id)->where('role_id', User::ROLE_RENTER)->count();
+                $item->total = User::where('gender', $gender_id)->where('role', User::ROLE_RENTER)->count();
             }
             if($gender_id == User::GENDER_FEMALE_ID){
                 $item->gender = "Female";
-                $item->total = User::where('gender', $gender_id)->where('role_id', User::ROLE_RENTER)->count();
+                $item->total = User::where('gender', $gender_id)->where('role', User::ROLE_RENTER)->count();
             }
             array_push($renters_count, $item);
         }
@@ -288,6 +288,6 @@ class UserRepository implements UserRepositoryInterface
     }
 
     public function countRenters() {
-        return User::where('role_id', User::ROLE_RENTER)->count();
+        return User::where('role', User::ROLE_RENTER)->count();
     }
 }

@@ -92,7 +92,13 @@ class ServiceController extends Controller
                 'status' => 404,
             ]);
         }
-        $this->service->update($request->all(), $id);
+        $is_updated = $this->service->update($request->all(), $id);
+        if(!$is_updated) {
+            return response([
+                'message' => 'Cannot update this service to compulsory since it is used',
+                'status' => 403,
+            ]);
+        }
         return response([
             'message' => 'Successfully update service',
             'status' => 200,

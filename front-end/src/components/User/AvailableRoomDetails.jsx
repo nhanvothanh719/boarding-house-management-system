@@ -103,7 +103,7 @@ function AvailableRoomDetails(props) {
                         <BeenhereIcon className="mr-3" />
                         Status :
                       </span>{" "}
-                      {status[room.status_id - 1]}{" "}
+                      {status[room.status - 1]}{" "}
                     </li>
                     <li className="spaceDisplay">
                       <span>

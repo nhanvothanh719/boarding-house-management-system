@@ -25,13 +25,13 @@ class RoomRepository implements RoomRepositoryInterface
     }
 
     public function getAvailableRooms() {
-        return Room::where('status_id', '!=', Room::STATUS_EMPTY)->get();
+        return Room::where('status', '!=', Room::STATUS_EMPTY)->get();
     }
 
     public function store($data) {
         $room = new Room;
         $room->number = $data['number'];
-        $room->status_id = Room::STATUS_EMPTY;
+        $room->status = Room::STATUS_EMPTY;
         $room->category_id = $data['category_id'];
         $room->description = $data['description'];
         $room->area = $data['area'];
@@ -75,8 +75,8 @@ class RoomRepository implements RoomRepositoryInterface
 
     public function checkUsed($id) {
         $is_used = true;
-        $room_status_id = Room::where('id', $id)->value('status_id');
-        if($room_status_id == Room::STATUS_EMPTY) {
+        $room_status = Room::where('id', $id)->value('status');
+        if($room_status == Room::STATUS_EMPTY) {
             $is_used = false;
         }
         return $is_used;
@@ -85,16 +85,16 @@ class RoomRepository implements RoomRepositoryInterface
     public function updateIncreaseRoomStatus($id) {
         $is_updated = true;
         $room = Room::find($id);
-        $room_status_id = $room->status_id;
-        switch($room_status_id) {
+        $room_status = $room->status;
+        switch($room_status) {
             case(Room::STATUS_FULL):
                 $is_updated = false;
                 break;
             case(Room::STATUS_OCCUPIED):
-                $room->status_id = Room::STATUS_FULL;
+                $room->status = Room::STATUS_FULL;
                 break;
             case(Room::STATUS_EMPTY):
-                $room->status_id = Room::STATUS_OCCUPIED;
+                $room->status = Room::STATUS_OCCUPIED;
                 break;
         }
         $room->save();
@@ -104,13 +104,13 @@ class RoomRepository implements RoomRepositoryInterface
     public function updateDecreaseRoomStatus($id) {
         $is_updated = true;
         $room = Room::find($id);
-        $room_status_id = $room->status_id;
-        switch($room_status_id) {
+        $room_status = $room->status;
+        switch($room_status) {
             case(Room::STATUS_FULL):
-                $room->status_id = Room::STATUS_OCCUPIED;
+                $room->status = Room::STATUS_OCCUPIED;
                 break;
             case(Room::STATUS_OCCUPIED):
-                $room->status_id = Room::STATUS_EMPTY;
+                $room->status = Room::STATUS_EMPTY;
                 break;
             case(Room::STATUS_EMPTY):
                 $is_updated = false;
@@ -124,15 +124,15 @@ class RoomRepository implements RoomRepositoryInterface
         $rooms_count = array();
         $empty_rooms = new stdClass;
         $empty_rooms->status = "Empty";
-        $empty_rooms->total = Room::where('status_id', ROOM::STATUS_EMPTY)->count();
+        $empty_rooms->total = Room::where('status', ROOM::STATUS_EMPTY)->count();
         array_push($rooms_count, $empty_rooms);
         $occupied_rooms = new stdClass;
         $occupied_rooms->status = "Occupied";
-        $occupied_rooms->total = Room::where('status_id', ROOM::STATUS_OCCUPIED)->count();
+        $occupied_rooms->total = Room::where('status', ROOM::STATUS_OCCUPIED)->count();
         array_push($rooms_count, $occupied_rooms);
         $full_rooms = new stdClass;
         $full_rooms->status = "Full";
-        $full_rooms->total = Room::where('status_id', ROOM::STATUS_FULL)->count();
+        $full_rooms->total = Room::where('status', ROOM::STATUS_FULL)->count();
         array_push($rooms_count, $full_rooms);
         return $rooms_count;
     }

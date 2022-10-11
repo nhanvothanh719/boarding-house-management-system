@@ -2,17 +2,70 @@
 
 namespace Tests\Unit\Repositories;
 
-use PHPUnit\Framework\TestCase;
+use App\Models\Motorbike;
+use App\Models\User;
+
+use Tests\TestCase;
+
+use Faker\Factory as Faker;
+
+use App\Repositories\Motorbike\MotorbikeRepository;
+
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class MotorbikeTest extends TestCase
 {
-    /**
-     * A basic unit test example.
-     *
-     * @return void
-     */
-    public function test_example()
-    {
-        $this->assertTrue(true);
+    protected $motorbike;
+
+    public function setUp() : void {
+        parent::setUp();
+        $this->faker = Faker::create();
+        $renter = $renter = User::factory()->create(['role' => 1]);
+        // Prepare data for test
+        $this->motorbike = [
+            'renter_id' => rand(1, 50),
+            'license_plate' => $this->faker->unique()->numerify('ABC######'),
+        ];
+        $this->motorbike_repository = new MotorbikeRepository();
+    }
+
+    public function test_all() {
+        $all_motorbikes = $this->motorbike_repository->all();
+        $this->assertDatabaseCount('motorbikes', count($all_motorbikes));
+    }
+
+    public function test_store() {
+        $motorbike = $this->motorbike_repository->store($this->motorbike);
+        $this->assertInstanceOf(Motorbike::class, $motorbike);
+        $this->assertDatabaseHas('motorbikes', $this->motorbike);
+    }
+
+    public function test_show() {
+        $renter = $renter = User::factory()->create(['role' => 1]);
+        $motorbike = Motorbike::factory()->create(['renter_id' => $renter->id]);
+        $found_motorbike = $this->motorbike_repository->show($motorbike->id);
+        $this->assertInstanceOf(Motorbike::class, $found_motorbike);
+        $this->assertEquals($found_motorbike->renter_id, $motorbike->renter_id);
+        $this->assertEquals($found_motorbike->license_plate, $motorbike->license_plate);
+    }
+
+    public function test_update() {
+        $renter = $renter = User::factory()->create(['role' => 1]);
+        $motorbike = Motorbike::factory()->create(['renter_id' => $renter->id]);
+        $new_motorbike = $this->motorbike_repository->update($this->motorbike, $motorbike->id);
+        $this->assertInstanceOf(Motorbike::class, $new_motorbike);
+        $this->assertEquals($new_motorbike->renter_id, $this->motorbike['renter_id']);
+        $this->assertEquals($new_motorbike->license_plate, $this->motorbike['license_plate']);
+        //Test if the database is updated
+        $this->assertDatabaseHas('motorbikes', $this->motorbike);
+    }
+
+    public function test_delete() {
+        $renter = $renter = User::factory()->create(['role' => 1]);
+        $motorbike = Motorbike::factory()->create(['renter_id' => $renter->id]);
+        $delete_motorbike = $this->motorbike_repository->delete($motorbike->id);
+        $this->assertTrue($delete_motorbike);
+        $this->assertDatabaseMissing('motorbikes', $motorbike->toArray());
     }
 }

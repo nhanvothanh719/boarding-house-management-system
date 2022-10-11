@@ -31,11 +31,11 @@ class BreachRepository implements BreachRepositoryInterface
         $breach->severity_level = $data['severity_level'];
         $breach->allowed_violate_number = $data['allowed_violate_number'];
         $breach->save();
+        return $breach;
     }
 
     public function delete($id) {
-        $breach = $this::show($id);
-        $breach->delete();
+        return $this::show($id)->delete();
     }
 
     public function checkUsed($id) {
@@ -52,8 +52,5 @@ class BreachRepository implements BreachRepositoryInterface
 
     public function getAllowedViolationNumberOfBreach($id) {
         return $this::show($id)->allowed_violate_number;
-    }
-
-    public function getRenterBreachDetails($renter_id) {
     }
 }

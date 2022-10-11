@@ -7,6 +7,7 @@ use App\Models\InvoiceDetail;
 class InvoiceDetailRepository implements InvoiceDetailRepositoryInterface 
 {
     public function store($invoice_id, $services) {
+        $invoice_details = array();
         foreach($services as $service) {
             $invoice_detail = new InvoiceDetail;
             $invoice_detail->invoice_id = $invoice_id;
@@ -15,7 +16,9 @@ class InvoiceDetailRepository implements InvoiceDetailRepositoryInterface
             $service_unit_price = abs($service['unit_price']);
             $invoice_detail->subtotal = round(abs($service['quantity']) * $service_unit_price, 2);
             $invoice_detail->save();
+            array_push($invoice_details, $invoice_detail);
         }
+        return $invoice_details;
     }
 
     public function calculateServiceTotal($invoice_id) {

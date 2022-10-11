@@ -37,11 +37,11 @@ class MotorbikeRepository implements MotorbikeRepositoryInterface
             $upload_folder = Motorbike::motorbike_image_public_folder;
             $motorbike->motorbike_image = CustomHelper::updateImage($old_image, $image, $upload_folder);
         }
-        return $motorbike->save();
+        $motorbike->save();
+        return $motorbike;
     }
 
     public function delete($id) {
-        $motorbike = $this::show($id);
-        $motorbike->delete();
+        return $this::show($id)->delete();
     }
 }

@@ -92,7 +92,7 @@ export default function UsersList() {
     { field: "name", title: "Name", width: "20%" },
     { field: "email", title: "Email", width: "20%" },
     {
-      field: "role_id",
+      field: "role",
       title: "Role",
       lookup: { 0: "Admin", 1: "Renter" },
       width: "10%",
@@ -100,10 +100,10 @@ export default function UsersList() {
         <div>
           <span
             className={`${
-              rowData.role_id === 0 ? "statusPending" : "statusOnGoing"
+              rowData.role === 0 ? "statusPending" : "statusOnGoing"
             }`}
           >
-            {rowData.role_id === 0 ? "Admin" : "Renter"}
+            {rowData.role === 0 ? "Admin" : "Renter"}
           </span>
         </div>
       ),
@@ -173,7 +173,7 @@ export default function UsersList() {
                 icon: user.is_locked ? LockOpenIcon : LockOutlinedIcon,
                 tooltip: user.is_locked ? "Unlock account" : "Lock account",
                 onClick: (event, user) => lockUserAccount(user.id),
-                disabled: user.role_id === 0,
+                disabled: user.role === 0,
               }),
               (user) => ({
                 icon: FolderSharedIcon,
@@ -182,7 +182,7 @@ export default function UsersList() {
                   history.push(
                     `/admin/view-all-invoices-of-renter/${user.id}`
                   ),
-                disabled: user.role_id === 0,
+                disabled: user.role === 0,
               }),
             ]}
             editable={{

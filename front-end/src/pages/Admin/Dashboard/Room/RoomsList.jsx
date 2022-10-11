@@ -53,7 +53,7 @@ export default function RoomsList() {
         title: "Status", 
         render: (rowData) => {
           return (
-              <span className={`${statusStyle[rowData.status_id - 1]}`}>{status[rowData.status_id - 1]}</span>
+              <span className={`${statusStyle[rowData.status - 1]}`}>{status[rowData.status - 1]}</span>
           );
         }
       },
