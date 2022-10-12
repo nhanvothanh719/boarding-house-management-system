@@ -39,11 +39,12 @@ class RenterProblemController extends Controller
                 'status' => 422,
             ]);
         }
-            $problem = $this->problem->store($request->all());
-            return response([
-                'status' => 200,
-                'message' => 'Successfully send created problem to admin',
-            ]);
+        $renter_id = Auth::user()->id;
+        $problem = $this->problem->store($request->all(), $renter_id);
+        return response([
+            'status' => 200,
+            'message' => 'Successfully send created problem to admin',
+        ]);
     }
 
     public function getProblemDetails($id) {

@@ -24,7 +24,7 @@ class UserFactory extends Factory
             'password' => 'password', // password
             'remember_token' => Str::random(10),
             'gender' => random_int(0, 1),
-            'date_of_birth' => date('Y-m-d', strtotime(' -20 year')),
+            'date_of_birth' => date('Y-m-d', strtotime(' -18 year')),
             'id_card_number' => $this->faker->unique()->numerify('##########'),
             'phone_number' => $this->faker->unique()->numerify('##########'),
             'occupation' => $this->faker->jobTitle(),

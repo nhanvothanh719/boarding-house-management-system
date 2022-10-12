@@ -21,7 +21,7 @@ class MotorbikeTest extends TestCase
     public function setUp() : void {
         parent::setUp();
         $this->faker = Faker::create();
-        $renter = $renter = User::factory()->create(['role' => 1]);
+        $renter = User::factory()->create(['role' => 1]);
         // Prepare data for test
         $this->motorbike = [
             'renter_id' => rand(1, 50),
@@ -42,7 +42,7 @@ class MotorbikeTest extends TestCase
     }
 
     public function test_show() {
-        $renter = $renter = User::factory()->create(['role' => 1]);
+        $renter = User::factory()->create(['role' => 1]);
         $motorbike = Motorbike::factory()->create(['renter_id' => $renter->id]);
         $found_motorbike = $this->motorbike_repository->show($motorbike->id);
         $this->assertInstanceOf(Motorbike::class, $found_motorbike);
@@ -51,7 +51,7 @@ class MotorbikeTest extends TestCase
     }
 
     public function test_update() {
-        $renter = $renter = User::factory()->create(['role' => 1]);
+        $renter = User::factory()->create(['role' => 1]);
         $motorbike = Motorbike::factory()->create(['renter_id' => $renter->id]);
         $new_motorbike = $this->motorbike_repository->update($this->motorbike, $motorbike->id);
         $this->assertInstanceOf(Motorbike::class, $new_motorbike);
@@ -62,7 +62,7 @@ class MotorbikeTest extends TestCase
     }
 
     public function test_delete() {
-        $renter = $renter = User::factory()->create(['role' => 1]);
+        $renter = User::factory()->create(['role' => 1]);
         $motorbike = Motorbike::factory()->create(['renter_id' => $renter->id]);
         $delete_motorbike = $this->motorbike_repository->delete($motorbike->id);
         $this->assertTrue($delete_motorbike);
