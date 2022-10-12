@@ -3,6 +3,8 @@
 namespace Tests\Unit\Repositories;
 
 use App\Models\Service;
+use App\Models\User;
+use App\Models\ServiceRegistration;
 
 use Tests\TestCase;
 
@@ -21,8 +23,8 @@ class ServiceTest extends TestCase
         $this->faker = Faker::create();
         // Prepare data for test
         $this->service = [
-            'name' => $this->faker->word,
-            'description' => $this->faker->paragraph,
+            'name' => $this->faker->unique()->word,
+            'description' => 'test data',
             'is_compulsory' => rand(0, 1),
             'unit' => $this->faker->name,
             'unit_price' => rand(1, 10) / 10,
@@ -42,7 +44,7 @@ class ServiceTest extends TestCase
     }
 
     public function test_show() {
-        $service = Service::factory()->create();
+        $service = Service::factory()->create(['description' => 'test data']);
         $found_service = $this->service_repository->show($service->id);
         $this->assertInstanceOf(Service::class, $found_service);
         $this->assertEquals($found_service->name, $service->name);
@@ -52,20 +54,39 @@ class ServiceTest extends TestCase
         $this->assertEquals($found_service->unit_price, $service->unit_price);
     }
 
-    public function test_update_used_optional_service_to_compulsory_service() {
-        //
+    public function test_can_update_used_optional_service_to_compulsory_service() {
+        $service = $this->service;
+        $service['is_compulsory'] = Service::COMPULSORY;
+
+        $renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data']);
+        $test_service = Service::factory()->create(['description' => 'test data', 'is_compulsory' => Service::OPTIONAL]);
+        $test_service_registration = ServiceRegistration::factory()->create(['user_id' => $renter->id, 'service_id' => $test_service->id]);
+
+        $is_updated = $this->service_repository->update($service, $test_service->id);
+        $this->assertFalse($is_updated);
     }
 
-    public function test_update_service() {
-        $service = Service::factory()->create();
+    public function test_can_update_service() {
+        $service = Service::factory()->create(['description' => 'test data']);
         $is_service_updated = $this->service_repository->update($this->service, $service->id);
         $this->assertTrue($is_service_updated);
     }
 
     public function test_delete() {
-        $service = Service::factory()->create();
+        $service = Service::factory()->create(['description' => 'test data']);
         $delete_service = $this->service_repository->delete($service->id);
         $this->assertTrue($delete_service);
         $this->assertDatabaseMissing('services', $service->toArray());
+    }
+
+    public function tearDown() : void
+    {
+        $all_renters_id = User::where('occupation', 'test data')->pluck('id');
+        foreach($all_renters_id as $renter_id) {
+            ServiceRegistration::where('user_id', $renter_id)->delete();
+            User::where('id', $renter_id)->delete();
+        }
+        Service::where('description', 'test data')->delete();
+        parent::tearDown();
     }
 }
