@@ -27,7 +27,7 @@ class InvoiceTest extends TestCase
         parent::setUp();
         $this->faker = Faker::create();
         // Prepare data for test
-        $renter = User::factory()->create(['role' => 1]);
+        $renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data']);
         $this->invoice = [
             'renter_id' => $renter->id,
             'discount' => rand(1, 50),
@@ -53,11 +53,10 @@ class InvoiceTest extends TestCase
         $test_invoice['services'] = $invoice_services;
         $invoice = $this->invoice_repository->store($test_invoice, $this->invoice['renter_id']);
         $this->assertInstanceOf(Invoice::class, $invoice);
-        //$this->assertDatabaseHas('invoices', $this->invoice);
     }
 
     public function test_show() {
-        $renter = User::factory()->create(['role' => 1]);
+        $renter = User::factory()->create(['role' => User::ROLE_RENTER]);
         $invoice = Invoice::factory()->create(['renter_id' => $renter->id]);
         $found_invoice = $this->invoice_repository->show($invoice->id);
         $this->assertInstanceOf(Invoice::class, $found_invoice);
@@ -73,21 +72,29 @@ class InvoiceTest extends TestCase
     }
 
     public function test_update() {
-        $renter = User::factory()->create(['role' => 1]);
+        $renter = User::factory()->create(['role' => User::ROLE_RENTER]);
         $invoice = Invoice::factory()->create(['renter_id' => $renter->id]);
         $new_invoice = $this->invoice_repository->update($this->invoice, $invoice->id);
         $this->assertInstanceOf(Invoice::class, $new_invoice);
         $this->assertEquals($new_invoice->effective_from, $this->invoice['effective_from']);
         $this->assertEquals($new_invoice->valid_until, $this->invoice['valid_until']);
-        //Test if the database is updated
-        $this->assertDatabaseHas('invoices', $new_invoice->toArray());
     }
 
     public function test_delete() {
-        $renter = User::factory()->create(['role' => 1]);
+        $renter = User::factory()->create(['role' => User::ROLE_RENTER]);
         $invoice = Invoice::factory()->create(['renter_id' => $renter->id]);
         $delete_invoice = $this->invoice_repository->delete($invoice->id);
         $this->assertTrue($delete_invoice);
         $this->assertDatabaseMissing('invoices', $invoice->toArray());
+    }
+
+    public function tearDown() : void
+    {
+        $all_renters_id = User::where('occupation', 'test data')->pluck('id');
+        foreach($all_renters_id as $renter_id) {
+            Invoice::where('renter_id', $renter_id)->delete();
+        }
+        User::where('occupation', 'test data')->delete();
+        parent::tearDown();
     }
 }

@@ -19,15 +19,15 @@ class ProblemTest extends TestCase
     public function setUp() : void {
         parent::setUp();
         $this->faker = Faker::create();
-        $renter = User::factory()->create(['role' => 1]);
-        $responder = User::factory()->create(['role' => 0]);
+        $renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data']);
+        $responder = User::factory()->create(['role' => User::ROLE_ADMIN, 'occupation' => 'test data']);
         // Prepare data for test
         $this->problem = [
             'renter_id' => $renter->id,
             'title' => $this->faker->unique()->numerify('Problem ###'),
             'description' => $this->faker->paragraph(),
-            'severity_level' => 1,
-            'status' => 2,
+            'severity_level' => Problem::SEVERITY_HIGH,
+            'status' => Problem::STATUS_ONGOING,
             'replied_by' => $responder->id,
             'reply_text' => 'OK',
         ];
@@ -43,7 +43,7 @@ class ProblemTest extends TestCase
         $test_problem = array();
         $test_problem = $this->problem;
         //Problem is not replied
-        $test_problem['status'] = 1;
+        $test_problem['status'] = Problem::STATUS_PENDING;
         $test_problem['replied_by'] = null;
         $test_problem['reply_text'] = null;
         $problem = $this->problem_repository->store($test_problem, $this->problem['renter_id']);
@@ -65,7 +65,7 @@ class ProblemTest extends TestCase
     public function test_update() {
         $problem = Problem::factory()->create([
             'renter_id' => $this->problem['renter_id'],
-            'status' => 2,
+            'status' => Problem::STATUS_ONGOING,
             'replied_by' => $this->problem['replied_by'],
             'reply_text' => $this->problem['reply_text']]);
         $new_problem = $this->problem_repository->update($this->problem, $problem->id);
@@ -107,7 +107,18 @@ class ProblemTest extends TestCase
         $this->assertInstanceOf(Problem::class, $new_problem);
         $this->assertEquals($new_problem->replied_by, $this->problem['replied_by']);
         $this->assertEquals($new_problem->reply_text, $this->problem['reply_text']);
-        $this->assertEquals($new_problem->status, 2); //Status On-going
+        $this->assertEquals($new_problem->status, Problem::STATUS_ONGOING);
         $this->assertDatabaseHas('problems', $this->problem);
+    }
+
+    public function tearDown() : void
+    {
+        $all_users_id = User::where('occupation', 'test data')->pluck('id');
+        foreach($all_users_id as $user_id) {
+            Problem::where('replied_by', $user_id)->delete();
+            Problem::where('renter_id', $user_id)->delete();
+        }
+        User::where('occupation', 'test data')->delete();
+        parent::tearDown();
     }
 }

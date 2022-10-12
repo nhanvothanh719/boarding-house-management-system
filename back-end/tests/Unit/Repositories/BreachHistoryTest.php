@@ -26,8 +26,8 @@ class BreachHistoryTest extends TestCase
         parent::setUp();
         $this->faker = Faker::create();
         // Prepare data for test
-        $renter = User::factory()->create(['role' => 1]); //role renter
-        $breach = Breach::factory()->create();
+        $renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data']); //role renter
+        $breach = Breach::factory()->create(['description' => 'test data']);
         $this->breach_history = [
             'renter_id' => $renter->id,
             'breach_id' => $breach->id,
@@ -48,8 +48,8 @@ class BreachHistoryTest extends TestCase
     }
 
     public function test_show() {
-        $renter = User::factory()->create(['role' => 1]); //role renter
-        $breach = Breach::factory()->create();
+        $renter = User::factory()->create(['role' => User::ROLE_RENTER,'occupation' => 'test data']); //role renter
+        $breach = Breach::factory()->create(['description' => 'test data']);
         $breach_history = BreachHistory::factory()->create(['renter_id' => $renter->id, 'breach_id' => $breach->id]);
         $found_breach_history = $this->breach_history_repository->show($breach_history->id);
         $this->assertInstanceOf(BreachHistory::class, $found_breach_history);
@@ -59,11 +59,22 @@ class BreachHistoryTest extends TestCase
     }
 
     public function test_delete() {
-        $renter = User::factory()->create(['role' => 1]); //role renter
-        $breach = Breach::factory()->create();
+        $renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data']); //role renter
+        $breach = Breach::factory()->create(['description' => 'test data']);
         $breach_history = BreachHistory::factory()->create(['renter_id' => $renter->id, 'breach_id' => $breach->id]);
         $delete_breach_history = $this->breach_history_repository->delete($breach_history->id);
         $this->assertTrue($delete_breach_history);
         $this->assertDatabaseMissing('breach_histories', $breach_history->toArray());
+    }
+
+    public function tearDown() : void
+    {
+        $all_renters_id = User::where('occupation', 'test data')->pluck('id');
+        foreach($all_renters_id as $renter_id) {
+            BreachHistory::where('renter_id', $renter_id)->delete();
+            User::where('id', $renter_id)->delete();
+        }
+        Breach::where('description', 'test data')->delete();
+        parent::tearDown();
     }
 }

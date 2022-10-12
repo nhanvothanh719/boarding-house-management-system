@@ -25,7 +25,7 @@ class PasswordResetTest extends TestCase
         parent::setUp();
         $this->faker = Faker::create();
         // Prepare data for test
-        $user = User::factory()->create();
+        $user = User::factory()->create(['occupation' => 'test data']);
         $this->password_reset = [
             'email' => $user->email,
             'token' => $this->faker->numerify('###'),
@@ -40,11 +40,21 @@ class PasswordResetTest extends TestCase
 
     public function test_delete_old_password() {
         $data = array();
-        $user = User::factory()->create();
+        $user = User::factory()->create(['occupation' => 'test data']);
         $password_reset = PasswordReset::factory()->create(['email' => $user->email]);
         $data['password'] = 'password';
         $data['email'] = $user->email;
         $delete_old_password = $this->password_reset_repository->updatePassword($data);
         $this->assertDatabaseMissing('password_resets', $password_reset->toArray());
+    }
+
+    public function tearDown() : void
+    {
+        $all_renter_emails = User::where('occupation', 'test data')->pluck('email');
+        foreach($all_renter_emails as $renter_email) {
+            PasswordReset::where('email', $renter_email)->delete();
+        }
+        User::where('occupation', 'test data')->delete();
+        parent::tearDown();
     }
 }

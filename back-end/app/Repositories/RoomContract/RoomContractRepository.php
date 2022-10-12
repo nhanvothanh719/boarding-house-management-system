@@ -28,6 +28,7 @@ class RoomContractRepository implements RoomContractRepositoryInterface
         $room_contract->owner_signature = CustomHelper::addImage($owner_signature, $upload_folder);
         $room_contract->renter_signature = CustomHelper::addImage($renter_signature, $upload_folder);
         $room_contract->save();
+        return $room_contract;
     }
 
     public function update($data, $id) {
@@ -35,6 +36,7 @@ class RoomContractRepository implements RoomContractRepositoryInterface
         $room_contract->effective_until = $data['effective_until'];
         $room_contract->deposit_amount = $data['deposit_amount'];
         $room_contract->save();
+        return $room_contract;
     }
 
     public function delete($id) {
@@ -42,11 +44,12 @@ class RoomContractRepository implements RoomContractRepositoryInterface
         //Delete images:
         $upload_folder = RoomContract::ROOM_CONTRACT_PUBLIC_FOLDER.'/'.$room_contract->renter_id.'/';
         File::deleteDirectory(public_path($upload_folder));
-        $room_contract->delete();
+        return $room_contract->delete();
     }
 
     public function updateSignatures($id, $owner_signature, $renter_signature) {
         $upload_folder = RoomContract::ROOM_CONTRACT_PUBLIC_FOLDER.'/'.$id.'/';
+        $upload_folder = 'uploaded/room_contract';
         $room_contract = $this::show($id);
         if($owner_signature != null) {
             $old_owner_signature = $room_contract->owner_signature;
@@ -57,6 +60,7 @@ class RoomContractRepository implements RoomContractRepositoryInterface
             $room_contract->renter_signature = CustomHelper::updateImage($old_renter_signature, $renter_signature, $upload_folder);
         }
         $room_contract->save();
+        return $room_contract;
     }
 
     public function findRoomContractByRenterId($id) {

@@ -26,7 +26,7 @@ class PaymentHistoryTest extends TestCase
         parent::setUp();
         $this->faker = Faker::create();
         // Prepare data for test
-        $renter = User::factory()->create();
+        $renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data']);
         //Make punctual payment
         $invoice = Invoice::factory()->create(['renter_id' => $renter->id]);
         $this->payment_history = [
@@ -42,7 +42,7 @@ class PaymentHistoryTest extends TestCase
     }
 
     public function test_show() {
-        $renter = User::factory()->create(['role' => 1]);
+        $renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data']);
         $invoice = Invoice::factory()->create(['renter_id' => $renter->id]);
         $payment_history = PaymentHistory::factory()->create(['invoice_id' => $invoice->id, 'made_by' => $renter->id]);
         $found_payment_history = $this->payment_history_repository->show($payment_history->id);
@@ -69,5 +69,16 @@ class PaymentHistoryTest extends TestCase
         $test_data['payment_method'] = 1;
         $is_stored = $this->payment_history_repository->store($test_data, $overdue_invoice->id);
         $this->assertFalse($is_stored);
+    }
+
+    public function tearDown() : void
+    {
+        $all_renters_id = User::where('occupation', 'test data')->pluck('id');
+        foreach($all_renters_id as $renter_id) {
+            PaymentHistory::where('made_by', $renter_id)->delete();
+            Invoice::where('renter_id', $renter_id)->delete();
+        }
+        User::where('occupation', 'test data')->delete();
+        parent::tearDown();
     }
 }

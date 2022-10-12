@@ -4,8 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 
-use App\Helpers\CustomHelper;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -44,13 +42,6 @@ class RoomContractController extends Controller
             return response([
                 'errors' => $validator->messages(),
                 'status' => 422,
-            ]);
-        }
-        if(CustomHelper::isAdminRole($request->renter_id))
-        {
-            return response([
-                'message' => 'The user is not renter',
-                'status' => 400,
             ]);
         }
         $owner_signature = $request->file('owner_signature');

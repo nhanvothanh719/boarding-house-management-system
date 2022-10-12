@@ -21,10 +21,10 @@ class MotorbikeTest extends TestCase
     public function setUp() : void {
         parent::setUp();
         $this->faker = Faker::create();
-        $renter = User::factory()->create(['role' => 1]);
+        $renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data']);
         // Prepare data for test
         $this->motorbike = [
-            'renter_id' => rand(1, 50),
+            'renter_id' => $renter->id,
             'license_plate' => $this->faker->unique()->numerify('ABC######'),
         ];
         $this->motorbike_repository = new MotorbikeRepository();
@@ -42,7 +42,7 @@ class MotorbikeTest extends TestCase
     }
 
     public function test_show() {
-        $renter = User::factory()->create(['role' => 1]);
+        $renter = User::factory()->create(['role' => User::ROLE_RENTER]);
         $motorbike = Motorbike::factory()->create(['renter_id' => $renter->id]);
         $found_motorbike = $this->motorbike_repository->show($motorbike->id);
         $this->assertInstanceOf(Motorbike::class, $found_motorbike);
@@ -51,7 +51,7 @@ class MotorbikeTest extends TestCase
     }
 
     public function test_update() {
-        $renter = User::factory()->create(['role' => 1]);
+        $renter = User::factory()->create(['role' => User::ROLE_RENTER]);
         $motorbike = Motorbike::factory()->create(['renter_id' => $renter->id]);
         $new_motorbike = $this->motorbike_repository->update($this->motorbike, $motorbike->id);
         $this->assertInstanceOf(Motorbike::class, $new_motorbike);
@@ -62,10 +62,20 @@ class MotorbikeTest extends TestCase
     }
 
     public function test_delete() {
-        $renter = User::factory()->create(['role' => 1]);
+        $renter = User::factory()->create(['role' => User::ROLE_RENTER]);
         $motorbike = Motorbike::factory()->create(['renter_id' => $renter->id]);
         $delete_motorbike = $this->motorbike_repository->delete($motorbike->id);
         $this->assertTrue($delete_motorbike);
         $this->assertDatabaseMissing('motorbikes', $motorbike->toArray());
+    }
+    
+    public function tearDown() : void
+    {
+        $all_renters_id = User::where('occupation', 'test data')->pluck('id');
+        foreach($all_renters_id as $renter_id) {
+            Motorbike::where('renter_id', $renter_id)->delete();
+            User::where('id', $renter_id)->delete();
+        }
+        parent::tearDown();
     }
 }

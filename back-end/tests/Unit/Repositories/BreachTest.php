@@ -25,7 +25,7 @@ class BreachTest extends TestCase
         // Prepare data for test
         $this->breach = [
             'name' => $this->faker->unique()->word(), 
-            'description' => $this->faker->paragraph(),
+            'description' => 'test data',
             'severity_level' => rand(1, 4),
             'allowed_violate_number' => rand(2, 7),
         ];
@@ -44,7 +44,7 @@ class BreachTest extends TestCase
     }
 
     public function test_show() {
-        $breach = Breach::factory()->create();
+        $breach = Breach::factory()->create(['description' => 'test data']);
         $found_breach = $this->breach_repository->show($breach->id);
         $this->assertInstanceOf(Breach::class, $found_breach);
         $this->assertEquals($found_breach->name, $breach->name);
@@ -54,7 +54,7 @@ class BreachTest extends TestCase
     }
 
     public function test_update() {
-        $breach = Breach::factory()->create();
+        $breach = Breach::factory()->create(['description' => 'test data']);
         $new_breach = $this->breach_repository->update($this->breach, $breach->id);
         $this->assertInstanceOf(Breach::class, $new_breach);
         $this->assertEquals($new_breach->name, $this->breach['name']);
@@ -66,9 +66,15 @@ class BreachTest extends TestCase
     }
 
     public function test_delete() {
-        $breach = Breach::factory()->create();
+        $breach = Breach::factory()->create(['description' => 'test data']);
         $delete_breach = $this->breach_repository->delete($breach->id);
         $this->assertTrue($delete_breach);
         $this->assertDatabaseMissing('breaches', $breach->toArray());
+    }
+
+    public function tearDown() : void
+    {
+        Breach::where('description', 'test data')->delete();
+        parent::tearDown();
     }
 }

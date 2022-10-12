@@ -24,7 +24,7 @@ class BalanceTest extends TestCase
         $this->faker = Faker::create();
         // Prepare data for test
         $this->balance_change = [
-            'description' => $this->faker->paragraph,
+            'description' => 'test_data',
             'is_income' => rand(0, 1),
             'amount' => $this->faker->randomDigit,
             'occurred_on' => date('Y-m-d'),
@@ -44,7 +44,7 @@ class BalanceTest extends TestCase
     }
 
     public function test_show() {
-        $balance_change = Balance::factory()->create();
+        $balance_change = Balance::factory()->create(['description' => 'test_data']);
         $found_balance_change = $this->balance_repository->show($balance_change->id);
         $this->assertInstanceOf(Balance::class, $found_balance_change);
         $this->assertEquals($found_balance_change->description, $balance_change->description);
@@ -54,7 +54,7 @@ class BalanceTest extends TestCase
     }
 
     public function test_update() {
-        $balance_change = Balance::factory()->create();
+        $balance_change = Balance::factory()->create(['description' => 'test_data']);
         $new_balance_change = $this->balance_repository->update($this->balance_change, $balance_change->id);
         $this->assertInstanceOf(Balance::class, $new_balance_change);
         $this->assertEquals($new_balance_change->description, $this->balance_change['description']);
@@ -65,17 +65,28 @@ class BalanceTest extends TestCase
     }
 
     public function test_delete() {
-        $balance_change = Balance::factory()->create();
+        $balance_change = Balance::factory()->create(['description' => 'test_data']);
         $delete_balance_change = $this->balance_repository->delete($balance_change->id);
         $this->assertTrue($delete_balance_change);
         $this->assertDatabaseMissing('balance', $balance_change->toArray());
     }
 
     public function test_handle_after_payment() {
-        $renter = User::factory()->create(['role' => 1]); //role renter
+        $renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data']); //role renter
         $invoice = Invoice::factory()->create(['renter_id' => $renter->id]);
         $balance_change = $this->balance_repository->handleAfterPayment($invoice, 1);
         $this->assertInstanceOf(Balance::class, $balance_change);
         $this->assertDatabaseHas('balance', $balance_change->toArray());
+    }
+
+    public function tearDown() : void
+    {
+        Balance::where('description', 'test_data')->delete();
+        $all_renters_id = User::where('occupation', 'test data')->pluck('id');
+        foreach($all_renters_id as $renter_id) {
+            Invoice::where('renter_id', $renter_id)->delete();
+            User::where('id', $renter_id)->delete();
+        }
+        parent::tearDown();
     }
 }

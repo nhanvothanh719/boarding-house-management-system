@@ -26,7 +26,7 @@ class RoomCategoryTest extends TestCase
         $this->category = [
             'name' => $this->faker->word,
             'price' => rand(101, 900),
-            'description' => $this->faker->paragraph,
+            'description' => 'test data',
         ];
         $this->category_repository = new RoomCategoryRepository();
     }
@@ -43,7 +43,7 @@ class RoomCategoryTest extends TestCase
     }
 
     public function test_show() {
-        $category = Category::factory()->create();
+        $category = Category::factory()->create(['description' => 'test data']);
         $found_category = $this->category_repository->show($category->id);
         $this->assertInstanceOf(Category::class, $found_category);
         $this->assertEquals($found_category->name, $category->name);
@@ -52,7 +52,7 @@ class RoomCategoryTest extends TestCase
     }
 
     public function test_update() {
-        $category = Category::factory()->create();
+        $category = Category::factory()->create(['description' => 'test data']);
         $new_category = $this->category_repository->update($this->category, $category->id);
         $this->assertInstanceOf(Category::class, $new_category);
         $this->assertEquals($new_category->name, $this->category['name']);
@@ -63,9 +63,15 @@ class RoomCategoryTest extends TestCase
     }
 
     public function test_delete() {
-        $category = Category::factory()->create();
+        $category = Category::factory()->create(['description' => 'test data']);
         $delete_category = $this->category_repository->delete($category->id);
         $this->assertTrue($delete_category);
         $this->assertDatabaseMissing('categories', $category->toArray());
+    }
+
+    public function tearDown() : void
+    {
+        Category::where('description', 'test data')->delete();
+        parent::tearDown();
     }
 }
