@@ -26,7 +26,7 @@ class UserFactory extends Factory
             'gender' => random_int(0, 1),
             'date_of_birth' => date('Y-m-d', strtotime(' -18 year')),
             'id_card_number' => $this->faker->unique()->numerify('##########'),
-            'phone_number' => $this->faker->unique()->numerify('##########'),
+            'phone_number' => $this->faker->unique()->numerify('096#######'),
             'occupation' => $this->faker->jobTitle(),
             'permanent_address' => $this->faker->address(),
             'role' => rand(0, 1),

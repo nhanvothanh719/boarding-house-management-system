@@ -21,7 +21,7 @@ class RoomFactory extends Factory
             'area' => rand(200, 400),
             'category_id' => rand(1, 50),
             'description' => $this->faker->paragraph(),
-            'status_id' => rand(1, 3),
+            'status' => rand(1, 3),
             'has_conditioner' => rand(0, 1),
             'has_fridge' => rand(0, 1),
             'has_wardrobe' => rand(0, 1),

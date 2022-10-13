@@ -3,15 +3,16 @@
 namespace App\Repositories\Room;
 
 use App\Models\Room;
-use App\Repositories\RoomImage\RoomImageRepository;
+
 use App\Repositories\RoomImage\RoomImageRepositoryInterface;
+
 use stdClass;
 
 class RoomRepository implements RoomRepositoryInterface
 {
     private $image_repository;
 
-    public function __construct(RoomImageRepository $image_repository) 
+    public function __construct(RoomImageRepositoryInterface $image_repository) 
     {
         $this->image_repository = $image_repository;
     }
@@ -70,7 +71,7 @@ class RoomRepository implements RoomRepositoryInterface
         $room->rents()->delete();
         $room->rent_requests()->delete();
         $this->image_repository->delete($id);
-        $room->delete();
+        return $room->delete();
     }
 
     public function checkUsed($id) {

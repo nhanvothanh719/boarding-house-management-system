@@ -83,7 +83,7 @@ class RoomContractTest extends TestCase
     }
 
     public function test_delete() {
-        $room_contract = RoomContract::factory()->create(['renter_id' => $this->room_contract['renter_id'],]);
+        $room_contract = RoomContract::factory()->create(['renter_id' => $this->room_contract['renter_id']]);
         $delete_contract = $this->room_contract_repository->delete($room_contract->id);
         $this->assertTrue($delete_contract);
         $this->assertDatabaseMissing('room_contracts', $room_contract->toArray());
