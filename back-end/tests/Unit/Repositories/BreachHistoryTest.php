@@ -67,6 +67,18 @@ class BreachHistoryTest extends TestCase
         $this->assertDatabaseMissing('breach_histories', $breach_history->toArray());
     }
 
+    public function test_get_renter_breach_histories() {
+        $renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data']); //role renter
+        $breach = Breach::factory()->create(['description' => 'test data']);
+        $all_breach_histories = array();
+        $first_breach_history = BreachHistory::factory()->create(['renter_id' => $renter->id, 'breach_id' => $breach->id, 'violated_at' => date('Y-m-d H:i:s', strtotime(' -1 hours'))]);
+        array_push($all_breach_histories, $first_breach_history);
+        $second_breach_history = BreachHistory::factory()->create(['renter_id' => $renter->id, 'breach_id' => $breach->id, 'violated_at' => date('Y-m-d H:i:s')]);
+        array_push($all_breach_histories, $second_breach_history);
+        $renter_breach_histories = $this->breach_history_repository->getRenterBreachHistories($renter->id, $breach->id);
+        $this->assertSameSize($renter_breach_histories, $all_breach_histories);
+    }
+
     public function tearDown() : void
     {
         $all_renters_id = User::where('occupation', 'test data')->pluck('id');

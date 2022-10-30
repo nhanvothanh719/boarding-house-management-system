@@ -2,8 +2,6 @@
 
 namespace App\Repositories\User;
 
-use App\Helpers\CustomHelper;
-
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -123,14 +121,33 @@ class UserRepository implements UserRepositoryInterface
     public function storeUserAvatar($id, $avatar) {
         $user = $this::show($id);
         $upload_folder = User::AVATAR_PUBLIC_FOLDER;
-        $user->profile_picture = CustomHelper::addImage($avatar, $upload_folder);
+        $generated_name = hexdec(uniqid());
+        $extension = $avatar->getClientOriginalExtension();
+        $image_name = $generated_name.'.'.$extension;
+        if(!file_exists($upload_folder)) {
+            //mkdir($upload_folder);
+            mkdir($upload_folder, 0777, true);
+        }
+        $avatar->move($upload_folder, $image_name);
+        $user->profile_picture = $upload_folder.$image_name;
         $user->save();
     }
 
     public function updateUserAvatar($id, $old_avatar, $new_avatar) {
         $user = $this::show($id);
         $upload_folder = User::AVATAR_PUBLIC_FOLDER;
-        $user->profile_picture = CustomHelper::updateImage($old_avatar, $new_avatar, $upload_folder);
+        if(!file_exists($upload_folder)) {
+            //mkdir($upload_folder);
+            mkdir($upload_folder, 0777, true);
+        }
+        //Delete existed image
+        File::delete($old_avatar);
+        //Add new image
+        $generated_name = hexdec(uniqid());
+        $extension = $new_avatar->getClientOriginalExtension();
+        $image_name = $generated_name.'.'.$extension;
+        $new_avatar->move($upload_folder, $image_name);
+        $user->profile_picture = $upload_folder.$image_name;
         $user->save();
     }
 

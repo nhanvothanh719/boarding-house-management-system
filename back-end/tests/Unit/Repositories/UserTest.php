@@ -32,7 +32,7 @@ class UserTest extends TestCase
             'date_of_birth' => date('Y-m-d', strtotime(' -20 year')),
             'id_card_number' => $this->faker->unique()->numerify('##########'),
             'phone_number' => $this->faker->unique()->numerify('##########'),
-            'occupation' => $this->faker->jobTitle(),
+            'occupation' => 'test data',
             'permanent_address' => $this->faker->address(),
             'role' => rand(0, 1),
         ];
@@ -53,7 +53,7 @@ class UserTest extends TestCase
     }
 
     public function test_show() {
-        $user = User::factory()->create();
+        $user = User::factory()->create(['occupation' => 'test data']);
         $found_user = $this->user_repository->show($user->id);
         $this->assertInstanceOf(User::class, $found_user);
         $this->assertEquals($found_user->name, $user->name);
@@ -61,7 +61,7 @@ class UserTest extends TestCase
     }
 
     public function test_update() {
-        $user = User::factory()->create();
+        $user = User::factory()->create(['occupation' => 'test data']);
         $is_user_updated = $this->user_repository->update($this->user, $user->id);
         $user->name = $data['name'];
         $user->email = $data['email'];
@@ -73,9 +73,15 @@ class UserTest extends TestCase
     }
 
     public function test_delete() {
-        $user = User::factory()->create();
+        $user = User::factory()->create(['occupation' => 'test data']);
         $delete_user = $this->user_repository->delete($user->id);
         $this->assertTrue($delete_user);
         $this->assertDatabaseMissing('users', $user->toArray());
+    }
+
+    public function tearDown() : void
+    {
+        User::where('occupation', 'test data')->delete();
+        parent::tearDown();
     }
 }

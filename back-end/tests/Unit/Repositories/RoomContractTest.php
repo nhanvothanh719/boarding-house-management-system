@@ -23,14 +23,14 @@ class RoomContractTest extends TestCase
         parent::setUp();
         $this->faker = Faker::create();
         // Prepare data for test
-        $renter = User::factory()->create(['role' => 1]);
+        $renter = User::factory()->create(['role' => 1, 'occupation' => 'test data']);
         $this->room_contract = [
             'renter_id' => $renter->id,
             'effective_from' => date('Y-m-d'),
-            'effective_until' => date('Y-m-d', strtotime(' +50 year')),
+            'effective_until' => date('Y-m-d', strtotime(' +3 year')),
             'deposit_amount' => rand(100, 500),
-            'owner_signature' => UploadedFile::fake()->image('owner_sig.jpg'),
-            'renter_signature' => UploadedFile::fake()->image('renter_sig.jpg'),
+            'owner_signature' => $this->faker->image(null, 640, 480),
+            'renter_signature' => $this->faker->image(null, 640, 480),
         ];
         $this->room_contract_repository = new RoomContractRepository();
     }
@@ -45,12 +45,12 @@ class RoomContractTest extends TestCase
             $this->room_contract, 
             $this->room_contract['owner_signature'], 
             $this->room_contract['renter_signature']);
-        $directory = 'app/public/'.RoomContract::ROOM_CONTRACT_PUBLIC_FOLDER.'/'.$this->room_contract['renter_id'];
+        $directory = RoomContract::ROOM_CONTRACT_PUBLIC_FOLDER.'/'.$this->room_contract['renter_id'];
         $this->assertInstanceOf(RoomContract::class, $room_contract);
 
         //$this->assertDatabaseHas('room_contracts', $this->room_contract);
-        //$this->assertFileExists($directory.$this->room_contract['owner_signature']); 
-        //$this->assertFileExists($directory.$this->room_contract['renter_signature']);
+        $this->assertFileExists($directory.$this->room_contract['owner_signature']); 
+        $this->assertFileExists($directory.$this->room_contract['renter_signature']);
     }
 
     public function test_show() {
@@ -93,8 +93,8 @@ class RoomContractTest extends TestCase
         $room_contract = RoomContract::factory()->create([
             'renter_id' => $this->room_contract['renter_id'],
             'deposit_amount' => $this->room_contract['deposit_amount'],
-            'owner_signature' => UploadedFile::fake()->image('old_owner_sig.jpg'),
-            'renter_signature' => UploadedFile::fake()->image('old_renter_sig.jpg'),
+            'owner_signature' => $this->faker->image(null, 400, 500, 'animals'),
+            'renter_signature' => $this->faker->image(null, 400, 500, 'animals'),
             'effective_from' => $this->room_contract['effective_from'],
             'effective_until' => $this->room_contract['effective_until'],
         ]);
@@ -112,8 +112,11 @@ class RoomContractTest extends TestCase
 
     public function tearDown() : void
     {
-        RoomContract::whereYear('effective_until', date('Y', strtotime(' +50 year')))->delete();
-        User::whereYear('date_of_birth', date('Y', strtotime(' -18 year')))->delete();
+        $all_renters_id = User::where('occupation', 'test data')->pluck('id');
+        foreach($all_renters_id as $renter_id) {
+            RoomContract::where('renter_id', $renter_id)->delete();
+            User::where('id', $renter_id)->delete();
+        }
         parent::tearDown();
     }
 }

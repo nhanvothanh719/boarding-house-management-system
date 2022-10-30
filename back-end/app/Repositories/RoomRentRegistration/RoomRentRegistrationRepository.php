@@ -46,7 +46,6 @@ class RoomRentRegistrationRepository implements RoomRentRegistrationRepositoryIn
                 $is_updated = false;
                 return $is_updated;
             } 
-
             //Check same gender
             $is_accepted = $this::checkGender($registered_room->id, $sender_gender);
             if(!$is_accepted) {
@@ -71,7 +70,6 @@ class RoomRentRegistrationRepository implements RoomRentRegistrationRepositoryIn
     }
 
     public function checkGender($room_id, $sender_gender) {
-        $is_same_gender = false;
         $room = $this->room_repository->show($room_id);
         $renter_in_room = $room->renters->first();
         //Check renter in room
@@ -79,14 +77,12 @@ class RoomRentRegistrationRepository implements RoomRentRegistrationRepositoryIn
             //Check registered user
             $partner_gender = RoomRentRegistration::where('registered_room_id', $room_id)->first()->sender_gender;
             if(!$partner_gender) {
-                $is_same_gender = true;
-            } else {
-                $is_same_gender = $partner_gender == $sender_gender ? true : false;
+                return true;
             }
+            return $partner_gender == $sender_gender ? true : false; 
         } else {
-            $partner_gender = $renter_in_room->first()->gender;
-            $is_same_gender = $partner_gender == $sender_gender ? true : false;
+            $partner_gender = $renter_in_room->gender;
+            return $partner_gender == $sender_gender ? true : false;
         }
-        return $is_same_gender;
     }
 }

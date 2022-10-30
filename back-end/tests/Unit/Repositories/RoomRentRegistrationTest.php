@@ -5,6 +5,7 @@ namespace Tests\Unit\Repositories;
 use App\Models\Room;
 use App\Models\User;
 use App\Models\Category;
+use App\Models\RoomRent;
 use App\Models\RoomRentRegistration;
 
 use Tests\TestCase;
@@ -68,6 +69,24 @@ class RoomRentRegistrationTest extends TestCase
         $this->assertDatabaseMissing('room_rent_registrations', $room_rent_registration->toArray());
     }
 
+    public function test_accept_when_room_is_full() {
+        $renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data']);
+        $category = Category::factory()->create(['description' => 'test data']);
+        $room = Room::factory()->create(['status' => Room::STATUS_FULL, 'category_id' => $category->id, 'description' => 'test data']);
+        $room_rent = RoomRent::factory()->create(['renter_id' => $renter->id, 'room_id' => $room->id]);
+        $room_rent_registration = RoomRentRegistration::factory()->create(['registered_room_id' => $room->id]);
+        $is_accepted = $this->room_rent_registration_repository->accept($room_rent_registration->id);
+        $this->assertFalse($is_accepted);
+    }
+
+    public function test_accept_when_room_is_empty() {
+        $category = Category::factory()->create(['description' => 'test data']);
+        $room = Room::factory()->create(['status' => Room::STATUS_EMPTY, 'category_id' => $category->id, 'description' => 'test data']);
+        $room_rent_registration = RoomRentRegistration::factory()->create(['registered_room_id' => $room->id]);
+        $is_accepted = $this->room_rent_registration_repository->accept($room_rent_registration->id);
+        $this->assertTrue($is_accepted);
+    }
+
     public function tearDown() : void
     {
         $categories_id = Category::where('description', 'test data')->pluck('id');
@@ -75,10 +94,12 @@ class RoomRentRegistrationTest extends TestCase
            $rooms_id = Room::where('category_id', $category_id)->pluck('id');
            foreach($rooms_id as $room_id) {
             RoomRentRegistration::where('registered_room_id', $room_id)->delete();
+            RoomRent::where('room_id', $room_id)->delete();
             Room::where('id', $room_id)->delete();
            }
         }
         Category::where('description', 'test_data')->delete();
+        User::where('occupation', 'test_data')->delete();
         parent::tearDown();
     }
 }

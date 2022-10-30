@@ -17,7 +17,7 @@ class CategoryFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->unique()->word(),
+            'name' => $this->faker->unique()->numerify('CATE###'),
             'price' => rand(101, 900),
             'description' => $this->faker->paragraph(),
         ];

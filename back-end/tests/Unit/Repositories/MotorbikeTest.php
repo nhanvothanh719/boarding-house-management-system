@@ -42,7 +42,7 @@ class MotorbikeTest extends TestCase
     }
 
     public function test_show() {
-        $renter = User::factory()->create(['role' => User::ROLE_RENTER]);
+        $renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data']);
         $motorbike = Motorbike::factory()->create(['renter_id' => $renter->id]);
         $found_motorbike = $this->motorbike_repository->show($motorbike->id);
         $this->assertInstanceOf(Motorbike::class, $found_motorbike);
@@ -51,7 +51,7 @@ class MotorbikeTest extends TestCase
     }
 
     public function test_update() {
-        $renter = User::factory()->create(['role' => User::ROLE_RENTER]);
+        $renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data']);
         $motorbike = Motorbike::factory()->create(['renter_id' => $renter->id]);
         $new_motorbike = $this->motorbike_repository->update($this->motorbike, $motorbike->id);
         $this->assertInstanceOf(Motorbike::class, $new_motorbike);
@@ -62,7 +62,7 @@ class MotorbikeTest extends TestCase
     }
 
     public function test_delete() {
-        $renter = User::factory()->create(['role' => User::ROLE_RENTER]);
+        $renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data']);
         $motorbike = Motorbike::factory()->create(['renter_id' => $renter->id]);
         $delete_motorbike = $this->motorbike_repository->delete($motorbike->id);
         $this->assertTrue($delete_motorbike);

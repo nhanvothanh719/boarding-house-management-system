@@ -56,7 +56,7 @@ class InvoiceTest extends TestCase
     }
 
     public function test_show() {
-        $renter = User::factory()->create(['role' => User::ROLE_RENTER]);
+        $renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data']);
         $invoice = Invoice::factory()->create(['renter_id' => $renter->id]);
         $found_invoice = $this->invoice_repository->show($invoice->id);
         $this->assertInstanceOf(Invoice::class, $found_invoice);
@@ -72,7 +72,7 @@ class InvoiceTest extends TestCase
     }
 
     public function test_update() {
-        $renter = User::factory()->create(['role' => User::ROLE_RENTER]);
+        $renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data']);
         $invoice = Invoice::factory()->create(['renter_id' => $renter->id]);
         $new_invoice = $this->invoice_repository->update($this->invoice, $invoice->id);
         $this->assertInstanceOf(Invoice::class, $new_invoice);
@@ -81,11 +81,20 @@ class InvoiceTest extends TestCase
     }
 
     public function test_delete() {
-        $renter = User::factory()->create(['role' => User::ROLE_RENTER]);
+        $renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data']);
         $invoice = Invoice::factory()->create(['renter_id' => $renter->id]);
         $delete_invoice = $this->invoice_repository->delete($invoice->id);
         $this->assertTrue($delete_invoice);
         $this->assertDatabaseMissing('invoices', $invoice->toArray());
+    }
+
+    public function test_is_created() {
+        $renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data']);
+        $month_jan = 1;
+        $month_feb = 2;
+        $invoice = Invoice::factory()->create(['renter_id' => $renter->id, 'month' => $month_jan]);
+        $this->assertFalse($this->invoice_repository->checkCreated($renter->id, $month_feb));
+        $this->assertTrue($this->invoice_repository->checkCreated($renter->id, $month_jan));
     }
 
     public function tearDown() : void

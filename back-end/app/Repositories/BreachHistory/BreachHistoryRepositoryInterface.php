@@ -15,5 +15,5 @@ interface BreachHistoryRepositoryInterface
 
     public function getTotalBreachesByMonth();
 
-    public function getHistoriesOfBreach($renter_id, $breach_id) ;
+    public function getRenterBreachHistories($renter_id, $breach_id) ;
 }
