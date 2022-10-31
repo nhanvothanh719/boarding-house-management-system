@@ -6,6 +6,7 @@ use App\Models\Invoice;
 use App\Models\User;
 use App\Models\InvoiceDetail;
 use App\Models\Service;
+use App\Models\PaymentHistory;
 
 use Tests\TestCase;
 
@@ -97,10 +98,35 @@ class InvoiceTest extends TestCase
         $this->assertTrue($this->invoice_repository->checkCreated($renter->id, $month_jan));
     }
 
+    public function test_invoices_count() { 
+        $all_invoices = $this->invoice_repository->all();
+        $this->assertEquals($this->invoice_repository->countInvoices(), count($all_invoices));
+    }
+
+    public function test_get_renter_paid_invoices() {
+        $renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data']);
+        $first_invoice = Invoice::factory()->create(['renter_id' => $renter->id, 'month' => 1]);
+        $second_invoice = Invoice::factory()->create(['renter_id' => $renter->id, 'month' => 2]);
+        $renter_payment_histories = array();
+        $first_payment_history = PaymentHistory::factory()->create(['invoice_id' => $first_invoice->id, 'made_by' => $renter->id]);
+        array_push($renter_payment_histories, $first_payment_history);
+        $second_payment_history = PaymentHistory::factory()->create(['invoice_id' => $second_invoice->id, 'made_by' => $renter->id]);
+        array_push($renter_payment_histories, $second_payment_history);
+        $this->assertSameSize($renter_payment_histories, $this->invoice_repository->getRenterPaidInvoices($renter->id));
+    }
+
+    public function test_get_renter_unpaid_invoices() {
+        $renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data']);
+        $first_invoice = Invoice::factory()->create(['renter_id' => $renter->id, 'month' => 3]);
+        $second_invoice = Invoice::factory()->create(['renter_id' => $renter->id, 'month' => 4]);
+        $this->assertEquals(count($this->invoice_repository->getRenterUnpaidInvoices($renter->id)), 2);
+    }
+
     public function tearDown() : void
     {
         $all_renters_id = User::where('occupation', 'test data')->pluck('id');
         foreach($all_renters_id as $renter_id) {
+            PaymentHistory::where('made_by', $renter_id)->delete();
             Invoice::where('renter_id', $renter_id)->delete();
         }
         User::where('occupation', 'test data')->delete();

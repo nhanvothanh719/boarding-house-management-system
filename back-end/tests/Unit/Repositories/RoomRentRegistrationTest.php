@@ -99,7 +99,7 @@ class RoomRentRegistrationTest extends TestCase
            }
         }
         Category::where('description', 'test_data')->delete();
-        User::where('occupation', 'test_data')->delete();
+        User::where('occupation', 'test data')->delete();
         parent::tearDown();
     }
 }

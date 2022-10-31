@@ -22,7 +22,7 @@ class RoomRepository implements RoomRepositoryInterface
     }
 
     public function show($id) {
-        return Room::with('renters')->find($id);
+        return Room::with('rents')->find($id);
     }
 
     public function getAvailableRooms() {
@@ -57,17 +57,15 @@ class RoomRepository implements RoomRepositoryInterface
         $room->has_fridge = $data['has_fridge'];
         $room->has_wardrobe = $data['has_wardrobe'];
         $room->save();
-        if($data['image'] !== null) {
-            //Update images
-            $files = $data['image'];
-            $this->image_repository->update($files, $id);
-        }
         return $room;
+    }
+
+    public function updateImages($files, $id) {
+        return $this->image_repository->update($files, $id);
     }
 
     public function delete($id) {
         $room = $this::show($id);
-        //$room->images()->delete();
         $room->rents()->delete();
         $room->rent_requests()->delete();
         $this->image_repository->delete($id);

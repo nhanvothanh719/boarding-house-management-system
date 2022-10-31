@@ -91,12 +91,12 @@ class UserRepository implements UserRepositoryInterface
         return $user->delete();
     }
 
-    public function getCurrentUser() {
-        return Auth::user();
-    }
-
     public function checkCanLogin($data) {
+        //The attempt method accepts an array of key / value pairs as its first argument. 
+        //The values in the array will be used to find the user in the database table.
+        //==> The framework will automatically hash the value of the input password before comparing it to the hashed password in the database.
         return Auth::attempt($data);
+        //The attempt method will return true if authentication was successful.
     }
 
     public function checkLockedAccount($id) {
@@ -131,6 +131,7 @@ class UserRepository implements UserRepositoryInterface
         $avatar->move($upload_folder, $image_name);
         $user->profile_picture = $upload_folder.$image_name;
         $user->save();
+        return $user;
     }
 
     public function updateUserAvatar($id, $old_avatar, $new_avatar) {
@@ -149,39 +150,39 @@ class UserRepository implements UserRepositoryInterface
         $new_avatar->move($upload_folder, $image_name);
         $user->profile_picture = $upload_folder.$image_name;
         $user->save();
+        return $user;
     }
 
     public function lockUserAccount($id)
     {
-        $message = 'Lock account successfully';
+        $is_lock_successful = false;
         if($this::checkAdminRole($id)) {
-            $message = 'Cannot lock account with Admin role';
-            return $message;
+            return $is_lock_successful;
         }
         $user = $this::show($id);
         if($user->is_locked == User::LOCKED_ACCOUNT) {
             $user->is_locked = User::AVAILABLE_ACCOUNT;
-            $message = 'Unlock account successfully';
         } else {
             $user->is_locked = User::LOCKED_ACCOUNT;
         }
         $user->save();
-        return $message;
+        $is_lock_successful = true;
+        return $is_lock_successful;
     }
 
-    public function updatePassword($email, $new_hash_password) {
+    public function updatePassword($email, $new_hashed_password) {
         $user_id = User::where('email', $email)->value('id');
         $user = $this::show($user_id);
-        $user->password = $new_hash_password;
+        $user->password = $new_hashed_password;
         $user->save();
+        return $user;
     }
 
-    public function checkAdminRole($id)
-    {
+    public function checkAdminRole($id) {
         return $this->show($id)->role == User::ROLE_ADMIN ? true : false;
     }
 
-    public function allRenters() {
+    public function getAllRenters() {
         return User::where('role', User::ROLE_RENTER)->get();
     }
 

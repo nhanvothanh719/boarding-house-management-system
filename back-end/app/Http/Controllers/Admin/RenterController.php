@@ -20,7 +20,7 @@ class RenterController extends Controller
     public function index() {
         return response([
             'status' => 200,
-            'allRenters' => $this->renter->allRenters(),
+            'allRenters' => $this->renter->getAllRenters(),
         ]);
     }
 

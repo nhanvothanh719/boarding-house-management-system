@@ -48,7 +48,7 @@ class BreachHistoryTest extends TestCase
     }
 
     public function test_show() {
-        $renter = User::factory()->create(['role' => User::ROLE_RENTER,'occupation' => 'test data']); //role renter
+        $renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data']); //role renter
         $breach = Breach::factory()->create(['description' => 'test data']);
         $breach_history = BreachHistory::factory()->create(['renter_id' => $renter->id, 'breach_id' => $breach->id]);
         $found_breach_history = $this->breach_history_repository->show($breach_history->id);
@@ -77,6 +77,35 @@ class BreachHistoryTest extends TestCase
         array_push($all_breach_histories, $second_breach_history);
         $renter_breach_histories = $this->breach_history_repository->getRenterBreachHistories($renter->id, $breach->id);
         $this->assertSameSize($renter_breach_histories, $all_breach_histories);
+    }
+
+    public function test_calculate_breach_remain_allowed_number() {
+        $renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data']);
+        $breach = Breach::factory()->create(['description' => 'test data', 'allowed_violate_number' => 3]);
+        $first_breach_history = BreachHistory::factory()->create(['renter_id' => $renter->id, 'breach_id' => $breach->id, 'violated_at' => date('Y-m-d H:i:s', strtotime(' -1 hours'))]);
+        $second_breach_history = BreachHistory::factory()->create(['renter_id' => $renter->id, 'breach_id' => $breach->id, 'violated_at' => date('Y-m-d H:i:s')]);
+        $remain_allowed_number = $breach->allowed_violate_number - 2;
+        $this->assertEquals($remain_allowed_number, $this->breach_history_repository->calculateBreachRemainAllowedNumber($renter->id, $breach->id));
+    }
+
+    public function test_check_admin_role() {
+        $admin = User::factory()->create(['role' => User::ROLE_ADMIN, 'occupation' => 'test data']);
+        $this->assertTrue($this->breach_history_repository->checkAdminRole($admin->id));
+    }
+
+    public function test_lock_user_account() {
+        $admin = User::factory()->create(['role' => User::ROLE_ADMIN, 'occupation' => 'test data']);
+        $this->assertFalse($this->breach_history_repository->lockUserAccount($admin->id));
+        $renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data']);
+        $this->assertTrue($this->breach_history_repository->lockUserAccount($renter->id));
+    }
+
+    public function test_get_histories_of_breaches() {
+        $renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data']);
+        $breach = Breach::factory()->create(['description' => 'test data', 'allowed_violate_number' => 3]);
+        $first_breach_history = BreachHistory::factory()->create(['renter_id' => $renter->id, 'breach_id' => $breach->id, 'violated_at' => date('Y-m-d H:i:s', strtotime(' -1 hours'))]);
+        $second_breach_history = BreachHistory::factory()->create(['renter_id' => $renter->id, 'breach_id' => $breach->id, 'violated_at' => date('Y-m-d H:i:s')]);
+        $this->assertEquals(count($this->breach_history_repository->getRenterBreachHistories($renter->id, $breach->id)), 2);
     }
 
     public function tearDown() : void

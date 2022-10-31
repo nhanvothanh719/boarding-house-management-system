@@ -79,8 +79,4 @@ class PaymentHistoryRepository implements PaymentHistoryRepositoryInterface
         array_push($invoice_paid_methods_count, $cash_payment);
         return $invoice_paid_methods_count;
     }
-
-    public function getRenterUnpaidInvoices($renter_id) {
-        return PaymentHistory::with('invoices')->get();
-    }
 }

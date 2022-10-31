@@ -29,7 +29,7 @@ class RoomTest extends TestCase
             'area' => rand(200, 400),
             'category_id' => $category->id,
             'description' => 'test data',
-            'status' => rand(1, 3),
+            'status' => Room::STATUS_EMPTY,
             'has_conditioner' => rand(0, 1),
             'has_fridge' => rand(0, 1),
             'has_wardrobe' => rand(0, 1),
@@ -83,6 +83,18 @@ class RoomTest extends TestCase
         $delete_room = $this->room_repository->delete($room->id);
         $this->assertTrue($delete_room);
         $this->assertDatabaseMissing('rooms', $room->toArray());
+    }
+
+    public function test_room_count() {
+        $this->assertDatabaseCount('rooms', $this->room_repository->countRooms());
+    }
+
+    public function test_check_used() {
+        $empty_room = Room::factory()->create(['category_id' => $this->room['category_id'], 'description' => 'test data', 'status' => Room::STATUS_EMPTY]);
+        $this->assertFalse($this->room_repository->checkUsed($empty_room->id));
+        $full_room = Room::factory()->create(['category_id' => $this->room['category_id'], 'description' => 'test data', 'status' => Room::STATUS_FULL]);
+        $this->assertTrue($this->room_repository->checkUsed($full_room->id));
+
     }
 
     public function tearDown() : void

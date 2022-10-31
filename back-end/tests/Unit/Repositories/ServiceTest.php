@@ -57,7 +57,6 @@ class ServiceTest extends TestCase
     public function test_can_update_used_optional_service_to_compulsory_service() {
         $service = $this->service;
         $service['is_compulsory'] = Service::COMPULSORY;
-
         $renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data']);
         $test_service = Service::factory()->create(['description' => 'test data', 'is_compulsory' => Service::OPTIONAL]);
         $test_service_registration = ServiceRegistration::factory()->create(['user_id' => $renter->id, 'service_id' => $test_service->id]);
@@ -77,6 +76,20 @@ class ServiceTest extends TestCase
         $delete_service = $this->service_repository->delete($service->id);
         $this->assertTrue($delete_service);
         $this->assertDatabaseMissing('services', $service->toArray());
+    }
+
+    public function test_check_compulsory() {
+        $service = Service::factory()->create(['description' => 'test data', 'is_compulsory' => Service::COMPULSORY]);
+        $this->assertTrue($this->service_repository->checkCompulsory($service->id));
+    }
+
+    public function test_get_registered_services() {
+        $renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data']); 
+        $first_service = Service::factory()->create(['description' => 'test data']);
+        $second_service = Service::factory()->create(['description' => 'test data']);
+        $first_service_registration = ServiceRegistration::factory()->create(['user_id' => $renter->id, 'service_id' => $first_service->id]);
+        $first_service_registration = ServiceRegistration::factory()->create(['user_id' => $renter->id, 'service_id' => $second_service->id]);
+        $this->assertEquals(count($this->service_repository->getRegisteredServices($renter->id)), 2);
     }
 
     public function tearDown() : void

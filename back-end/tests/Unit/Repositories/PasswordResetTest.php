@@ -48,6 +48,15 @@ class PasswordResetTest extends TestCase
         $this->assertDatabaseMissing('password_resets', $password_reset->toArray());
     }
 
+    public function test_check_existed() {
+        $data = array();
+        $user = User::factory()->create(['occupation' => 'test data']);
+        $password_reset = PasswordReset::factory()->create(['email' => $user->email, 'token' => '123']);
+        $data['email'] = $user->email;
+        $data['token'] = '123';
+        $this->assertTrue($this->password_reset_repository->checkExisted($data));
+    }
+
     public function tearDown() : void
     {
         $all_renter_emails = User::where('occupation', 'test data')->pluck('email');

@@ -79,6 +79,10 @@ class RoomController extends Controller
         $room = $this->room->show($id);
         $old_room_number = $room->number;
         if($room) {
+            if($request->hasFile('image')) {
+                $files = $request->file('image');
+                $this->room->updateImages($files, $id);
+            }
             $this->room->update($request->all(), $id);
             return response([
                 'message' => 'Successfully update room',

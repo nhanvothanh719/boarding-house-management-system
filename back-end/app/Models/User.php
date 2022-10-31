@@ -59,10 +59,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function room() {
-        return $this->hasOneThrough(Room::class, RoomRent::class, 'renter_id', 'id', 'id', 'id');
-    }
-
     public function motorbike() {
         return $this->hasOne(Motorbike::class, 'renter_id', 'id');
     }

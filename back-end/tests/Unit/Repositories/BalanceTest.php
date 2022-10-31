@@ -77,6 +77,16 @@ class BalanceTest extends TestCase
         $balance_change = $this->balance_repository->handleAfterPayment($invoice, 1);
         $this->assertInstanceOf(Balance::class, $balance_change);
         $this->assertDatabaseHas('balance', $balance_change->toArray());
+        $balance_change->delete();
+    }
+
+    public function test_get_total_earned_amount() {
+        $first_balance_change_amount = 5.22;
+        $second_balance_change_amount = 3.45;
+        $first_balance_change = Balance::factory()->create(['description' => 'test_data', 'is_income' => Balance::CATEGORY_EARNED, 'amount' => $first_balance_change_amount]);
+        $second_balance_change = Balance::factory()->create(['description' => 'test_data', 'is_income' => Balance::CATEGORY_EARNED, 'amount' => $second_balance_change_amount]);
+        $expected_result = round($first_balance_change_amount + $second_balance_change_amount, 2);
+        $this->assertEquals($this->balance_repository->getEarnedAmount(), $expected_result);
     }
 
     public function tearDown() : void

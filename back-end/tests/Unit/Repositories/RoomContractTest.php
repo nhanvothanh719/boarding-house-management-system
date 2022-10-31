@@ -23,14 +23,14 @@ class RoomContractTest extends TestCase
         parent::setUp();
         $this->faker = Faker::create();
         // Prepare data for test
-        $renter = User::factory()->create(['role' => 1, 'occupation' => 'test data']);
+        $renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data']);
         $this->room_contract = [
             'renter_id' => $renter->id,
             'effective_from' => date('Y-m-d'),
             'effective_until' => date('Y-m-d', strtotime(' +3 year')),
             'deposit_amount' => rand(100, 500),
-            'owner_signature' => $this->faker->image(null, 640, 480),
-            'renter_signature' => $this->faker->image(null, 640, 480),
+            'owner_signature' => $this->faker->image('public/uploaded/room_contract', 640, 480, null, false),
+            'renter_signature' => $this->faker->image('public/uploaded/room_contract', 640, 480, null, false),
         ];
         $this->room_contract_repository = new RoomContractRepository();
     }
@@ -82,33 +82,39 @@ class RoomContractTest extends TestCase
         //$this->assertEquals($new_room_contract->effective_until, $this->room_contract['effective_until']);
     }
 
-    public function test_delete() {
-        $room_contract = RoomContract::factory()->create(['renter_id' => $this->room_contract['renter_id']]);
-        $delete_contract = $this->room_contract_repository->delete($room_contract->id);
-        $this->assertTrue($delete_contract);
-        $this->assertDatabaseMissing('room_contracts', $room_contract->toArray());
-    }
+    // public function test_delete() {
+    //     $room_contract = RoomContract::factory()->create(['renter_id' => $this->room_contract['renter_id']]);
+    //     $delete_contract = $this->room_contract_repository->delete($room_contract->id);
+    //     $this->assertTrue($delete_contract);
+    //     $this->assertDatabaseMissing('room_contracts', $room_contract->toArray());
+    // }
 
-    public function test_update_signatures() {
-        $room_contract = RoomContract::factory()->create([
-            'renter_id' => $this->room_contract['renter_id'],
-            'deposit_amount' => $this->room_contract['deposit_amount'],
-            'owner_signature' => $this->faker->image(null, 400, 500, 'animals'),
-            'renter_signature' => $this->faker->image(null, 400, 500, 'animals'),
-            'effective_from' => $this->room_contract['effective_from'],
-            'effective_until' => $this->room_contract['effective_until'],
-        ]);
-        $new_room_contract = $this->room_contract_repository->updateSignatures($room_contract->id, $this->room_contract['owner_signature'], $this->room_contract['renter_signature']);
-        $this->assertInstanceOf(RoomContract::class, $new_room_contract);
+    // public function test_update_signatures() {
+    //     $room_contract = RoomContract::factory()->create([
+    //         'renter_id' => $this->room_contract['renter_id'],
+    //         'deposit_amount' => $this->room_contract['deposit_amount'],
+    //         'owner_signature' => $this->faker->image(null, 400, 500, 'animals'),
+    //         'renter_signature' => $this->faker->image(null, 400, 500, 'animals'),
+    //         'effective_from' => $this->room_contract['effective_from'],
+    //         'effective_until' => $this->room_contract['effective_until'],
+    //     ]);
+    //     $new_room_contract = $this->room_contract_repository->updateSignatures($room_contract->id, $this->room_contract['owner_signature'], $this->room_contract['renter_signature']);
+    //     $this->assertInstanceOf(RoomContract::class, $new_room_contract);
 
-        //Test if the database is updated
-        //$this->assertDatabaseHas('room_contracts', $this->room_contract);
-        //$this->assertEquals($new_room_contract->owner_signature, $this->room_contract['owner_signature']);
-        //$this->assertEquals($new_room_contract->renter_signature, $this->room_contract['renter_signature']);
-        //$directory = RoomContract::ROOM_CONTRACT_PUBLIC_FOLDER.'/'.$this->room_contract['renter_id'].'/';
-        //$this->assertFileExists($directory.$this->room_contract['owner_signature']); 
-        //$this->assertFileExists($directory.$this->room_contract['renter_signature']);
-    }
+    //     //Test if the database is updated
+    //     //$this->assertDatabaseHas('room_contracts', $this->room_contract);
+    //     //$this->assertEquals($new_room_contract->owner_signature, $this->room_contract['owner_signature']);
+    //     //$this->assertEquals($new_room_contract->renter_signature, $this->room_contract['renter_signature']);
+    //     //$directory = RoomContract::ROOM_CONTRACT_PUBLIC_FOLDER.'/'.$this->room_contract['renter_id'].'/';
+    //     //$this->assertFileExists($directory.$this->room_contract['owner_signature']); 
+    //     //$this->assertFileExists($directory.$this->room_contract['renter_signature']);
+    // }
+
+    // public function test_find_room_contract_by_user_id() {
+    //     $renter_with_room_contract = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data']);
+    //     $renter_without_room_contract = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data']);
+        
+    // }
 
     public function tearDown() : void
     {

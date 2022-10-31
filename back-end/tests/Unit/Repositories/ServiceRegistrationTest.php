@@ -47,7 +47,7 @@ class ServiceRegistrationTest extends TestCase
     public function test_show() {
         $renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data']);
         $service = Service::factory()->create(['description' => 'test data']);
-        $service_registration = ServiceRegistration::factory()->create(['user_id' => $renter->id, 'service_id' => $service->id,]);
+        $service_registration = ServiceRegistration::factory()->create(['user_id' => $renter->id, 'service_id' => $service->id]);
         $found_service_registration = $this->service_registration_repository->show($service_registration->id);
         $this->assertInstanceOf(ServiceRegistration::class, $found_service_registration);
         $this->assertEquals($found_service_registration->user_id, $service_registration->user_id);
@@ -57,7 +57,7 @@ class ServiceRegistrationTest extends TestCase
     public function test_delete() {
         $renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data']);
         $service = Service::factory()->create(['description' => 'test data']);
-        $service_registration = ServiceRegistration::factory()->create(['user_id' => $renter->id, 'service_id' => $service->id,]);
+        $service_registration = ServiceRegistration::factory()->create(['user_id' => $renter->id, 'service_id' => $service->id]);
         $delete_service_registration = $this->service_registration_repository->delete($service_registration->id);
         $this->assertTrue($delete_service_registration);
         $this->assertDatabaseMissing('service_registrations', $service_registration->toArray());
@@ -66,7 +66,7 @@ class ServiceRegistrationTest extends TestCase
     public function test_check_exist() {
         $renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data']);
         $service = Service::factory()->create(['description' => 'test data']);
-        $service_registration = ServiceRegistration::factory()->create(['user_id' => $renter->id, 'service_id' => $service->id,]);
+        $service_registration = ServiceRegistration::factory()->create(['user_id' => $renter->id, 'service_id' => $service->id]);
         $is_existed = $this->service_registration_repository->checkExisted($renter->id, $service->id);
         $this->assertTrue($is_existed);
     }
