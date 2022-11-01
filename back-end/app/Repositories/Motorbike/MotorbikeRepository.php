@@ -2,8 +2,6 @@
 
 namespace App\Repositories\Motorbike;
 
-use App\Helpers\CustomHelper;
-
 use App\Models\Motorbike;
 
 class MotorbikeRepository implements MotorbikeRepositoryInterface 
@@ -22,7 +20,15 @@ class MotorbikeRepository implements MotorbikeRepositoryInterface
         $motorbike->license_plate = $data['license_plate'];
         if($image != null) {
             $upload_folder = Motorbike::motorbike_image_public_folder;
-            $motorbike->motorbike_image = CustomHelper::addImage($image, $upload_folder);
+            $generated_name = hexdec(uniqid());
+            $extension = $image->getClientOriginalExtension();
+            $image_name = $generated_name.'.'.$extension;
+            if(!file_exists($upload_folder)) {
+                //mkdir($upload_folder);
+                mkdir($upload_folder, 0777, true);
+            $image->move($upload_folder, $image_name);
+            $motorbike->motorbike_image = $upload_folder.$image_name;
+            }
         }
         $motorbike->save();
         return $motorbike;
@@ -35,13 +41,24 @@ class MotorbikeRepository implements MotorbikeRepositoryInterface
         if($image != null) {
             $old_image = $motorbike->motorbike_image;
             $upload_folder = Motorbike::motorbike_image_public_folder;
-            $motorbike->motorbike_image = CustomHelper::updateImage($old_image, $image, $upload_folder);
+            if(!file_exists($upload_folder)) {
+                //mkdir($upload_folder);
+                mkdir($upload_folder, 0777, true);
+            }
+            //Delete existed image
+            File::delete($old_image);
+            //Add new image
+            $generated_name = hexdec(uniqid());
+            $extension = $image->getClientOriginalExtension();
+            $image_name = $generated_name.'.'.$extension;
+            $image->move($upload_folder, $image_name);
+            $motorbike->motorbike_image = $upload_folder.$image_name;
         }
-        return $motorbike->save();
+        $motorbike->save();
+        return $motorbike;
     }
 
     public function delete($id) {
-        $motorbike = $this::show($id);
-        $motorbike->delete();
+        return $this::show($id)->delete();
     }
 }

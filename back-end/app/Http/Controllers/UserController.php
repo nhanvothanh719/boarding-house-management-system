@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Mail; 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 
 use App\Mail\FirstPasswordChangeMail;
 
@@ -30,7 +31,7 @@ class UserController extends Controller
     public function getUserProfile() {
         return response([
             'status' => 200,
-            'currentUser' => $this->user->getCurrentUser(),
+            'currentUser' => Auth::user(),
         ]);
     }
 
@@ -47,7 +48,7 @@ class UserController extends Controller
             'occupation' => 'required|max:100|regex:/^[a-zA-Z ]+$/',
             'permanent_address' => 'required',
             'profile_picture' => 'image',
-            'role_id' => 'required|exists:roles,id',
+            'role' => 'required',
         ]);
         if($validator->fails()) 
         {
@@ -104,7 +105,7 @@ class UserController extends Controller
             'occupation' => 'required|max:100|string|regex:/(^[a-zA-Z][a-zA-Z\s]{0,20}[a-zA-Z]$)/',
             'permanent_address' => 'required',
             'profile_picture' => 'image',
-            'role_id' => 'required|exists:roles,id',
+            'role' => 'required',
         ]);
         if($validator->fails())
         {
@@ -134,7 +135,7 @@ class UserController extends Controller
     }
 
     public function updateUserProfile(Request $request) {
-        $user = $this->user->getCurrentUser();
+        $user = Auth::user();
         $before_appropriate_time = date('Y-m-d', strtotime(' -18 year'));
         $after_appropriate_time = date('Y-m-d', strtotime(' -40 year'));
         $validator = Validator::make($request->all(), [
@@ -170,7 +171,7 @@ class UserController extends Controller
                 'status' => 422, //Unprocessable entity
             ]);
         }
-        $user = $this->user->getCurrentUser();
+        $user = Auth::user();
         if($request->hasFile('profile_picture')) {
             $new_avatar = $request->file('profile_picture');
             $old_avatar = $user->profile_picture;
@@ -205,10 +206,16 @@ class UserController extends Controller
                 'status' => 404,
             ]);
         }
-        $is_locked_message = $this->user->lockUserAccount($id);
+        $is_lock_successful = $this->user->lockUserAccount($id);
+        if($is_lock_successful) {
+            return response([
+                'message' => 'Update status of account successfully',
+                'status' => 200,
+            ]);
+        } 
         return response([
-            'message' => $is_locked_message,
-            'status' => 200,
+            'message' => 'Cannot lock account with admin role',
+            'status' => 400,
         ]);
     }
 

@@ -36,11 +36,11 @@ class BalanceRepository implements BalanceRepositoryInterface
         $balance_change->occurred_on = $data['occurred_on'];
         $balance_change->description = $data['description'];
         $balance_change->save();
+        return $balance_change;
     }
 
     public function delete($id) {
-        $balance_change = $this::show($id);
-        $balance_change->delete();
+        return $this::show($id)->delete();
     }
 
     public function groupRecentBalanceChangesByDate() {

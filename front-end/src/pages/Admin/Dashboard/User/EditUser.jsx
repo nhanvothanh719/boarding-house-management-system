@@ -40,7 +40,7 @@ export default function EditUser({ match }) {
     phone_number: "",
     occupation: "",
     permanent_address: "",
-    role_id: "",
+    role: "",
     profile_picture: "",
     date_of_birth: "",
   });
@@ -52,7 +52,7 @@ export default function EditUser({ match }) {
     phone_number: "",
     occupation: "",
     permanent_address: "",
-    role_id: "",
+    role: "",
   });
   const [loading, setLoading] = useState([]);
   const [dateOfBirth, setDateOfBirth] = useState(null);
@@ -101,7 +101,7 @@ export default function EditUser({ match }) {
     user.append("phone_number", input.phone_number);
     user.append("occupation", input.occupation);
     user.append("permanent_address", input.permanent_address);
-    user.append("role_id", input.role_id);
+    user.append("role", input.role);
     if (avatar.image) {
       user.append("profile_picture", avatar.image);
     }
@@ -145,7 +145,7 @@ export default function EditUser({ match }) {
               />
               <div className="userShowTopTitle">
                 <span className="userShowUsername">{userInfo.name}</span>
-                <span className="userShowUserTitle">{input.role_id === 0 ? "Admin" : "User"}</span>
+                <span className="userShowUserTitle">{input.role === 0 ? "Admin" : "User"}</span>
               </div>
             </div>
             <div className="userShowBottom">
@@ -293,10 +293,10 @@ export default function EditUser({ match }) {
                 <div className="userUpdateItem">
                   <label>Role</label>
                   <select
-                name="role_id"
+                name="role"
                 className="userUpdateInput"
                 onChange={handleInput}
-                value={input.role_id}
+                value={input.role}
               >
                 <option selected>--- Select role ---</option>
                 <option value="0" key="0">

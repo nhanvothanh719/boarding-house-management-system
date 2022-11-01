@@ -20,7 +20,7 @@ class RenterBreachHistoryController extends Controller
         $current_renter_id = Auth::user()->id;
         return response([
             'status' => 200,
-            'breachHistories' => $this->breach_history->getHistoriesOfBreach($current_renter_id, $id),
+            'breachHistories' => $this->breach_history->getRenterBreachHistories($current_renter_id, $id),
         ]);
     }
 }

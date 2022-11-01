@@ -25,10 +25,6 @@ class Room extends Model
         return $this->hasMany(RoomImages::class, 'room_id', 'id');
     }
 
-    public function renters() {
-        return $this->hasManyThrough(User::class, RoomRent::class, 'room_id', 'id', 'id', 'id');
-    }
-
     public function rent_requests() {
         return $this->hasMany(RoomRentRegistration::class, 'registered_room_id', 'id');
     }

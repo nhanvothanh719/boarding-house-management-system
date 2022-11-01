@@ -3,7 +3,6 @@
 namespace App\Repositories\Problem;
 
 use App\Models\Problem;
-use Illuminate\Support\Facades\Auth;
 
 class ProblemRepository implements ProblemRepositoryInterface {
     public function all() {
@@ -14,9 +13,9 @@ class ProblemRepository implements ProblemRepositoryInterface {
         return Problem::find($id);
     }
 
-    public function store($data) {
+    public function store($data, $renter_id) {
         $problem = Problem::create([
-            'renter_id' => Auth::user()->id,
+            'renter_id' => $renter_id,
             'title' => $data['title'],
             'description' => $data['description'],
             'severity_level' => $data['severity_level'],
@@ -31,6 +30,7 @@ class ProblemRepository implements ProblemRepositoryInterface {
         $problem->description = $data['description'];
         $problem->severity_level = $data['severity_level'];
         $problem->save();
+        return $problem;
     }
 
     public function delete($id) {
@@ -44,10 +44,10 @@ class ProblemRepository implements ProblemRepositoryInterface {
         return $problem;
     }
 
-    public function reply($data, $id)
+    public function reply($data, $id, $responder_id)
     {
         $problem = $this::show($id);
-        $problem->replied_by = Auth::user()->id;
+        $problem->replied_by = $responder_id;
         $problem->reply_text = $data['reply_text'];
         $problem->status = Problem::STATUS_ONGOING;
         $problem->save();

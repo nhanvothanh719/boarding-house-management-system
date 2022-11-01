@@ -27,11 +27,11 @@ class PasswordResetRepository implements PasswordResetRepositoryInterface
         return $password_reset;
     }
 
-    public function update($data) {
+    public function updatePassword($data) {
         $new_hash_password = Hash::make($data['password']);
         $email = $data['email'];
         $this->user_repository->updatePassword($email, $new_hash_password);
-        PasswordReset::where('email', $email)->delete();
+        return PasswordReset::where('email', $email)->delete();
     }
 
     public function checkExisted($data) {

@@ -35,23 +35,21 @@ class RoomRentRepository implements RoomRentRepositoryInterface
     }
 
     public function accept($data) {
-        $is_updated = true;
+        $is_updated = false;
         if($this->user_repository->checkAdminRole($data['renter_id'])) {
-            $is_updated = false;
             return $is_updated;
         }
         $renter_gender = $this->user_repository->show($data['renter_id'])->gender;
-        $is_accepted = $this->room_repository->updateIncreaseRoomStatus($data['room_id']);
-            if(!$is_accepted) {
-                $is_updated = false;
-                return $is_updated;
-            } 
-            //Check same gender
-            $is_accepted = $this::checkGender($data['room_id'], $renter_gender);
-            if(!$is_accepted) {
-                $is_updated = false;
-                return $is_updated;
-            } 
+        $is_accepted_by_room_status = $this->room_repository->updateIncreaseRoomStatus($data['room_id']);
+        if(!$is_accepted_by_room_status) {
+            return $is_updated;
+        } 
+        //Check same gender
+        $is_accepted_by_gender = $this::checkGender($data['room_id'], $renter_gender);
+        if(!$is_accepted_by_gender) {
+            return $is_updated;
+        } 
+        $is_updated = true; 
         return $is_updated;
     }
 
@@ -65,18 +63,19 @@ class RoomRentRepository implements RoomRentRepositoryInterface
     public function checkGender($room_id, $renter_gender) {
         $is_same_gender = false;
         $room = $this->room_repository->show($room_id);
-        $renter_in_room = $room->renters->first();
+        $room_rent = $room->rents->first();
         //Check renter in room
-        if(!$renter_in_room) {
+        if($room_rent == null) {
             //Check registered user
             $partner = $room->rent_requests->first();
-            if(!$partner) {
+            if($partner == null) {
                 $is_same_gender = true;
             } else {
                 $is_same_gender = $partner->sender_gender == $renter_gender ? true : false;
             }
         } else {
-            $partner_gender = $renter_in_room->first()->gender;
+            $renter_in_room = $room_rent->renter;
+            $partner_gender = $renter_in_room->gender;
             $is_same_gender = $partner_gender == $renter_gender ? true : false;
         }
         return $is_same_gender;
@@ -87,8 +86,8 @@ class RoomRentRepository implements RoomRentRepositoryInterface
     }
 
     public function getRenterRoom($renter_id) {
-        $rented_room_id = RoomRent::where('renter_id', $renter_id)->value('room_id');
-        return $this->room_repository->show($rented_room_id);
+        $renter_room_id = RoomRent::where('renter_id', $renter_id)->value('room_id');
+        return $this->room_repository->show($renter_room_id);
     }
 
     public function getRenterCurrentRoomPartners($renter_id) {

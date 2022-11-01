@@ -31,11 +31,11 @@ class BreachRepository implements BreachRepositoryInterface
         $breach->severity_level = $data['severity_level'];
         $breach->allowed_violate_number = $data['allowed_violate_number'];
         $breach->save();
+        return $breach;
     }
 
     public function delete($id) {
-        $breach = $this::show($id);
-        $breach->delete();
+        return $this::show($id)->delete();
     }
 
     public function checkUsed($id) {
@@ -52,24 +52,5 @@ class BreachRepository implements BreachRepositoryInterface
 
     public function getAllowedViolationNumberOfBreach($id) {
         return $this::show($id)->allowed_violate_number;
-    }
-
-    public function getRenterBreachDetails($renter_id) {
-        return Breach::withCount('breach_histories', );
-
-        
-        // $breaches_id = Breach::pluck('id')->toArray();
-        // $renter_breach_details = array();
-        // foreach($breaches_id as $breach_id) {
-        //     $item = new stdClass();
-        //     $breach = Breach::find($breach_id);
-        //     $item->id = $breach->id;
-        //     $item->name = $breach->name;
-        //     $item->description = $breach->description;
-        //     $item->allowed_violate_number = $breach->allowed_violate_number;
-        //     $item->severity_level = $breach->severity_level;
-        //     $item->total = BreachHistory::where('renter_id', $renter_id)->where('breach_id', $breach_id)->count();
-        //     array_push($renter_breach_details, $item);
-        // }
     }
 }

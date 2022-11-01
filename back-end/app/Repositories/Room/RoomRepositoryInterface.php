@@ -17,4 +17,6 @@ interface RoomRepositoryInterface
 
     public function countRoomsByStatus();
     public function countRooms();
+
+    public function updateImages($files, $id);
 }

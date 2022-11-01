@@ -28,15 +28,12 @@ class ServiceRepository implements ServiceRepositoryInterface
     }
 
     public function update($data, $id) {
+        $is_updated = true;
         $service = $this::show($id);
-        $is_compulsory_before = $service->is_compulsory;
-        if($is_compulsory_before == Service::OPTIONAL && $is_compulsory_before != $data['is_compulsory']) {
-            if($this::checkUsed($id)){
-                return response([
-                    'message' => 'Cannot update this service to compulsory since it is used',
-                    'status' => 403,
-                ]);
-            }
+        if($service->is_compulsory == Service::OPTIONAL && 
+        $service->is_compulsory != $data['is_compulsory'] && $this::checkUsed($id)) {
+            $is_updated = false;
+            return $is_updated;
         }
         $service->name = $data['name'];
         $service->description = $data['description'];
@@ -44,6 +41,7 @@ class ServiceRepository implements ServiceRepositoryInterface
         $service->unit_price = $data['unit_price'];
         $service->is_compulsory = $data['is_compulsory'] == true ? '1' : '0';
         $service->save();
+        return $is_updated;
     }
 
     public function delete($id) {
@@ -51,19 +49,11 @@ class ServiceRepository implements ServiceRepositoryInterface
     }
 
     public function checkUsed($id) {
-        $is_used = false;
-        if(Service::where('id', $id)->withCount('users')->get()[0]->users_count > 0){
-            $is_used = true;
-        }
-        return $is_used;
+        return Service::where('id', $id)->withCount('users')->get()[0]->users_count > 0 ? true : false;
     }
 
     public function checkCompulsory($id) {
-        $is_compulsory = false;
-        if($this::show($id)->is_compulsory == Service::COMPULSORY) {
-            $is_compulsory = true;
-        }
-        return $is_compulsory;
+        return $this::show($id)->is_compulsory == Service::COMPULSORY ? true : false;
     }
 
     public function getAllOptionalServices() {

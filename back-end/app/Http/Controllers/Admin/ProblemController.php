@@ -85,7 +85,8 @@ class ProblemController extends Controller
                 'status' => 404,
             ]);
         }
-        $problem = $this->problem->reply($request->all(), $id);
+        $responder_id = Auth::user()->id;
+        $problem = $this->problem->reply($request->all(), $id, $responder_id);
         $responder_name = Auth::user()->name;
         $owner_name = $problem->renter->name;
         $owner_email = $problem->renter->email;

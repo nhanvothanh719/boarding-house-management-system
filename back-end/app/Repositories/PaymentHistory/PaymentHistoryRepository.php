@@ -37,13 +37,13 @@ class PaymentHistoryRepository implements PaymentHistoryRepositoryInterface
         $payment_method = $data['payment_method'];
         switch($payment_method) {
             case 'Razorpay':
-                $payment->payment_method_id = PaymentHistory::PAYMENT_METHOD_RAZORPAY;
+                $payment->payment_method = PaymentHistory::PAYMENT_METHOD_RAZORPAY;
                 break;
             case 'Paypal':
-                $payment->payment_method_id = PaymentHistory::PAYMENT_METHOD_PAYPAL;
+                $payment->payment_method = PaymentHistory::PAYMENT_METHOD_PAYPAL;
                 break;
             default:
-                $payment->payment_method_id = PaymentHistory::PAYMENT_METHOD_CASH;
+                $payment->payment_method = PaymentHistory::PAYMENT_METHOD_CASH;
                 break;
         }
         $payment->payment_id = $data['payment_id'];
@@ -61,31 +61,22 @@ class PaymentHistoryRepository implements PaymentHistoryRepositoryInterface
         $total_invoices = $this->invoice_repository->countInvoices();
         $paid_invoices_rate = round($paid_invoices_count / $total_invoices * 100);
         return $paid_invoices_rate;
-        
     }
 
     public function countPaidMethods() {
         $invoice_paid_methods_count = array();
         $paypal_payment = new stdClass();
         $paypal_payment->method_name = "Paypal";
-        $paypal_payment->total = PaymentHistory::where('payment_method_id', PaymentHistory::PAYMENT_METHOD_PAYPAL)->count();
+        $paypal_payment->total = PaymentHistory::where('payment_method', PaymentHistory::PAYMENT_METHOD_PAYPAL)->count();
         array_push($invoice_paid_methods_count, $paypal_payment);
         $razorpay_payment = new stdClass();
         $razorpay_payment->method_name = "Razorpay";
-        $razorpay_payment->total = PaymentHistory::where('payment_method_id', PaymentHistory::PAYMENT_METHOD_RAZORPAY)->count();
+        $razorpay_payment->total = PaymentHistory::where('payment_method', PaymentHistory::PAYMENT_METHOD_RAZORPAY)->count();
         array_push($invoice_paid_methods_count, $razorpay_payment);
         $cash_payment = new stdClass();
         $cash_payment->method_name = "Cash";
-        $cash_payment->total = PaymentHistory::where('payment_method_id', PaymentHistory::PAYMENT_METHOD_CASH)->count();
+        $cash_payment->total = PaymentHistory::where('payment_method', PaymentHistory::PAYMENT_METHOD_CASH)->count();
         array_push($invoice_paid_methods_count, $cash_payment);
         return $invoice_paid_methods_count;
-    }
-
-    public function getRenterUnpaidInvoices($renter_id) {
-        return PaymentHistory::with('invoices')->get();
-    }
-
-    public function getRenterPaidInvoices($renter_id) {
-
     }
 }

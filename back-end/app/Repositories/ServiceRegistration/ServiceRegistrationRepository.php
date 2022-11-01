@@ -36,12 +36,7 @@ class ServiceRegistrationRepository implements ServiceRegistrationRepositoryInte
     }
 
     public function checkExisted($user_id, $service_id) {
-        $is_existed = false;
-        $check_existed_registration = ServiceRegistration::where([['user_id', $user_id],['service_id', $service_id]])->count();
-        if($check_existed_registration > 0) {
-            $is_existed = true;
-        }
-        return $is_existed;
+        return ServiceRegistration::where([['user_id', $user_id],['service_id', $service_id]])->count() > 0 ? true : false;
     }
 
     public function checkAdminRole($id) {

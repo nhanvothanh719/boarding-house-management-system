@@ -27,12 +27,12 @@ class RoomCategoryRepository implements RoomCategoryRepositoryInterface
         $category->name = $data['name'];
         $category->price = $data['price'];
         $category->description = $data['description'];
-        return $category->save();
+        $category->save();
+        return $category;
     }
 
     public function delete($id) {
-        $category = $this::show($id);
-        return $category->delete();
+        return $this::show($id)->delete();
     }
 
     public function checkUsed($id) {
