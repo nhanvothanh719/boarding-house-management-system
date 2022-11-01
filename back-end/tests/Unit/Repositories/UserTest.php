@@ -150,6 +150,55 @@ class UserTest extends TestCase
         $this->assertEquals(count($this->user_repository->getRenterInvoices($renter->id)), 2);
     }
 
+    public function test_get_all_renters() {
+        $first_renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data']);
+        $second_renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data']);
+        $third_renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data']);
+        $this->assertEquals(count($this->user_repository->getAllRenters()), 3);
+    }
+
+    public function test_update_important_information() {
+        $user = User::factory()->create(['occupation' => 'test data']);
+        $new_user = $this->user_repository->updateImportantInfo($this->user, $user->id);
+        $this->assertEquals($new_user->gender, $this->user['gender']);
+        $this->assertEquals($new_user->id_card_number, $this->user['id_card_number']);
+        $this->assertEquals($new_user->role, $this->user['role']);
+    }
+
+    public function test_count_renters() {
+        $first_renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data']);
+        $second_renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data']);
+        $third_renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data']);
+        $this->assertEquals($this->user_repository->countRenters(), 3);
+    }
+
+    public function test_send_announcement_to_existed_renters() {
+        $test_data = array();
+        $test_data['title'] = 'Test announcement mail';
+        $test_data['content'] = 'Content of test announcement mail';
+        $first_renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data', 'email' => 'testannoucement1@gmail.com']);
+        $second_renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data', 'email' => 'testannoucement2@gmail.com']);
+        $all_id = array();
+        array_push($all_id, $first_renter->id);
+        array_push($all_id, $second_renter->id);
+        $test_data['all_id'] = $all_id;
+        $this->assertTrue($this->user_repository->sendAnnouncement($test_data));
+    }
+
+    public function test_send_announcement_to_not_existed_renters() {
+        $test_data = array();
+        $test_data['title'] = 'Test announcement mail';
+        $test_data['content'] = 'Content of test announcement mail';
+        $first_renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data', 'email' => 'testannoucement1@gmail.com']);
+        $second_renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data', 'email' => 'testannoucement2@gmail.com']);
+        User::where('email', 'testannoucement2@gmail.com')->delete();
+        $all_id = array();
+        array_push($all_id, $first_renter->id);
+        array_push($all_id, $second_renter->id);
+        $test_data['all_id'] = $all_id;
+        $this->assertFalse($this->user_repository->sendAnnouncement($test_data));
+    }
+
     public function tearDown() : void
     {
         $all_renters_id = User::where('role', User::ROLE_RENTER)->where('occupation', 'test data')->pluck('id');

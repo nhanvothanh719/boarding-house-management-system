@@ -87,6 +87,56 @@ class RoomRentRegistrationTest extends TestCase
         $this->assertTrue($is_accepted);
     }
 
+    public function test_check_gender_with_existed_room_rent() {
+        $category = Category::factory()->create(['description' => 'test data']);
+        $room = Room::factory()->create(['status' => Room::STATUS_OCCUPIED, 'category_id' => $category->id, 'description' => 'test data']);
+        $renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data', 'gender' => User::GENDER_MALE_ID]);
+        $room_rent = RoomRent::factory()->create(['renter_id' => $renter->id, 'room_id' => $room->id]);
+        $male_sender = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data', 'gender' => User::GENDER_MALE_ID]);
+        $female_sender = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data', 'gender' => User::GENDER_FEMALE_ID]);
+        $this->assertTrue($this->room_rent_registration_repository->checkGender($room->id, $male_sender->gender));
+        $this->assertFalse($this->room_rent_registration_repository->checkGender($room->id, $female_sender->gender));
+    }
+
+    public function test_check_gender_with_existed_room_rent_registration_request() {
+        $category = Category::factory()->create(['description' => 'test data']);
+        $room = Room::factory()->create(['status' => Room::STATUS_OCCUPIED, 'category_id' => $category->id, 'description' => 'test data']);
+        $renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data', 'gender' => User::GENDER_MALE_ID]);
+        $male_sender = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data', 'gender' => User::GENDER_MALE_ID]);
+        $female_sender = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data', 'gender' => User::GENDER_FEMALE_ID]);
+        $room_rent_registration = RoomRentRegistration::factory()->create(['registered_room_id' => $room->id, 'sender_gender' => $renter->gender, 'is_accepted' => RoomRentRegistration::STATUS_ACCEPTED]);
+        $this->assertTrue($this->room_rent_registration_repository->checkGender($room->id, $male_sender->gender));
+        $this->assertFalse($this->room_rent_registration_repository->checkGender($room->id, $female_sender->gender));
+    }
+
+    public function test_check_gender_without_existed_room_rent_registration_request() {
+        $category = Category::factory()->create(['description' => 'test data']);
+        $room = Room::factory()->create(['status' => Room::STATUS_OCCUPIED, 'category_id' => $category->id, 'description' => 'test data']);
+        $renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data', 'gender' => User::GENDER_MALE_ID]);
+        $this->assertTrue($this->room_rent_registration_repository->checkGender($room->id, $renter->gender));
+    }
+
+    public function test_accept_with_registered_renter() {
+        $category = Category::factory()->create(['description' => 'test data']);
+        $room = Room::factory()->create(['status' => Room::STATUS_OCCUPIED, 'category_id' => $category->id, 'description' => 'test data']);
+        $renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data', 'gender' => User::GENDER_MALE_ID]);
+        $male_sender = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data', 'gender' => User::GENDER_MALE_ID]);
+        $female_sender = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data', 'gender' => User::GENDER_FEMALE_ID]);
+        $room_rent_registration = RoomRentRegistration::factory()->create(['registered_room_id' => $room->id, 'sender_gender' => $renter->gender, 'is_accepted' => RoomRentRegistration::STATUS_ACCEPTED]);
+        $male_registration_request = RoomRentRegistration::factory()->create(['registered_room_id' => $room->id, 'sender_gender' => $male_sender->gender, 'is_accepted' => RoomRentRegistration::STATUS_NOT_ACCEPTED]);
+        $female_registration_request = RoomRentRegistration::factory()->create(['registered_room_id' => $room->id, 'sender_gender' => $female_sender->gender, 'is_accepted' => RoomRentRegistration::STATUS_NOT_ACCEPTED]);
+        $this->assertTrue($this->room_rent_registration_repository->accept($male_registration_request->id));
+        $this->assertFalse($this->room_rent_registration_repository->accept($female_registration_request->id));
+    }
+
+    public function test_accept_without_registered_renter() {
+        $category = Category::factory()->create(['description' => 'test data']);
+        $room = Room::factory()->create(['status' => Room::STATUS_EMPTY, 'category_id' => $category->id, 'description' => 'test data']);
+        $renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data', 'gender' => User::GENDER_MALE_ID]);
+        $room_rent_registration = RoomRentRegistration::factory()->create(['registered_room_id' => $room->id, 'sender_gender' => $renter->gender, 'is_accepted' => RoomRentRegistration::STATUS_NOT_ACCEPTED]);
+        $this->assertTrue($this->room_rent_registration_repository->accept($room_rent_registration->id));
+    }
+
     public function tearDown() : void
     {
         $categories_id = Category::where('description', 'test data')->pluck('id');

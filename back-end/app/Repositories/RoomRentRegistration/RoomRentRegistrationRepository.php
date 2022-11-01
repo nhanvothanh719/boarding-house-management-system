@@ -71,16 +71,18 @@ class RoomRentRegistrationRepository implements RoomRentRegistrationRepositoryIn
 
     public function checkGender($room_id, $sender_gender) {
         $room = $this->room_repository->show($room_id);
-        $renter_in_room = $room->renters->first();
+        $room_rent = $room->rents->first();
         //Check renter in room
-        if(!$renter_in_room) {
+        if($room_rent == null) {
             //Check registered user
-            $partner_gender = RoomRentRegistration::where('registered_room_id', $room_id)->first()->sender_gender;
-            if(!$partner_gender) {
+            $previous_sender = RoomRentRegistration::where('registered_room_id', $room_id)->first();
+            if(!$previous_sender) {
                 return true;
             }
+            $partner_gender = $previous_sender->sender_gender;
             return $partner_gender == $sender_gender ? true : false; 
         } else {
+            $renter_in_room = $room_rent->renter;
             $partner_gender = $renter_in_room->gender;
             return $partner_gender == $sender_gender ? true : false;
         }
