@@ -26,7 +26,7 @@ class RoomRepository implements RoomRepositoryInterface
     }
 
     public function getAvailableRooms() {
-        return Room::where('status', '!=', Room::STATUS_EMPTY)->get();
+        return Room::where('status', '!=', Room::STATUS_FULL)->get();
     }
 
     public function store($data) {

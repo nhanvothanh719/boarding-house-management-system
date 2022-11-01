@@ -45,7 +45,7 @@ export default function BalanceVariation(props) {
         <YAxis />
         <Tooltip />
         <Legend />
-        <Line type="monotone" dataKey="amount" stroke={color} />
+        <Line type="monotone" dataKey="amount" stroke={color} name="Balance change amount"/>
       </LineChart>
         </div>
     </Fragment>

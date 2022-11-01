@@ -1,4 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import { Row, Container, Col } from "react-bootstrap";
 
 import axios from "axios";
@@ -9,6 +10,8 @@ import Footer from "../../layouts/User/Footer";
 import swal from "sweetalert";
 
 function ResetPasswordPage(props) {
+  const history = useHistory();
+
   const [input, setInput] = useState({
     token: "",
     email: "",
@@ -37,6 +40,7 @@ function ResetPasswordPage(props) {
         if (response.data.status === 200) {
           setErrors([]);
           swal("Success", response.data.message, "success");
+          history.push("/login");
           document.getElementById("resetPasswordForm").reset();
         } else if (response.data.status === 422) {
           setErrors(response.data.errors);

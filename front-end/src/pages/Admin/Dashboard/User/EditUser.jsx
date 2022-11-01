@@ -145,7 +145,7 @@ export default function EditUser({ match }) {
               />
               <div className="userShowTopTitle">
                 <span className="userShowUsername">{userInfo.name}</span>
-                <span className="userShowUserTitle">{input.role === 0 ? "Admin" : "User"}</span>
+                <span className="userShowUserTitle">{input.role === 0 ? "Admin" : "Renter"}</span>
               </div>
             </div>
             <div className="userShowBottom">

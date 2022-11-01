@@ -32,11 +32,11 @@ export default function EditRoom({ match }) {
     has_fridge: "",
     has_wardrobe: "",
     images: [],
-    renters: [],
+    rents: [],
   });
   const [uploadedPictures, setUploadedPictures] = useState([]);
   const [roomImages, setRoomImages] = useState([]);
-  const [renters, setRenters] = useState([]);
+  const [rents, setRents] = useState([]);
   const [errors, setErrors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -49,7 +49,9 @@ export default function EditRoom({ match }) {
         setRoomDetails(response.data.room);
         setSelectedCategory(response.data.room.category);
         setRoomImages(response.data.room.images);
-        setRenters(response.data.room.renters);
+        if(response.data.room.rents != null) {
+          setRents(response.data.room.rents);
+        }
       } else if (response.data.status === 404) {
         swal("Error", response.data.message, "error");
         history.push("/admin/view-all-rooms");
@@ -77,11 +79,13 @@ export default function EditRoom({ match }) {
   const updateRoom = (e) => {
     e.preventDefault();
     const room = new FormData();
-    for (let i = 0; i < uploadedPictures.length; i++) {
-      //Appends a new value onto an existing key inside a FormData object
-      //or adds the key if it does not already exist.
-      room.append(`image[${i}]`, uploadedPictures[i]);
-      //console.log(pictures[i]);
+    if(uploadedPictures.length > 0) {
+      for (let i = 0; i < uploadedPictures.length; i++) {
+        //Appends a new value onto an existing key inside a FormData object
+        //or adds the key if it does not already exist.
+        room.append(`image[${i}]`, uploadedPictures[i]);
+        //console.log(pictures[i]);
+      }
     }
     if (selectedCategory === null) {
       room.append("category_id", input.category.id);
@@ -94,7 +98,6 @@ export default function EditRoom({ match }) {
     room.append("has_conditioner", input.has_conditioner);
     room.append("has_fridge", input.has_fridge);
     room.append("has_wardrobe", input.has_wardrobe);
-
     axios
       .post(AppUrl.UpdateRoom + roomId, room) //Use POST (instead of PUT) when create a new instance
       .then((response) => {
@@ -124,22 +127,22 @@ export default function EditRoom({ match }) {
     );
   });
 
-  const all_renters = renters.map((renter) => {
+  const all_renters = rents.map((rent) => {
     return (
       <Link
         className="customDashboardLink"
-        to={`/admin/edit-user/${renter.id}`}
+        to={`/admin/edit-user/${rent.renter.id}`}
         style={{ fontWeight: "600" }}
       >
         <div className="roomInfoTop">
           <span>
             <img
-              src={renter.profile_picture ? `http://127.0.0.1:8000/${renter.profile_picture}`  : DefaultAvatar}
+              src={rent.renter.profile_picture ? `http://127.0.0.1:8000/${rent.renter.profile_picture}`  : DefaultAvatar}
               alt="renter_profile_picture"
               className="renterInRoomImg"
             />
           </span>
-          <span>{renter.name}</span>
+          <span>{rent.renter.name}</span>
         </div>
       </Link>
     );

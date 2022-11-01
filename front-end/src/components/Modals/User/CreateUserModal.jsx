@@ -22,7 +22,7 @@ export default function CreateUserModal(props) {
     phone_number: "",
     occupation: "",
     permanent_address: "",
-    role_id: "",
+    role: "",
   });
   const [dateOfBirth, setDateOfBirth] = useState(null);
   const [selectGender, setSelectGender] = useState('');
@@ -66,14 +66,14 @@ export default function CreateUserModal(props) {
     renter.append("email", input.email);
     renter.append(
       "date_of_birth",
-      moment(dateOfBirth).utc().format("YYYY-MM-DD")
+      moment(dateOfBirth).format("YYYY-MM-DD")
     );
     renter.append("gender", selectGender);
     renter.append("id_card_number", input.id_card_number);
     renter.append("phone_number", input.phone_number);
     renter.append("occupation", input.occupation);
     renter.append("permanent_address", input.permanent_address);
-    renter.append("role_id", selectRole);
+    renter.append("role", selectRole);
     if (avatar.image) {
       renter.append("profile_picture", avatar.image);
     }
@@ -91,7 +91,7 @@ export default function CreateUserModal(props) {
             phone_number: "",
             occupation: "",
             permanent_address: "",
-            role_id: "",  
+            role: "",  
           }); 
           setDateOfBirth(null);
           setSelectGender('');
@@ -275,7 +275,7 @@ export default function CreateUserModal(props) {
                     <InputLabel>Role</InputLabel>
                     <Select
                       label="Role"
-                      //name="role_id"
+                      //name="role"
                       onChange={(e) => setSelectRole(e.target.value)}
                       value={selectRole}
                       required
@@ -295,7 +295,7 @@ export default function CreateUserModal(props) {
                     </Select>
                   </FormControl>
                 </div>
-                <small className="text-danger customSmallError">{errors.role_id}</small>
+                <small className="text-danger customSmallError">{errors.role}</small>
               </form>
             </div>
             <div class="modal-footer">
