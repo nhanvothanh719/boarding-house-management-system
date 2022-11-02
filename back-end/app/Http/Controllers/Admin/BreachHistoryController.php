@@ -46,18 +46,25 @@ class BreachHistoryController extends Controller
                 'status' => 400,
             ]);
         }
-        $remain_allowed_number = $this->breach_history->calculateBreachRemainAllowedNumber($request->renter_id, $request->breach_id);
-        //Lock user's account
-        if($remain_allowed_number == 1) {
-            $is_locked_successfully = $this->breach_history->lockUserAccount($request->renter_id);
+        if(!$this->breach_history->checkIfRenterHasSameBreachHistory($request->renter_id, $request->breach_id)) {
+            //Store breach history first
+            $breach_history = $this->breach_history->store($request->all());
+            $remain_allowed_number = $this->breach_history->calculateBreachRemainAllowedNumber($request->renter_id, $request->breach_id);
+        } else {
+            //Calculate remain allowed number first
+            $remain_allowed_number = $this->breach_history->calculateBreachRemainAllowedNumber($request->renter_id, $request->breach_id);
+            //Lock user's account
+            if($remain_allowed_number == 1) {
+                $is_locked_successfully = $this->breach_history->lockUserAccount($request->renter_id);
+            }
+            if($remain_allowed_number <= 0) {
+                return response([
+                    'message' => 'Fail to add since the renter has committed this breach more than allowed times',
+                    'status' => 400,
+                ]);
+            }
+            $breach_history = $this->breach_history->store($request->all());
         }
-        if($remain_allowed_number <= 0) {
-            return response([
-                'message' => 'Fail to add since the renter has committed this breach more than allowed times',
-                'status' => 400,
-            ]);
-        }
-        $breach_history = $this->breach_history->store($request->all());
         Mail::to($breach_history->renter->email)->send(new RuleViolateMail($breach_history->renter->name, $breach_history->breach->name, $request->violated_at, $remain_allowed_number));
         return response([
             'status' => 200,

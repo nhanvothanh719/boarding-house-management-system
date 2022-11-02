@@ -37,9 +37,18 @@ class BreachHistoryRepository implements BreachHistoryRepositoryInterface
         return $this::show($id)->delete();
     }
 
+    public function checkIfRenterHasSameBreachHistory($renter_id, $breach_id) {
+        $existed_breach_history = BreachHistory::where('breach_id', $breach_id)->where('renter_id', $renter_id)->count();
+        if($existed_breach_history == null) {
+            return false;
+        }
+        return true;
+    }
+
     public function calculateBreachRemainAllowedNumber($renter_id, $breach_id) {
-        $id = BreachHistory::where('breach_id', $breach_id)->first()->id;
-        $allowed_violate_number = $this::show($id)->breach->allowed_violate_number;
+        $existed_breach_history = BreachHistory::where('breach_id', $breach_id)->first();
+        $existed_breach_history_id = $existed_breach_history->id;
+        $allowed_violate_number = $this::show($existed_breach_history_id)->breach->allowed_violate_number;
         $breach_count = BreachHistory::where('breach_id', $breach_id)->where('renter_id', $renter_id)->count();
         $remain_allowed_number = $allowed_violate_number - $breach_count;
         return $remain_allowed_number;
