@@ -19,7 +19,7 @@ class RoomRentRepository implements RoomRentRepositoryInterface
     }
 
     public function all() {
-        return RoomRent::with('room')->get();
+        return RoomRent::with('room', 'renter')->get();
     }
 
     public function show($id) {

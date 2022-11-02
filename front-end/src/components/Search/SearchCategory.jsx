@@ -29,7 +29,7 @@ export default function SearchCategory(props) {
           fullWidth
           options={categoriesList}
           autoHighlight
-          getOptionLabel={(option) => option.name}
+          getOptionLabel={(option) => option.name ? option.name : ""}
           renderOption={(props, option) => (
             <Box
               component="li"

@@ -15,7 +15,8 @@ class Room extends Model
     const STATUS_OCCUPIED = 2;
     const STATUS_FULL = 3;
 
-    protected $with = ['category', 'images'];
+    //protected $with = ['category', 'images'];
+    protected $with = ['images'];
 
     public function category() {
         return $this->belongsTo(Category::class,'category_id','id');

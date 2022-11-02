@@ -29,7 +29,7 @@ export default function SearchService(props) {
           fullWidth
           options={servicesList}
           autoHighlight
-          getOptionLabel={(option) => option.name}
+          getOptionLabel={(option) => option.name ? option.name : ""}
           renderOption={(props, option) => (
             <Box
               component="li"
@@ -39,7 +39,7 @@ export default function SearchService(props) {
               {option.name}
             </Box>
           )}
-          renderInput={(params) => <TextField required {...params} h label="Choose an optional service" />}
+          renderInput={(params) => <TextField required {...params} label="Choose an optional service" />}
           onChange={handleChange}
         />
       </Fragment>

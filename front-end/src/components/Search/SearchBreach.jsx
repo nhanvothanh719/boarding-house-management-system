@@ -29,7 +29,7 @@ export default function SearchBreach(props) {
           fullWidth
           options={breachesList}
           autoHighlight
-          getOptionLabel={(option) => option.name}
+          getOptionLabel={(option) => option.name ? option.name : ""}
           renderOption={(props, option) => (
             <Box
               component="li"
@@ -39,7 +39,7 @@ export default function SearchBreach(props) {
               {option.name}
             </Box>
           )}
-          renderInput={(params) => <TextField required {...params} h label="Choose a breach" />}
+          renderInput={(params) => <TextField required {...params} label="Choose a breach" />}
           onChange={handleChange}
         />
       </Fragment>

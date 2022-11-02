@@ -18,11 +18,11 @@ class RoomRepository implements RoomRepositoryInterface
     }
 
     public function all() {
-        return Room::all();
+        return Room::with('category')->get();
     }
 
     public function show($id) {
-        return Room::with('rents')->find($id);
+        return Room::with('rents', 'category')->find($id);
     }
 
     public function getAvailableRooms() {
