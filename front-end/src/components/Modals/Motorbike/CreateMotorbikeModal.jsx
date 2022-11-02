@@ -150,7 +150,7 @@ export default function CreateMotorbikeModal(props) {
                 data-dismiss="modal"
                 onClick={createMotorbike}
               >
-                Send
+                Create
               </button>
               <button
                 type="button"

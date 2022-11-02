@@ -57,12 +57,14 @@ class MotorbikeController extends Controller
         }
         if($request->hasFile('motorbike_image')) {
             $image = $request->file('motorbike_image');
-            $motorbike = $this->motorbike->store($request->all(), $image);
-            return response([
-                'message' => 'Create new motorbike successfully',
-                'status' => 200,
-            ]);
+        } else {
+            $image = null;
         }
+        $motorbike = $this->motorbike->store($request->all(), $image);
+        return response([
+            'message' => 'Create new motorbike successfully',
+            'status' => 200,
+        ]);
     }
 
     public function editMotorbike($id) {

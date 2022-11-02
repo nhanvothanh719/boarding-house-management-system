@@ -4,6 +4,8 @@ namespace App\Repositories\Room;
 
 use App\Models\Room;
 
+use Illuminate\Support\Facades\File;
+
 use App\Repositories\RoomImage\RoomImageRepositoryInterface;
 
 use stdClass;

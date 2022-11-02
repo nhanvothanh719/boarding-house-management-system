@@ -15,10 +15,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        \App\Models\User::factory(15)->create();
+        \App\Models\Breach::factory(15)->create();
+        \App\Models\Service::factory(15)->create();
+        \App\Models\Balance::factory(15)->create();
         $this->call([
-
             CategoriesTableSeeder::class,
-
         ]);
     }
 }

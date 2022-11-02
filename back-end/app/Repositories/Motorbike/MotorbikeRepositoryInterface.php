@@ -7,6 +7,6 @@ interface MotorbikeRepositoryInterface
     public function all();
     public function show($id);
     public function store(array $data, $image);
-    public function update(array $data, $id);
+    public function update(array $data, $id, $image);
     public function delete($id);
 }
