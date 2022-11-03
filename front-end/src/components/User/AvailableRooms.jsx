@@ -32,7 +32,7 @@ function AvailableRooms() {
             <Card.Title className="cardName text-center">
               - Room {room.number} -
             </Card.Title>
-            <Card.Text className="cardDescription">
+            <Card.Text className="cardDescription limitText">
               {room.description}
             </Card.Text>
             <Link
