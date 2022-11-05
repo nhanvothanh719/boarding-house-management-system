@@ -16,7 +16,7 @@ import AppUrl from "../../../RestAPI/AppUrl";
 export default function RenterBreachCount(props) {
   const [breachesTotal, setBreachesTotal] = useState([]);
   const color = "#1C4E80";
-  const chartTitle = "Total number of breaches";
+  const chartTitle = "Total number of breaches made";
 
   useEffect(() => {
     axios.get(AppUrl.CountRenterBreaches + props.renterId).then((response) => {

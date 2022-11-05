@@ -1,5 +1,8 @@
+import axios from "axios";
 import React, { Fragment, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
+import swal from "sweetalert";
+import AppUrl from "../../../RestAPI/AppUrl";
 
 import SearchRenter from "../../Search/SearchRenter";
 
@@ -40,7 +43,13 @@ export default function SelectRenterModal(props) {
                 displayModal();
               }, 1000);
         }
-        history.push(`/admin/create-invoice/${selectedRenter.id}`);
+        axios.get(AppUrl.CheckCanCreateInvoice + selectedRenter.id).then((response) => {
+          if (response.data.status === 200) {
+            history.push(`/admin/create-invoice/${selectedRenter.id}`);
+          } else if (response.data.status === 400) {
+            swal("Warning", response.data.message, "warning");
+          }
+        });
       }
       
   return (

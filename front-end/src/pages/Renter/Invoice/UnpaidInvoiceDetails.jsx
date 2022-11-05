@@ -48,6 +48,7 @@ export default function UnpaidInvoiceDetails({ match }) {
     });
   const [loaderClass, setLoaderClass] = useState('d-none');
   const [displayComponentsClass, setDisplayComponentsClass] = useState('');
+  const [roomPrice, setRoomPrice] = useState(0);
 
     var paypalPaymentInfo = {
       payment_method: "Paypal",
@@ -63,6 +64,11 @@ export default function UnpaidInvoiceDetails({ match }) {
         } else if (response.data.status === 404) {
           swal("Error", response.data.message, "error");
           history.push("/renter/view-all-invoices");
+        }
+      });
+      axios.get(AppUrl.GetRenterRoomPrice).then((response) => {
+        if (response.data.status === 200) {
+          setRoomPrice(response.data.price);
         }
       });
       axios.get(AppUrl.GetUserProfile).then((response) => {
@@ -254,6 +260,13 @@ export default function UnpaidInvoiceDetails({ match }) {
                 </em>
   
                   <div className="col-12 col-sm-5 text-grey text-90 order-first order-sm-last">
+                  <div className="row my-2">
+                      <div className="col-7 text-right">Room price</div>
+                      <div className="col-5">
+                        <span className="text-120 text-secondary-d1">${roomPrice}</span>
+                      </div>
+                    </div>
+
                     <div className="row my-2">
                       <div className="col-7 text-right">Extra fee</div>
                       <div className="col-5">

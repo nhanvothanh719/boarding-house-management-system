@@ -308,4 +308,15 @@ class UserRepository implements UserRepositoryInterface
     public function countRenters() {
         return User::where('role', User::ROLE_RENTER)->count();
     }
+
+    public function checkHasRoom($id) {
+        if($this::checkAdminRole($id)) {
+            return false;
+        }
+        return $this::show($id)->room_rent != null ? true : false;
+    }
+
+    public function getRoomPrice($id) {
+        return $this::show($id)->room_rent->room->category->price;
+    }
 }

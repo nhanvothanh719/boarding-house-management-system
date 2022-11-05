@@ -8,7 +8,7 @@ import AppUrl from "../../../RestAPI/AppUrl";
 export default function RoomStatusRate() {
   const [roomsCount, setRoomsCount] = useState([]);
   const colors = ["#EA6A47", "#1C4E80", "#7E909A"];
-  const chartTitle = "Room status rates";
+  const chartTitle = "Room status ratio";
   
   useEffect(() => {
     axios.get(AppUrl.CountRoomsByStatus).then((response) => {

@@ -62,6 +62,7 @@ Route::middleware('auth:api')->group(function(){
 
         Route::get('/get-invoice-details/{id}', [RenterInvoiceController::class, 'getInvoiceDetails']);
         Route::get('/all-renter-invoices', [RenterInvoiceController::class, 'getRenterInvoices']);
+        Route::get('/get-renter-room-price', [UserController::class, 'getRenterRoomPrice']);
 
         Route::post('/make-payment/{id}', [RenterPaymentController::class, 'payInvoice']);
         
@@ -151,6 +152,9 @@ Route::middleware('auth:api')->group(function(){
         Route::delete('/unregister-service/{id}', [ServiceRegistrationController::class, 'unregisterService']);
         
         //Invoice
+        Route::get('/check-can-create-invoice/{id}', [UserController::class, 'checkCanCreateInvoice']);
+        Route::get('/get-room-price/{id}', [UserController::class, 'getRoomPrice']);
+
         Route::get('/all-invoices', [InvoiceController::class, 'index']);
         Route::post('/store-invoice/{id}', [InvoiceController::class, 'storeInvoice']);
         Route::get('/edit-invoice/{id}', [InvoiceController::class, 'editInvoice']);

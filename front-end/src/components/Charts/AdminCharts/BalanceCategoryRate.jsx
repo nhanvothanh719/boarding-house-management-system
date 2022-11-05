@@ -10,7 +10,7 @@ export default function BalanceCategoryRate(props) {
   const [balanceChanges, setBalanceChanges] = useState([]);
   const colors = ["#1C4E80", "#0091D5"];
   const [refreshChart, setRefreshChart] = useState(false);
-  const chartTitle = "Income rate";
+  const chartTitle = "Income ratio";
 
   useEffect(() => {
     axios.get(AppUrl.GetRecentBalanceChanges).then((response) => {

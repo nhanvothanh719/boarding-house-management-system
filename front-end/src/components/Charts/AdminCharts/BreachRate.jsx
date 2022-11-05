@@ -10,7 +10,7 @@ export default function BreachRate(props) {
   const [breachesTotal, setBreachesTotal] = useState([]);
   const [refreshChart, setRefreshChart] = useState(false);
   const color = "#1C4E80";
-  const chartTitle = "Breach rates";
+  const chartTitle = "Breach ratio";
 
   useEffect(() => {
     axios.get(AppUrl.GetTotalNumberBreachMade).then((response) => {

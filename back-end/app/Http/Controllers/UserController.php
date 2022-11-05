@@ -219,4 +219,32 @@ class UserController extends Controller
         ]);
     }
 
+    public function checkCanCreateInvoice($id) {
+        if(!$this->user->checkHasRoom($id)) {
+            return response([
+                'message' => 'Cannot create invoice for renter without having room',
+                'status' => 400,
+            ]);
+        }
+        return response([
+            'status' => 200,
+        ]);
+    }
+
+    public function getRoomPrice($id) {
+        $room_price = $this->user->getRoomPrice($id);
+        return response([
+            'status' => 200,
+            'price' => $room_price,
+        ]);
+    }
+
+    public function getRenterRoomPrice() {
+        $room_price = $this->user->getRoomPrice(Auth::user()->id);
+        return response([
+            'status' => 200,
+            'price' => $room_price,
+        ]);
+    }
+
 }

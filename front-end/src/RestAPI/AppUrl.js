@@ -71,7 +71,9 @@ class AppUrl {
   static DeleteInvoice = this.BaseURL + "/delete-invoice/";
   static SendInvoice = this.BaseURL + "/send-invoice/";
   static GetRenterInvoices = this.BaseURL + "/get-renter-invoices/";
-  static GetRenterTotalUsedServicesAmount = this.BaseURL + "/get-renter-total-used-services-amount/"
+  static GetRenterTotalUsedServicesAmount = this.BaseURL + "/check-can-create-invoice/";
+  static CheckCanCreateInvoice = this.BaseURL + "/get-renter-total-used-services-amount/";
+  static GetRoomPrice = this.BaseURL + "/get-room-price/";
 
   static PayInvoiceByCash = this.BaseURL + "/pay-by-cash/";
 
@@ -131,6 +133,7 @@ class AppUrl {
   static ShowRenterInvoices = this.BaseURL + "/all-renter-invoices"
   static MakeInvoicePayment = this.BaseURL + "/make-payment/";
   static GetInvoiceDetails = this.BaseURL + "/get-invoice-details/";
+  static GetRenterRoomPrice = this.BaseURL + "/get-renter-room-price";
 
   static ShowRenterProblems = this.BaseURL + "/all-renter-problems";
   static StoreRenterProblem = this.BaseURL + "/store-renter-problem";

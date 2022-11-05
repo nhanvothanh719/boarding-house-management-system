@@ -40,7 +40,7 @@ function Features() {
           <Col lg={4} md={12} sm={12}>
             <div className="featureCard">
               <img src={waterManagement} className="cardImage" alt="" />
-              <h3 className="cardName">Electricity/ water management</h3>
+              <h3 className="cardName">Service management</h3>
               <p className="cardDescription">
                 The function of managing the electricity and water of each room
                 monthly, calculating the amount to be paid.
@@ -72,7 +72,7 @@ function Features() {
           <Col lg={4} md={12} sm={12}>
             <div className="featureCard">
               <img src={statisticMonitor} className="cardImage" alt="" />
-              <h3 className="cardName">Statistical report generating</h3>
+              <h3 className="cardName">Statistical report creation</h3>
               <p className="cardDescription">
                 The function of monitoring the business and operating situation
                 of the boarding house in general.

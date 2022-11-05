@@ -8,7 +8,7 @@ import AppUrl from "../../../RestAPI/AppUrl";
 export default function RenterGenderRate() {
   const [rentersCount, setRentersCount] = useState([]);
   const colors = ["#1C4E80", "#0091D5"];
-  const chartTitle = "Gender rates";
+  const chartTitle = "Gender ratio";
 
   useEffect(() => {
     axios.get(AppUrl.CountRentersByGender).then((response) => {

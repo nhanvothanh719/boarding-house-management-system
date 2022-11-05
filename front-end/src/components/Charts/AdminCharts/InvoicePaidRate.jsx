@@ -9,7 +9,7 @@ export default function InvoicePaidRate() {
   const [paidInvoicesRate, setPaidInvoicesRate] = useState("");
   const [invoicePaidMethodsCount, setInvoicePaidMethodsCount] = useState([]);
   const colors = ["#EA6A47", "#1C4E80", "#A5D8DD"];
-  const chartTitle = "Proportion of bills paid";
+  const chartTitle = "Invoices paid ratio";
   
   useEffect(() => {
     axios.get(AppUrl.GetPaidInvoicesRate).then((response) => {

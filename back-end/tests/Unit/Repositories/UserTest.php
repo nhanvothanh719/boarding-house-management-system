@@ -8,6 +8,9 @@ use App\Models\Service;
 use App\Models\ServiceRegistration;
 use App\Models\Breach;
 use App\Models\BreachHistory;
+use App\Models\Room;
+use App\Models\RoomRent;
+use App\Models\Category;
 
 use Tests\TestCase;
 
@@ -199,6 +202,26 @@ class UserTest extends TestCase
         $this->assertFalse($this->user_repository->sendAnnouncement($test_data));
     }
 
+    public function test_check_has_room() {
+        $admin = User::factory()->create(['role' => User::ROLE_ADMIN, 'occupation' => 'test data']);
+        $this->assertFalse($this->user_repository->checkHasRoom($admin->id));
+        User::where('occupation', 'test data')->delete();
+        $renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data']);
+        $this->assertFalse($this->user_repository->checkHasRoom($renter->id));
+        $category = Category::factory()->create(['description' => 'test data']);
+        $room = Room::factory()->create(['category_id' => $category->id, 'description' => 'test data']);
+        $room_rent = RoomRent::factory()->create(['renter_id' => $renter->id,'room_id' => $room->id]);
+        $this->assertTrue($this->user_repository->checkHasRoom($renter->id));
+    }
+
+    public function test_get_room_price() {
+        $renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data']);
+        $category = Category::factory()->create(['description' => 'test data', 'price' => 150]);
+        $room = Room::factory()->create(['category_id' => $category->id, 'description' => 'test data']);
+        $room_rent = RoomRent::factory()->create(['renter_id' => $renter->id,'room_id' => $room->id]);
+        $this->assertEquals($this->user_repository->getRoomPrice($renter->id), $category->price);
+    }
+
     public function tearDown() : void
     {
         $all_renters_id = User::where('role', User::ROLE_RENTER)->where('occupation', 'test data')->pluck('id');
@@ -206,9 +229,12 @@ class UserTest extends TestCase
             Invoice::where('renter_id', $renter_id)->delete();
             BreachHistory::where('renter_id', $renter_id)->delete();
             ServiceRegistration::where('user_id', $renter_id)->delete();
+            RoomRent::where('renter_id', $renter_id)->delete();
         }
         Breach::where('description', 'test data')->delete();
         Service::where('description', 'test data')->delete();
+        Room::where('description', 'test data')->delete();
+        Category::where('description', 'test data')->delete();
         User::where('occupation', 'test data')->delete();
         parent::tearDown();
     }

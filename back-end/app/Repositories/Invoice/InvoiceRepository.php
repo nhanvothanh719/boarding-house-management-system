@@ -41,7 +41,7 @@ class InvoiceRepository implements InvoiceRepositoryInterface
         //Create invoice details
         $this->invoice_detail_repository->store($invoice->id, $data['services']);
         //Update total value
-        $total = $this::updateTotal($invoice->id, $data['discount']);
+        $total = $this::updateTotal($invoice->id, $data['discount'],  $data['room_price']);
         $current_invoice = Invoice::find($invoice->id);
         $current_invoice->total = round($total, 2);
         $current_invoice->save();
@@ -71,16 +71,16 @@ class InvoiceRepository implements InvoiceRepositoryInterface
         return $is_created;
     }
 
-    public function updateTotal($invoice_id, $discount) {
+    public function updateTotal($invoice_id, $discount, $room_price) {
         $total = 0;
         //Call function to calculate service fee
-        $total = $this->invoice_detail_repository->calculateServiceTotal($invoice_id);
-        if($discount !== 0) {
-            $total = $total * (100 - $discount) / 100;
-        }
+        $total = $this->invoice_detail_repository->calculateServiceTotal($invoice_id) + $room_price;
         $extra_fee = Invoice::find($invoice_id)->extra_fee;
         if($extra_fee) {
             $total = $total + $extra_fee;
+        }
+        if($discount !== 0) {
+            $total = $total * (100 - $discount) / 100;
         }
         return $total;
     }

@@ -53,7 +53,7 @@ class RoomRentTest extends TestCase
     public function test_show() {
         $renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data']);
         $room = Room::factory()->create(['status' => Room::STATUS_OCCUPIED, 'description' => 'test data', 'category_id' => $this->room_category['id']]);
-        $room_rent = RoomRent::factory()->create(['renter_id' => $renter->id,'room_id' => $room->id,]);
+        $room_rent = RoomRent::factory()->create(['renter_id' => $renter->id,'room_id' => $room->id]);
         $found_room_rent = $this->room_rent_repository->show($room_rent->id);
         $this->assertInstanceOf(RoomRent::class, $found_room_rent);
         $this->assertEquals($found_room_rent->renter_id, $room_rent->renter_id);

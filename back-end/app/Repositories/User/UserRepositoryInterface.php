@@ -32,4 +32,7 @@ interface UserRepositoryInterface
     public function countRenterTotalUsedServicesAmount($id);
     public function getRenterBreachHistories($id);
     public function countRenters();
+
+    public function checkHasRoom($id);
+    public function getRoomPrice($id);
 }

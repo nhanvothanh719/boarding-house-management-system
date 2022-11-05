@@ -31,11 +31,17 @@ export default function CreateInvoice({ match }) {
   });
   const [effectiveFromDate, setEffectiveFromDate] = useState(moment());
   const [validUntilDate, setValidUntilDate] = useState(moment());
+  const [roomPrice, setRoomPrice] = useState(0);
 
   useEffect(() => {
     axios.get(AppUrl.GetRegisteredServices + renterId).then((response) => {
       if (response.data.status === 200) {
         setRegisteredServices(response.data.allServices);
+      }
+    });
+    axios.get(AppUrl.GetRoomPrice + renterId).then((response) => {
+      if (response.data.status === 200) {
+        setRoomPrice(response.data.price);
       }
     });
     axios.get(AppUrl.GetCompulsoryServices).then((response) => {
@@ -80,8 +86,8 @@ export default function CreateInvoice({ match }) {
       month: input.month,
       extra_fee: input.extra_fee,
       extra_fee_description: input.extra_fee_description,
+      room_price: roomPrice,
     };
-    console.log(invoice);
     axios
       .post(AppUrl.StoreInvoice + renterId, invoice)
       .then((response) => {
@@ -158,7 +164,8 @@ export default function CreateInvoice({ match }) {
                     </tr>
                   </thead>
                   <tbody>
-                    {registeredServices.map((item, index) => {
+                    {
+                    registeredServices.map((item, index) => {
                       totalPrice += item.unit_price * Math.abs(item.quantity);
                       return (
                         <tr key={index}>
@@ -308,7 +315,7 @@ export default function CreateInvoice({ match }) {
                   className="roomInfoItem"
                   style={{ color: "#EA6A47", fontWeight: "bold" }}
                 >
-                  <span className="roomInfoKey">Total:</span>
+                  <span className="roomInfoKey">Total of service fees:</span>
                   <span className="roomInfoValue">{totalPrice.toFixed(2)}</span>
                 </div>
               </div>
@@ -318,6 +325,14 @@ export default function CreateInvoice({ match }) {
                 <span className="customFieldTitle">Invoice Details</span>
               </div>
               <div className="roomFormLeft">
+              <label>Room price:</label>
+                <input
+                  type="text"
+                  name="discount"
+                  value={roomPrice}
+                  disabled
+                />
+                <small className="text-danger">{errors.discount}</small>
                 <label>Discount (%):</label>
                 <input
                   type="text"

@@ -17,7 +17,7 @@ import AppUrl from "../../../RestAPI/AppUrl";
 export default function BreachReport() {
   const [breachesInMonthCount, setBreachesInMonthCount] = useState([]);
   const color = "#f5f5f5";
-  const chartTitle = "Number of breaches in year";
+  const chartTitle = "Breaches made in a year";
 
   useEffect(() => {
     axios.get(AppUrl.ReportBreaches).then((response) => {
