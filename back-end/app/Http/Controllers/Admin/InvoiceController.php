@@ -138,8 +138,9 @@ class InvoiceController extends Controller
             ]);
         }
         $room_number = $room->number;
+        $room_price = $room->category->price;
         $invoice_details = $invoice->services;
-        Mail::to($renter_email)->send(new InvoiceSendMail($renter_name, $room_number, $invoice, $invoice_details)); 
+        Mail::to($renter_email)->send(new InvoiceSendMail($renter_name, $room_number, $room_price, $invoice, $invoice_details)); 
         return response([
             'message' => 'Successfully send invoice to the renter',
             'status' => 200,

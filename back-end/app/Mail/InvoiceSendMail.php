@@ -14,6 +14,7 @@ class InvoiceSendMail extends Mailable
     protected $invoice;
     protected $renter_name;
     protected $room_number;
+    protected $room_price;
     protected $invoice_details;
 
     /**
@@ -21,10 +22,11 @@ class InvoiceSendMail extends Mailable
      *
      * @return void
      */
-    public function __construct($renter_name, $room_number, $invoice, $invoice_details)
+    public function __construct($renter_name, $room_number, $room_price, $invoice, $invoice_details)
     {
         $this->renter_name = $renter_name;
         $this->room_number = $room_number;
+        $this->room_price = $room_price;
         $this->invoice = $invoice;
         $this->invoice_details = $invoice_details;
     }
@@ -39,9 +41,10 @@ class InvoiceSendMail extends Mailable
         $invoice = $this->invoice;;
         $renter_name = $this->renter_name;
         $room_number = $this->room_number;
+        $room_price = $this->room_price;
         $invoice_details = $this->invoice_details;
         return $this->from('boarding_house_admin@gmail.com')
-        ->view('mail.invoiceContent', compact('invoice', 'invoice_details', 'room_number', 'renter_name'))
+        ->view('mail.invoiceContent', compact('invoice', 'invoice_details', 'room_number', 'room_price', 'renter_name'))
         ->subject('Invoice content');
     }
 }

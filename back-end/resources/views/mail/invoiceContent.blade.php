@@ -16,6 +16,7 @@
     
     <p>Below is details of the invoice: </p>
     <p>Room number: {{ $room_number }}</p>
+    <p>Room price: {{ $room_price }}</p>
     <p>All services used in {{ $invoice->month }}/{{ $invoice->year }}/ include: </p>
     <div id="email" style="width:600px;">
         <table role="presentation" border="1" width="100%">
