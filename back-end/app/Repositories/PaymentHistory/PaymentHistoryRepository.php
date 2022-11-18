@@ -56,7 +56,7 @@ class PaymentHistoryRepository implements PaymentHistoryRepositoryInterface
         return $is_stored;
     }
 
-    public function getPaidInvoicesRate() {
+    public function getPaidInvoicesRatio() {
         $paid_invoices_count = PaymentHistory::count();
         $total_invoices = $this->invoice_repository->countInvoices();
         $paid_invoices_rate = round($paid_invoices_count / $total_invoices * 100);

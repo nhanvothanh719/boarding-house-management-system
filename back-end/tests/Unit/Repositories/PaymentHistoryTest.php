@@ -88,13 +88,8 @@ class PaymentHistoryTest extends TestCase
     }
 
     public function test_get_paid_invoices_rate() {
-        //Delete existed invoices and payment histories
-        $all_renters_id = User::where('occupation', 'test data')->pluck('id');
-        foreach($all_renters_id as $renter_id) {
-            PaymentHistory::where('made_by', $renter_id)->delete();
-            Invoice::where('renter_id', $renter_id)->delete();
-        }
-        User::where('occupation', 'test data')->delete();
+        PaymentHistory::query()->delete();
+        Invoice::query()->delete();
         $first_renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data']);
         $second_renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data']);
         $first_invoice = Invoice::factory()->create(['renter_id' => $first_renter->id]);
@@ -107,16 +102,13 @@ class PaymentHistoryTest extends TestCase
         $third_payment_history = PaymentHistory::factory()->create(['invoice_id' => $third_invoice->id, 'made_by' => $second_renter->id]);
         $fourth_payment_history = PaymentHistory::factory()->create(['invoice_id' => $fourth_invoice->id, 'made_by' => $second_renter->id]);
         $paid_invoices_rate = round(4 / 5 * 100);
-        $this->assertEquals($this->payment_history_repository->getPaidInvoicesRate(), $paid_invoices_rate);
+        $this->assertEquals($this->payment_history_repository->getPaidInvoicesRatio(), $paid_invoices_rate);
     }
 
     public function test_count_paid_methods() {
-        //Delete existed invoices and payment histories
-        $all_renters_id = User::where('occupation', 'test data')->pluck('id');
-        foreach($all_renters_id as $renter_id) {
-            PaymentHistory::where('made_by', $renter_id)->delete();
-            Invoice::where('renter_id', $renter_id)->delete();
-        }
+        //Delete existing invoices and payment histories
+        PaymentHistory::query()->delete();
+        Invoice::query()->delete();;
         $first_renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data']);
         $second_renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data']);
         $first_invoice = Invoice::factory()->create(['renter_id' => $first_renter->id]);

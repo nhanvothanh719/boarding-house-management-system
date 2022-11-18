@@ -56,10 +56,10 @@ class BalanceController extends Controller
         ]);
     }
 
-    public function getExpenseRate() {
+    public function getExpenseRatio() {
         return response([
             'status' => 200,
-            'pieData' => $this->balance->calculateExpenseRate(), 
+            'pieData' => $this->balance->calculateExpenseRatio(), 
         ]);
     }
 

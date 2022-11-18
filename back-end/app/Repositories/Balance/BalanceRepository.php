@@ -105,7 +105,7 @@ class BalanceRepository implements BalanceRepositoryInterface
         return $recent_balance_changes;
     }
 
-    public function calculateExpenseRate() {
+    public function calculateExpenseRatio() {
         $money_type = array();
         $expenses = new stdClass();
         $expenses->description = "Expenses";

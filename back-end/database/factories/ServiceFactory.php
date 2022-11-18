@@ -20,7 +20,7 @@ class ServiceFactory extends Factory
             'name' => $this->faker->name(),
             'description' => $this->faker->paragraph(),
             'is_compulsory' => rand(0, 1),
-            'unit' => $this->faker->name(),
+            'unit' => $this->faker->lexify('???'),
             'unit_price' => rand(1, 10) / 10,
         ];
     }

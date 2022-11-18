@@ -53,7 +53,7 @@
        </div>
 </td>
        <td class="danger small"><div align="right">0.00%</div></td>
-       <td class="danger small"><div align="right">0&nbsp;/&nbsp;50</div></td>
+       <td class="danger small"><div align="right">0&nbsp;/&nbsp;51</div></td>
        <td class="danger big">       <div class="progress">
          <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="0.00" aria-valuemin="0" aria-valuemax="100" style="width: 0.00%">
            <span class="sr-only">0.00% covered (danger)</span>
@@ -82,7 +82,7 @@
        </div>
 </td>
        <td class="danger small"><div align="right">0.00%</div></td>
-       <td class="danger small"><div align="right">0&nbsp;/&nbsp;50</div></td>
+       <td class="danger small"><div align="right">0&nbsp;/&nbsp;51</div></td>
        <td class="danger big">       <div class="progress">
          <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="0.00" aria-valuemin="0" aria-valuemax="100" style="width: 0.00%">
            <span class="sr-only">0.00% covered (danger)</span>
@@ -243,7 +243,7 @@
        </div>
 </td>
        <td class="danger small"><div align="right">0.00%</div></td>
-       <td class="danger small"><div align="right">0&nbsp;/&nbsp;10</div></td>
+       <td class="danger small"><div align="right">0&nbsp;/&nbsp;11</div></td>
        <td class="danger big">       <div class="progress">
          <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="0.00" aria-valuemin="0" aria-valuemax="100" style="width: 0.00%">
            <span class="sr-only">0.00% covered (danger)</span>
@@ -402,14 +402,15 @@
     <tr class=" d-flex"><td  class="col-1 text-right"><a id="138" href="#138">138</a></td><td class="col-11 codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">]</span><span class="keyword">)</span><span class="keyword">;</span></td></tr>
     <tr class=" d-flex"><td  class="col-1 text-right"><a id="139" href="#139">139</a></td><td class="col-11 codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">}</span></td></tr>
     <tr class="danger d-flex"><td  class="col-1 text-right"><a id="140" href="#140">140</a></td><td class="col-11 codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="default">$room_number</span><span class="default">&nbsp;</span><span class="keyword">=</span><span class="default">&nbsp;</span><span class="default">$room</span><span class="default">-&gt;</span><span class="default">number</span><span class="keyword">;</span></td></tr>
-    <tr class="danger d-flex"><td  class="col-1 text-right"><a id="141" href="#141">141</a></td><td class="col-11 codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="default">$invoice_details</span><span class="default">&nbsp;</span><span class="keyword">=</span><span class="default">&nbsp;</span><span class="default">$invoice</span><span class="default">-&gt;</span><span class="default">services</span><span class="keyword">;</span></td></tr>
-    <tr class="danger d-flex"><td  class="col-1 text-right"><a id="142" href="#142">142</a></td><td class="col-11 codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="default">Mail</span><span class="default">::</span><span class="default">to</span><span class="keyword">(</span><span class="default">$renter_email</span><span class="keyword">)</span><span class="default">-&gt;</span><span class="default">send</span><span class="keyword">(</span><span class="keyword">new</span><span class="default">&nbsp;</span><span class="default">InvoiceSendMail</span><span class="keyword">(</span><span class="default">$renter_name</span><span class="keyword">,</span><span class="default">&nbsp;</span><span class="default">$room_number</span><span class="keyword">,</span><span class="default">&nbsp;</span><span class="default">$invoice</span><span class="keyword">,</span><span class="default">&nbsp;</span><span class="default">$invoice_details</span><span class="keyword">)</span><span class="keyword">)</span><span class="keyword">;</span><span class="default">&nbsp;</span></td></tr>
-    <tr class="danger d-flex"><td  class="col-1 text-right"><a id="143" href="#143">143</a></td><td class="col-11 codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">return</span><span class="default">&nbsp;</span><span class="default">response</span><span class="keyword">(</span><span class="keyword">[</span></td></tr>
-    <tr class=" d-flex"><td  class="col-1 text-right"><a id="144" href="#144">144</a></td><td class="col-11 codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="default">'message'</span><span class="default">&nbsp;</span><span class="default">=&gt;</span><span class="default">&nbsp;</span><span class="default">'Successfully&nbsp;send&nbsp;invoice&nbsp;to&nbsp;the&nbsp;renter'</span><span class="keyword">,</span></td></tr>
-    <tr class=" d-flex"><td  class="col-1 text-right"><a id="145" href="#145">145</a></td><td class="col-11 codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="default">'status'</span><span class="default">&nbsp;</span><span class="default">=&gt;</span><span class="default">&nbsp;</span><span class="default">200</span><span class="keyword">,</span></td></tr>
-    <tr class=" d-flex"><td  class="col-1 text-right"><a id="146" href="#146">146</a></td><td class="col-11 codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">]</span><span class="keyword">)</span><span class="keyword">;</span></td></tr>
-    <tr class=" d-flex"><td  class="col-1 text-right"><a id="147" href="#147">147</a></td><td class="col-11 codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">}</span></td></tr>
-    <tr class=" d-flex"><td  class="col-1 text-right"><a id="148" href="#148">148</a></td><td class="col-11 codeLine"><span class="keyword">}</span></td></tr>
+    <tr class="danger d-flex"><td  class="col-1 text-right"><a id="141" href="#141">141</a></td><td class="col-11 codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="default">$room_price</span><span class="default">&nbsp;</span><span class="keyword">=</span><span class="default">&nbsp;</span><span class="default">$room</span><span class="default">-&gt;</span><span class="default">category</span><span class="default">-&gt;</span><span class="default">price</span><span class="keyword">;</span></td></tr>
+    <tr class="danger d-flex"><td  class="col-1 text-right"><a id="142" href="#142">142</a></td><td class="col-11 codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="default">$invoice_details</span><span class="default">&nbsp;</span><span class="keyword">=</span><span class="default">&nbsp;</span><span class="default">$invoice</span><span class="default">-&gt;</span><span class="default">services</span><span class="keyword">;</span></td></tr>
+    <tr class="danger d-flex"><td  class="col-1 text-right"><a id="143" href="#143">143</a></td><td class="col-11 codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="default">Mail</span><span class="default">::</span><span class="default">to</span><span class="keyword">(</span><span class="default">$renter_email</span><span class="keyword">)</span><span class="default">-&gt;</span><span class="default">send</span><span class="keyword">(</span><span class="keyword">new</span><span class="default">&nbsp;</span><span class="default">InvoiceSendMail</span><span class="keyword">(</span><span class="default">$renter_name</span><span class="keyword">,</span><span class="default">&nbsp;</span><span class="default">$room_number</span><span class="keyword">,</span><span class="default">&nbsp;</span><span class="default">$room_price</span><span class="keyword">,</span><span class="default">&nbsp;</span><span class="default">$invoice</span><span class="keyword">,</span><span class="default">&nbsp;</span><span class="default">$invoice_details</span><span class="keyword">)</span><span class="keyword">)</span><span class="keyword">;</span><span class="default">&nbsp;</span></td></tr>
+    <tr class="danger d-flex"><td  class="col-1 text-right"><a id="144" href="#144">144</a></td><td class="col-11 codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">return</span><span class="default">&nbsp;</span><span class="default">response</span><span class="keyword">(</span><span class="keyword">[</span></td></tr>
+    <tr class=" d-flex"><td  class="col-1 text-right"><a id="145" href="#145">145</a></td><td class="col-11 codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="default">'message'</span><span class="default">&nbsp;</span><span class="default">=&gt;</span><span class="default">&nbsp;</span><span class="default">'Successfully&nbsp;send&nbsp;invoice&nbsp;to&nbsp;the&nbsp;renter'</span><span class="keyword">,</span></td></tr>
+    <tr class=" d-flex"><td  class="col-1 text-right"><a id="146" href="#146">146</a></td><td class="col-11 codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="default">'status'</span><span class="default">&nbsp;</span><span class="default">=&gt;</span><span class="default">&nbsp;</span><span class="default">200</span><span class="keyword">,</span></td></tr>
+    <tr class=" d-flex"><td  class="col-1 text-right"><a id="147" href="#147">147</a></td><td class="col-11 codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">]</span><span class="keyword">)</span><span class="keyword">;</span></td></tr>
+    <tr class=" d-flex"><td  class="col-1 text-right"><a id="148" href="#148">148</a></td><td class="col-11 codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">}</span></td></tr>
+    <tr class=" d-flex"><td  class="col-1 text-right"><a id="149" href="#149">149</a></td><td class="col-11 codeLine"><span class="keyword">}</span></td></tr>
 
 </tbody>
 </table>
@@ -420,7 +421,7 @@
     <h4>Legend</h4>
     <p><span class="success"><strong>Executed</strong></span><span class="danger"><strong>Not Executed</strong></span><span class="warning"><strong>Dead Code</strong></span></p>
     <p>
-     <small>Generated by <a href="https://github.com/sebastianbergmann/php-code-coverage" target="_top">php-code-coverage 9.2.15</a> using <a href="https://secure.php.net/" target="_top">PHP 8.0.24</a> and <a href="https://phpunit.de/">PHPUnit 9.5.21</a> at Tue Nov 1 15:01:44 UTC 2022.</small>
+     <small>Generated by <a href="https://github.com/sebastianbergmann/php-code-coverage" target="_top">php-code-coverage 9.2.15</a> using <a href="https://secure.php.net/" target="_top">PHP 8.0.24</a> and <a href="https://phpunit.de/">PHPUnit 9.5.21</a> at Fri Nov 18 14:50:52 UTC 2022.</small>
     </p>
     <a title="Back to the top" id="toplink" href="#">
         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="16" viewBox="0 0 12 16"><path fill-rule="evenodd" d="M12 11L6 5l-6 6h12z"/></svg>

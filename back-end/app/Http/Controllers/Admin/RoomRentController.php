@@ -26,7 +26,7 @@ class RoomRentController extends Controller
         ]);
     }
 
-    public function rentRoom(Request $request) {
+    public function storeRoomRent(Request $request) {
         $validator = Validator::make($request->all(), [
             'renter_id' => 'unique:room_rents|exists:users,id',
             'room_id' => 'required|exists:rooms,id',
@@ -52,7 +52,7 @@ class RoomRentController extends Controller
         ]);
     }
 
-    public function cancelRentRoom($id) {
+    public function cancelRoomRent($id) {
         $rent = $this->rent->show($id);
         if(!$rent) {
             return response([

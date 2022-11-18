@@ -29,10 +29,10 @@ class PaymentController extends Controller
         ]);
     }
 
-    public function getPaidInvoicesRate() {
+    public function getPaidInvoicesRatio() {
         return response([
             'status' => 200,
-            'paidInvoicesRate' => $this->payment->getPaidInvoicesRate(),
+            'paidInvoicesRatio' => $this->payment->getPaidInvoicesRatio(),
             'invoicePaidMethodsCount' => $this->payment->countPaidMethods(),
         ]);
     }

@@ -18,7 +18,7 @@ export default function BalanceCategoryRate(props) {
         setBalanceChanges(response.data.recentBalanceChanges);
       }
     });
-    axios.get(AppUrl.GetExpenseRate).then((response) => {
+    axios.get(AppUrl.GetExpenseRatio).then((response) => {
       if (response.data.status === 200) {
         setPieChartData(response.data.pieData);
       }

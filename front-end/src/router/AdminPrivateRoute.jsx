@@ -15,7 +15,7 @@ function AdminPrivateRoute({ ...rest }) {
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get(AppUrl.CheckAdminAuthenticated).then((response) => {
+    axios.get(AppUrl.CheckAdminAuthorization).then((response) => {
       if (response.status === 200) {
         setAuthenticated(true);
       }

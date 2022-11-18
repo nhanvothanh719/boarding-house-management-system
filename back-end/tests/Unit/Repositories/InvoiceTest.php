@@ -52,6 +52,7 @@ class InvoiceTest extends TestCase
         $test_invoice = $this->invoice;
         $invoice_services = array();
         $test_invoice['services'] = $invoice_services;
+        $test_invoice['room_price'] = 200;
         $invoice = $this->invoice_repository->store($test_invoice, $this->invoice['renter_id']);
         $this->assertInstanceOf(Invoice::class, $invoice);
     }

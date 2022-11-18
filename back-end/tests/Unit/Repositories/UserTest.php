@@ -154,6 +154,7 @@ class UserTest extends TestCase
     }
 
     public function test_get_all_renters() {
+        User::where('role', User::ROLE_RENTER)->delete();
         $first_renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data']);
         $second_renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data']);
         $third_renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data']);
@@ -169,6 +170,7 @@ class UserTest extends TestCase
     }
 
     public function test_count_renters() {
+        User::where('role', User::ROLE_RENTER)->delete();
         $first_renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data']);
         $second_renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data']);
         $third_renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data']);

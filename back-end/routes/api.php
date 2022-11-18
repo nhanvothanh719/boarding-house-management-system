@@ -34,7 +34,6 @@ use App\Http\Controllers\Renter\RenterPaymentController;
 use App\Http\Controllers\Renter\RenterRoomRentController;
 
 Route::post('/login', [AuthController::class, 'login'])->name('login');
-Route::post('/register', [AuthController::class, 'register']);
 
 Route::post('/contact-us', [ContactUsController::class, 'sendContactUsMessage']);
 Route::post('/forget-password', [PasswordResetController::class, 'sendEmailToResetPassword']);
@@ -95,6 +94,7 @@ Route::middleware('auth:api')->group(function(){
         Route::post('/update-user/{id}', [UserController::class, 'updateUser']);
         Route::delete('/delete-user/{id}', [UserController::class, 'deleteUser']);
         Route::put('/lock-user-account/{id}', [UserController::class, 'lockUserAccount']);
+        Route::get('/get-user-name/{id}', [UserController::class, 'getName']);
 
         //Category
         Route::get('/all-categories', [RoomCategoryController::class, 'index']);
@@ -113,20 +113,20 @@ Route::middleware('auth:api')->group(function(){
         Route::get('/count-rooms-by-status', [RoomController::class, 'countRoomsByStatus']);
 
         //Room rent
-        Route::get('/all-room_rents', [RoomRentController::class, 'index']);
-        Route::post('/rent-room', [RoomRentController::class, 'rentRoom']);
-        Route::delete('/cancel-rent-room/{id}', [RoomRentController::class, 'cancelRentRoom']);
+        Route::get('/all-room-rents', [RoomRentController::class, 'index']);
+        Route::post('/store-room-rent', [RoomRentController::class, 'storeRoomRent']);
+        Route::delete('/cancel-room-rent/{id}', [RoomRentController::class, 'cancelRoomRent']);
 
         //Renter
         Route::get('/all-renters', [RenterController::class, 'index']);
         Route::get('/get-renter-breaches/{id}', [RenterController::class, 'getRenterBreachHistories']);
-        Route::get('/all-registered_services/{id}', [RenterController::class, 'getRegisteredServices']);
-        Route::post('send-announcement', [RenterController::class, 'sendAnnouncement']);
+        Route::get('/all-registered-services/{id}', [RenterController::class, 'getRegisteredServices']);
         Route::get('/get-renter-invoices/{id}', [RenterController::class, 'getRenterInvoices']);
         Route::get('/get-renter-total-used-services-amount/{id}', [RenterController::class, 'countRenterTotalUsedServicesAmount']);
         Route::get('/count-renters-by-gender', [RenterController::class, 'countRentersByGender']);
         Route::get('/count-renter-breaches/{id}', [RenterController::class, 'countRenterBreaches']);
         Route::get('/count-renters', [RenterController::class, 'countRenters']);
+        Route::post('/send-announcement', [RenterController::class, 'sendAnnouncement']);
 
         //Motorbike
         Route::get('/all-motorbikes', [MotorbikeController::class, 'index']);
@@ -134,8 +134,6 @@ Route::middleware('auth:api')->group(function(){
         Route::get('/edit-motorbike/{id}', [MotorbikeController::class, 'editMotorbike']);
         Route::post('/update-motorbike/{id}', [MotorbikeController::class, 'updateMotorbike']);
         Route::delete('/delete-motorbike/{id}', [MotorbikeController::class, 'deleteMotorbike']);
-
-        Route::get('/get-name/{id}', [UserController::class, 'getName']);
 
         //Service
         Route::get('/all-services', [ServiceController::class, 'index']);
@@ -147,7 +145,7 @@ Route::middleware('auth:api')->group(function(){
         Route::get('/all-compulsory-services', [ServiceController::class, 'getCompulsoryServices']);
         Route::get('/count-used-services', [ServiceController::class, 'countUsedServices']);
         
-        Route::get('/all-registrations', [ServiceRegistrationController::class, 'index']);
+        Route::get('/all-service-registrations', [ServiceRegistrationController::class, 'index']);
         Route::post('/register-service', [ServiceRegistrationController::class, 'registerService']);
         Route::delete('/unregister-service/{id}', [ServiceRegistrationController::class, 'unregisterService']);
         
@@ -160,19 +158,17 @@ Route::middleware('auth:api')->group(function(){
         Route::get('/edit-invoice/{id}', [InvoiceController::class, 'editInvoice']);
         Route::put('/update-invoice/{id}', [InvoiceController::class, 'updateInvoice']);
         Route::delete('/delete-invoice/{id}', [InvoiceController::class, 'deleteInvoice']);
-        Route::post('/create-temporary-invoice/{id}', [InvoiceController::class, 'createTemporaryInvoice']);
-        Route::post('/update-service-quantity/{service_id}/{value}',[InvoiceController::class, 'updateServiceQuantity']);
         Route::get('/send-invoice/{id}', [InvoiceController::class, 'sendInvoice']);
 
         //Payment
         Route::post('/pay-by-cash/{id}', [PaymentController::class, 'payInvoice']);
-        Route::get('/get-paid-invoices-rate', [PaymentController::class, 'getPaidInvoicesRate']);
+        Route::get('/get-paid-invoices-ratio', [PaymentController::class, 'getPaidInvoicesRatio']); //
 
         //Balance
         Route::get('/get-balance', [BalanceController::class, 'index']);
         Route::post('/update-balance', [BalanceController::class, 'updateBalance']);
-        Route::get('/recent-balance-changes', [BalanceController::class, 'calculateBalance']);
-        Route::get('/get-expense-rate', [BalanceController::class, 'getExpenseRate']);
+        Route::get('/get-recent-balance-changes', [BalanceController::class, 'calculateBalance']);
+        Route::get('/get-expense-ratio', [BalanceController::class, 'getExpenseRatio']); //
         Route::get('/edit-balance-change/{id}', [BalanceController::class, 'editBalanceChange']);
         Route::put('/update-balance-change/{id}', [BalanceController::class, 'updateBalanceChange']);
         Route::delete('/delete-balance-change/{id}', [BalanceController::class, 'deleteBalanceChange']);
@@ -209,7 +205,7 @@ Route::middleware('auth:api')->group(function(){
 
         //Room rent registration
         Route::get('/all-room-rent-registrations', [RoomRentRegistrationController::class, 'index']);
-        Route::delete('delete-room-rent-registration/{id}', [RoomRentRegistrationController::class, 'deleteRoomRentRegistration']);
+        Route::delete('/delete-room-rent-registration/{id}', [RoomRentRegistrationController::class, 'deleteRoomRentRegistration']);
         Route::put('/accept-registration-request/{id}', [RoomRentRegistrationController::class, 'acceptRegistrationRequest']);
     });
 });

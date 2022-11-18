@@ -36,7 +36,7 @@ class MotorbikeTest extends TestCase
     }
 
     public function test_store() {
-        $motorbike = $this->motorbike_repository->store($this->motorbike);
+        $motorbike = $this->motorbike_repository->store($this->motorbike, null);
         $this->assertInstanceOf(Motorbike::class, $motorbike);
         $this->assertDatabaseHas('motorbikes', $this->motorbike);
     }
@@ -53,7 +53,7 @@ class MotorbikeTest extends TestCase
     public function test_update() {
         $renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data']);
         $motorbike = Motorbike::factory()->create(['renter_id' => $renter->id]);
-        $new_motorbike = $this->motorbike_repository->update($this->motorbike, $motorbike->id);
+        $new_motorbike = $this->motorbike_repository->update($this->motorbike, $motorbike->id, null);
         $this->assertInstanceOf(Motorbike::class, $new_motorbike);
         $this->assertEquals($new_motorbike->renter_id, $this->motorbike['renter_id']);
         $this->assertEquals($new_motorbike->license_plate, $this->motorbike['license_plate']);

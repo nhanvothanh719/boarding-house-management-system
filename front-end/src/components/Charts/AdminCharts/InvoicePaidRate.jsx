@@ -6,17 +6,17 @@ import axios from "axios";
 import AppUrl from "../../../RestAPI/AppUrl";
 
 export default function InvoicePaidRate() {
-  const [paidInvoicesRate, setPaidInvoicesRate] = useState("");
+  const [paidInvoicesRatio, setPaidInvoicesRatio] = useState("");
   const [invoicePaidMethodsCount, setInvoicePaidMethodsCount] = useState([]);
   const colors = ["#EA6A47", "#1C4E80", "#A5D8DD"];
-  const chartTitle = "Invoices paid ratio";
+  const chartTitle = "Paid invoices ratio";
   
   useEffect(() => {
-    axios.get(AppUrl.GetPaidInvoicesRate).then((response) => {
+    axios.get(AppUrl.GetPaidInvoicesRatio).then((response) => {
       if (response.data.status === 200) {
-        setPaidInvoicesRate(response.data.paidInvoicesRate);
+        setPaidInvoicesRatio(response.data.paidInvoicesRatio);
         setInvoicePaidMethodsCount(response.data.invoicePaidMethodsCount);
-        console.log(response.data.paidInvoicesRate);
+        console.log(response.data.paidInvoicesRatio);
         console.log(response.data.invoicePaidMethodsCount);
       }
     });
@@ -29,7 +29,7 @@ export default function InvoicePaidRate() {
         <PieChart width={300} height={300}>
           <Pie
             startAngle={90}
-            endAngle={360 * paidInvoicesRate / 100 + 90}
+            endAngle={360 * paidInvoicesRatio / 100 + 90}
             data={invoicePaidMethodsCount}
             cx="50%"
             cy="50%"

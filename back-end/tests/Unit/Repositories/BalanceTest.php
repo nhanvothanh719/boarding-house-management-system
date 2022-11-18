@@ -81,8 +81,9 @@ class BalanceTest extends TestCase
     }
 
     public function test_get_total_earned_amount() {
-        $search = 'Income from invoice with ID:';
-        $delete_existed_balance_changes_from_invoices =  Balance::where('description', 'LIKE', '%'.$search.'%')->delete();
+        Balance::query()->delete();
+        // $search = 'Income from invoice with ID:';
+        // $delete_existed_balance_changes_from_invoices =  Balance::where('description', 'LIKE', '%'.$search.'%')->delete();
         $first_balance_change_amount = 5.22;
         $second_balance_change_amount = 3.45;
         $first_balance_change = Balance::factory()->create(['description' => 'test_data', 'is_income' => Balance::CATEGORY_EARNED, 'amount' => $first_balance_change_amount]);

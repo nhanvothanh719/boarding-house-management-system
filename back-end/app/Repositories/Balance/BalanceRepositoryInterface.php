@@ -13,7 +13,7 @@ interface BalanceRepositoryInterface
     public function groupRecentBalanceChangesByDate();
     public function calculateRecentChanges();
     public function getRecentBalanceChanges();
-    public function calculateExpenseRate();
+    public function calculateExpenseRatio();
     public function handleAfterPayment($invoice, $payment_method);
 
     public function getEarnedAmount();

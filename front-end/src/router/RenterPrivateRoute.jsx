@@ -15,7 +15,7 @@ export default function RenterPrivateRoute({ ...rest }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get(AppUrl.CheckRenterAuthenticated).then((response) => {
+    axios.get(AppUrl.CheckRenterAuthorization).then((response) => {
       if (response.status === 200) {
         setAuthenticated(true);
       }
