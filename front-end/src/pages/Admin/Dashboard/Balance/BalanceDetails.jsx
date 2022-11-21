@@ -24,6 +24,8 @@ export default function BalanceDetails() {
   const [balanceAmountChange, setBalanceAmountChange] = useState(false);
   const [currentBalance, setCurrentBalance] = useState("");
   const [selectedBalanceChangeId, setSelectedBalanceChangeId] = useState(null);
+  const isIncome = ["Expense", "Income"];
+  const isIncomeStyle = ["expense", "earned"];
 
   useEffect(() => {
     axios.get(AppUrl.GetBalance).then((response) => {
@@ -65,7 +67,7 @@ export default function BalanceDetails() {
         lookup: { 0: "Expenses", 1: "Earned" },
         render: rowData => (
           <div>
-              <span className={`${rowData.is_income === 0 ? "expense" : "earned"}` }>{rowData.is_income === 0 ? "Expenses" : "Earned" }</span>
+              <span className={`${isIncomeStyle[rowData.is_income]}` }>{isIncome[rowData.is_income]}</span>
           </div>
         )
       },

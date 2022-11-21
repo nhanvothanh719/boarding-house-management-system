@@ -4,8 +4,6 @@ import { Button } from "react-bootstrap";
 import MaterialTable from "material-table";
 import swal from "sweetalert";
 import axios from "axios";
-import { IconButton, Tooltip } from "@mui/material";
-import DescriptionIcon from "@mui/icons-material/Description";
 
 import Loading from "../../../../components/Loading/Loading";
 import AppUrl from "../../../../RestAPI/AppUrl";
@@ -21,6 +19,8 @@ export default function ServicesList() {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedServiceId, setSelectedServiceId] = useState(null);
+  const isCompulsory = ["Optional", "Compulsory"];
+  const isCompulsoryStyle = ["statusActive", "statusPassive"];
 
   useEffect(() => {
     axios.get(AppUrl.ShowServices).then((response) => {
@@ -64,11 +64,8 @@ export default function ServicesList() {
       render: (rowData) => (
         <div>
           <span
-            className={`${
-              rowData.is_compulsory === 0 ? "statusActive" : "statusPassive"
-            }`}
-          >
-            {rowData.is_compulsory === 0 ? "Optional" : "Compulsory"}
+            className={`${isCompulsoryStyle[rowData.is_compulsory]}`}>
+            {isCompulsory[rowData.is_compulsory]}
           </span>
         </div>
       ),

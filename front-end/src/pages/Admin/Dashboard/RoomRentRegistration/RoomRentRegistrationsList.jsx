@@ -15,6 +15,11 @@ export default function RoomRentRegistrationsList() {
   const [loading, setLoading] = useState(true);
   const [roomRentRegistrationsList, setRoomRentRegistrationsList] = useState([]);
   const [roomRentRegistrationsListChange, setRoomRentRegistrationsListChange] = useState(false);
+  const gender = ["Female", "Male"];
+  const genderStyle = ["statusOnGoing", "statusPending"];
+  const isAccepted = ["No", "Yes"];
+  const isAcceptedStyle = ["statusPassive", "statusActive"];
+  const isAcceptedIcone = [GroupAddIcon, GroupRemoveIcon];
 
   useEffect(() => {
     axios.get(AppUrl.ShowRoomRentRegistrations).then((response) => {
@@ -51,7 +56,7 @@ export default function RoomRentRegistrationsList() {
         lookup: {0:"Female", 1:"Male"},
         render: rowData => (
           <div>
-              <span className={`${rowData.sender_gender === 1 ? "statusPending" : "statusOnGoing"}` }>{rowData.sender_gender === 1 ? "Male" : "Female" }</span>
+              <span className={`${genderStyle[rowData.sender_gender]}` }>{gender[rowData.sender_gender]}</span>
           </div>
         )
       },
@@ -74,7 +79,7 @@ export default function RoomRentRegistrationsList() {
         lookup: {0:"No", 1:"Yes"},
         render: rowData => (
           <div>
-              <span className={`${rowData.is_accepted === 1 ? "statusActive" : "statusPassive"}` }>{rowData.is_accepted === 1 ? "Yes" : "No" }</span>
+              <span className={`${isAcceptedStyle[rowData.is_accepted]}` }>{isAccepted[rowData.is_accepted]}</span>
           </div>
         )
       },
@@ -111,7 +116,7 @@ export default function RoomRentRegistrationsList() {
             }}
             actions={[
               (request) => ({
-                icon: request.is_accepted ? GroupRemoveIcon : GroupAddIcon,
+                icon: isAcceptedIcone[request.is_accepted],
                 tooltip: request.is_accepted ? 'Cancel acceptance' : 'Accept',
                 onClick: (event, request) => acceptRegistrationRequest(request.id),
               }),

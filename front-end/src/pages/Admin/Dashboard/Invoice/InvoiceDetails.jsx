@@ -275,7 +275,7 @@ export default function InvoiceDetails({ match }) {
                           fontWeight: "bold",
                         }}
                       >
-                        {item.subtotal.toFixed(2)}
+                        {Number(item.subtotal)}
                       </td>
                     </tr>
                   );
