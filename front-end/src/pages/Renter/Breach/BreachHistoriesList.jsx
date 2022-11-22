@@ -34,7 +34,7 @@ export default function BreachHistoriesList() {
 
   useEffect(() => {
     axios.get(AppUrl.GetAllRenterBreaches).then((response) => {
-      if (response.data.status === 200) {
+      if (response.data.status == 200) {
         setBreachesList(response.data.renterBreachDetails);
         console.log(response.data.renterBreachDetails);
       }
@@ -151,7 +151,7 @@ export default function BreachHistoriesList() {
                 setShowBreachHistoriesModal(true);
                 setSelectBreachId(breach.id);
               },
-              disabled: breach.total === 0,
+              disabled: breach.total == 0,
             }),
           ]}
         />

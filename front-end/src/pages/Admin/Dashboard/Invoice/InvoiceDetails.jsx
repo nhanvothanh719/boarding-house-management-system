@@ -48,15 +48,15 @@ export default function InvoiceDetails({ match }) {
 
   useEffect(() => {
     axios.get(AppUrl.ShowServices).then((response) => {
-      if (response.data.status === 200) {
+      if (response.data.status == 200) {
         setServicesList(response.data.allServices);
       }
     });
     axios.get(AppUrl.InvoiceDetails + invoiceId).then((response) => {
-      if (response.data.status === 200) {
+      if (response.data.status == 200) {
         setInvoice(response.data.invoice);
         setUsedServices(response.data.invoiceDetails);
-      } else if (response.data.status === 404) {
+      } else if (response.data.status == 404) {
         swal("Error", response.data.message, "error");
         history.push("/admin/view-all-renters-with-invoices");
       }
@@ -80,13 +80,13 @@ export default function InvoiceDetails({ match }) {
     setLoaderClass('');
     setDisplayComponentsClass('d-none');
     axios.get(AppUrl.SendInvoice + invoiceId).then((response) => {
-      if (response.data.status === 200) {
+      if (response.data.status == 200) {
         swal("Invoice has been sent", response.data.message, "success");
         //history.push("");
-      } else if (response.data.status === 404) {
+      } else if (response.data.status == 404) {
         swal("Error", response.data.message, "error");
         history.push("/admin/view-all-renters-with-invoices");
-      } else if (response.data.status === 400) {
+      } else if (response.data.status == 400) {
         swal("Warning", response.data.message, "warning");
       }
       setLoaderClass('d-none');
@@ -145,7 +145,7 @@ export default function InvoiceDetails({ match }) {
                 </div>
                 <div className="roomInfoItem">
                   <span className="roomInfoKey">Extra fee:</span>
-                  <span className="roomInfoValue">{invoice.extra_fee === null ? "" : invoice.extra_fee}</span>
+                  <span className="roomInfoValue">{invoice.extra_fee == null ? "" : invoice.extra_fee}</span>
                 </div>
                 <div className="roomInfoItem">
                   <span className="roomInfoKey">
@@ -174,7 +174,7 @@ export default function InvoiceDetails({ match }) {
                     </DialogTitle>
                     <DialogContent>
                       <DialogContentText id="alert-dialog-description">
-                        {invoice.extra_fee_description === null ? <em>Nothing to show</em> : invoice.extra_fee_description}
+                        {invoice.extra_fee_description == null ? <em>Nothing to show</em> : invoice.extra_fee_description}
                       </DialogContentText>
                     </DialogContent>
                     <DialogActions>

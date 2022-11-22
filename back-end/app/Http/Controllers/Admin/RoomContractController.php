@@ -34,8 +34,8 @@ class RoomContractController extends Controller
             'deposit_amount' => 'required|numeric|min:50|max:200',
             'effective_from' => ['required','date', 'before_or_equal:'.$max_effective_from, 'after_or_equal:'.$min_effective_from],
             'effective_until' => ['required','date', 'before_or_equal:'.$max_effective_until, 'after_or_equal:'.$min_effective_until],
-            'owner_signature' => 'required|image',
-            'renter_signature' => 'required|image',
+            'owner_signature' => 'required',
+            'renter_signature' => 'required',
         ]);
         if($validator->fails()) 
         {
@@ -96,17 +96,6 @@ class RoomContractController extends Controller
     }
 
     public function updateSignatures(Request $request, $id) {
-        $validator = Validator::make($request->all(), [
-            'owner_signature' => 'image',
-            'renter_signature' => 'image',
-        ]);
-        if($validator->fails()) 
-        {
-            return response([
-                'errors' => $validator->messages(),
-                'status' => 422,
-            ]);
-        }
         $room_contract = $this->contract->show($id);
         if(!$room_contract) {
             return response([

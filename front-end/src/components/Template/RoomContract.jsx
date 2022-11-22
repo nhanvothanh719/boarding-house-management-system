@@ -203,7 +203,7 @@ export default function RoomContract(props) {
                       </center>
                       <center>
                         <img
-                          src={`http://127.0.0.1:8000/${props.roomContract.owner_signature}`}
+                          src={`https://bee-house-bucket.s3.amazonaws.com/${props.roomContract.owner_signature}`}
                           alt=""
                           style={{
                             width: "270px",
@@ -228,7 +228,7 @@ export default function RoomContract(props) {
                       </center>
                       <center>
                         <img
-                          src={`http://127.0.0.1:8000/${props.roomContract.renter_signature}`}
+                          src={`https://bee-house-bucket.s3.amazonaws.com/${props.roomContract.renter_signature}`}
                           alt=""
                           style={{
                             width: "270px",

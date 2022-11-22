@@ -37,12 +37,12 @@ export default function UsersList() {
 
   useEffect(() => {
     axios.get(AppUrl.GetAllUsers).then((response) => {
-      if (response.data.status === 200) {
+      if (response.data.status == 200) {
         setUsersList(response.data.allUsers);
       }
     });
     axios.get(AppUrl.GetUserProfile).then((response) => {
-      if (response.data.status === 200) {
+      if (response.data.status == 200) {
         setCurrentUserId(response.data.currentUser.id);
       }
     });
@@ -54,10 +54,10 @@ export default function UsersList() {
 
   const lockUserAccount = (id) => {
     axios.put(AppUrl.LockUserAccount + id).then((response) => {
-      if (response.data.status === 200) {
+      if (response.data.status == 200) {
         swal("Success", response.data.message, "success");
         setUsersListChange(true);
-      } else if (response.data.status === 400) {
+      } else if (response.data.status == 400) {
         swal("Warning", response.data.message, "warning");
       }
     });
@@ -87,7 +87,7 @@ export default function UsersList() {
       render: (rowData) => (
         <img
           src={
-            rowData.profile_picture !== null ? `http://127.0.0.1:8000/${rowData.profile_picture}` : DefaultAvatar
+            rowData.profile_picture !== null ? `https://bee-house-bucket.s3.amazonaws.com/${rowData.profile_picture}` : DefaultAvatar
           }
           alt="avatar"
           className="topAvatar"
@@ -164,9 +164,9 @@ export default function UsersList() {
               },
               (user) => ({
                 icon: isLocked[user.is_locked],
-                tooltip: user.is_locked ? "Unlock account" : "Lock account",
+                tooltip: user.is_locked == 1 ? "Unlock account" : "Lock account",
                 onClick: (event, user) => lockUserAccount(user.id),
-                disabled: user.role === 0,
+                disabled: user.role == 0,
               }),
               (user) => ({
                 icon: FolderSharedIcon,
@@ -175,7 +175,7 @@ export default function UsersList() {
                   history.push(
                     `/admin/view-all-invoices-of-renter/${user.id}`
                   ),
-                disabled: user.role === 0,
+                disabled: user.role == 0,
               }),
             ]}
             editable={{
@@ -189,10 +189,10 @@ export default function UsersList() {
                     axios
                       .delete(AppUrl.DeleteUser + thisUser.id)
                       .then((response) => {
-                        if (response.data.status === 200) {
+                        if (response.data.status == 200) {
                           swal("Success", response.data.message, "success");
                           setUsersListChange(true);
-                        } else if (response.data.status === 404) {
+                        } else if (response.data.status == 404) {
                           swal("Error", response.data.message, "error");
                         }
                       });

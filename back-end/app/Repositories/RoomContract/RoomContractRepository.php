@@ -3,6 +3,7 @@
 namespace App\Repositories\RoomContract;
 
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 use App\Helpers\CustomHelper;
 
@@ -24,7 +25,6 @@ class RoomContractRepository implements RoomContractRepositoryInterface
         $room_contract->deposit_amount = $data['deposit_amount'];
         $room_contract->effective_from = $data['effective_from'];
         $room_contract->effective_until = $data['effective_until'];
-        $upload_folder = RoomContract::ROOM_CONTRACT_PUBLIC_FOLDER.'/'.$data['renter_id'].'/';
         $room_contract->owner_signature = $this->storeSignature($data['renter_id'], $owner_signature);
         $room_contract->renter_signature = $this->storeSignature($data['renter_id'], $renter_signature);
         $room_contract->save();
@@ -42,52 +42,54 @@ class RoomContractRepository implements RoomContractRepositoryInterface
     public function delete($id) {
         $room_contract = $this::show($id);
         //Delete images:
-        $upload_folder = RoomContract::ROOM_CONTRACT_PUBLIC_FOLDER.'/'.$room_contract->renter_id.'/';
-        File::deleteDirectory(public_path($upload_folder));
+        $upload_folder = RoomContract::ROOM_CONTRACT_PUBLIC_FOLDER.'/'.$room_contract->renter_id;
+        if($room_contract->owner_signature != null || $room_contract->renter_signature != null) {
+            Storage::disk('s3')->deleteDirectory($upload_folder);
+        }
         return $room_contract->delete();
     }
 
     public function updateSignatures($id, $owner_signature, $renter_signature) {
+        $room_contract = $this::show($id);
         $renter_id = $this::show($id)->renter_id;
         if($owner_signature != null) {
-            $old_owner_signature = $room_contract->owner_signature;
-            $room_contract->owner_signature = $this->updateSignature($renter_id, $old_owner_signature, $owner_signature);
+            $room_contract->owner_signature = $this->updateOwnerSignature($renter_id, $owner_signature);
         }
         if($renter_signature != null) {
-            $old_renter_signature = $room_contract->renter_signature;
-            $room_contract->renter_signature = $this->updateSignature($renter_id, $old_renter_signature, $renter_signature);
+            $room_contract->renter_signature = $this->updateRenterSignature($renter_id, $renter_signature);
         }
         $room_contract->save();
         return $room_contract;
     }
 
     public function storeSignature($renter_id, $signature) {
-        $upload_folder = RoomContract::ROOM_CONTRACT_PUBLIC_FOLDER.'/'.$renter_id.'/';
-        $generated_name = hexdec(uniqid());
-        $extension = $signature->getClientOriginalExtension();
-        $image_name = $generated_name.'.'.$extension;
-        if(!file_exists($upload_folder)) {
-            //mkdir($upload_folder);
-            mkdir($upload_folder, 0777, true);
-        }
-        $signature->move($upload_folder, $image_name);
-        return $upload_folder.$image_name;
+        $upload_folder = RoomContract::ROOM_CONTRACT_PUBLIC_FOLDER.'/'.$renter_id;
+        $path = $signature->store($upload_folder, 's3');
+        return $path;
     }
 
-    public function updateSignature($renter_id, $old_signature, $new_signature) {
-        $upload_folder = RoomContract::ROOM_CONTRACT_PUBLIC_FOLDER.'/'.$renter_id.'/';
-        if(!file_exists($upload_folder)) {
-            //mkdir($upload_folder);
-            mkdir($upload_folder, 0777, true);
+    public function updateOwnerSignature($renter_id, $new_signature) {
+        $upload_folder = RoomContract::ROOM_CONTRACT_PUBLIC_FOLDER.'/'.$renter_id;
+        $old_owner_signature = RoomContract::where('renter_id', $renter_id)->first()->owner_signature;
+        if($old_owner_signature != null) {
+            if(Storage::disk('s3')->exists($old_owner_signature)) {
+                Storage::disk('s3')->delete($old_owner_signature);
+            }
         }
-        //Delete existed image
-        File::delete($old_signature);
-        //Add new image
-        $generated_name = hexdec(uniqid());
-        $extension = $new_signature->getClientOriginalExtension();
-        $image_name = $generated_name.'.'.$extension;
-        $new_signature->move($upload_folder, $image_name);
-        return $upload_folder.$image_name;
+        $path = $new_signature->store($upload_folder, 's3');
+        return $path;
+    }
+
+    public function updateRenterSignature($renter_id, $new_signature) {
+        $upload_folder = RoomContract::ROOM_CONTRACT_PUBLIC_FOLDER.'/'.$renter_id;
+        $old_renter_signature = RoomContract::where('renter_id', $renter_id)->first()->renter_signature;
+        if($old_renter_signature != null) {
+            if(Storage::disk('s3')->exists($old_renter_signature)) {
+                Storage::disk('s3')->delete($old_renter_signature);
+            }
+        }
+        $path = $new_signature->store($upload_folder, 's3');
+        return $path;
     }
 
     public function findRoomContractByRenterId($id) {

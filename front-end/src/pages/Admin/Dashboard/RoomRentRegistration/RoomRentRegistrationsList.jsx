@@ -23,7 +23,7 @@ export default function RoomRentRegistrationsList() {
 
   useEffect(() => {
     axios.get(AppUrl.ShowRoomRentRegistrations).then((response) => {
-      if (response.status === 200) {
+      if (response.status == 200) {
         setRoomRentRegistrationsList(response.data.allRoomRentRegistrations);
       }
     });
@@ -35,12 +35,12 @@ export default function RoomRentRegistrationsList() {
 
   const acceptRegistrationRequest = (id) => {
     axios.put(AppUrl.AcceptRegistrationRequest + id).then((response) => {
-      if (response.data.status === 200) {
+      if (response.data.status == 200) {
         swal("Success", response.data.message, "success");
         setRoomRentRegistrationsListChange(true);
-      } else if (response.data.status === 404) {
+      } else if (response.data.status == 404) {
         swal("Error", response.data.message, "error");
-      } else if (response.data.status === 400) {
+      } else if (response.data.status == 400) {
         swal("Warning", response.data.message, "warning");
       }
     })
@@ -122,7 +122,7 @@ export default function RoomRentRegistrationsList() {
               }),
               ]}
             editable={{
-              isDeletable: rowData => !rowData.is_accepted,
+              isDeletable: rowData => rowData.is_accepted == false,
               onRowDelete: (thisRequest) =>
                 new Promise((resolve, reject) => {
                   setTimeout(() => {
@@ -132,10 +132,10 @@ export default function RoomRentRegistrationsList() {
                     axios
                       .delete(AppUrl.DeleteRoomRentRegistration + thisRequest.id)
                       .then((response) => {
-                        if (response.data.status === 200) {
+                        if (response.data.status == 200) {
                           swal("Success", response.data.message, "success");
                           setRoomRentRegistrationsListChange(true);
-                        } else if (response.data.status === 404) {
+                        } else if (response.data.status == 404) {
                           swal("Error", response.data.message, "error");
                         }
                       });

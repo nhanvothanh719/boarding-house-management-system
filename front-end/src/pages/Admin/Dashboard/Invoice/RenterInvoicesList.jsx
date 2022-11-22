@@ -17,7 +17,7 @@ export default function RenterInvoicesList({ match }) {
 
   useEffect(() => {
     axios.get(AppUrl.GetRenterInvoices + renterId).then((response) => {
-      if (response.data.status === 200) {
+      if (response.data.status == 200) {
         setInvoicesList(response.data.allInvoices);
       }
     });

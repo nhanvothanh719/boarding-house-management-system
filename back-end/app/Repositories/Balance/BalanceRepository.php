@@ -109,11 +109,11 @@ class BalanceRepository implements BalanceRepositoryInterface
         $money_type = array();
         $expenses = new stdClass();
         $expenses->description = "Expenses";
-        $expenses->total = Balance::where('is_income', Balance::CATEGORY_EXPENSE)->sum('amount');
+        $expenses->total = (float) Balance::where('is_income', Balance::CATEGORY_EXPENSE)->sum('amount');
         array_push($money_type, $expenses);
         $earned = new stdClass();
         $earned->description = "Earned";
-        $earned->total = Balance::where('is_income', Balance::CATEGORY_EARNED)->sum('amount');
+        $earned->total = (float) Balance::where('is_income', Balance::CATEGORY_EARNED)->sum('amount');
         array_push($money_type, $earned);
         return $money_type;
     }

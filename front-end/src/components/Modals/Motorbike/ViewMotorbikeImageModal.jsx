@@ -59,7 +59,7 @@ export default function ViewMotorbikeImageModal(props) {
               <img
                 src={
                   motorbikeImage !== null
-                    ? `http://127.0.0.1:8000/${motorbikeImage}`
+                    ? `https://bee-house-bucket.s3.amazonaws.com/${motorbikeImage}`
                     : DefaultMotorbikeImg
                 }
                 alt=""

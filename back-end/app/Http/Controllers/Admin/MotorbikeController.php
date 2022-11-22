@@ -46,7 +46,7 @@ class MotorbikeController extends Controller
         $validator = Validator::make($request->all(), [
             'renter_id' => 'required|unique:motorbikes|exists:users,id',
             'license_plate' => 'required|min:6|max:10|unique:motorbikes',
-            'motorbike_image' => 'required|image',
+            'motorbike_image' => 'required',
         ]);
         if($validator->fails()) 
         {
@@ -87,7 +87,6 @@ class MotorbikeController extends Controller
         $validator = Validator::make($request->all(), [
             'renter_id' => ['required', 'exists:users,id', 'unique:motorbikes,renter_id,'.$id],
             'license_plate' => 'required|min:6|max:10|unique:motorbikes,license_plate,'.$id,
-            'motorbike_image' => 'image',
         ]);
         if($validator->fails())
         {

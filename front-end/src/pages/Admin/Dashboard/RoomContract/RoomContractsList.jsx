@@ -31,7 +31,7 @@ export default function RoomContractsList() {
 
   useEffect(() => {
     axios.get(AppUrl.ShowRoomContracts).then((response) => {
-      if (response.status === 200) {
+      if (response.status == 200) {
         setRoomContractsList(response.data.allRoomContracts);
       }
     });
@@ -153,10 +153,10 @@ export default function RoomContractsList() {
                   axios
                     .delete(AppUrl.DeleteRoomContract + thisRoomContract.id)
                     .then((response) => {
-                      if (response.data.status === 200) {
+                      if (response.data.status == 200) {
                         swal("Success", response.data.message, "success");
                         setRoomContractsListChange(true);
-                      } else if (response.data.status === 404) {
+                      } else if (response.data.status == 404) {
                         swal("Error", response.data.message, "error");
                       }
                     });

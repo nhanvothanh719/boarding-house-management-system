@@ -24,7 +24,7 @@ export default function BreachesList() {
 
   useEffect(() => {
     axios.get(AppUrl.ShowBreaches).then((response) => {
-      if (response.data.status === 200) {
+      if (response.data.status == 200) {
         setBreachesList(response.data.allBreaches);
         console.log(response.data.allBreaches);
       }
@@ -55,7 +55,7 @@ export default function BreachesList() {
         title: "Name",
         width: "20%",
         validate: (rowData) => {
-          if (rowData.name === "") {
+          if (rowData.name == "") {
             return "Name cannot be empty";
           }
           let breachNames = [];
@@ -167,12 +167,12 @@ export default function BreachesList() {
                 axios
                   .delete(AppUrl.DeleteBreach + thisBreach.id)
                   .then((response) => {
-                    if (response.data.status === 200) {
+                    if (response.data.status == 200) {
                       swal("Success", response.data.message, "success");
                       setBreachesListChange(true);
-                    } else if (response.data.status === 404) {
+                    } else if (response.data.status == 404) {
                       swal("Error", response.data.message, "error");
-                    } else if (response.data.status === 400) {
+                    } else if (response.data.status == 400) {
                       swal("Warning", response.data.message, "warning");
                     }
                   });

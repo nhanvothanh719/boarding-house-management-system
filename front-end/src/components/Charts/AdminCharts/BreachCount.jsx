@@ -37,8 +37,9 @@ export default function BreachCount(props) {
       <div className="customChartContainer">
         <h3 className="customChartTitle">{chartTitle}</h3>
         <BarChart
-          width={500}
+          width={1000}
           height={300}
+          barSize={50}
           data={breachesTotal}
           margin={{ top: 30, right: 30, left: 40, bottom: 5 }}
         >

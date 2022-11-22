@@ -13,7 +13,6 @@ import ConfirmLoading from "../../../../components/Loading/ConfirmLoading";
 import AppUrl from "../../../../RestAPI/AppUrl";
 import CreateBreachHistoryModal from "../../../../components/Modals/Breach/CreateBreachHistoryModal";
 import BreachCount from "../../../../components/Charts/AdminCharts/BreachCount";
-import BreachRate from "../../../../components/Charts/AdminCharts/BreachRate";
 import WebPageTitle from "../../../../components/WebPageTitle/WebPageTitle";
 
 export default function BreachHistories() {
@@ -28,7 +27,7 @@ export default function BreachHistories() {
 
   useEffect(() => {
     axios.get(AppUrl.ShowBreachHistories).then((response) => {
-      if (response.data.status === 200) {
+      if (response.data.status == 200) {
         setBreachHistories(response.data.allBreachHistories);
       }
     });
@@ -77,7 +76,6 @@ export default function BreachHistories() {
       </div>
       <div className={displayComponentsClass}>
       <BreachCount isDataChange={breachHistoriesChange}/>
-      <BreachRate isDataChange={breachHistoriesChange}/>
       <div className="customDatatable">
         <div className="customDatatableHeader">
           <Button
@@ -122,11 +120,11 @@ export default function BreachHistories() {
                 axios
                   .delete(AppUrl.DeleteBreachHistory + oldBreachHistory.id)
                   .then((response) => {
-                    if (response.data.status === 200) {
+                    if (response.data.status == 200) {
                       
                       setBreachHistoriesChange(true);
                       swal("Success", response.data.message, "success");
-                    } else if (response.data.status === 404) {
+                    } else if (response.data.status == 404) {
                       swal("Error", response.data.message, "error");
                     }
                   });

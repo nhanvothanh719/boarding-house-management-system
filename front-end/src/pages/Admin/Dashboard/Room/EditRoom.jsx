@@ -44,7 +44,7 @@ export default function EditRoom({ match }) {
 
   useEffect(() => {
     axios.get(AppUrl.EditRoom + roomId).then((response) => {
-      if (response.data.status === 200) {
+      if (response.data.status == 200) {
         setInput(response.data.room);
         setRoomDetails(response.data.room);
         setSelectedCategory(response.data.room.category);
@@ -52,7 +52,7 @@ export default function EditRoom({ match }) {
         if(response.data.room.rents != null) {
           setRents(response.data.room.rents);
         }
-      } else if (response.data.status === 404) {
+      } else if (response.data.status == 404) {
         swal("Error", response.data.message, "error");
         history.push("/admin/view-all-rooms");
       }
@@ -87,7 +87,7 @@ export default function EditRoom({ match }) {
         //console.log(pictures[i]);
       }
     }
-    if (selectedCategory === null) {
+    if (selectedCategory == null) {
       room.append("category_id", input.category.id);
     } else {
       room.append("category_id", selectedCategory.id);
@@ -101,14 +101,14 @@ export default function EditRoom({ match }) {
     axios
       .post(AppUrl.UpdateRoom + roomId, room) //Use POST (instead of PUT) when create a new instance
       .then((response) => {
-        if (response.data.status === 200) {
+        if (response.data.status == 200) {
           swal("Success", response.data.message, "success");
           setErrors([]);
           setRoomDetailsChange(true);
-        } else if (response.data.status === 422) {
+        } else if (response.data.status == 422) {
           swal("All fields are mandatory", "", "error");
           setErrors(response.data.errors);
-        } else if (response.data.status === 400) {
+        } else if (response.data.status == 400) {
           setInput({ ...input, errors_list: response.data.errors });
         }
       })
@@ -120,7 +120,7 @@ export default function EditRoom({ match }) {
   const room_images = roomImages.map((img) => {
     return (
       <img
-        src={`http://127.0.0.1:8000/${img.image_name}`}
+        src={`https://bee-house-bucket.s3.amazonaws.com/${img.image_name}`}
         alt=""
         className="roomUploadImg"
       />
@@ -137,7 +137,7 @@ export default function EditRoom({ match }) {
         <div className="roomInfoTop">
           <span>
             <img
-              src={rent.renter.profile_picture ? `http://127.0.0.1:8000/${rent.renter.profile_picture}`  : DefaultAvatar}
+              src={rent.renter.profile_picture ? `https://bee-house-bucket.s3.amazonaws.com/${rent.renter.profile_picture}`  : DefaultAvatar}
               alt="renter_profile_picture"
               className="renterInRoomImg"
             />
@@ -189,19 +189,19 @@ export default function EditRoom({ match }) {
                 <div className="roomInfoItem">
                   <span className="roomInfoKey">Conditioner:</span>
                   <span className="roomInfoValue">
-                    {roomDetails.has_conditioner === 1 ? "Yes" : "No"}
+                    {roomDetails.has_conditioner == 1 ? "Yes" : "No"}
                   </span>
                 </div>
                 <div className="roomInfoItem">
                   <span className="roomInfoKey">Fridge:</span>
                   <span className="roomInfoValue">
-                    {roomDetails.has_fridge === 1 ? "Yes" : "No"}
+                    {roomDetails.has_fridge == 1 ? "Yes" : "No"}
                   </span>
                 </div>
                 <div className="roomInfoItem">
                   <span className="roomInfoKey">Wardrobe:</span>
                   <span className="roomInfoValue">
-                    {roomDetails.has_wardrobe === 1 ? "Yes" : "No"}
+                    {roomDetails.has_wardrobe == 1 ? "Yes" : "No"}
                   </span>
                 </div>
                 <div className="roomInfoTop">

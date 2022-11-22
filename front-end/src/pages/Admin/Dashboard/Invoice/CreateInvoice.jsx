@@ -35,17 +35,17 @@ export default function CreateInvoice({ match }) {
 
   useEffect(() => {
     axios.get(AppUrl.GetRegisteredServices + renterId).then((response) => {
-      if (response.data.status === 200) {
+      if (response.data.status == 200) {
         setRegisteredServices(response.data.allServices);
       }
     });
     axios.get(AppUrl.GetRoomPrice + renterId).then((response) => {
-      if (response.data.status === 200) {
+      if (response.data.status == 200) {
         setRoomPrice(response.data.price);
       }
     });
     axios.get(AppUrl.GetCompulsoryServices).then((response) => {
-      if (response.data.status === 200) {
+      if (response.data.status == 200) {
         setCompulsoryServices(response.data.allCompulsoryServices);
       }
     });
@@ -59,7 +59,7 @@ export default function CreateInvoice({ match }) {
   const handleRegisteredServiceAmountInput = (service_id, e, index) => {
     setRegisteredServices((registeredServices) =>
       registeredServices.map((service) =>
-        service_id === service.id
+        service_id == service.id
           ? { ...service, quantity: e.target.value }
           : service
       )
@@ -69,7 +69,7 @@ export default function CreateInvoice({ match }) {
   const handleCompulsoryServiceAmountInput = (service_id, e, index) => {
     setCompulsoryServices((compulsoryServices) =>
     compulsoryServices.map((service) =>
-        service_id === service.id
+        service_id == service.id
           ? { ...service, quantity: e.target.value }
           : service
       )
@@ -91,15 +91,15 @@ export default function CreateInvoice({ match }) {
     axios
       .post(AppUrl.StoreInvoice + renterId, invoice)
       .then((response) => {
-        if (response.data.status === 200) {
+        if (response.data.status == 200) {
           swal("Success", response.data.message, "success");
           history.push("/admin/view-all-renters-with-invoices");
-        } else if (response.data.status === 422) {
+        } else if (response.data.status == 422) {
           swal("All fields are mandatory", "", "error");
           setErrors(response.data.errors);
-        } else if (response.data.status === 404) {
+        } else if (response.data.status == 404) {
           swal("Error", response.data.message, "error");
-        } else if (response.data.status === 400) {
+        } else if (response.data.status == 400) {
           swal("Warning", response.data.message, "warning");
         }
       })

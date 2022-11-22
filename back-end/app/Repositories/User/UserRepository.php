@@ -5,6 +5,7 @@ namespace App\Repositories\User;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use stdClass;
 
 use Illuminate\Support\Arr;
@@ -13,7 +14,6 @@ use App\Models\User;
 
 use App\Jobs\SendAnnouncementMail;
 use App\Mail\AnnouncementMail;
-use Illuminate\Database\Eloquent\Builder;
 
 class UserRepository implements UserRepositoryInterface
 {
@@ -70,9 +70,11 @@ class UserRepository implements UserRepositoryInterface
         $user = User::with('motorbike')->find($id);
         $motorbike = $user->motorbike;
         if($motorbike) {
-            $motorbike_image = $user->motorbike->motorbike_image;
-            if($motorbike_image) {
-                File::delete($motorbike_image);
+            $motorbike_image = $motorbike->motorbike_image;
+            if($motorbike_image != null) {
+                if(Storage::disk('s3')->exists($motorbike_image)) {
+                    Storage::disk('s3')->delete($motorbike_image);
+                }
             }
             $user->motorbike()->delete();
         }
@@ -87,7 +89,11 @@ class UserRepository implements UserRepositoryInterface
         $user->problems()->delete();
         $user->service_registrations()->delete();
         $user->password_reset_histories()->delete();
-        File::delete($user->profile_picture);
+        if($user->profile_picture != null) {
+            if(Storage::disk('s3')->exists($user->profile_picture)) {
+                Storage::disk('s3')->delete($user->profile_picture);
+            }
+        }
         return $user->delete();
     }
 
@@ -121,34 +127,22 @@ class UserRepository implements UserRepositoryInterface
     public function storeUserAvatar($id, $avatar) {
         $user = $this::show($id);
         $upload_folder = User::AVATAR_PUBLIC_FOLDER;
-        $generated_name = hexdec(uniqid());
-        $extension = $avatar->getClientOriginalExtension();
-        $image_name = $generated_name.'.'.$extension;
-        if(!file_exists($upload_folder)) {
-            //mkdir($upload_folder);
-            mkdir($upload_folder, 0777, true);
-        }
-        $avatar->move($upload_folder, $image_name);
-        $user->profile_picture = $upload_folder.$image_name;
+        $path = $avatar->store($upload_folder, 's3');
+        $user->profile_picture  = $path;
         $user->save();
         return $user;
     }
 
     public function updateUserAvatar($id, $old_avatar, $new_avatar) {
         $user = $this::show($id);
-        $upload_folder = User::AVATAR_PUBLIC_FOLDER;
-        if(!file_exists($upload_folder)) {
-            //mkdir($upload_folder);
-            mkdir($upload_folder, 0777, true);
+        if($old_avatar != null) {
+            if(Storage::disk('s3')->exists($old_avatar)) {
+                Storage::disk('s3')->delete($old_avatar);
+            }
         }
-        //Delete existed image
-        File::delete($old_avatar);
-        //Add new image
-        $generated_name = hexdec(uniqid());
-        $extension = $new_avatar->getClientOriginalExtension();
-        $image_name = $generated_name.'.'.$extension;
-        $new_avatar->move($upload_folder, $image_name);
-        $user->profile_picture = $upload_folder.$image_name;
+        $upload_folder = User::AVATAR_PUBLIC_FOLDER;
+        $path = $new_avatar->store($upload_folder, 's3');
+        $user->profile_picture = $path;
         $user->save();
         return $user;
     }

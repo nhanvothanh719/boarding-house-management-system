@@ -21,6 +21,7 @@ export default function BalanceCategoryRate(props) {
     axios.get(AppUrl.GetExpenseRatio).then((response) => {
       if (response.data.status === 200) {
         setPieChartData(response.data.pieData);
+        console.log(response.data.pieData);
       }
     });
     setRefreshChart(props.isDataChange);
@@ -40,9 +41,7 @@ export default function BalanceCategoryRate(props) {
             border: "1px solid #cccc",
           }}
         >
-          <label>{`${payload[0].name} - Total: ${payload[0].value.toFixed(
-            2
-          )}`}</label>
+          <label>{`${payload[0].name} - Total: ${payload[0].value}`}</label>
         </div>
       );
     }
@@ -69,7 +68,7 @@ export default function BalanceCategoryRate(props) {
               />
             ))}
           </Pie>
-          <Tooltip content={<CustomTooltip />} />
+          <Tooltip content={<CustomTooltip/>} />
           <Legend />
         </PieChart>
       </div>

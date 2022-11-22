@@ -47,7 +47,6 @@ class UserController extends Controller
             'phone_number' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|size:10|unique:users',
             'occupation' => 'required|max:100|regex:/^[a-zA-Z ]+$/',
             'permanent_address' => 'required',
-            'profile_picture' => 'image',
             'role' => 'required',
         ]);
         if($validator->fails()) 
@@ -99,7 +98,6 @@ class UserController extends Controller
             'phone_number' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|size:10|unique:users,phone_number,'.$id,
             'occupation' => 'required|max:100|string|regex:/(^[a-zA-Z][a-zA-Z\s]{0,20}[a-zA-Z]$)/',
             'permanent_address' => 'required',
-            'profile_picture' => 'image',
             'role' => 'required',
         ]);
         if($validator->fails())
@@ -157,7 +155,7 @@ class UserController extends Controller
 
     public function updateUserAvatar(Request $request) {
         $validator = Validator::make($request->all(), [
-            'profile_picture' => 'required|image',
+            'profile_picture' => 'required',
         ]);
         if($validator->fails())
         {

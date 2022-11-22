@@ -58,7 +58,7 @@ function AvailableRoomDetails(props) {
       return (
         <Carousel.Item>
           <img
-            src={`http://127.0.0.1:8000/${img.image_name}`}
+            src={`https://bee-house-bucket.s3.amazonaws.com/${img.image_name}`}
             alt=""
             className="img-fluid customImage d-block"
             style={{ height: "100%" }}

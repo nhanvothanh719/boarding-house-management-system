@@ -10,7 +10,7 @@ class Motorbike extends Model
     use HasFactory;
     protected $guarded = ['id'];
 
-    public const MOTORBIKE_IMAGE_PUBLIC_FOLDER = 'uploaded/motorbikes/'; 
+    public const MOTORBIKE_IMAGE_PUBLIC_FOLDER = 'uploaded/motorbikes'; 
     protected $with = ['renter'];
 
     public function renter() {

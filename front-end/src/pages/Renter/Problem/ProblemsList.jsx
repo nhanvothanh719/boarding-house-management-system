@@ -31,7 +31,7 @@ export default function ProblemsList() {
 
   useEffect(() => {
     axios.get(AppUrl.ShowRenterProblems).then((response) => {
-      if (response.data.status === 200) {
+      if (response.data.status == 200) {
         setProblemsList(response.data.allProblems);
       }
     });
@@ -133,10 +133,10 @@ export default function ProblemsList() {
                   axios
                     .delete(AppUrl.DeleteRenterProblem + thisProblem.id)
                     .then((response) => {
-                      if (response.data.status === 200) {
+                      if (response.data.status == 200) {
                         swal("Success", response.data.message, "success");
                         setProblemsListChange(true);
-                      } else if (response.data.status === 404) {
+                      } else if (response.data.status == 404) {
                         swal("Error", response.data.message, "error");
                       }
                     });
@@ -149,7 +149,7 @@ export default function ProblemsList() {
               icon: EmailIcon,
               openIcon: DraftsIcon,
               tooltip: 'Show reply text',
-              disabled: rowData.reply_text === null,
+              disabled: rowData.reply_text == null,
               render:  rowData => {
                 return (
                   <div

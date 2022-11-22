@@ -28,7 +28,7 @@ export default function ProblemsList() {
 
   useEffect(() => {
     axios.get(AppUrl.ShowProblems).then((response) => {
-      if (response.data.status === 200) {
+      if (response.data.status == 200) {
         setProblemsList(response.data.allProblems);
       }
     });
@@ -123,10 +123,10 @@ export default function ProblemsList() {
                   axios
                     .put(AppUrl.UpdateProblemStatus + oldProblem.id, data)
                     .then((response) => {
-                      if (response.data.status === 200) {
+                      if (response.data.status == 200) {
                         swal("Success", response.data.message, "success");
                         setProblemsListChange(true);
-                      } else if (response.data.status === 404) {
+                      } else if (response.data.status == 404) {
                         swal("Error", response.data.message, "error");
                       }
                     });
@@ -142,10 +142,10 @@ export default function ProblemsList() {
                   axios
                     .delete(AppUrl.DeleteProblem + thisProblem.id)
                     .then((response) => {
-                      if (response.data.status === 200) {
+                      if (response.data.status == 200) {
                         swal("Success", response.data.message, "success");
                         setProblemsListChange(true);
-                      } else if (response.data.status === 404) {
+                      } else if (response.data.status == 404) {
                         swal("Error", response.data.message, "error");
                       }
                     });

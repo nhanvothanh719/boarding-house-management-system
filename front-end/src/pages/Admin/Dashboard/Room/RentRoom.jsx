@@ -21,7 +21,7 @@ export default function RentRoom() {
 
   useEffect(() => {
     axios.get(AppUrl.GetAllRoomRents).then((response) => {
-      if (response.data.status === 200) {
+      if (response.data.status == 200) {
         setRentsLists(response.data.allRoomRents);
       }
     });
@@ -84,10 +84,10 @@ export default function RentRoom() {
 
   const cancelRent = (e, id) => {
     axios.delete(AppUrl.CancelRentRoom + id).then((response) => {
-      if (response.data.status === 200) {
+      if (response.data.status == 200) {
         swal("Success", response.data.message, "success");
         setRoomRentsChange(true);
-      } else if (response.data.status === 404) {
+      } else if (response.data.status == 404) {
         swal("Fail", response.data.message, "error");
       }
     });

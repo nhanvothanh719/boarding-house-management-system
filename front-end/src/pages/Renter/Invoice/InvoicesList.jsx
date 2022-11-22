@@ -19,7 +19,7 @@ export default function InvoicesList() {
 
   useEffect(() => {
     axios.get(AppUrl.ShowRenterInvoices).then((response) => {
-      if (response.data.status === 200) {
+      if (response.data.status == 200) {
         setUnpaidInvoicesList(response.data.unpaidInvoices);
         setPaidInvoicesList(response.data.paidInvoices);
       }

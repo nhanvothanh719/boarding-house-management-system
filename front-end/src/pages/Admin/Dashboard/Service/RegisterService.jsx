@@ -20,7 +20,7 @@ export default function RegisterService() {
 
   useEffect(() => {
     axios.get(AppUrl.ShowRegistrations).then((response) => {
-      if (response.data.status === 200) {
+      if (response.data.status == 200) {
         setRegistrations(response.data.allRegistrations);
       }
     });
@@ -72,7 +72,7 @@ export default function RegisterService() {
   const unregisterService = (e, id) => {
     e.preventDefault();
     axios.delete(AppUrl.UnregisterService + id).then((response) => {
-      if (response.data.status === 200) {
+      if (response.data.status == 200) {
         swal("Success", response.data.message, "success");
         setRegisteredServicesListChange(true);
       }

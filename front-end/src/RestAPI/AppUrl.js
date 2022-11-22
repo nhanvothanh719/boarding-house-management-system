@@ -1,8 +1,8 @@
 class AppUrl {
   //Set base URL
-  //static BaseURL = "http://127.0.0.1:8000/api";
+  static BaseURL = "http://127.0.0.1:8000/api";
   
-  static BaseURL = "https://beehouse.nhanvothanh7189.cf/api";
+  //static BaseURL = "https://beehouse.nhanvothanh7189.cf/api";
 
   static Login = this.BaseURL + "/login";
   static GetUserProfile = this.BaseURL + "/get-user-profile";

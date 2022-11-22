@@ -31,7 +31,7 @@ export default function InvoicesList() {
 
   useEffect(() => {
     axios.get(AppUrl.ShowInvoices).then((response) => {
-      if (response.data.status === 200) {
+      if (response.data.status == 200) {
         setInvoicesList(response.data.allInvoices);
       }
     });
@@ -62,10 +62,10 @@ export default function InvoicesList() {
       payment_id: "pay_by_cash_for_invoice_" + invoiceId,
     };
     axios.post(AppUrl.PayInvoiceByCash + invoiceId, payment).then((res) => {
-      if (res.data.status === 200) {
+      if (res.data.status == 200) {
         swal("Success", res.data.message, "success");
         setInvoicesListChange(true);
-      } else if (res.data.status === 400) {
+      } else if (res.data.status == 400) {
         swal("Warning", res.data.message, "warning");
       }
       setDisplayComponentsClass("");
@@ -205,7 +205,7 @@ export default function InvoicesList() {
               }),
             ]}
             editable={{
-              isDeletable: (rowData) => rowData.is_paid === 0,
+              isDeletable: (rowData) => rowData.is_paid == 0,
               onRowDelete: (thisInvoice) =>
                 new Promise((resolve, reject) => {
                   setTimeout(() => {
@@ -215,12 +215,12 @@ export default function InvoicesList() {
                     axios
                       .delete(AppUrl.DeleteInvoice + thisInvoice.id)
                       .then((response) => {
-                        if (response.data.status === 200) {
+                        if (response.data.status == 200) {
                           swal("Success", response.data.message, "success");
                           setInvoicesListChange(true);
-                        } else if (response.data.status === 404) {
+                        } else if (response.data.status == 404) {
                           swal("Error", response.data.message, "error");
-                        } else if (response.data.status === 400) {
+                        } else if (response.data.status == 400) {
                           swal("Warning", response.data.message, "warning");
                         }
                       });

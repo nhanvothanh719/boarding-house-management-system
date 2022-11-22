@@ -21,7 +21,7 @@ class User extends Authenticatable
     const ROLE_ADMIN = 0;
     const ROLE_RENTER = 1;
 
-    public const AVATAR_PUBLIC_FOLDER = 'uploaded/avatar/'; 
+    public const AVATAR_PUBLIC_FOLDER = 'uploaded/avatars'; 
 
     /**
      * The attributes that are mass assignable.

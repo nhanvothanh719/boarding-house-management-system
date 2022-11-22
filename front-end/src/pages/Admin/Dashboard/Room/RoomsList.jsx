@@ -26,7 +26,7 @@ export default function RoomsList() {
 
   useEffect(() => {
     axios.get(AppUrl.ShowRooms).then((response) => {
-      if (response.status === 200) {
+      if (response.status == 200) {
         console.log(response.data.allRooms);
         setRoomsList(response.data.allRooms);
       }
@@ -142,12 +142,12 @@ export default function RoomsList() {
                     axios
                       .delete(AppUrl.DeleteRoom + thisRoom.id)
                       .then((response) => {
-                        if (response.data.status === 200) {
+                        if (response.data.status == 200) {
                           swal("Success", response.data.message, "success");
                           setRoomsListChange(true);
-                        } else if (response.data.status === 404) {
+                        } else if (response.data.status == 404) {
                           swal("Error", response.data.message, "error");
-                        } else if (response.data.status === 400) {
+                        } else if (response.data.status == 400) {
                           swal("Warning", response.data.message, "warning");
                         }
                       });

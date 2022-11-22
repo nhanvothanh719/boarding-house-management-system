@@ -138,7 +138,7 @@ export default function EditUser({ match }) {
             <div className="userShowTop">
               <img
                 src={
-                  input.profile_picture !== null ? `http://127.0.0.1:8000/${input.profile_picture}` : DefaultAvatar
+                  input.profile_picture !== null ? `https://bee-house-bucket.s3.amazonaws.com/${input.profile_picture}` : DefaultAvatar
                 }
                 alt=""
                 className="userShowImg"
@@ -316,7 +316,7 @@ export default function EditUser({ match }) {
                   <img
                     className="userUpdateImg"
                     src={
-                      input.profile_picture !== null ? `http://127.0.0.1:8000/${input.profile_picture}` : DefaultAvatar
+                      input.profile_picture !== null ? `https://bee-house-bucket.s3.amazonaws.com/${input.profile_picture}` : DefaultAvatar
                     }                 
                     alt=""
                   />

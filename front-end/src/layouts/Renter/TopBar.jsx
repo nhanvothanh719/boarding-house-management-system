@@ -36,7 +36,7 @@ function TopBar() {
             </div>
             <img 
             src={
-              avatar !== null ? `http://127.0.0.1:8000/${avatar}` : DefaultAvatar
+              avatar !== null ? `https://bee-house-bucket.s3.amazonaws.com/${avatar}` : DefaultAvatar
             }  
             className="topAvatar" 
             alt="" />

@@ -133,7 +133,7 @@ export default function EditSignatures(props) {
                 </div>
                 <small className="text-danger customSmallError">{errors.owner_signature}</small>
                 <img
-                  src={`http://127.0.0.1:8000/${previousSignatures.owner_signature}`}
+                  src={`https://bee-house-bucket.s3.amazonaws.com/${previousSignatures.owner_signature}`}
                   alt=""
                   style={{ width: "60px", height: "60px", borderRadius: "50%" }}
                 />
@@ -150,7 +150,7 @@ export default function EditSignatures(props) {
                 </div>
                 <small className="text-danger customSmallError">{errors.renter_signature}</small>
                 <img
-                  src={`http://127.0.0.1:8000/${previousSignatures.renter_signature}`}
+                  src={`https://bee-house-bucket.s3.amazonaws.com/${previousSignatures.renter_signature}`}
                   alt=""
                   style={{ width: "60px", height: "60px", borderRadius: "50%" }}
                 />

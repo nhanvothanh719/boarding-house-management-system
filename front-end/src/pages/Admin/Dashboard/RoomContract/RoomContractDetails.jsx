@@ -20,9 +20,9 @@ export default function RoomContractDetails({ match }) {
     axios
       .get(AppUrl.GetRoomContractDetails + roomContractId)
       .then((response) => {
-        if (response.data.status === 200) {
+        if (response.data.status == 200) {
           setDetails(response.data.roomContractDetails);
-        } else if (response.data.status === 404) {
+        } else if (response.data.status == 404) {
           swal("Error", response.data.message, "error");
           history.push("/admin/view-all-room-contracts");
         }

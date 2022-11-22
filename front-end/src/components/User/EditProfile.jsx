@@ -127,7 +127,7 @@ export default function EditProfile() {
                 <Card.Body className="cardBody text-center">
                   <Col md={12}>
                     <img
-                      src={`http://127.0.0.1:8000/${userInfo.profile_picture}`}
+                      src={`https://bee-house-bucket.s3.amazonaws.com/${userInfo.profile_picture}`}
                       className="imgAccountProfile rounded-circle img-thumbnail mb-2"
                       alt=" "
                       style={{ objectFit: "cover" }}

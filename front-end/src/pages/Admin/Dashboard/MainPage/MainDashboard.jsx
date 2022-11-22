@@ -22,24 +22,24 @@ function MainDashboard() {
   useEffect(() => {
     axios.get(AppUrl.CountRenters).then(
       (response) => {
-        if(response.data.status === 200) {
+        if(response.data.status == 200) {
           setRentersAmount(response.data.total);
         }
       });
       axios.get(AppUrl.CountRooms).then(
         (response) => {
-          if(response.data.status === 200) {
+          if(response.data.status == 200) {
             setRoomsAmount(response.data.total);
           }
         });
         axios.get(AppUrl.GetEarnedAmount).then(
           (response) => {
-            if(response.data.status === 200) {
+            if(response.data.status == 200) {
               setEarnedAmount(response.data.amount);
             }
           });
       axios.get(AppUrl.GetRecentBalanceChanges).then((response) => {
-        if (response.data.status === 200) {
+        if (response.data.status == 200) {
           setCurrentBalance(response.data.currentBalance);
         }
       });

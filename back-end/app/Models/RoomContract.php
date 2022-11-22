@@ -10,7 +10,7 @@ class RoomContract extends Model
     use HasFactory;
     protected $guarded = ['id'];
     
-    public const ROOM_CONTRACT_PUBLIC_FOLDER = 'uploaded/room_contract'; 
+    public const ROOM_CONTRACT_PUBLIC_FOLDER = 'uploaded/room_contracts'; 
 
    protected $with = ['renter'];
 

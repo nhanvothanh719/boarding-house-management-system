@@ -29,13 +29,13 @@ export default function BalanceDetails() {
 
   useEffect(() => {
     axios.get(AppUrl.GetBalance).then((response) => {
-      if (response.data.status === 200) {
+      if (response.data.status == 200) {
         setDetails(response.data.allDetails);
       }
       setLoading(false);
     });
     axios.get(AppUrl.GetRecentBalanceChanges).then((response) => {
-      if (response.data.status === 200) {
+      if (response.data.status == 200) {
         setCurrentBalance(response.data.currentBalance);
       }
     });
@@ -75,7 +75,7 @@ export default function BalanceDetails() {
         field: "description",
         title: "Description",
         validate: (rowData) =>
-          rowData.description === ""
+          rowData.description == ""
             ? { isValid: false, helperText: "Description cannot be empty" }
             : true,
       },
@@ -172,10 +172,10 @@ export default function BalanceDetails() {
                   axios
                     .delete(AppUrl.DeleteBalanceChange + thisBalanceChange.id)
                     .then((response) => {
-                      if (response.data.status === 200) {
+                      if (response.data.status == 200) {
                         swal("Success", response.data.message, "success");
                         setBalanceAmountChange(true);
-                      } else if (response.data.status === 404) {
+                      } else if (response.data.status == 404) {
                         swal("Error", response.data.message, "error");
                       }
                     });

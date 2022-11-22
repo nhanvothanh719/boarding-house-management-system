@@ -149,7 +149,7 @@ export default function EditMotorbikeModal(props) {
               </form>
               <img 
               src={
-                input.motorbike_image !== null ? `http://127.0.0.1:8000/${input.motorbike_image}` : DefaultMotorbikeImg
+                input.motorbike_image !== null ? `https://bee-house-bucket.s3.amazonaws.com/${input.motorbike_image}` : DefaultMotorbikeImg
               }
               alt= "" 
               style={{width: "370px", height: "250px", borderRadius: "10%"}}/>

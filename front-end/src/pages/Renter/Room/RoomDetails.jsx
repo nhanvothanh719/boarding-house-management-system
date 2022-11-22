@@ -64,7 +64,7 @@ export default function RoomDetails() {
       return (
         <Carousel.Item>
           <img
-            src={`http://127.0.0.1:8000/${img.image_name}`}
+            src={`https://bee-house-bucket.s3.amazonaws.com/${img.image_name}`}
             alt=""
             className="img-fluid customImage d-block"
             style={{ height: "100%" }}
@@ -82,7 +82,7 @@ export default function RoomDetails() {
                 <div className="card-body text-center" >
                   <div className="p-4 border radius-20"  style={{ backgroundColor: "#fafafa", borderRadius: "5%"}}>
                     <img
-                      src={`http://127.0.0.1:8000/${person.profile_picture}`}
+                      src={`https://bee-house-bucket.s3.amazonaws.com/${person.profile_picture}`}
                       className="imgAccountProfile rounded-circle img-thumbnail mb-2 shadow"
                       alt=""
                     />

@@ -31,7 +31,6 @@ class RoomController extends Controller
             'category_id' => 'required|exists:categories,id',
             'area' => 'required|digits_between:2,4|min:100|integer',
             'description' => 'required',
-            'image.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
         if($validator->fails()) 
         {
@@ -67,7 +66,6 @@ class RoomController extends Controller
             'category_id' => 'required|exists:categories,id',
             'area' => 'required|digits_between:2,4|min:100|integer',
             'description' => 'required',
-            'image.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
         if($validator->fails())
         {

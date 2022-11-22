@@ -25,7 +25,7 @@ export default function MotorbikesList() {
 
   useEffect(() => {
     axios.get(AppUrl.ShowMotorbikes).then((response) => {
-      if (response.status === 200) {
+      if (response.status == 200) {
         setMotorbikesList(response.data.allMotorbikes);
       }
     });
@@ -66,7 +66,7 @@ export default function MotorbikesList() {
         render: (rowData) => (
           <img
           src={
-            rowData.motorbike_image !== null ? `http://127.0.0.1:8000/${rowData.motorbike_image}` : DefaultMotorbikeImg
+            rowData.motorbike_image !== null ? `https://bee-house-bucket.s3.amazonaws.com/${rowData.motorbike_image}` : DefaultMotorbikeImg
           }
             alt="motorbike_image"
             className="topAvatar"
@@ -142,10 +142,10 @@ export default function MotorbikesList() {
                     axios
                       .delete(AppUrl.DeleteMotorbike + thisMotorbike.id)
                       .then((response) => {
-                        if (response.data.status === 200) {
+                        if (response.data.status == 200) {
                           swal("Success", response.data.message, "success");
                           setMotorbikesListChange(true);
-                        } else if (response.data.status === 404) {
+                        } else if (response.data.status == 404) {
                           swal("Error", response.data.message, "error");
                         }
                       });
