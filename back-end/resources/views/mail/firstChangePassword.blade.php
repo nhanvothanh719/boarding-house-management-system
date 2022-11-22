@@ -13,12 +13,6 @@
     Welcome to BeeHouse application,
     <br >
     Your password used for login into the system is: <b>{{ $generatedPassword }}</b>
-    <br >
-    If you want to change, please click <a href="http://localhost:3000/reset-password/{{ $generatedToken }}"> the following link </a> to reset your password.
-    <br>
-    Your pincode is: <h3>{{ $generatedToken }}</h3>
-    <br>
-    If you did not request a password change, please feel free to ignore this message.
     <br>
     Please feel free to respond to this email.
     It was sent from a monitored email address, and we would love to hear from you.

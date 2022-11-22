@@ -29,6 +29,11 @@ export default function UsersList() {
   const [usersListChange, setUsersListChange] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [currentUserId, setCurrentUserId] = useState(0);
+  const isTrue = ["Active", "Locked"];
+  const isTrueStyle = ["statusActive", "statusPassive"];
+  const role = ["Admin", "Renter"];
+  const roleStyle = ["statusPending", "statusOnGoing"];
+  const isLocked = [LockOutlinedIcon, LockOpenIcon];
 
   useEffect(() => {
     axios.get(AppUrl.GetAllUsers).then((response) => {
@@ -98,13 +103,7 @@ export default function UsersList() {
       width: "10%",
       render: (rowData) => (
         <div>
-          <span
-            className={`${
-              rowData.role === 0 ? "statusPending" : "statusOnGoing"
-            }`}
-          >
-            {rowData.role === 0 ? "Admin" : "Renter"}
-          </span>
+          <span className={`${roleStyle[rowData.role]}`}>{role[rowData.role]}</span>
         </div>
       ),
     },
@@ -113,13 +112,7 @@ export default function UsersList() {
       title: "Account status",
       render: (rowData) => (
         <div>
-          <span
-            className={`${
-              rowData.is_locked === 0 ? "statusActive" : "statusPassive"
-            }`}
-          >
-            {rowData.is_locked === 0 ? "Active" : "Locked"}
-          </span>
+          <span className={`${isTrueStyle[rowData.is_locked]}`}>{isTrue[rowData.is_locked]}</span>
         </div>
       ),
     },
@@ -170,7 +163,7 @@ export default function UsersList() {
                   history.push(`/admin/edit-user/${user.id}`),
               },
               (user) => ({
-                icon: user.is_locked ? LockOpenIcon : LockOutlinedIcon,
+                icon: isLocked[user.is_locked],
                 tooltip: user.is_locked ? "Unlock account" : "Lock account",
                 onClick: (event, user) => lockUserAccount(user.id),
                 disabled: user.role === 0,

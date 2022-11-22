@@ -26,7 +26,7 @@ class MotorbikeController extends Controller
     }
 
     public function deleteMotorbike($id) {
-        $motorbike =  $this->motorbike->all();
+        $motorbike =  $this->motorbike->show($id);
         if($motorbike) {
             File::delete($motorbike->motorbike_image);
             $this->motorbike->delete($id);

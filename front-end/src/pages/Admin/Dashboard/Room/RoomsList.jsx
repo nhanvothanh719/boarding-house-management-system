@@ -21,6 +21,8 @@ export default function RoomsList() {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const status = ["Empty", "Occupied", "Full"];
   const statusStyle = ["statusOnGoing", "statusActive", "statusPassive"];
+  const doesHave = ["No", "Yes"];
+  const doesHaveStyle = ["statusPassive", "statusActive"];
 
   useEffect(() => {
     axios.get(AppUrl.ShowRooms).then((response) => {
@@ -64,7 +66,7 @@ export default function RoomsList() {
         lookup: {0:"No", 1:"Yes"},
         render: rowData => (
           <div>
-              <span className={`${rowData.has_conditioner === 1 ? "statusActive" : "statusPassive"}` }>{rowData.has_conditioner === 1 ? "Yes" : "No" }</span>
+              <span className={`${doesHaveStyle[rowData.has_conditioner]}`}>{doesHave[rowData.has_conditioner]}</span>
           </div>
         )
       },
@@ -73,7 +75,7 @@ export default function RoomsList() {
       lookup: {0:"No", 1:"Yes"},
       render: rowData => (
         <div>
-            <span className={`${rowData.has_fridge === 1 ? "statusActive" : "statusPassive"}` }>{rowData.has_fridge === 1 ? "Yes" : "No" }</span>
+            <span className={`${doesHaveStyle[rowData.has_fridge]}`}>{doesHave[rowData.has_fridge]}</span>
         </div>
       ) 
     },
@@ -83,7 +85,7 @@ export default function RoomsList() {
         lookup: {0:"No", 1:"Yes"},
         render: rowData => (
           <div>
-              <span className={`${rowData.has_wardrobe === 1 ? "statusActive" : "statusPassive"}` }>{rowData.has_wardrobe === 1 ? "Yes" : "No" }</span>
+              <span className={`${doesHaveStyle[rowData.has_wardrobe]}`}>{doesHave[rowData.has_wardrobe]}</span>
           </div>
         )
        },

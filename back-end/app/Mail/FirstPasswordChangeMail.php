@@ -19,10 +19,9 @@ class FirstPasswordChangeMail extends Mailable
      *
      * @return void
      */
-    public function __construct($password, $token)
+    public function __construct($password)
     {
         $this->generatedPassword = $password;
-        $this->generatedToken = $token;
     }
 
     /**
@@ -33,9 +32,8 @@ class FirstPasswordChangeMail extends Mailable
     public function build()
     {
         $generatedPassword = $this->generatedPassword;
-        $generatedToken = $this->generatedToken;
         return $this->from('boarding_house_admin@gmail.com')
-        ->view('mail.firstChangePassword', compact('generatedPassword', 'generatedToken'))
+        ->view('mail.firstChangePassword', compact('generatedPassword'))
         ->subject('Email to give initial password');
     }
 }

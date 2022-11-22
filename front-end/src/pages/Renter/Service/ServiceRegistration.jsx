@@ -10,6 +10,8 @@ import WebPageTitle from "../../../components/WebPageTitle/WebPageTitle";
 export default function ServiceRegistration() {
   const [loading, setLoading] = useState(true);
   const [registeredServicesList, setRegisteredServicesList] = useState([]);
+  const isCompulsory = ["Optional", "Compulsory"];
+  const isCompulsoryStyle = ["statusActive", "statusPassive"];
 
   useEffect(() => {
     axios.get(AppUrl.GetRenterRegisteredServices).then((response) => {
@@ -34,8 +36,11 @@ export default function ServiceRegistration() {
         lookup: { 1: "Compulsory", 2: "Optional" },
         render: rowData => (
           <div>
-              <span className={`${rowData.is_compulsory === 0 ? "statusActive" : "statusPassive"}` }>{rowData.is_compulsory === 0 ? "Optional" : "Compulsory" }</span>
-          </div>
+          <span
+            className={`${isCompulsoryStyle[rowData.is_compulsory]}`}>
+            {isCompulsory[rowData.is_compulsory]}
+          </span>
+        </div>
         )
       },
       {

@@ -112,7 +112,7 @@ class ServiceController extends Controller
                 'message' => 'No service found',
                 'status' => 404,
             ]);
-        }
+        }  
         if($this->service->checkCompulsory($id)) {
             return response([
                 'message' => 'Cannot delete compulsory service',

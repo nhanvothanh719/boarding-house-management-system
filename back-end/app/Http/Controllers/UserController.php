@@ -58,17 +58,12 @@ class UserController extends Controller
             ]);
         }
         $user_avatar = null;
-        $generated_password = Str::random(10);
+        $generated_password = 'password';
         if($request->hasFile('profile_picture')) {
             $user_avatar = $request->file('profile_picture');
         }
         $user = $this->user->store($request->all(), $generated_password, $user_avatar);
-        $token = rand(10, 1000);
-        DB::table('password_resets')->insert([
-            'email' => $user->email,
-            'token' => $token,
-        ]); 
-        Mail::to($user->email)->send(new FirstPasswordChangeMail($generated_password, $token));
+        Mail::to($user->email)->send(new FirstPasswordChangeMail($generated_password));
         return response([
             'message' => 'Create new user successfully',
             'status' => 200,
