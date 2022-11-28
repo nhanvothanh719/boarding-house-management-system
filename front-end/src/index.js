@@ -6,8 +6,9 @@ import axios from 'axios';
 
 
 //Set base URL
-axios.defaults.baseURL = 'http://127.0.0.1:8000/api';
-//axios.defaults.baseURL = 'https://beehouse.nhanvothanh7189.cf/api';
+//axios.defaults.baseURL = 'http://127.0.0.1:8000/api';
+
+axios.defaults.baseURL = 'https://beehouse.nhanvothanh7189.cf/api';
 //Set Bearer token to route
 //axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('auth_token');
 //CSRF protection

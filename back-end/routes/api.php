@@ -65,11 +65,11 @@ Route::middleware('auth:api')->group(function(){
 
         Route::post('/make-payment/{id}', [RenterPaymentController::class, 'payInvoice']);
         
-        Route::get('/all-renter-problems', [RenterProblemController::class, 'getRenterProblems']);
         Route::post('/store-renter-problem', [RenterProblemController::class, 'storeProblem']);
-        Route::get('/get-renter-problem-details/{id}', [RenterProblemController::class, 'getProblemDetails']);
+        Route::get('/all-renter-problems', [RenterProblemController::class, 'getRenterProblems']);
         Route::put('/update-renter-problem/{id}', [RenterProblemController::class, 'updateProblem']);
         Route::delete('/delete-renter-problem/{id}', [RenterProblemController::class, 'deleteProblem']);
+        Route::get('/get-renter-problem-details/{id}', [RenterProblemController::class, 'getProblemDetails']);
 
         Route::get('/all-renter-registered-services', [RenterServiceController::class, 'getRegisteredServices']);
 

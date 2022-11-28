@@ -63,7 +63,7 @@ export default function CreateAnnouncement() {
         render: (rowData) => (
           <img
             src={
-              rowData.profile_picture !== null ? `http://127.0.0.1:8000/${rowData.profile_picture}` : DefaultAvatar
+              rowData.profile_picture !== null ? `https://bee-house-bucket.s3.amazonaws.com/${rowData.profile_picture}` : DefaultAvatar
             }
             alt="avatar"
             className="topAvatar"

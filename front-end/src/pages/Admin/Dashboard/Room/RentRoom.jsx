@@ -68,7 +68,7 @@ export default function RentRoom() {
               <img
                 src={
                   rowData.renter.profile_picture !== null
-                    ? `http://127.0.0.1:8000/${rowData.renter.profile_picture}`
+                    ? `https://bee-house-bucket.s3.amazonaws.com/${rowData.renter.profile_picture}`
                     : DefaultAvatar
                 }
                 alt="avatar"

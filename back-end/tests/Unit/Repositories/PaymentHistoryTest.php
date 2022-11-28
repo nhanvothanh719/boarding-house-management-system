@@ -87,7 +87,7 @@ class PaymentHistoryTest extends TestCase
         $this->assertFalse($is_stored);
     }
 
-    public function test_get_paid_invoices_rate() {
+    public function test_get_paid_invoices_ratio() {
         PaymentHistory::query()->delete();
         Invoice::query()->delete();
         $first_renter = User::factory()->create(['role' => User::ROLE_RENTER, 'occupation' => 'test data']);

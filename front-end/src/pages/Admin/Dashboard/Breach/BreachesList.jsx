@@ -156,16 +156,12 @@ export default function BreachesList() {
               setSelectedBreachId(breach.id);
             },
           },
-        ]}
-        editable={{
-          onRowDelete: (thisBreach) =>
-            new Promise((resolve, reject) => {
-              setTimeout(() => {
-                const selectedBreach = [...details];
-                const index = thisBreach.tableData.id;
-                selectedBreach.splice(index, 1); //1: only one record
-                axios
-                  .delete(AppUrl.DeleteBreach + thisBreach.id)
+          {
+            icon: "delete",
+            tooltip: "Delete",
+            onClick: (event, breach) => {
+              axios
+                  .delete(AppUrl.DeleteBreach + breach.id)
                   .then((response) => {
                     if (response.data.status == 200) {
                       swal("Success", response.data.message, "success");
@@ -175,11 +171,10 @@ export default function BreachesList() {
                     } else if (response.data.status == 400) {
                       swal("Warning", response.data.message, "warning");
                     }
-                  });
-                resolve();
-              }, 1000);
-            }),
-        }}
+                  })
+            }
+          }
+        ]}
       />
       <EditBreachModal
             isShown={showEditModal}
